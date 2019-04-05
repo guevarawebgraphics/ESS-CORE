@@ -19,10 +19,10 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="email" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
@@ -65,12 +65,6 @@
                                     </a>
                                 @endif                               
                             </div>
-
-                            <div class="col-md-7 offset-md-1">                               
-                                @if (Route::has('register'))                              
-                                    <a class="btn btn-link" href="{{ route('register') }}">{{ __('Register') }}</a>                            
-                                @endif                             
-                            </div>       
 
                             <div class="col-md-3">
                                 <button type="submit" class="btn btn-primary">

@@ -2,6 +2,21 @@
 <html>
 <head>
 	<title>{{ config('app.name', 'Laravel') }}</title>
+	<style>
+		table td{
+			font-size: 90%;
+			text-align: center;
+		}
+
+		table th{
+			text-align: center;
+			font-size: 95%;
+		}
+
+		li a p{
+			font-size: 90%;
+		}
+	</style>
 </head>
 <body>
 	<meta charset="utf-8">
@@ -11,39 +26,6 @@
 	<link href="{{ asset('http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}" rel="stylesheet"><!-- Theme style -->
 	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
 	<link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
-    
-	<div class="wrapper">
-        @guest
-
-        @else
-            @include('inc/navbar')           
-            @include('inc/sidebar')
-            <div class="content-wrapper">			
-			<div class="content-header">
-				<div class="container-fluid">
-					<div class="row mb-2">
-						<div class="col-sm-6">
-							<h1 class="m-0 text-dark">Dashboard</h1>
-						</div>
-						<div class="col-sm-6">
-							<ol class="breadcrumb float-sm-right">
-								<li class="breadcrumb-item">
-									<a href="#">Home</a>
-								</li>
-								<li class="breadcrumb-item active">Dashboard</li>
-							</ol>
-						</div>
-					</div>
-				</div>
-			</div>			
-        @endguest				
-			<div class="content">
-                <!-- RENDERING PAGES -->
-				@yield('content')
-			</div>
-		</div>			
-	</div>
-    @include('inc/footer')
 
 	<!-- REQUIRED SCRIPTS -->
 	<!-- jQuery -->
@@ -57,5 +39,28 @@
 	</script> 
 	<script src="{{ asset('dist/js/pages/dashboard3.js') }}">
 	</script>
+    
+	<div class="wrapper">
+        @guest
+
+        @else
+            @include('inc/navbar')           
+            @include('inc/sidebar')
+            <div class="content-wrapper">			
+			<div class="content-header">
+				<div class="container-fluid">
+					@yield('crumb')
+				</div>
+			</div>			
+        @endguest				
+			<div class="content">
+                <!-- RENDERING PAGES -->
+				@yield('content')
+			</div>
+		</div>			
+	</div>
+    @include('inc/footer')
+
+	
 </body>
 </html>
