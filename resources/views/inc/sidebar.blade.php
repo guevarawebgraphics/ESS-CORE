@@ -68,7 +68,7 @@
 							<p>Create Profile</p></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href=""><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link" href="/Account"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Update Profile</p></a>
 						</li>
 						

@@ -15,7 +15,7 @@
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <a class="dropdown-item" href="#"><!-- Message Start -->
                 <div class="media">
-                    <img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="dist/img/user1-128x128.jpg">
+                    <img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="../dist/img/user1-128x128.jpg">
                     <div class="media-body">
                         <h3 class="dropdown-item-title">Brad Diesel <span class="float-right text-sm text-danger"><i class="fa fa-star"></i></span></h3>
                         <p class="text-sm">Call me whenever you can...</p>
@@ -24,7 +24,7 @@
                 </div><!-- Message End --></a>
                 <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->
                 <div class="media">
-                    <img alt="User Avatar" class="img-size-50 img-circle mr-3" src="dist/img/user8-128x128.jpg">
+                    <img alt="User Avatar" class="img-size-50 img-circle mr-3" src="../dist/img/user8-128x128.jpg">
                     <div class="media-body">
                         <h3 class="dropdown-item-title">John Pierce <span class="float-right text-sm text-muted"><i class="fa fa-star"></i></span></h3>
                         <p class="text-sm">I got your message bro</p>
@@ -33,7 +33,7 @@
                 </div><!-- Message End --></a>
                 <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->
                 <div class="media">
-                    <img alt="User Avatar" class="img-size-50 img-circle mr-3" src="dist/img/user3-128x128.jpg">
+                    <img alt="User Avatar" class="img-size-50 img-circle mr-3" src="../dist/img/user3-128x128.jpg">
                     <div class="media-body">
                         <h3 class="dropdown-item-title">Nora Silvester <span class="float-right text-sm text-warning"><i class="fa fa-star"></i></span></h3>
                         <p class="text-sm">The subject goes here</p>

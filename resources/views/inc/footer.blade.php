@@ -3,5 +3,5 @@
     <div class="float-right d-none d-sm-block-down">
         Anything you want
     </div><!-- Default to the left -->
-    <strong>Copyright &copy; 2018 CSI</strong> All rights reserved.
+    <strong>Copyright &copy; {{ now()->year }} CSI</strong> All rights reserved.
 </footer>

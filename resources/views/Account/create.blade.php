@@ -97,8 +97,8 @@
                         <label for="address_country" class="col-md-2 text-md-center">Country:</label>
                         <div class="col-md-4">
                             
-                                <select id="address_country" name="address_country" class="form-control">
-                                    <option selected>Choose Country...</option>
+                                <select id="address_country" name="address_country" class="form-control{{ $errors->has('address_country') ? ' is-invalid' : '' }}">
+                                    <option value="" selected>Choose Country...</option>
                                     <option>Philippines</option>
                                 </select>
                             @if ($errors->has('address_country'))
@@ -124,9 +124,9 @@
                         <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
                         <div class="col-md-4">
                             
-                                <select id="address_cityprovince" name="address_cityprovince" class="form-control">
-                                    <option selected>Choose Province...</option>
-                                    <option>Province</option>
+                                <select id="address_cityprovince" name="address_cityprovince" class="form-control{{ $errors->has('address_cityprovince') ? ' is-invalid' : '' }}">
+                                    <option value="" selected>Choose Province...</option>
+                                    {{-- <option id="province">Province</option> --}}
                                 </select>
                             @if ($errors->has('proviaddress_cityprovincence'))
                                 <span class="invalid-feedback" role="alert">
@@ -151,9 +151,9 @@
                         <label for="address_town" class="col-md-2 text-md-center">City/Town:</label>
                         <div class="col-md-4">
                             
-                                <select id="address_town" name="address_town" class="form-control">
-                                    <option selected>Choose CityTown...</option>
-                                    <option>CityTown</option>
+                                <select id="address_town" name="address_town" class="form-control{{ $errors->has('address_town') ? ' is-invalid' : '' }}">
+                                    <option value="" selected>Choose CityTown...</option>
+                                    {{-- <option>CityTown</option> --}}
                                 </select>
                             @if ($errors->has('address_town'))
                                 <span class="invalid-feedback" role="alert">
@@ -178,9 +178,9 @@
                         <label for="address_barangay" class="col-md-2 text-md-center">Barangay:</label>
                         <div class="col-md-4">
                             
-                                <select id="address_barangay" name="address_barangay" class="form-control">
-                                    <option selected>Choose Barangay...</option>
-                                    <option>Barangay</option>
+                                <select id="address_barangay" name="address_barangay" class="form-control{{ $errors->has('address_barangay') ? ' is-invalid' : '' }}">
+                                    <option value="" selected>Choose Barangay...</option>
+                                    {{-- <option>Barangay</option> --}}
                                 </select>
                             @if ($errors->has('address_barangay'))
                                 <span class="invalid-feedback" role="alert">
@@ -226,16 +226,16 @@
                 </div>
 
                 <div class="form-group row">
-                        <label for="accounttype" class="col-md-2 text-md-center">Account Type:</label>
+                        <label for="user_type" class="col-md-2 text-md-center">Account Type:</label>
                         <div class="col-md-4">
                             
-                                <select id="accounttype" class="form-control">
-                                    <option selected>Choose Account Type...</option>
-                                    <option>accounttype</option>
+                                <select id="user_type" name="user_type" class="form-control{{ $errors->has('user_type') ? ' is-invalid' : '' }}">
+                                    <option value="" selected>Choose Account Type...</option>
+                                    {{-- <option>accounttype</option> --}}
                                 </select>
-                            @if ($errors->has('accounttype'))
+                            @if ($errors->has('user_type'))
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('accounttype') }}</strong>
+                                    <strong>{{ $errors->first('user_type') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -328,4 +328,84 @@
       </div>
       <!-- /.card -->
 {{-- </div> --}}
+
+<script type="text/javascript">
+$(document).ready(function (){
+    /*Get Province*/
+    $.ajax({
+			method: 'get',
+            url: '/Account/get_province',
+            dataType: 'json',
+			success: function (data) {
+                // console.log("success");
+                // console.log(data);
+                $.each(data, function (i, data) {
+                    $("#address_cityprovince").append('<option value="' + data.provCode + '">' + data.provDesc + '</option>');
+                });
+			},
+			error: function (response) {
+					console.log("Error cannot be");
+			}
+    });
+
+    /*Get City town*/
+    $('#address_cityprovince').change(function (){
+        $code = $('#address_cityprovince').val();
+        $.ajax({
+                method: 'get',
+                url: '/Account/get_citytown/' + $code,
+                dataType: 'json',
+                success: function (data) {
+                    // console.log("success");
+                    // console.log(data);
+                    $.each(data, function (i, data) {
+                        $("#address_town").append('<option value="' + data.citymunCode + '">' + data.citymunDesc + '</option>');
+                    });
+                },
+                error: function (response) {
+                        console.log("Error cannot be");
+                }
+        });
+    });
+
+    /*Get Barangay*/
+    $('#address_town').change(function (){
+        $code = $('#address_town').val();
+        $.ajax({
+                method: 'get',
+                url: '/Account/get_barangay/' + $code,
+                dataType: 'json',
+                success: function (data) {
+                    // console.log("success");
+                    // console.log(data);
+                    $.each(data, function (i, data) {
+                        $("#address_barangay").append('<option value="' + data.id + '">' + data.brgyDesc + '</option>');
+                    });
+                },
+                error: function (response) {
+                        console.log("Error cannot be");
+                }
+        });
+    });
+
+
+    // Get User Type
+    $.ajax({
+        method: 'get',
+        url: '/Account/get_user_type',
+        dataType: 'json',
+        success: function (data) {
+            $.each(data, function (i, data) {
+                $("#user_type").append('<option value="' + data.id + '">' + data.type_description + '</option>');
+            });
+        },
+        error: function (response) {
+            console.log("Error cannot be");
+        }
+    });
+
+
+ 
+});
+</script>
 @endsection 

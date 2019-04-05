@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -34,3 +34,7 @@ Route::post('/manageuser/updatemoduleaccess', 'ManageUserController@update_modul
 Route::get('/Account', 'AccountController@index')->name('Account.index');
 Route::get('/Account/create', 'AccountController@create')->name('Account.create');
 Route::post('/Account', 'AccountController@store')->name('Account');
+Route::get('/Account/get_province', 'AccountController@get_province')->name('Account.get_province');
+Route::get('/Account/get_citytown/{provCode}', 'AccountController@get_citytown')->name('Account.get_citytown');
+Route::get('/Account/get_barangay/{citymunCode}', 'AccountController@get_barangay')->name('Account.get_barangay');
+Route::get('/Account/get_user_type', 'AccountController@get_user_type')->name('Account.get_user_type');

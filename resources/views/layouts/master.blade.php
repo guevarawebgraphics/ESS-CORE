@@ -39,6 +39,10 @@
 	</script> 
 	<script src="{{ asset('dist/js/pages/dashboard3.js') }}">
 	</script>
+	<!-- DataTables -->
+	<script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('/plugins/datatables/dataTables.bootstrap4.js') }}"></script>
+	<script src="{{ asset('js/scripts.js') }}"></script>
     
 	<div class="wrapper">
         @guest
