@@ -20,7 +20,8 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="/Account" method="POST">
+        <form action="/Account/{{$Account->id}}" method="post">
+            @method('PATCH')
             {{ csrf_field() }}
           <div class="card-body">
 
@@ -28,7 +29,7 @@
                         <label for="shortname" class="control-label col-md-2 text-md-center">Short Name:</label>
                         <div class="col-md-4">
                             
-                            <input id="shortname" type="text" class="form-control{{ $errors->has('shortname') ? ' is-invalid' : '' }}" name="shortname" value="{{ old('shortname') }}"  autofocus>
+                            <input id="shortname" type="text" class="form-control{{ $errors->has('shortname') ? ' is-invalid' : '' }}" name="shortname" value="{{ old('shortname') }}{{ $Account->shortname }}"  autofocus>
                             @if ($errors->has('shortname'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('shortname') }}</strong>
@@ -38,7 +39,7 @@
                         <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_person" type="text" class="form-control{{ $errors->has('contact_person') ? ' is-invalid' : '' }}" name="contact_person" value="{{ old('contact_person') }}"  autofocus>
+                            <input id="contact_person" type="text" class="form-control{{ $errors->has('contact_person') ? ' is-invalid' : '' }}" name="contact_person" value="{{ old('contact_person') }}{{ $Account->contact_person }}"  autofocus>
                             @if ($errors->has('contact_person'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('contact_person') }}</strong>
@@ -51,7 +52,7 @@
                         <label for="accountname" class="col-md-2 text-md-center">Account Name:</label>
                         <div class="col-md-4">
                             
-                            <input id="accountname" type="text" class="form-control{{ $errors->has('accountname') ? ' is-invalid' : '' }}" name="accountname" value="{{ old('accountname') }}"  autofocus>
+                            <input id="accountname" type="text" class="form-control{{ $errors->has('accountname') ? ' is-invalid' : '' }}" name="accountname" value="{{ old('accountname') }}{{ $Account->accountname }}"  autofocus>
                             @if ($errors->has('accountname'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('accountname') }}</strong>
@@ -61,7 +62,7 @@
                         <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_phone" type="text" class="form-control{{ $errors->has('contact_phone') ? ' is-invalid' : '' }}" name="contact_phone" value="{{ old('contact_phone') }}"  autofocus>
+                            <input id="contact_phone" type="text" class="form-control{{ $errors->has('contact_phone') ? ' is-invalid' : '' }}" name="contact_phone" value="{{ old('contact_phone') }}{{ $Account->contact_phone }}"  autofocus>
                             @if ($errors->has('contact_phone'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('contact_phone') }}</strong>
@@ -74,7 +75,7 @@
                         <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>
                         <div class="col-md-4">
                             
-                            <input id="address_unit" type="text" class="form-control{{ $errors->has('address_unit') ? ' is-invalid' : '' }}" name="address_unit" value="{{ old('address_unit') }}"  autofocus>
+                            <input id="address_unit" type="text" class="form-control{{ $errors->has('address_unit') ? ' is-invalid' : '' }}" name="address_unit" value="{{ old('address_unit') }}{{ $Account->address_unit }}"  autofocus>
                             @if ($errors->has('address_unit'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('address_unit') }}</strong>
@@ -84,7 +85,7 @@
                         <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_mobile" type="text" class="form-control{{ $errors->has('contact_mobile') ? ' is-invalid' : '' }}" name="contact_mobile" value="{{ old('contact_mobile') }}"  autofocus>
+                            <input id="contact_mobile" type="text" class="form-control{{ $errors->has('contact_mobile') ? ' is-invalid' : '' }}" name="contact_mobile" value="{{ old('contact_mobile') }}{{ $Account->contact_mobile }}"  autofocus>
                             @if ($errors->has('contact_mobile'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('contact_mobile') }}</strong>
@@ -111,7 +112,7 @@
                         <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_email" type="contact_email" class="form-control{{ $errors->has('contact_email') ? ' is-invalid' : '' }}" name="contact_email" value="{{ old('contact_email') }}"  autofocus>
+                            <input id="contact_email" type="contact_email" class="form-control{{ $errors->has('contact_email') ? ' is-invalid' : '' }}" name="contact_email" value="{{ old('contact_email') }}{{ $Account->contact_email }}"  autofocus>
                             @if ($errors->has('contact_email'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('contact_email') }}</strong>
@@ -138,7 +139,7 @@
                         <label for="tin" class="col-md-2 text-md-center">Tin: </label>
                         <div class="col-md-4">
                             
-                            <input id="tin" type="text" class="form-control{{ $errors->has('tin') ? ' is-invalid' : '' }}" name="tin" value="{{ old('tin') }}"  autofocus>
+                            <input id="tin" type="text" class="form-control{{ $errors->has('tin') ? ' is-invalid' : '' }}" name="tin" value="{{ old('tin') }}{{ $Account->tin }}"  autofocus>
                             @if ($errors->has('tin'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('tin') }}</strong>
@@ -165,7 +166,7 @@
                         <label for="sss" class="col-md-2 text-md-center">SSS/GSIS: </label>
                         <div class="col-md-4">
                             
-                            <input id="sss" type="text" class="form-control{{ $errors->has('sss') ? ' is-invalid' : '' }}" name="sss" value="{{ old('sss') }}"  autofocus>
+                            <input id="sss" type="text" class="form-control{{ $errors->has('sss') ? ' is-invalid' : '' }}" name="sss" value="{{ old('sss') }}{{ $Account->sss }}"  autofocus>
                             @if ($errors->has('sss'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('sss') }}</strong>
@@ -192,7 +193,7 @@
                         <label for="phic" class="col-md-2 text-md-center">Phic: </label>
                         <div class="col-md-4">
                             
-                            <input id="phic" type="text" class="form-control{{ $errors->has('phic') ? ' is-invalid' : '' }}" name="phic" value="{{ old('phic') }}"  autofocus>
+                            <input id="phic" type="text" class="form-control{{ $errors->has('phic') ? ' is-invalid' : '' }}" name="phic" value="{{ old('phic') }}{{ $Account->phic }}"  autofocus>
                             @if ($errors->has('phic'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('phic') }}</strong>
@@ -205,7 +206,7 @@
                         <label for="address_zipcode" class="col-md-2 text-md-center">ZipCode: </label>
                         <div class="col-md-4">
                             
-                            <input id="address_zipcode" type="text" class="form-control{{ $errors->has('address_zipcode') ? ' is-invalid' : '' }}" name="address_zipcode" value="{{ old('address_zipcode') }}"  autofocus>
+                            <input id="address_zipcode" type="text" class="form-control{{ $errors->has('address_zipcode') ? ' is-invalid' : '' }}" name="address_zipcode" value="{{ old('address_zipcode') }}{{ $Account->address_zipcode }}"  autofocus>
                             @if ($errors->has('address_zipcode'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('address_zipcode') }}</strong>
@@ -216,7 +217,7 @@
                         <label for="hdmf" class="col-md-2 text-md-center">HDMF: </label>
                         <div class="col-md-4">
                             
-                            <input id="hdmf" type="text" class="form-control{{ $errors->has('hdmf') ? ' is-invalid' : '' }}" name="hdmf" value="{{ old('hdmf') }}"  autofocus>
+                            <input id="hdmf" type="text" class="form-control{{ $errors->has('hdmf') ? ' is-invalid' : '' }}" name="hdmf" value="{{ old('hdmf') }}{{ $Account->hdmf }}"  autofocus>
                             @if ($errors->has('hdmf'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('hdmf') }}</strong>
@@ -243,7 +244,7 @@
                         <label for="nid" class="col-md-2 text-md-center">NID: </label>
                         <div class="col-md-4">
                             
-                            <input id="nid" type="nid" class="form-control{{ $errors->has('nid') ? ' is-invalid' : '' }}" name="nid" value="{{ old('nid') }}"  autofocus>
+                            <input id="nid" type="nid" class="form-control{{ $errors->has('nid') ? ' is-invalid' : '' }}" name="nid" value="{{ old('nid') }}{{ $Account->nid }}"  autofocus>
                             @if ($errors->has('hdmf'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('nid') }}</strong>
@@ -270,7 +271,7 @@
                         <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                         <div class="col-md-4">
                             
-                            <input id="enrollmentdate" type="date" class="form-control{{ $errors->has('enrollmentdate') ? ' is-invalid' : '' }}" name="enrollmentdate" value="{{ old('enrollmentdate') }}"  autofocus>
+                            <input id="enrollmentdate" type="enrollmentdate" class="form-control{{ $errors->has('enrollmentdate') ? ' is-invalid' : '' }}" name="enrollmentdate" value="{{ old('enrollmentdate') }}"  autofocus>
                             @if ($errors->has('enrollmentdate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('enrollmentdate') }}</strong>
@@ -284,7 +285,7 @@
                         <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
                         <div class="col-md-4">
                             
-                        <input id="expirydate" type="date" class="form-control{{ $errors->has('expirydate') ? ' is-invalid' : '' }}" name="expirydate" value="{{ old('expirydate') }}"  autofocus>
+                        <input id="expirydate" type="expirydate" class="form-control{{ $errors->has('expirydate') ? ' is-invalid' : '' }}" name="expirydate" value="{{ old('expirydate') }}"  autofocus>
                             @if ($errors->has('expirydate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('expirydate') }}</strong>
@@ -359,7 +360,6 @@ $(document).ready(function (){
                 success: function (data) {
                     // console.log("success");
                     // console.log(data);
-                    $("#address_town").append('<option value="">Choose City/Town</option>');
                     $.each(data, function (i, data) {
                         $("#address_town").append('<option value="' + data.citymunCode + '">' + data.citymunDesc + '</option>');
                     });
@@ -381,7 +381,6 @@ $(document).ready(function (){
                 success: function (data) {
                     // console.log("success");
                     // console.log(data);
-                    $("#address_barangay").append('<option value="">Choose Barangay</option>');
                     $.each(data, function (i, data) {
                         $("#address_barangay").append('<option value="' + data.id + '">' + data.brgyDesc + '</option>');
                     });

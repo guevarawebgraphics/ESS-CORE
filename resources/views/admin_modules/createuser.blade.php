@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
 
     <div class="pull-right">
         <button type="button" class="btn btn-primary" id="btnCreateUser">Create User</button>
@@ -32,8 +32,8 @@
 <div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create User</h5>
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="UserTitle">Create User</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -49,7 +49,8 @@
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
+                            <input type="hidden" id="hidden_id">
+                            <input type="hidden" id="action" value="add">
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
                                 <p class="text-danger" id="error-no-name" hidden>* Field is Required</p>  
@@ -120,6 +121,11 @@
 <script>
     $(document).ready(function(){
 
+        //DATA TABLES
+        $("#users_table").dataTable({
+            "ordering": false
+        });
+
         //function Refresh User table
         function refreshUserTable()
         {
@@ -130,7 +136,10 @@
                 data:{},                 
                 success:function(data)
                 {
-                    $('#table_user').html(data);                                 
+                    $('#table_user').html(data);  
+                    $("#users_table").dataTable({
+                        "ordering": false
+                    });                              
                 }
             });
         }
@@ -139,6 +148,7 @@
         $(document).on("click","#btnCreateUser", function(){
 
             $('#createUserModal').modal();
+            $("#UserTitle").html("Create User");
 
             $('#name').val("");
             $('#txtusername').val("");
@@ -157,18 +167,53 @@
             $('#error-taken').attr("hidden", true);     
             $('#txtusername').removeClass("is-invalid");
               
+            $("#hidden_id").val("");  
+            $("#action").val("add");   
+        });
 
+        //EDIT USER TYPE
+        var data
+        $(document).on("click", "#edit_user", function(){
+            var id = $(this).data("add");
+
+            $('#name').val("");
+            $('#txtusername').val("");
+            $('#password').val("");
+            $('#password-confirm').val("");
+
+            $('#name').removeClass("is-invalid");           
+            $('#txtusername').removeClass("is-invalid");           
+            $('#password').removeClass("is-invalid");           
+            $('#password-confirm').removeClass("is-invalid");
+
+            $('#error-no-name').attr("hidden", true);
+            $('#error-no-username').attr("hidden", true);
+            $('#error-no-pass').attr("hidden", true);
+            $('#error-no-repass').attr("hidden", true);
+            $('#error-taken').attr("hidden", true);     
+            $('#txtusername').removeClass("is-invalid");
+
+            data = id.split("]]");
+            $('#createUserModal').modal();
+            $("#UserTitle").html("Edit User");
+            $("#hidden_id").val(data[0]);
+            $("#action").val("edit");                    
+            $("#name").val(data[1]);
+            $("#txtusername").val(data[2]);
+            $("#cmbUser").val(data[3]);
+            
         });
 
         //REGISTER new user
         $(document).on("click", "#btnRegister", function(){
 
-            $name = $('#name').val();
-            $username = $('#txtusername').val();
-            $password = $('#password').val();
-            $repassword = $('#password-confirm').val();
+            name = $('#name').val();
+            username = $('#txtusername').val();
+            password = $('#password').val();
+            repassword = $('#password-confirm').val();
+            usertype = $('#cmbUser').val();
             
-            if($name == "")
+            if(name == "")
             {
                 $('#name').addClass("is-invalid");
                 $('#error-no-name').removeAttr("hidden");
@@ -179,7 +224,7 @@
                 $('#error-no-name').attr("hidden", true);
             }
 
-            if($username == "")
+            if(username == "")
             {
                 $('#txtusername').addClass("is-invalid");
                 $('#error-no-username').removeAttr("hidden");
@@ -190,7 +235,7 @@
                 $('#error-no-username').attr("hidden", true);
             }
 
-            if($password == "")
+            if(password == "")
             {
                 $('#password').addClass("is-invalid");
                 $('#error-no-pass').removeAttr("hidden");
@@ -201,7 +246,7 @@
                 $('#error-no-pass').attr("hidden", true);
             }
 
-            if($repassword == "")
+            if(repassword == "")
             {
                 $('#password-confirm').addClass("is-invalid"); 
                 $('#error-no-repass').removeAttr("hidden");
@@ -212,29 +257,61 @@
                 $('#error-no-repass').attr("hidden", true);
             }   
                
-            if($name != "" && $username != "" && $password != "" && $repassword != "")
-            {                
-                $.ajax({
-                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('register') }}",
-                    method: "POST",
-                    data:$("#createuser_form").serialize(),  
-                    dataType: "JSON",               
-                    success:function(data)
-                    {   
-                        if(data == "taken")
-                        {                          
-                            $('#txtusername').addClass("is-invalid");
-                            $('#error-taken').removeAttr("hidden");                           
+            if(name != "" && username != "" && password != "" && repassword != "")
+            {      
+                var action = $("#action").val();
+                alert(action);   
+                //ADD 
+                if(action == "add")      
+                {
+                    $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('register') }}",
+                        method: "POST",
+                        data:$("#createuser_form").serialize(),  
+                        dataType: "JSON",               
+                        success:function(data)
+                        {   
+                            if(data == "taken")
+                            {                          
+                                $('#txtusername').addClass("is-invalid");
+                                $('#error-taken').removeAttr("hidden");                           
+                            }
+                            if(data == "suc")
+                            {
+                                alert("User Register Successfully!");
+                                $('#createUserModal').modal('hide');
+                                refreshUserTable();
+                            }                              
                         }
-                        if(data == "suc")
-                        {
-                            alert("User Register Successfully!");
-                            $('#createUserModal').modal('hide');
-                            refreshUserTable();
-                        }                              
-                    }
-                });
+                    });
+                }
+                //EDIT
+                else if(action == "edit")
+                {
+                    $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('updateuser_post') }}",
+                        method: "POST",
+                        data:{id: data[0], name:name, userName:username, userType:usertype, password:password},  
+                        dataType: "JSON",               
+                        success:function(data)
+                        {   
+                            if(data == "taken")
+                            {                          
+                                $('#txtusername').addClass("is-invalid");
+                                $('#error-taken').removeAttr("hidden");                           
+                            }
+                            if(data == "suc")
+                            {
+                                alert("User Updated Successfully!");
+                                $('#createUserModal').modal('hide');
+                                refreshUserTable();
+                            }                              
+                        }
+                    });
+                }
+                
             }
             else{
 
@@ -252,6 +329,13 @@
             {               
                 $('#cmbUser').html(data);                   
             }
+        });
+
+        
+        //DELETE USER TYPE
+        $(document).on("click", "#delete_user", function(){
+            var id = $(this).data("add");
+            alert(id);
         });
     });
 </script>

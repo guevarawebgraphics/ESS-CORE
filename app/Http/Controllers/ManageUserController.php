@@ -5,10 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\UserType;
 use App\UserModuleAccess;
+use Session;
 use DB;
 
 class ManageUserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function($request, $next){
+            if(Session::get("manage_users") == "none")
+            {
+                return redirect('error')->send();
+            }
+            else
+            {
+                return $next($request);
+            }
+        });     
+    }
     //show view create user
     public function createuser()
     {
@@ -101,6 +116,7 @@ class ManageUserController extends Controller
         $insert_query->type_name = $typename;
         $insert_query->type_description = $typedesc;
         $insert_query->deleted = 0;
+        $insert_query->ess_id = auth()->user()->ess_id;
         $insert_query->created_by = auth()->user()->name;
         $insert_query->updated_by = auth()->user()->name;
 
@@ -114,5 +130,32 @@ class ManageUserController extends Controller
         $insert_access->created_by = auth()->user()->name;
         $insert_access->updated_by = auth()->user()->name;   
         $insert_access->save();              
+    }
+
+    //update user type post
+    public function updateusertype_post(Request $request)
+    {
+        $typeName = $request->typeName;
+        $typeDesc = $request->typeDesc;
+        $userTypeID = $request->userTypeID;
+
+        $update_query = UserType::find($userTypeID);
+        $update_query->type_name = $typeName;
+        $update_query->type_description = $typeDesc;
+        $update_query->created_by = auth()->user()->name;
+        $update_query->updated_by = auth()->user()->name;
+        $update_query->save();
+    }
+
+    //delete user type post
+    public function deleteusertype_post(Request $request)
+    {
+        $userTypeID = $request->userTypeID;
+        
+        $update_query = UserType::find($userTypeID);
+        $update_query->deleted = 1;
+        $update_query->created_by = auth()->user()->name;
+        $update_query->updated_by = auth()->user()->name;
+        $update_query->save();
     }
 }

@@ -18,7 +18,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
     <div class="pull-right">
         <button type="button" class="btn btn-primary" id="btnCreateUser">Create User Type</button>
     </div>
@@ -33,7 +33,7 @@
 <div class="modal fade bd-example-modal-lg" id="userAccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-info">
                 <h5 class="modal-title" id="exampleModalLabel">Manage User Access</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -58,8 +58,8 @@
 <div class="modal fade" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create User Type</h5>
+            <div class="modal-header bg-info">
+                <h5 class="modal-title" id="userTypeTitle">Create User Type</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -71,6 +71,8 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">User Type Name</label>
                             <div id="typename"  class="col-md-6">
+                                <input type="hidden" id="hidden_id_usertype">
+                                <input type="hidden" id="action" value="add">
                                 <input id="name" type="text" class="form-control" name="type_name" value="">                                  
                                 <p class="text-danger" id="error-no-type" hidden>* Field is Required</p>             
                             </div>
@@ -96,6 +98,11 @@
 <script>
     $(document).ready(function(){
 
+        //Datatable
+        $("#usertype_table").dataTable({
+            "ordering": false
+        });
+   
         //function for refreshing user type table
         function refreshUsertypeTable()
         {           
@@ -106,7 +113,10 @@
                 data:{},                 
                 success:function(data)
                 {
-                    $('#table_usertype').html(data);                                 
+                    $('#table_usertype').html(data);       
+                    $("#usertype_table").dataTable({
+                        "ordering": false
+                    });                          
                 }
             });
         }     
@@ -139,7 +149,8 @@
                 data:$('#formUserLevel').serialize(),                 
                 success:function(data)
                 {
-                    alert("Successfully Updated");          
+                    alert("Successfully Updated"); 
+                    $('#userAccessModal').modal('hide');         
                 }
             });
         });
@@ -151,35 +162,98 @@
             $('#desc').val("");
             $('#name').removeClass("is-invalid");
             $('#error-no-type').attr("hidden", true);
+            $('#action').val("add");
+            $('#userTypeTitle').html("Create User Type");
+            $('#hidden_id_usertype').val("");
             $('#userTypeModal').modal();            
+        });
+
+        //EDIT USER TYPE
+        var data;
+        $(document).on("click", "#edit_usertype", function(){
+            var id = $(this).data("add");
+            data = id.split("]]");
+            //alert(data);
+            $('#userTypeModal').modal();
+            $('#userTypeTitle').html("Edit User Type");
+            $('#action').val("edit");
+            $('#name').val(data[1]);
+            $('#desc').val(data[2]);
+            $('#hidden_id_usertype').val(data[0]);
         });
 
          //Saving of new user type
         $(document).on("click", "#btnSaveUserType", function(){
 
-            $type_name = $('#name').val();
-            $type_desc = $('#desc').val();
+            type_name = $('#name').val();
+            type_desc = $('#desc').val();
 
-            if($type_name == "")
+            if(type_name == "")
             {
                 $('#name').addClass("is-invalid");
                 $('#error-no-type').removeAttr("hidden");
             }
             else
             {
+                var action = $('#action').val();              
+                if(action == "add")
+                {
+                    $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('usertype_post') }}",
+                        method: "POST",
+                        data:$('#usertype_form').serialize(),                 
+                        success:function(data)
+                        {
+                            alert("User Type Added!"); 
+                            refreshUsertypeTable();
+                            $('#userTypeModal').modal('hide');           
+                        }
+                    });
+                }
+                else if(action = "edit"){
+                    $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('updateusertype_post') }}",
+                        method: "POST",
+                        data:{typeName: type_name, typeDesc: type_desc, userTypeID: data[0]},                 
+                        success:function(data)
+                        {
+                            alert("User Type Updated!"); 
+                            refreshUsertypeTable();
+                            $('#userTypeModal').modal('hide');           
+                        }
+                    });
+                }               
+            }           
+        });
+
+        
+        //DELETE USER TYPE
+        $(document).on("click", "#delete_usertype", function(){
+            var id = $(this).data("add");
+            var data = id.split("]]");
+            //alert(id);
+            var c = confirm("Do you want to delete User Type " + "'" + data[1] + "'?");
+            if(c == true)
+            {
                 $.ajax({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('usertype_post') }}",
+                    url: "{{ route('deleteusertype_post') }}",
                     method: "POST",
-                    data:$('#usertype_form').serialize(),                 
+                    data:{userTypeID: data[0]},                 
                     success:function(data)
                     {
-                        alert("User Type Added!"); 
+                        alert("User Type Deleted!"); 
                         refreshUsertypeTable();
                         $('#userTypeModal').modal('hide');           
                     }
                 });
-            }           
+            }
+            else
+            {
+
+            }
         });
     });
 </script>

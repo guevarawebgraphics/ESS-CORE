@@ -1,5 +1,5 @@
 @extends('layouts.master')
-
+@if (!Auth::check())
 @section('content')
 <div class="container">
 
@@ -81,3 +81,4 @@
       
 </div>
 @endsection
+@endif

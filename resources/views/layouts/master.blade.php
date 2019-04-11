@@ -26,6 +26,7 @@
 	<link href="{{ asset('http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}" rel="stylesheet"><!-- Theme style -->
 	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
 	<link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
 	<!-- REQUIRED SCRIPTS -->
 	<!-- jQuery -->
@@ -42,6 +43,7 @@
 	<!-- DataTables -->
 	<script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('/plugins/datatables/dataTables.bootstrap4.js') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script src="{{ asset('js/scripts.js') }}"></script>
     
 	<div class="wrapper">
