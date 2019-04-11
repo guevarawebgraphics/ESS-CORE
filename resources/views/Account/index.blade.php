@@ -35,6 +35,8 @@
           <th>AccountName</th>
           <th>Account Type</th>
           <th>Email</th>
+          <th>Document Sec</th>
+          <th>Document Bir</th>
           <th>Action</th>
         </tr>
         </thead>
@@ -46,6 +48,8 @@
                     <td>{{ $Accounts->accountname }}</td>
                     <td>{{ $Accounts->type_name}}</td>
                     <td>{{ $Accounts->contact_email}}</td>
+                    <td><a href="/storage/Documents/sec/{{$Accounts->sec}}" download>{{$Accounts->sec}}</a></td>
+                    <td><a href="/storage/Documents/bir/{{$Accounts->bir}}" download>{{$Accounts->bir}}</a></td>
                     <td> <a href="/Account/edit/{{ $Accounts->id }}" class="btn btn-secondary"><i class="fa fa-edit"></i> Edit</a> 
                     <a href="#Delete" class="Delete btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="{{ $Accounts->id }}" data-shortname="{{ $Accounts->shortname}}"><i class="fa fa-trash"></i> Delete</a>
                     </td>

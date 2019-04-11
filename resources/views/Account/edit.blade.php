@@ -20,7 +20,7 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="/Account/{{$Account->id}}" method="post">
+        <form action="/Account/{{$Account->id}}" method="post" enctype="multipart/form-data">
             @method('PATCH')
             {{ csrf_field() }}
           <div class="card-body">
@@ -254,34 +254,47 @@
                 </div>
 
                 <div class="form-group row">
-                        <label for="accountstatus" class="col-md-2 text-md-center">Account Status:</label>
-                        <div class="col-md-4">
-                            
-                                <select id="accountstatus" class="form-control">
-                                    <option selected>Active</option>
-                                    <option>accountstatus</option>
-                                </select>
-                            @if ($errors->has('accountstatus'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('accountstatus') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+                    {{-- <label for="accountstatus" class="col-md-2 text-md-center">Account Status:</label>
+                    <div class="col-md-4">
                         
-                        <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
-                        <div class="col-md-4">
-                            
-                            <input id="enrollmentdate" type="enrollmentdate" class="form-control{{ $errors->has('enrollmentdate') ? ' is-invalid' : '' }}" name="enrollmentdate" value="{{ old('enrollmentdate') }}"  autofocus>
-                            @if ($errors->has('enrollmentdate'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('enrollmentdate') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                </div>
+                            <select id="accountstatus" class="form-control">
+                                <option selected>Active</option>
+                                <option>accountstatus</option>
+                            </select>
+                        @if ($errors->has('accountstatus'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('accountstatus') }}</strong>
+                            </span>
+                        @endif
+                    </div> --}}
+
+                    
+                    
+                    <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
+                    <div class="col-md-4">
+                        
+                        <input id="enrollmentdate" type="date" class="form-control{{ $errors->has('enrollmentdate') ? ' is-invalid' : '' }}" name="enrollmentdate" value="{{ old('enrollmentdate') }}"  autofocus>
+                        @if ($errors->has('enrollmentdate'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('enrollmentdate') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
+                    <div class="col-md-4">
+                        
+                    <input id="expirydate" type="date" class="form-control{{ $errors->has('expirydate') ? ' is-invalid' : '' }}" name="expirydate" value="{{ old('expirydate') }}"  autofocus>
+                        @if ($errors->has('expirydate'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('expirydate') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+            </div>
 
 
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                         <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
                         <div class="col-md-4">
                             
@@ -293,7 +306,7 @@
                             @endif
                         </div>
                         
-                </div>
+                </div> --}}
 
 
                 <div class="form-group row">
@@ -301,7 +314,7 @@
                         <div class="col-xs-2">
                             
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile">
+                                    <input type="file" class="custom-file-input" id="customFile" name="sec">
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
                                 
@@ -311,7 +324,7 @@
                         <div class="col-xs-2">
                             
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile">
+                                    <input type="file" class="custom-file-input" id="customFile" name="bir">
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
                         </div>
