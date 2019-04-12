@@ -108,12 +108,37 @@ class AccountController extends Controller
 
         }
         else {
+            /*Create User*/
+            $user = User::create([
+                'user_type_id' => $request->input('user_type'),
+                'name' => $request->input('shortname'),
+                'username' => $request->input('shortname'),
+                'password' => Hash::make($password),
+                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id,
+            ]);
+
+            /*Gett the Id of User*/
+            $Account_id = $user->id;
+            
+            /*Create a User In Base Table*/
+            $insert_ess = new ESSBase;
+            $insert_ess->account_id = $Account_id;
+            /*Temporary ESS ID 12345*/
+            $insert_ess->ess_id = 12345;
+            $insert_ess->user_type_id = $request->input('user_type');            
+            $insert_ess->created_by = auth()->user()->name;
+            $insert_ess->updated_by = auth()->user()->name;
+            $insert_ess->save();
+
+
             
             /*Check if the request is Employer*/
             if ($request->input('user_type') == 3){
                 /*Create Account Employer*/
                 $employer = Account::create([
                     // Array Fields Here
+                    'account_id' => $Account_id,
                     'shortname' => $request->input('shortname'),
                     'accountname' => $request->input('accountname'),
                     'user_type' => $request->input('user_type'),
@@ -137,30 +162,14 @@ class AccountController extends Controller
                 ]);
             }
 
-            $account_id = $employer->id;
+            //$account_id = $employer->id;
 
-            $insert_ess = new ESSBase;
-            $insert_ess->account_id = $account_id;
-            $insert_ess->user_type_id = $request->input('user_type');            
-            $insert_ess->created_by = auth()->user()->name;
-            $insert_ess->updated_by = auth()->user()->name;
-
-            $insert_ess->save();
-
-            $ess_id = $insert_ess->id;
             
 
-            /*Create User*/
-            $user = User::create([
-                'user_type_id' => $request->input('user_type'),
-                'ess_id' => $ess_id,
-                'name' => $request->input('shortname'),
-                'username' => $request->input('shortname'),
-                'password' => Hash::make($password),
-                'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,
-            ]);
+            //$ess_id = $insert_ess->id;
+            
 
+            
             /*Send Mail */
             /*Tmp*/
             $data = array('name' => $user->name, "body" => $password);
@@ -171,7 +180,10 @@ class AccountController extends Controller
                 $message->from('esssample@gmail.com', "ESS");
             });
 
-            return redirect('Account')->with('success', 'Account Successfully Created');
+            $msg = 'Success';
+
+            // return redirect('Account')->with('success', 'Account Successfully Created');
+            return Response::json($msg);
         }
         
 
@@ -208,7 +220,7 @@ class AccountController extends Controller
         ]);
 
         // Handle File Upload
-        if($request->hasFile('sec') && $request->hasFile('bir')){
+         if($request->hasFile('sec') && $request->hasFile('bir')){
             // Get filename with the extension
             $filenameWithExt_sec = $request->file('sec')->getClientOriginalName();
             $filenameWithExt_bir = $request->file('bir')->getClientOriginalName();
@@ -254,7 +266,11 @@ class AccountController extends Controller
             'bir' => $fileNameToStore_bir
         ]);
 
-        return redirect('Account')->with('success', 'Account Successfully Updated');
+        $msg = 'Success';
+
+        // return redirect('Account')->with('success', 'Account Successfully Updated');
+
+        return Response::json($msg);
     }
 
     public function destroy(Account $Account){

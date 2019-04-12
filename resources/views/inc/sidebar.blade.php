@@ -15,8 +15,13 @@
 			<ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
 				<!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
 				@php
+					//profile
 					$myprofile = "";
+					$myprofile_tree = "";
+					//create profile
 					$createprofile = "";
+					$createprofile_tree = "";
+					//manage users
 					$manageusers = "";
 					$manageusers_tree = "";
 					$esscontent = "";
@@ -27,6 +32,17 @@
 					{
 						$manageusers = "menu-open";
 						$manageusers_tree = "active";
+						
+					}
+					else if(Request::segment(1) == 'myprofile')
+					{
+						$myprofile = "menu-open";
+						$myprofile_tree = "active";						
+					}
+					else if(Request::segment(1) == 'Account')
+					{
+						$createprofile = "menu-open";
+						$createprofile_tree = "active";						
 					}
 				@endphp
 
@@ -35,20 +51,20 @@
 				<!-- MY PROFILE -->
 				
 				@if(Session::get("my_profile") != "none")				
-				<li class="nav-item has-treeview">
-					<a class="nav-link " href="#"><i class="nav-icon fa fa-user-secret"></i>
+				<li class="nav-item has-treeview {{$myprofile}}">
+					<a class="nav-link {{$myprofile_tree}}" href="#"><i class="nav-icon fa fa-user-secret"></i>
 					<p>My Profile <i class="right fa fa-angle-left"></i></p></a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a class="nav-link" href=""><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link" href="/myprofile/settings"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Settings</p></a>                                   
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href=""><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link" href="/myprofile/changepassword"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Change Password</p></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href=""><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link" href="/myprofile/systemlogs"><i class="fa fa-circle-o nav-icon"></i>
 							<p>System Logs</p></a>
 						</li>
 					</ul>
@@ -59,8 +75,8 @@
 				
 				<!-- CREATE PROFILES -->
 				@if(Session::get("create_profile") != "none")	
-				<li class="nav-item has-treeview">
-					<a class="nav-link" href="#"><i class="nav-icon fa fa-user"></i>
+				<li class="nav-item has-treeview {{$createprofile}}">
+					<a class="nav-link {{$createprofile_tree}}" href="#"><i class="nav-icon fa fa-user"></i>
 					<p>Create Profiles <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
@@ -106,15 +122,15 @@
 				@if(Session::get("ess_content") != "none")	
 				<li class="nav-item has-treeview">
 					<a class="nav-link" href="#"><i class="nav-icon fa fa-table"></i>
-					<p>ESS Content <i class="fa fa-angle-left right"></i></p></a>
+					<p>System Notifications <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
 							<a class="nav-link" href="pages/tables/simple.html"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Content</p></a>
+							<p>Create Notifications</p></a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="pages/tables/data.html"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage Content</p></a>
+							<p>Manage Notifications</p></a>
 						</li>
 					</ul>
 				</li>	

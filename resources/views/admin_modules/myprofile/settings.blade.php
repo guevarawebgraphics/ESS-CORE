@@ -40,7 +40,7 @@
                     <p class="card-text">Employer</p>       
                     <h6 class="card-title"><strong>Location</strong></h6>
                     
-                    <p class="card-text" style="text-transform:uppercase">{{$info[0]->address_unit . " " . $info[0]->brgyDesc  . " " . $info[0]->citymunDesc . ", " . $info[0]->provDesc}}</p>
+                    {{-- <p class="card-text" style="text-transform:uppercase">{{$info[0]->address_unit . " " . $info[0]->brgyDesc  . " " . $info[0]->citymunDesc . ", " . $info[0]->provDesc}}</p> --}}
                    
                     <h6 class="card-title"><strong>Notes</strong></h6>
                     <p class="card-text">Notes</p>     
@@ -63,7 +63,7 @@
                         <label for="txtmobile" class="col-form-label col-md-2">Mobile Number</label>
                         <div class="col-md-6">
                          
-                                <input type="text" id="txtmobile" class="form-control" name="mobile" value="{{$info[0]->contact_mobile}}">
+                                {{-- <input type="text" id="txtmobile" class="form-control" name="mobile" value="{{$info[0]->contact_mobile}}"> --}}
                               
                         </div>
                     </div>  
@@ -71,7 +71,7 @@
                         <label for="txtemail" class="col-form-label col-md-2">Email</label>
                         <div class="col-md-6">
                           
-                                <input type="text" id="txtemail" class="form-control" name="email" value="{{$info[0]->contact_email}}">   
+                                {{-- <input type="text" id="txtemail" class="form-control" name="email" value="{{$info[0]->contact_email}}">    --}}
                           
                         </div>
                     </div>

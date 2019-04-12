@@ -20,11 +20,12 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="/Account/{{$Account->id}}" method="post" enctype="multipart/form-data">
-            @method('PATCH')
+        <form id="AccountForm">
+        {{-- <form action="/Account/{{$Account->id}}" method="post" enctype="multipart/form-data"> --}}
+            @method('PATCH') 
             {{ csrf_field() }}
           <div class="card-body">
-
+          <input type="hidden" id="EmployerId" value="{{ $Account->id }}">
                 <div class="form-group row">
                         <label for="shortname" class="control-label col-md-2 text-md-center">Short Name:</label>
                         <div class="col-md-4">
@@ -424,6 +425,44 @@ $(document).ready(function (){
     /*Remove Errors*/
     $('#shortname').keypress(function (){
         $('#shortname').removeClass('is-invalid');
+    });
+
+
+    /*Update Account*/
+    $('#AccountForm').submit(function (e){
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+        var EmployerId = $('#EmployerId').val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "/Account/" + EmployerId,
+            method: 'POST',
+            async: false,
+			dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function(data){
+                console.log("success");
+                //Reset Form
+                $('#AccountForm')[0].reset();
+                // Display a success toast, with a title
+                toastr.success('Successfully Updated', 'Success')
+                //Redirect
+                //window.location.href = "/Account";
+            },
+            error: function(data){
+                console.log("Error");
+                // Display an error toast, with a title
+                toastr.error('Error. Please Complete The Fields', 'Error!')
+            }
+        });
     });
 
 

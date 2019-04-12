@@ -20,7 +20,7 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="/Account" method="POST" enctype="multipart/form-data">
+        <form id="AccountForm">
             {{ csrf_field() }}
           <div class="card-body">
 
@@ -313,7 +313,7 @@
                         <div class="col-xs-2">
                             
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" name="sec">
+                                    <input type="file" class="custom-file-input" id="sec" name="sec">
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
                                 
@@ -323,7 +323,7 @@
                         <div class="col-xs-2">
                             
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" name="bir">
+                                    <input type="file" class="custom-file-input" id="bir" name="bir">
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
                         </div>
@@ -335,7 +335,7 @@
 
           <div class="card-footer">
               <button type="button" class="btn btn-default">Back</button>
-            <button type="submit" class="btn btn-primary float-right">Submit</button>
+            <button type="submit" class="btn btn-primary float-right" id="submit">Submit</button>
           </div>
         </form>
       </div>
@@ -425,6 +425,40 @@ $(document).ready(function (){
     /*Remove Errors*/
     $('#shortname').keypress(function (){
         $('#shortname').removeClass('is-invalid');
+    });
+
+    /*Add Account*/
+    $('#AccountForm').submit(function (e){
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ url('/Account') }}",
+            method: 'POST',
+            async: false,
+			dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function(data){
+                console.log("success");
+                //Reset Form
+                $('#AccountForm')[0].reset();
+                // Display a success toast, with a title
+                toastr.success('Account Created Successfully', 'Success')
+            },
+            error: function(data){
+                console.log("Error");
+                // Display an error toast, with a title
+                toastr.error('Error. Please Complete The Fields', 'Error!')
+            }
+        });
     });
 
 

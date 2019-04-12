@@ -103,7 +103,7 @@
           // "searching": false,
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
-          "pageLength": 50,
+          "pageLength": 10000,
            scrollY: 300,
           //  scrollX: true,
           "autoWidth": true,

@@ -22,6 +22,7 @@
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<meta content="ie=edge" http-equiv="x-ua-compatible"><!-- Font Awesome Icons -->
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet"><!-- IonIcons -->
 	<link href="{{ asset('http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}" rel="stylesheet"><!-- Theme style -->
 	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
