@@ -21,7 +21,8 @@
         <!-- /.card-header -->
         <!-- form start -->
         <form id="AccountForm">
-            {{ csrf_field() }}
+            <!-- CSRF Token -->
+            @csrf
           <div class="card-body">
 
                 <div class="form-group row">
@@ -29,21 +30,21 @@
                         <div class="col-md-4">
                             
                             <input id="shortname" type="text" class="form-control{{ $errors->has('shortname') ? ' is-invalid' : '' }}" name="shortname" value="{{ old('shortname') }}"  autofocus>
-                            @if ($errors->has('shortname'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('shortname') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('shortname')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_shortname"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
                         <div class="col-md-4">
                             
                             <input id="contact_person" type="text" class="form-control{{ $errors->has('contact_person') ? ' is-invalid' : '' }}" name="contact_person" value="{{ old('contact_person') }}"  autofocus>
-                            @if ($errors->has('contact_person'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('contact_person') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('contact_person')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_contact_person"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -52,21 +53,21 @@
                         <div class="col-md-4">
                             
                             <input id="accountname" type="text" class="form-control{{ $errors->has('accountname') ? ' is-invalid' : '' }}" name="accountname" value="{{ old('accountname') }}"  autofocus>
-                            @if ($errors->has('accountname'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('accountname') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('accountname')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_accountname"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
                         <div class="col-md-4">
                             
                             <input id="contact_phone" type="text" class="form-control{{ $errors->has('contact_phone') ? ' is-invalid' : '' }}" name="contact_phone" value="{{ old('contact_phone') }}"  autofocus>
-                            @if ($errors->has('contact_phone'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('contact_phone') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('contact_phone')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_contact_phone"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -75,21 +76,21 @@
                         <div class="col-md-4">
                             
                             <input id="address_unit" type="text" class="form-control{{ $errors->has('address_unit') ? ' is-invalid' : '' }}" name="address_unit" value="{{ old('address_unit') }}"  autofocus>
-                            @if ($errors->has('address_unit'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('address_unit') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('address_unit')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_address_unit"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
                         <div class="col-md-4">
                             
                             <input id="contact_mobile" type="text" class="form-control{{ $errors->has('contact_mobile') ? ' is-invalid' : '' }}" name="contact_mobile" value="{{ old('contact_mobile') }}"  autofocus>
-                            @if ($errors->has('contact_mobile'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('contact_mobile') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('contact_mobile')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_contact_mobile"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -101,22 +102,22 @@
                                     <option value="" selected>Choose Country...</option>
                                     <option>Philippines</option>
                                 </select>
-                            @if ($errors->has('address_country'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('address_country') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('address_country')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_address_country"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
 
                         <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
                         <div class="col-md-4">
                             
                             <input id="contact_email" type="contact_email" class="form-control{{ $errors->has('contact_email') ? ' is-invalid' : '' }}" name="contact_email" value="{{ old('contact_email') }}"  autofocus>
-                            @if ($errors->has('contact_email'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('contact_email') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('contact_email')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_contact_email"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -128,22 +129,22 @@
                                     <option value="" selected>Choose Province...</option>
                                     {{-- <option id="province">Province</option> --}}
                                 </select>
-                            @if ($errors->has('proviaddress_cityprovincence'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('address_cityprovince') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('proviaddress_cityprovincence')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_address_cityprovince"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         
                         <label for="tin" class="col-md-2 text-md-center">Tin: </label>
                         <div class="col-md-4">
                             
                             <input id="tin" type="text" class="form-control{{ $errors->has('tin') ? ' is-invalid' : '' }}" name="tin" value="{{ old('tin') }}"  autofocus>
-                            @if ($errors->has('tin'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('tin') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('tin')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_tin"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -155,22 +156,22 @@
                                     <option value="" selected>Choose CityTown...</option>
                                     {{-- <option>CityTown</option> --}}
                                 </select>
-                            @if ($errors->has('address_town'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('address_town') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('address_town')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_address_town"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         
                         <label for="sss" class="col-md-2 text-md-center">SSS/GSIS: </label>
                         <div class="col-md-4">
                             
                             <input id="sss" type="text" class="form-control{{ $errors->has('sss') ? ' is-invalid' : '' }}" name="sss" value="{{ old('sss') }}"  autofocus>
-                            @if ($errors->has('sss'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('sss') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('sss')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_sss"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -182,22 +183,22 @@
                                     <option value="" selected>Choose Barangay...</option>
                                     {{-- <option>Barangay</option> --}}
                                 </select>
-                            @if ($errors->has('address_barangay'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('address_barangay') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('address_barangay')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_address_barangay"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         
                         <label for="phic" class="col-md-2 text-md-center">Phic: </label>
                         <div class="col-md-4">
                             
                             <input id="phic" type="text" class="form-control{{ $errors->has('phic') ? ' is-invalid' : '' }}" name="phic" value="{{ old('phic') }}"  autofocus>
-                            @if ($errors->has('phic'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('phic') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('phic')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_phic"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -206,22 +207,22 @@
                         <div class="col-md-4">
                             
                             <input id="address_zipcode" type="text" class="form-control{{ $errors->has('address_zipcode') ? ' is-invalid' : '' }}" name="address_zipcode" value="{{ old('address_zipcode') }}"  autofocus>
-                            @if ($errors->has('address_zipcode'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('address_zipcode') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('address_zipcode')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_address_zipcode"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         
                         <label for="hdmf" class="col-md-2 text-md-center">HDMF: </label>
                         <div class="col-md-4">
                             
                             <input id="hdmf" type="text" class="form-control{{ $errors->has('hdmf') ? ' is-invalid' : '' }}" name="hdmf" value="{{ old('hdmf') }}"  autofocus>
-                            @if ($errors->has('hdmf'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('hdmf') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('hdmf')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_hdmf"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -233,22 +234,22 @@
                                     <option value="" selected>Choose Account Type...</option>
                                     {{-- <option>accounttype</option> --}}
                                 </select>
-                            @if ($errors->has('user_type'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('user_type') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('user_type')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_user_type"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                         
                         <label for="nid" class="col-md-2 text-md-center">NID: </label>
                         <div class="col-md-4">
                             
                             <input id="nid" type="nid" class="form-control{{ $errors->has('nid') ? ' is-invalid' : '' }}" name="nid" value="{{ old('nid') }}"  autofocus>
-                            @if ($errors->has('hdmf'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('nid') }}</strong>
-                                </span>
-                            @endif
+                            {{-- @if ($errors->has('hdmf')) --}}
+                                {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <p class="text-danger" id="error_nid"></p>
+                                {{-- </span> --}}
+                            {{-- @endif --}}
                         </div>
                 </div>
 
@@ -328,6 +329,22 @@
                                 </div>
                         </div>
                 </div>
+
+                <div class="form-group row">
+                        <label for="accountstatus" class="col-md-2 text-md-center">Payroll Calendar:</label>
+                        <div class="col-md-4">
+                            
+                                <div class="custom-file">
+                                    <select class="form-control" name="payroll-calendar" id="payroll-calendar">
+                                        <option value="" selected>Select Payrol Calendar</option>
+                                        <option value="">Weekly</option>
+                                        <option value="">2X/Monthly</option>
+                                        <option value="">Monthly</option>
+                                    </select>
+                                </div>
+                                
+                        </div>
+                </div>
                 
         
           </div>
@@ -335,7 +352,7 @@
 
           <div class="card-footer">
               <button type="button" class="btn btn-default">Back</button>
-            <button type="submit" class="btn btn-primary float-right" id="submit">Submit</button>
+            <button type="submit" class="btn btn-primary float-right" id="submit">Submit <i id="spinner" class=""></i></button>
           </div>
         </form>
       </div>
@@ -425,10 +442,80 @@ $(document).ready(function (){
     /*Remove Errors*/
     $('#shortname').keypress(function (){
         $('#shortname').removeClass('is-invalid');
+        $('#error_shortname').attr('hidden', true);
+    });
+    $('#contact_person').keypress(function (){
+        $('#contact_person').removeClass('is-invalid');
+        $('#error_contact_person').attr('hidden', true);
+    });
+    $('#accountname').keypress(function (){
+        $('#accountname').removeClass('is-invalid');
+        $('#error_accountname').attr('hidden', true);
+    });
+    $('#contact_phone').keypress(function (){
+        $('#contact_phone').removeClass('is-invalid');
+        $('#error_contact_phone').attr('hidden', true);
+    });
+    $('#address_unit').keypress(function (){
+        $('#address_unit').removeClass('is-invalid');
+        $('#error_address_unit').attr('hidden', true);
+    });
+    $('#contact_mobile').keypress(function (){
+        $('#contact_mobile').removeClass('is-invalid');
+        $('#error_contact_mobile').attr('hidden', true);
+    });
+    $('#address_country').change(function (){
+        $('#address_country').removeClass('is-invalid');
+        $('#error_address_country').attr('hidden', true);
+    });
+    $('#contact_email').keypress(function (){
+        $('#contact_email').removeClass('is-invalid');
+        $('#error_contact_email').attr('hidden', true);
+    });
+    $('#address_cityprovince').change(function (){
+        $('#address_cityprovince').removeClass('is-invalid');
+        $('#error_address_cityprovince').attr('hidden', true);
+    });
+    $('#tin').keypress(function (){
+        $('#tin').removeClass('is-invalid');
+        $('#error_tin').attr('hidden', true);
+    });
+    $('#address_town').change(function (){
+        $('#address_town').removeClass('is-invalid');
+        $('#error_address_town').attr('hidden', true);
+    });
+    $('#sss').keypress(function (){
+        $('#sss').removeClass('is-invalid');
+        $('#error_sss').attr('hidden', true);
+    });
+    $('#address_barangay').change(function (){
+        $('#address_barangay').removeClass('is-invalid');
+        $('#error_address_barangay').attr('hidden', true);
+    });
+    $('#phic').keypress(function (){
+        $('#phic').removeClass('is-invalid');
+        $('#error_phic').attr('hidden', true);
+    });
+    $('#address_zipcode').change(function (){
+        $('#address_zipcode').removeClass('is-invalid');
+        $('#error_address_zipcode').attr('hidden', true);
+    });
+    $('#hdmf').keypress(function (){
+        $('#hdmf').removeClass('is-invalid');
+        $('#error_hdmf').attr('hidden', true);
+    });
+    $('#user_type').change(function (){
+        $('#user_type').removeClass('is-invalid');
+        $('#error_user_type').attr('hidden', true);
+    });
+    $('#nid').keypress(function (){
+        $('#nid').removeClass('is-invalid');
+        $('#error_nid').attr('hidden', true);
     });
 
     /*Add Account*/
     $('#AccountForm').submit(function (e){
+        $("#spinner").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
         var formData = new FormData($(this)[0]);
         $.ajaxSetup({
@@ -452,11 +539,119 @@ $(document).ready(function (){
                 $('#AccountForm')[0].reset();
                 // Display a success toast, with a title
                 toastr.success('Account Created Successfully', 'Success')
+                // Set Timeout For Loading in Submit button
+                setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+                }, 3000);
             },
-            error: function(data){
-                console.log("Error");
+            error: function(data, status){
+                //console.log("Error");
                 // Display an error toast, with a title
                 toastr.error('Error. Please Complete The Fields', 'Error!')
+                // Set Timeout For Loading in Submit button
+                setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+                }, 250);
+                // Handle a 422 Status Code
+                if(data.status === 422) {
+                    //console.log("422");
+                    var errors = $.parseJSON(data.responseText);
+                    //console.log(errors.errors.accountname);
+                    $.each(errors, function (i, errors) {
+                        //console.log(errors);
+                        /**/
+                        if(errors.shortname){
+                            $('#error_shortname').html(errors.shortname);
+                            $('#error_shortname').attr('hidden', false);
+                            $('#shortname').addClass('is-invalid');
+                        }
+                        if(errors.contact_person){
+                            $('#error_contact_person').html(errors.contact_person);
+                            $('#error_contact_person').attr('hidden', false);
+                            $('#contact_person').addClass('is-invalid');
+                        }
+                        if(errors.accountname){
+                            $('#error_accountname').html(errors.accountname);
+                            $('#error_accountname').attr('hidden', false);
+                            $('#accountname').addClass('is-invalid');
+                        }
+                        if(errors.contact_phone){
+                            $('#error_contact_phone').html(errors.contact_phone);
+                            $('#error_contact_phone').attr('hidden', false);
+                            $('#contact_phone').addClass('is-invalid');
+                        }
+                        if(errors.address_unit){
+                            $('#error_address_unit').html(errors.address_unit);
+                            $('#error_address_unit').attr('hidden', false);
+                            $('#address_unit').addClass('is-invalid');
+                        }
+                        if(errors.contact_mobile){
+                            $('#error_contact_mobile').html(errors.contact_mobile);
+                            $('#error_contact_mobile').attr('hidden', false);
+                            $('#contact_mobile').addClass('is-invalid');
+                        }
+                        if(errors.address_country){
+                            $('#error_address_country').html(errors.address_country);
+                            $('#error_address_country').attr('hidden', false);
+                            $('#address_country').addClass('is-invalid');
+                        }
+                        if(errors.contact_email){
+                            $('#error_contact_email').html(errors.contact_email);
+                            $('#error_contact_email').attr('hidden', false);
+                            $('#contact_email').addClass('is-invalid');
+                        }
+                        if(errors.address_cityprovince){
+                            $('#error_address_cityprovince').html(errors.address_cityprovince);
+                            $('#error_address_cityprovince').attr('hidden', false);
+                            $('#address_cityprovince').addClass('is-invalid');
+                        }
+                        if(errors.tin){
+                            $('#error_tin').html(errors.tin);
+                            $('#error_tin').attr('hidden', false);
+                            $('#tin').addClass('is-invalid');
+                        }
+                        if(errors.address_town){
+                            $('#error_address_town').html(errors.address_town);
+                            $('#error_address_town').attr('hidden', false);
+                            $('#address_town').addClass('is-invalid');
+                        }
+                        if(errors.sss){
+                            $('#error_sss').html(errors.sss);
+                            $('#error_sss').attr('hidden', false);
+                            $('#sss').addClass('is-invalid');
+                        }
+                        if(errors.address_barangay){
+                            $('#error_address_barangay').html(errors.address_barangay);
+                            $('#error_address_barangay').attr('hidden', false);
+                            $('#address_barangay').addClass('is-invalid');
+                        }
+                        if(errors.phic){
+                            $('#error_phic').html(errors.phic);
+                            $('#error_phic').attr('hidden', false);
+                            $('#phic').addClass('is-invalid');
+                        }
+                        if(errors.address_zipcode){
+                            $('#error_address_zipcode').html(errors.address_zipcode);
+                            $('#error_address_zipcode').attr('hidden', false);
+                            $('#address_zipcode').addClass('is-invalid');
+                        }
+                        if(errors.hdmf){
+                            $('#error_hdmf').html(errors.hdmf);
+                            $('#error_hdmf').attr('hidden', false);
+                            $('#hdmf').addClass('is-invalid');
+                        }
+                        if(errors.user_type){
+                            $('#error_user_type').html(errors.user_type);
+                            $('#error_user_type').attr('hidden', false);
+                            $('#user_type').addClass('is-invalid');
+                        }
+                        if(errors.nid){
+                            $('#error_nid').html(errors.nid);
+                            $('#error_nid').attr('hidden', false);
+                            $('#nid').addClass('is-invalid');
+                        }
+                    });
+                }
             }
         });
     });

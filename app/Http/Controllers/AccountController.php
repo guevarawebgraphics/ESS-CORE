@@ -39,6 +39,7 @@ class AccountController extends Controller
         //$user_type = UserType::all();
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
+                        // ->join('users', 'employer.account_id', '=', 'users.id')
                         ->select('employer.id', 'employer.shortname', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name')
                         ->get();
         return view('Account.index', compact('Account'));
@@ -54,11 +55,16 @@ class AccountController extends Controller
         $shortname = Input::get('shortname');
         $password = $this->generate_password(8);
 
+        // Custom Message
+        $customMessages = [
+            'required' => 'The :attribute field is required.'
+        ];
+
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
-            'accountname' => 'required|min:3',
-            'shortname' => 'required|min:3',
+            'accountname' => 'required|unique:employer|min:3',
+            'shortname' => 'required|unique:employer|min:3',
             'user_type' => 'required',
             'address_unit' => 'required|min:3',
             'address_country' => 'required|min:3',
@@ -69,12 +75,12 @@ class AccountController extends Controller
             'contact_person' => 'required|min:3',
             'contact_phone' => 'required|unique:employer',
             'contact_mobile' => 'required|unique:employer',
-            'contact_email' => 'required|unique:employer',
-            'sss' => 'required|min:3',
-            'tin' => 'required|min:3',
-            'phic' => 'required|min:3',
-            'hdmf' => 'required|min:3',
-            'nid' => 'required|min:3',
+            'contact_email' => 'required|unique:employer|email',
+            'sss' => 'required|unique:employer|min:3',
+            'tin' => 'required|unique:employer|min:3',
+            'phic' => 'required|unique:employer|min:3',
+            'hdmf' => 'required|unique:employer|min:3',
+            'nid' => 'required|unique:employer|min:3',
         ]);
 
         // Handle File Upload
@@ -99,10 +105,7 @@ class AccountController extends Controller
             $fileNameToStore_bir = 'noifile.txt';
         }
 
-        // Custom Message
-        $customMessages = [
-            'required' => 'The :attribute field is required.'
-        ];
+        
 
         if ($shortname == 'shortname'){
 
@@ -275,6 +278,11 @@ class AccountController extends Controller
 
     public function destroy(Account $Account){
         $Account->delete();
+
+        /*Delete User From Users*/
+        $user = DB::table('users')->where('id', $Account)->delete();
+        /*Delete User From Employer*/
+        $employer = DB::table('employer')->where('account_id', $Account)->delete();
 
         ///return redirect('Account');
         return response()->json($Account);

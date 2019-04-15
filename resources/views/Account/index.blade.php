@@ -35,6 +35,7 @@
           <th>AccountName</th>
           <th>Account Type</th>
           <th>Email</th>
+          {{-- <th>Account Status</th> --}}
           <th>Document Sec</th>
           <th>Document Bir</th>
           <th>Action</th>
@@ -48,6 +49,12 @@
                     <td>{{ $Accounts->accountname }}</td>
                     <td>{{ $Accounts->type_name}}</td>
                     <td>{{ $Accounts->contact_email}}</td>
+                    {{-- <td>
+                      @if($Accounts->AccountStatus == 1)
+                        Active
+                      @endif
+                    
+                    </td> --}}
                     <td><a href="/storage/Documents/sec/{{$Accounts->sec}}" download>{{$Accounts->sec}}</a></td>
                     <td><a href="/storage/Documents/bir/{{$Accounts->bir}}" download>{{$Accounts->bir}}</a></td>
                     <td> <a href="/Account/edit/{{ $Accounts->id }}" class="btn btn-secondary"><i class="fa fa-edit"></i> Edit</a> 
@@ -63,6 +70,8 @@
                 <th>AccountName</th>
                 <th>Account Type</th>
                 <th>Email</th>
+                <th>Document Sec</th>
+                <th>Document Bir</th>
                 <th>Action</th>
             </tr>
         </tfoot>
@@ -86,11 +95,11 @@
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <form method="POST" action="" id="DeleteForm">
+          {{-- <form method="POST" action="" id="DeleteForm">
             @method('DELETE')
-            @csrf
-            <button type="submit" class="btn btn-primary">Confirm</button>
-          </form>
+            @csrf --}}
+            <button type="button" class="btn btn-primary" id="confirm">Confirm</button>
+          {{-- </form> --}}
       </div>
     </div>
   </div>
@@ -120,9 +129,26 @@
           var id = $(this).attr("data-id");
           var shortname = $(this).attr("data-shortname");
           $("#DeleteForm").attr('action', '/Account/' + id);
-          $("#shortname").html(shortname);
-          // toastr.success('Successfully Delete!')
-          console.log(shortname);
+           $("#shortname").html(shortname);
+        });
+
+        $('#confirm').click(function (){
+          var id = $('.Delete').attr("data-id");
+          $.ajax({
+              type: 'DELETE',
+              url: '/Account/' + id,
+              data: {
+                '_token': $('input[name=_token]').val(),
+              },
+              success: function(data){
+                toastr.success('Successfully Delete!')
+                //Close Modal
+                $('#deleteModal').modal('hide');
+              },
+              error: function(data){
+                toastr.error('Error Deleting Account')
+              }
+          });
         });
 
         
