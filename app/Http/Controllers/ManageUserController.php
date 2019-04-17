@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use App\UserType;
 use App\UserModuleAccess;
+use App\Logs;
 use Session;
 use DB;
 
@@ -27,28 +29,28 @@ class ManageUserController extends Controller
     //show view create user
     public function createuser()
     {
-        $users = DB::connection('mysql')->select("SELECT * FROM users"); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
+        $users = DB::connection('mysql')->select("SELECT * FROM users WHERE AccountStatus = '1' AND created_by = 'default' OR created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
         return view('admin_modules.createuser')->with('users', $users);
     }
 
     //show user types on table for Manage User Access View
     public function manageusertypes()
     {       
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0'");
-        return view ('admin_modules.manageusers')->with('user_type', $user_type);        
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
+        return view ('admin_modules.manageusers')->with('user_type', $user_type);              
     }
 
     //refresh user table
     public function refreshtable_user()
     {
-        $users = DB::connection('mysql')->select("SELECT * FROM users"); //--> Same sa create user function
+        $users = DB::connection('mysql')->select("SELECT * FROM users WHERE AccountStatus = '1'  AND created_by = 'default' OR created_by = '".auth()->user()->id."' "); //--> Same sa create user function
         return view ('admin_modules.table.tableuser')->with('users', $users);        
     }
 
     //refresh user type table
     public function refreshtable_usertype()
     {
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0'");
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
         return view ('admin_modules.table.tableusertype')->with('user_type', $user_type);        
     }
 
@@ -57,7 +59,7 @@ class ManageUserController extends Controller
     {       
         $data = "";
         $i = 1;
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0'");
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
 
         if(count($user_type) > 0)
         {
@@ -103,7 +105,9 @@ class ManageUserController extends Controller
         {
             $valType = $request->get($um->module_code);  
             $userAccess = DB::connection("mysql")->select("UPDATE user_module_access SET ". $um->module_code ." = '$valType' WHERE user_type_id = '$userId'");           
-        }              
+        }
+        
+        $this->insert_log("Update manage access");
     }
 
     //create user type post
@@ -116,9 +120,9 @@ class ManageUserController extends Controller
         $insert_query->type_name = $typename;
         $insert_query->type_description = $typedesc;
         $insert_query->deleted = 0;
-        $insert_query->ess_id = auth()->user()->ess_id;
-        $insert_query->created_by = auth()->user()->name;
-        $insert_query->updated_by = auth()->user()->name;
+        $insert_query->account_id = auth()->user()->id;
+        $insert_query->created_by = auth()->user()->id;
+        $insert_query->updated_by = auth()->user()->id;
 
         $insert_query->save();
 
@@ -127,9 +131,11 @@ class ManageUserController extends Controller
         $insert_access = new UserModuleAccess;
         $insert_access->user_type_id = $user_type_id;           
         $insert_access->deleted = 0;
-        $insert_access->created_by = auth()->user()->name;
-        $insert_access->updated_by = auth()->user()->name;   
-        $insert_access->save();              
+        $insert_access->created_by = auth()->user()->id;
+        $insert_access->updated_by = auth()->user()->id;   
+        $insert_access->save();       
+        
+        $this->insert_log("Created user type");
     }
 
     //update user type post
@@ -142,9 +148,10 @@ class ManageUserController extends Controller
         $update_query = UserType::find($userTypeID);
         $update_query->type_name = $typeName;
         $update_query->type_description = $typeDesc;
-        $update_query->created_by = auth()->user()->name;
-        $update_query->updated_by = auth()->user()->name;
+        $update_query->updated_by = auth()->user()->id;
         $update_query->save();
+
+        $this->insert_log("Updated user type");
     }
 
     //delete user type post
@@ -154,8 +161,31 @@ class ManageUserController extends Controller
         
         $update_query = UserType::find($userTypeID);
         $update_query->deleted = 1;
-        $update_query->created_by = auth()->user()->name;
-        $update_query->updated_by = auth()->user()->name;
+        $update_query->updated_by = auth()->user()->id;
         $update_query->save();
+
+        $this->insert_log("Deleted user type");
+    }
+
+    //delete user post
+    public function deleteuser_post(Request $request)
+    {
+        $userTypeID = $request->userTypeID;
+        
+        $update_query = User::find($userTypeID);
+        $update_query->AccountStatus = 0;
+        $update_query->updated_by = auth()->user()->id;
+        $update_query->save();
+
+        $this->insert_log("Deleted user");
+    }
+
+    // Method for inserting into logs
+    public function insert_log($event)
+    {
+        $inserlog = new Logs;
+        $inserlog->account_id = auth()->user()->id;
+        $inserlog->log_event = $event;
+        $inserlog->save();
     }
 }

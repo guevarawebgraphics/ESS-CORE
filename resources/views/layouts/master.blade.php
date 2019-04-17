@@ -4,8 +4,8 @@
 	<title>{{ config('app.name', 'Laravel') }}</title>
 	<style>
 		table td{
-			font-size: 90%;
-			text-align: center;
+			font-size: 85%;
+			text-align: center;			
 		}
 
 		table th{
@@ -16,6 +16,7 @@
 		li a p{
 			font-size: 90%;
 		}
+		
 	</style>
 </head>
 <body>

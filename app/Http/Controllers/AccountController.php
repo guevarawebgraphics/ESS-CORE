@@ -5,6 +5,7 @@ use App\Account;
 use App\UserType;
 use App\User;
 use App\ESSBase;
+use App\Logs;
 use Session;
 use DB;
 use Response;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class AccountController extends Controller
 {
@@ -39,8 +41,8 @@ class AccountController extends Controller
         //$user_type = UserType::all();
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
-                        // ->join('users', 'employer.account_id', '=', 'users.id')
-                        ->select('employer.id', 'employer.shortname', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name')
+                        ->join('users', 'employer.account_id', '=', 'users.id')
+                        ->select('employer.id', 'employer.business_name', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name', 'users.AccountStatus', 'employer.account_id')
                         ->get();
         return view('Account.index', compact('Account'));
     }
@@ -52,7 +54,7 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
-        $shortname = Input::get('shortname');
+        $business_name = Input::get('business_name');
         $password = $this->generate_password(8);
 
         // Custom Message
@@ -64,7 +66,7 @@ class AccountController extends Controller
         $this->validate($request, [
             'user_type' => 'required|min:3',
             'accountname' => 'required|unique:employer|min:3',
-            'shortname' => 'required|unique:employer|min:3',
+            'business_name' => 'required|unique:employer|min:3',
             'user_type' => 'required',
             'address_unit' => 'required|min:3',
             'address_country' => 'required|min:3',
@@ -107,15 +109,15 @@ class AccountController extends Controller
 
         
 
-        if ($shortname == 'shortname'){
+        if ($business_name == 'business_name'){
 
         }
         else {
             /*Create User*/
             $user = User::create([
                 'user_type_id' => $request->input('user_type'),
-                'name' => $request->input('shortname'),
-                'username' => $request->input('shortname'),
+                'name' => $request->input('accountname'),
+                'username' => $request->input('accountname'),
                 'password' => Hash::make($password),
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
@@ -130,8 +132,8 @@ class AccountController extends Controller
             /*Temporary ESS ID 12345*/
             $insert_ess->ess_id = 12345;
             $insert_ess->user_type_id = $request->input('user_type');            
-            $insert_ess->created_by = auth()->user()->name;
-            $insert_ess->updated_by = auth()->user()->name;
+            $insert_ess->created_by = auth()->user()->id;
+            $insert_ess->updated_by = auth()->user()->id;
             $insert_ess->save();
 
 
@@ -142,7 +144,7 @@ class AccountController extends Controller
                 $employer = Account::create([
                     // Array Fields Here
                     'account_id' => $Account_id,
-                    'shortname' => $request->input('shortname'),
+                    'business_name' => $request->input('business_name'),
                     'accountname' => $request->input('accountname'),
                     'user_type' => $request->input('user_type'),
                     'address_unit' => $request->input('address_unit'),
@@ -178,12 +180,14 @@ class AccountController extends Controller
             $data = array('name' => $user->name, "body" => $password);
 
             Mail::send('Email.mail', $data, function($message) use($employer, $user){
-                $message->to($employer->contact_email, $employer->shortname)
+                $message->to($employer->contact_email, $employer->business_name)
                         ->subject("ESS Successfully Registered ");
                 $message->from('esssample@gmail.com', "ESS");
             });
 
             $msg = 'Success';
+
+            $this->insert_log("Create Account");
 
             // return redirect('Account')->with('success', 'Account Successfully Created');
             return Response::json($msg);
@@ -193,17 +197,51 @@ class AccountController extends Controller
         
     }
 
-    public function edit(Account $Account){
+    public function edit($id){
+        $Account = DB::table('employer')
+                        ->join('user_type', 'employer.user_type', '=', 'user_type.id')
+                        ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
+                        ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
+                        ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')    
+                        ->join('users', 'employer.account_id', '=', 'users.id')
+                        ->select('employer.id', 'employer.business_name',
+                         'employer.accountname',
+                          'employer.address_unit',
+                          'employer.address_cityprovince',
+                          'employer.address_barangay',
+                          'employer.address_zipcode',
+                          'employer.contact_email', 
+                          'employer.contact_person', 
+                          'employer.contact_phone',
+                          'employer.contact_mobile',
+                          'employer.tin',
+                          'employer.sss',
+                          'employer.phic',
+                          'employer.hdmf',
+                          'employer.nid',
+                          'employer.sec', 'employer.bir', 
+                          'user_type.type_name', 
+                          'user_type.id as user_type_id',
+                          'users.AccountStatus', 
+                          'employer.account_id',
+                          'refprovince.provDesc',
+                          'refprovince.provCode',
+                          'refcitymun.citymunDesc',
+                          'refcitymun.citymunCode',
+                          'refbrgy.brgyDesc',
+                          'refbrgy.id as refbrgy_id')
+                        ->where('employer.account_id', $id)
+                        ->get();
         return view('Account.edit', compact('Account'));
     }
 
-    public function update(Account $Account, Request $request){
+    public function update(Request $request, $id){
 
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
             'accountname' => 'required|min:3',
-            'shortname' => 'required|min:3',
+            'business_name' => 'required|min:3',
             'user_type' => 'required',
             'address_unit' => 'required|min:3',
             'address_country' => 'required|min:3',
@@ -244,53 +282,63 @@ class AccountController extends Controller
             $fileNameToStore_bir = 'noifile.txt';
         }
 
-         /*Update Account Employer*/
-        $Account->update([
-            // Array Fields Here
-            'shortname' => $request->input('shortname'),
-            'accountname' => $request->input('accountname'),
-            'user_type' => $request->input('user_type'),
-            'address_unit' => $request->input('address_unit'),
-            'address_country' => $request->input('address_country'),
-            'address_town' => $request->input('address_town'),
-            'address_cityprovince' => $request->input('address_cityprovince'),
-            'address_barangay' => $request->input('address_barangay'),
-            'address_zipcode' => $request->input('address_zipcode'),
-            'contact_person' => $request->input('contact_person'),
-            'contact_phone' => $request->input('contact_phone'),   
-            'contact_mobile' => $request->input('contact_mobile'),
-            'contact_email' => $request->input('contact_email'),
-            'tin' =>$request->input('tin'),
-            'sss' => $request->input('sss'),
-            'phic' => $request->input('phic'),
-            'hdmf' => $request->input('hdmf'),
-            'nid' => $request->input('nid'),
-            'sec' => $fileNameToStore_sec,
-            'bir' => $fileNameToStore_bir
-        ]);
+        /*Update Account Employer*/
+        DB::table('employer')->where('account_id', '=', $id)
+                            ->update(array(
+                                'business_name' => $request->input('business_name'),
+                                'accountname' => $request->input('accountname'),
+                                'user_type' => $request->input('user_type'),
+                                'address_unit' => $request->input('address_unit'),
+                                'address_country' => $request->input('address_country'),
+                                'address_town' => $request->input('address_town'),
+                                'address_cityprovince' => $request->input('address_cityprovince'),
+                                'address_barangay' => $request->input('address_barangay'),
+                                'address_zipcode' => $request->input('address_zipcode'),
+                                'contact_person' => $request->input('contact_person'),
+                                'contact_phone' => $request->input('contact_phone'),   
+                                'contact_mobile' => $request->input('contact_mobile'),
+                                'contact_email' => $request->input('contact_email'),
+                                'tin' =>$request->input('tin'),
+                                'sss' => $request->input('sss'),
+                                'phic' => $request->input('phic'),
+                                'hdmf' => $request->input('hdmf'),
+                                'nid' => $request->input('nid'),
+                                'sec' => $fileNameToStore_sec,
+                                'bir' => $fileNameToStore_bir
+                            ));
 
         $msg = 'Success';
 
         // return redirect('Account')->with('success', 'Account Successfully Updated');
 
+        $this->insert_log("Updated Account ");
+
         return Response::json($msg);
     }
 
-    public function destroy(Account $Account){
-        $Account->delete();
-
+    public function destroy(Request $request){
+        $Account_id = $request->id;
         /*Delete User From Users*/
-        $user = DB::table('users')->where('id', $Account)->delete();
+        $user = User::where('id','=',$Account_id)->delete();
         /*Delete User From Employer*/
-        $employer = DB::table('employer')->where('account_id', $Account)->delete();
+        $employer = Account::where('account_id','=', $Account_id)->delete();
+        /*Delete User From ESS Base Table*/
+        $base = ESSBase::where('account_id','=',$Account_id)->delete();
 
-        ///return redirect('Account');
-        return response()->json($Account);
+        return response()->json(array(
+            $user,
+            $employer,
+            $base
+        ));
 
     }
 
     public function get_province(Request $request){
+        $code = $request->code;
         $query = DB::table('refprovince')->select('id', 'provDesc', 'provCode')->orderBy('provDesc', 'ASC')->get();
+        if ($code != null){
+            $query = DB::table('refprovince')->select('id', 'provDesc', 'provCode')->where('provCode', $code)->get();
+        }
          /*Protection for Data View as Json*/
         if($request->ajax()){
             return Response::json($query);
@@ -339,5 +387,34 @@ class AccountController extends Controller
     public function generate_password($limit)
     {
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
+    }
+
+    // Method for inserting into logs
+    public function insert_log($event)
+    {
+        $inserlog = new Logs;
+        $inserlog->account_id = auth()->user()->id;
+        $inserlog->log_event = $event;
+        $inserlog->save();
+    }
+
+    // Update Account Status
+    public function UpdateAccountStatus(Request $request, $id){
+        /*Update Account Employer*/
+        $user = User::findOrFail($id);
+        $user->AccountStatus = $request->input('AccountStatus');
+        $user->save();
+
+        if ($id == null && $request->input('AccountStatus') == null){
+            $msg = 'Error';
+        }
+        else {
+            $msg = 'Success';
+        }
+
+        $this->insert_log("Updated Account");
+
+
+        return Response::json($msg);
     }
 }

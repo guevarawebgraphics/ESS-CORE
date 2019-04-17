@@ -18,112 +18,141 @@
 
 @section('content')
 <div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Create User</h3>
+        </div>
+        
+        <div class="card-body">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" id="btnCreateUser">Create User</button>
+            </div>
+            <br>
+            <br>
 
-    <div class="pull-right">
-        <button type="button" class="btn btn-primary" id="btnCreateUser">Create User</button>
-    </div>
-    <br>
-    <br>
-    <div id="table_user">
-        @include('admin_modules.table.tableuser')
-    </div>
-
-<!-- Modal for create user-->
-<div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title" id="UserTitle">Create User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="form-group row">
+                <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label>
+                <div class="col-md-4">          
+                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
                 </div>
-                <div class="modal-body">
-                    {{-- <form id="formUserLevel">
-                        @csrf
-                        <input type="hidden" id="hidden_id" name="hidden_id">
-                        <div id="modal_module"></div>
-                    </form> --}}
-                    <form method="POST" id="createuser_form">
-                        @csrf
+            </div>
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-                            <input type="hidden" id="hidden_id">
-                            <input type="hidden" id="action" value="add">
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-                                <p class="text-danger" id="error-no-name" hidden>* Field is Required</p>  
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="txtusername" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('email') }}" required>
-                                <p class="text-danger" id="error-taken" hidden>* Username already taken</p>
-                                <p class="text-danger" id="error-no-username" hidden>* Field is Required</p>  
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type</label>
-                            <div class="col-md-6">
-                                <select id="cmbUser" class="form-control" name="cmbUser_type">                                                                 
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-                                <p class="text-danger" id="error-no-pass" hidden>* Field is Required</p>  
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                <p class="text-danger" id="error-no-repass" hidden>* Field is Required</p>  
-                            </div>
-                        </div>                      
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnRegister">Register</button>
-                </div>
+            <div id="table_user">
+                @include('admin_modules.table.tableuser')
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal for create user-->
+<div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title" id="UserTitle">Create User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{-- <form id="formUserLevel">
+                    @csrf
+                    <input type="hidden" id="hidden_id" name="hidden_id">
+                    <div id="modal_module"></div>
+                </form> --}}
+                <form method="POST" id="createuser_form">
+                    @csrf
+
+                    <div class="form-group row">
+                        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                        <input type="hidden" id="hidden_id">
+                        <input type="hidden" id="action" value="add">
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                            <p class="text-danger" id="error-no-name" hidden>* Field is Required</p>  
+                            @if ($errors->has('name'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+
+                        <div class="col-md-6">
+                            <input id="txtusername" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('email') }}" required>
+                            <p class="text-danger" id="error-taken" hidden>* Username already taken</p>
+                            <p class="text-danger" id="error-no-username" hidden>* Field is Required</p>  
+                            @if ($errors->has('email'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type</label>
+                        <div class="col-md-6">
+                            <select id="cmbUser" class="form-control" name="cmbUser_type">                                                                 
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+                        <div class="col-md-6">
+                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            <p class="text-danger" id="error-no-pass" hidden>* Field is Required</p>  
+                            @if ($errors->has('password'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+
+                        <div class="col-md-6">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            <p class="text-danger" id="error-no-repass" hidden>* Field is Required</p>  
+                        </div>
+                    </div>                      
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnRegister">Register</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(document).ready(function(){
 
-        //DATA TABLES
-        $("#users_table").dataTable({
-            "ordering": false
+          /*DataTable*/ 
+          var table = $("#users_table").DataTable({
+            // "searching": false,
+            "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+            "paging": true,
+            "pageLength": 10000,
+            scrollY: 300,
+            //  scrollX: true,
+            "autoWidth": true,
+            lengthChange: false,
+            responsive: true,
+        });
+
+        /*Custom Search For DataTable*/
+        $("#searchbox").on("keyup search input paste cut", function () {
+                table.search(this.value).draw();
         });
 
         //function Refresh User table
@@ -137,9 +166,18 @@
                 success:function(data)
                 {
                     $('#table_user').html(data);  
-                    $("#users_table").dataTable({
-                        "ordering": false
-                    });                              
+                   /*DataTable*/ 
+                    var table = $("#users_table").DataTable({
+                        // "searching": false,
+                        "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+                        "paging": true,
+                        "pageLength": 10000,
+                        scrollY: 300,
+                        //  scrollX: true,
+                        "autoWidth": true,
+                        lengthChange: false,
+                        responsive: true,
+                    });                            
                 }
             });
         }
@@ -279,7 +317,7 @@
                             }
                             if(data == "suc")
                             {
-                                alert("User Register Successfully!");
+                                toastr.success('User Register Successfully', 'Success')
                                 $('#createUserModal').modal('hide');
                                 refreshUserTable();
                             }                              
@@ -304,7 +342,7 @@
                             }
                             if(data == "suc")
                             {
-                                alert("User Updated Successfully!");
+                                toastr.success('User Updated Successfully', 'Success')
                                 $('#createUserModal').modal('hide');
                                 refreshUserTable();
                             }                              
@@ -335,7 +373,28 @@
         //DELETE USER TYPE
         $(document).on("click", "#delete_user", function(){
             var id = $(this).data("add");
-            alert(id);
+            var data = id.split("]]");
+            //alert(id);
+            var c = confirm("Do you want to delete User " + "'" + data[1] + "'?");
+            if(c == true)
+            {
+                $.ajax({
+                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url: "{{ route('deleteuser_post') }}",
+                    method: "POST",
+                    data:{userTypeID: data[0]},                 
+                    success:function(data)
+                    {
+                        toastr.success('User Type Deleted!', 'Success') 
+                        refreshUserTable();
+                        $('#userTypeModal').modal('hide');           
+                    }
+                });
+            }
+            else
+            {
+
+            }
         });
     });
 </script>

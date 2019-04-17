@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
     /**
     * Override the username method used to validate login
     *Custom For Username Login
@@ -34,6 +34,11 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+    protected function credentials(\Illuminate\Http\Request $request)
+    {
+        //return $request->only($this->username(), 'password');
+        return ['username' => $request->{$this->username()}, 'password' => $request->password, 'AccountStatus' => 1];
     }
     /**
      * Create a new controller instance.

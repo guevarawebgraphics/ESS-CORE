@@ -18,6 +18,47 @@
 
 @section('content')
 <div class="container-fluid">
-
+    <div class="card">
+        <div class="card-header">
+            <center><strong>System Logs</strong></center>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped" id="system_logs_table">
+                <thead>
+                    <tr>
+                        <th scope="col">Log Description</th>
+                        <th scope="col">Time</th>     
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(count($logs) > 0)
+                        @foreach($logs as $log)
+                        <tr>
+                            <td>{{$log->log_event}}</td>
+                            <td>{{$log->created_at}}</td>
+                        </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+         /*DataTable*/ 
+         var table = $("#system_logs_table").DataTable({
+            // "searching": false,
+            "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+            "paging": true,
+            "pageLength": 10000,
+            scrollY: 300,
+            //  scrollX: true,
+            "autoWidth": true,
+            lengthChange: false,
+            responsive: true,
+        });
+    });
+</script>
 @endsection

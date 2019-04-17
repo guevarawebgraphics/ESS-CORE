@@ -33,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -94,5 +94,45 @@ class RegisterController extends Controller
             'created_by' => auth()->user()->name,
             'updated_by' => auth()->user()->name
         ]);
+
+        $this->insert_log("Created new user");
+    }
+
+    public function updateuser_post(Request $request)
+    {
+        $userId = $request->id;
+        $name = $request->name;
+        $userName = $request->userName;
+        $userType = $request->userType;
+        $password = $request->password;
+
+        $check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$userName' ");
+
+        if(count($check_username) > 0)
+        {
+            echo json_encode("taken");
+        }
+        else
+        {
+            echo json_encode("suc");
+            $update_query = User::find($userId);
+            $update_query->name = $name;
+            $update_query->user_type_id = $userType;
+            $update_query->username = $userName;
+            $update_query->password = Hash::make($password);
+            $update_query->updated_by = auth()->user()->id;
+            $update_query->save();
+
+            $this->insert_log("Updated user");
+        }            
+    }
+
+    // Method for inserting into logs
+    public function insert_log($event)
+    {
+        $inserlog = new Logs;
+        $inserlog->account_id = auth()->user()->id;
+        $inserlog->log_event = $event;
+        $inserlog->save();
     }
 }

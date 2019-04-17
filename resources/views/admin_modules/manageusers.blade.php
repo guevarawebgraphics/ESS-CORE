@@ -19,13 +19,28 @@
 @section('content')
 
 <div class="container-fluid">
-    <div class="pull-right">
-        <button type="button" class="btn btn-primary" id="btnCreateUser">Create User Type</button>
-    </div>
-    <br>
-    <br>
-    <div id="table_usertype">
-        @include('admin_modules.table.tableusertype')
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Manage User Access</h3>
+        </div>
+        
+        <div class="card-body">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" id="btnCreateUser">Create User Type</button>
+            </div>
+            <br>
+            <br>
+            <div class="form-group row">
+                <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label>
+                <div class="col-md-4">          
+                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
+                </div>
+            </div>
+
+            <div id="table_usertype">
+                @include('admin_modules.table.tableusertype')
+            </div>
+        </div>
     </div>
 </div>
 
@@ -98,9 +113,23 @@
 <script>
     $(document).ready(function(){
 
-        //Datatable
-        $("#usertype_table").dataTable({
-            "ordering": false
+        
+        /*DataTable*/ 
+        var table = $("#usertype_table").DataTable({
+            // "searching": false,
+            "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+            "paging": true,
+            "pageLength": 10000,
+            scrollY: 300,
+            //  scrollX: true,
+            "autoWidth": true,
+            lengthChange: false,
+            responsive: true,
+        });
+
+        /*Custom Search For DataTable*/
+        $("#searchbox").on("keyup search input paste cut", function () {
+                table.search(this.value).draw();
         });
    
         //function for refreshing user type table
@@ -114,8 +143,17 @@
                 success:function(data)
                 {
                     $('#table_usertype').html(data);       
-                    $("#usertype_table").dataTable({
-                        "ordering": false
+                    /*DataTable*/ 
+                    var table = $("#usertype_table").DataTable({
+                        // "searching": false,
+                        "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+                        "paging": true,
+                        "pageLength": 10000,
+                        scrollY: 300,
+                        //  scrollX: true,
+                        "autoWidth": true,
+                        lengthChange: false,
+                        responsive: true,
                     });                          
                 }
             });
@@ -149,7 +187,7 @@
                 data:$('#formUserLevel').serialize(),                 
                 success:function(data)
                 {
-                    alert("Successfully Updated"); 
+                    toastr.success('Access Updated Successfully', 'Success') 
                     $('#userAccessModal').modal('hide');         
                 }
             });
@@ -205,7 +243,7 @@
                         data:$('#usertype_form').serialize(),                 
                         success:function(data)
                         {
-                            alert("User Type Added!"); 
+                            toastr.success('User Type Added!', 'Success')
                             refreshUsertypeTable();
                             $('#userTypeModal').modal('hide');           
                         }
@@ -219,7 +257,7 @@
                         data:{typeName: type_name, typeDesc: type_desc, userTypeID: data[0]},                 
                         success:function(data)
                         {
-                            alert("User Type Updated!"); 
+                            toastr.success('User Type Updated!', 'Success')
                             refreshUsertypeTable();
                             $('#userTypeModal').modal('hide');           
                         }
@@ -244,7 +282,7 @@
                     data:{userTypeID: data[0]},                 
                     success:function(data)
                     {
-                        alert("User Type Deleted!"); 
+                        toastr.success('User Type Deleted!', 'Success') 
                         refreshUsertypeTable();
                         $('#userTypeModal').modal('hide');           
                     }

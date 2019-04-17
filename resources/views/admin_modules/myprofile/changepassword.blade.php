@@ -26,23 +26,157 @@
             <div class="form-group row">
                 <label for="txtcurpass" class="col-form-label col-md-2">Current Password</label>
                 <div class="col-md-6">
-                    <input type="text" id="txtcurpass" class="form-control" name="curpass">            
+                    <input type="password" id="txtcurpass" class="form-control" name="curpass">
+                    <p class="text-danger" id="error-no-cur" hidden>* Field is Required</p>            
                 </div>
             </div>   
             <div class="form-group row">
                 <label for="txtnewpass" class="col-form-label col-md-2">New Password</label>
                 <div class="col-md-6">
-                    <input type="text" id="txtnewpass" class="form-control" name="newpass">            
+                    <input type="password" id="txtnewpass" class="form-control" name="newpass">
+                    <p class="text-danger" id="error-no-new" hidden></p>
+                    {{-- <p class="text-danger" id="error-length" hidden>* Maximum of 6 characters</p> --}}
                 </div>
             </div>  
             <div class="form-group row">
                 <label for="txtconpass" class="col-form-label col-md-2">Confirm Password</label>
                 <div class="col-md-6">
-                    <input type="text" id="txtconpass" class="form-control" name="conpass">            
+                    <input type="password" id="txtconpass" class="form-control" name="conpass">
+                    <p class="text-danger" id="error-no-newcon" hidden></p> 
+                    {{-- <p class="text-danger" id="error-notmatch" hidden>* Confirm Password not match</p> --}}
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary">Update Password</button>                                                                      
+            <button type="button" class="btn btn-primary" id="btnUpdate">Update Password</button>                                                                      
         </div>              
     </div>      
 </div>
+<script>
+    $(document).ready(function(){
+
+        var curPass_valid = '';
+        //check the current password
+        $("#txtcurpass").focusout(function (){
+            curPass = $('#txtcurpass').val();
+            $.ajax({
+                headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url: "{{ route('changepassword_prev') }}",
+                method: "GET",
+                data:{oldPass: curPass},               
+                success:function(data)
+                {                   
+                    if(data == "1")
+                    {
+                       curPass_valid = "1";
+                    }
+                    if(data == "0")
+                    {
+                        curPass_valid = "0";
+                    }
+                    
+                }
+            });
+        });
+
+        //update settings
+        var counter = 0;
+        $(document).on("click", "#btnUpdate", function(){
+            counter = 0;
+            if(curPass_valid == "1")
+            {
+                newPass = $('#txtnewpass').val();
+                conNewPass = $('#txtconpass').val();
+                curPass = $('#txtcurpass').val();
+                
+                //current password
+                if(curPass == "" )
+                {
+                    $('#txtcurpass').addClass("is-invalid");
+                    $('#error-no-cur').removeAttr("hidden");
+                    counter++;
+                }
+                else
+                {
+                    $('#txtcurpass').removeClass("is-invalid");
+                    $('#error-no-cur').attr("hidden", true);
+                }
+                //new password
+                if(newPass == "" )
+                {
+                    $('#txtnewpass').addClass("is-invalid");
+                    $('#error-no-new').removeAttr("hidden").html("* Field is Required");
+                    counter++;
+                }   
+                else if(newPass.length < 6)
+                {
+                    $('#txtnewpass').addClass("is-invalid");
+                    $('#error-no-new').removeAttr("hidden").html("* Maximum of 6 characters");
+                    counter++;
+                }
+                else 
+                {
+                    $('#txtnewpass').removeClass("is-invalid");
+                    $('#error-no-new').attr("hidden", true);                  
+                }
+                //confirm password
+                if(conNewPass == "")
+                {
+                    $('#txtconpass').addClass("is-invalid");
+                    $('#error-no-newcon').removeAttr("hidden").html("* Field is Required");
+                    counter++;                   
+                }
+                else if(conNewPass != newPass)
+                {
+                    $('#txtconpass').addClass("is-invalid");
+                    $('#error-no-newcon').removeAttr("hidden").html("* Confirm password not match");
+                    counter++;
+                }
+                else
+                {
+                    $('#txtconpass').removeClass("is-invalid");
+                    $('#error-no-newcon').attr("hidden", true);                   
+                }
+
+                if(counter == 0)
+                {
+                    var c = confirm("Update Password?");
+
+                    if(c == true)
+                    {                    
+                        $.ajax({
+                            headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            url: "{{ route('changepassword_post') }}",
+                            method: "POST",
+                            data:{newPass: newPass},               
+                            success:function(data)
+                            {
+                                toastr.success('Password Changed Successfully', 'Success')
+                                //alert("Changed");      
+                                curPass_valid = '';
+                                $('#txtnewpass').val("");
+                                $('#txtcurpass').val("");  
+                                $('#txtconpass').val("");   
+                                $('#txtcurpass').removeClass("is-invalid");
+                                $('#error-no-cur').attr("hidden", true);   
+                                $('#txtnewpass').removeClass("is-invalid");
+                                $('#error-no-new').attr("hidden", true);   
+                                $('#txtconpass').removeClass("is-invalid");
+                                $('#error-no-newcon').attr("hidden", true);                  
+                            }                      
+                        });                       
+                    }
+                    else
+                    {
+
+                    }                  
+                }
+            }
+            else
+            {
+                toastr.error('Change Password Failed', 'Failed')
+                curPass_valid = '';
+            }                              
+        });
+
+    });
+</script>
 @endsection

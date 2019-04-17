@@ -18,32 +18,68 @@
 					//profile
 					$myprofile = "";
 					$myprofile_tree = "";
+					$settings = "";
+					$changepass = "";
+					$s_logs = "";
 					//create profile
 					$createprofile = "";
 					$createprofile_tree = "";
+					$create_p = "";
+					$update_p = "";
 					//manage users
 					$manageusers = "";
 					$manageusers_tree = "";
+					$create = "";
+					$manage = "";
+					//contents
 					$esscontent = "";
 					$sendannounce = "";
 					$managedocs = "";
-
-					if(Request::segment(1) == 'manageuser')
-					{
-						$manageusers = "menu-open";
-						$manageusers_tree = "active";
-						
-					}
-					else if(Request::segment(1) == 'myprofile')
+					//echo Request::segment(2);
+					if(Request::segment(1) == 'myprofile')
 					{
 						$myprofile = "menu-open";
-						$myprofile_tree = "active";						
+						$myprofile_tree = "active";
+						if(Request::segment(2) == 'settings')
+						{
+							$settings = 'active';
+						}
+						if(Request::segment(2) == 'changepassword')
+						{
+							$changepass = 'active';
+						}	
+						if(Request::segment(2) == 'systemlogs')
+						{
+							$s_logs = 'active';
+						}						
 					}
 					else if(Request::segment(1) == 'Account')
 					{
 						$createprofile = "menu-open";
-						$createprofile_tree = "active";						
+						$createprofile_tree = "active";	
+						if(Request::segment(2) == 'create')
+						{
+							$create_p = "active";
+						}
+						if(Request::segment(2) == '')
+						{
+							$update_p = "active";
+						}					
 					}
+					else if(Request::segment(1) == 'manageuser')
+					{
+						$manageusers = "menu-open";
+						$manageusers_tree = "active";
+						if(Request::segment(2) == 'create')
+						{
+							$create = "active";
+						}
+						if(Request::segment(2) == 'manage')
+						{
+							$manage = "active";
+						}					
+					}					
+					
 				@endphp
 
 				<!-- ADMIN -->
@@ -56,15 +92,15 @@
 					<p>My Profile <i class="right fa fa-angle-left"></i></p></a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a class="nav-link" href="/myprofile/settings"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$settings}}" href="/myprofile/settings"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Settings</p></a>                                   
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/myprofile/changepassword"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$changepass}}" href="/myprofile/changepassword"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Change Password</p></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/myprofile/systemlogs"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$s_logs}}" href="/myprofile/systemlogs"><i class="fa fa-circle-o nav-icon"></i>
 							<p>System Logs</p></a>
 						</li>
 					</ul>
@@ -80,11 +116,11 @@
 					<p>Create Profiles <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a class="nav-link" href="/Account/create"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$create_p}}" href="/Account/create"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Create Profile</p></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/Account"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$update_p}}" href="/Account"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Update Profile</p></a>
 						</li>
 						
@@ -101,7 +137,7 @@
 					<p>Manage Users <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a class="nav-link" href="/manageuser/create"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$create}}" href="/manageuser/create"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Create User</p></a>
 						</li>
 						{{-- <li class="nav-item">
@@ -109,7 +145,7 @@
 							<p>Create User Type</p></a>
 						</li> --}}
 						<li class="nav-item">
-							<a class="nav-link" href="/manageuser/manage"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$manage}}" href="/manageuser/manage"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage User Access</p></a>
 						</li>								
 					</ul>
