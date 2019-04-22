@@ -6,7 +6,7 @@
         {{session('success')}}
     </div>
 @endif
-<div class="card">
+<div class="card card-info card-outline">
     <div class="card-header">
       <h3 class="card-title">Manage Accounts</h3>
     </div>
@@ -14,7 +14,7 @@
     <div class="card-body">
       {{-- <input type="text" id="searchbox" class="form-control col-md-4"> --}}
       <div class="form-group row">
-          <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label>
+          <label for="search" class="col-md-2 text-md-center">Search: </label>
           <div class="col-md-4">
               
               <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>

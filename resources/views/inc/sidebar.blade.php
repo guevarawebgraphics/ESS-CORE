@@ -165,7 +165,7 @@
 							<p>Create Notifications</p></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="pages/tables/data.html"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link" href="/Notification"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Notifications</p></a>
 						</li>
 					</ul>

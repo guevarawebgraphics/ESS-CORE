@@ -73,6 +73,13 @@ Route::patch('/Account/{id}', 'AccountController@update')->name('Account.update'
 Route::patch('/Account/UpdateAccountStatus/{id}', 'AccountController@UpdateAccountStatus')->name('Account.UpdateAccountStatus');
 Route::post('/Account', 'AccountController@store')->name('Account');
 
+/*Route Config For Notification*/
+Route::get('/Notification', 'NotificationController@index')->name('Notification.index');
+Route::get('/Notification/get_all_notifications', 'NotificationController@get_all_notifications');
+Route::post('/Notification/store_notification', 'NotificationController@store_notification');
+Route::get('/Notification/edit_notification', 'NotificationController@edit_notification');
+Route::post('/Notification/update_notification/{id}', 'NotificationController@update_notification');
+Route::post('/Notification/destroy_notification', 'NotificationController@destroy_notification');
 
 
 

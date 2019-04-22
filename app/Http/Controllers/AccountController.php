@@ -110,31 +110,36 @@ class AccountController extends Controller
         
 
         if ($business_name == 'business_name'){
-
+            /*Do Somethin or ....*/
         }
         else {
-            /*Create User*/
-            $user = User::create([
-                'user_type_id' => $request->input('user_type'),
-                'name' => $request->input('accountname'),
-                'username' => $request->input('accountname'),
-                'password' => Hash::make($password),
-                'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,
-            ]);
 
-            /*Gett the Id of User*/
-            $Account_id = $user->id;
+            /*Check if All Request is not null*/
+            if($request->all() != null){
+                /*Create User*/
+                $user = User::create([
+                    'user_type_id' => $request->input('user_type'),
+                    'name' => $request->input('accountname'),
+                    'username' => $request->input('accountname'),
+                    'password' => Hash::make($password),
+                    'created_by' => auth()->user()->id,
+                    'updated_by' => auth()->user()->id,
+                ]);
+
+                /*Gett the Id of User*/
+                $Account_id = $user->id;
+                
+                /*Create a User In Base Table*/
+                $insert_ess = new ESSBase;
+                $insert_ess->account_id = $Account_id;
+                /*Temporary ESS ID 12345*/
+                $insert_ess->ess_id = 12345;
+                $insert_ess->user_type_id = $request->input('user_type');            
+                $insert_ess->created_by = auth()->user()->id;
+                $insert_ess->updated_by = auth()->user()->id;
+                $insert_ess->save();
+            }
             
-            /*Create a User In Base Table*/
-            $insert_ess = new ESSBase;
-            $insert_ess->account_id = $Account_id;
-            /*Temporary ESS ID 12345*/
-            $insert_ess->ess_id = 12345;
-            $insert_ess->user_type_id = $request->input('user_type');            
-            $insert_ess->created_by = auth()->user()->id;
-            $insert_ess->updated_by = auth()->user()->id;
-            $insert_ess->save();
 
 
             
