@@ -71,7 +71,7 @@
                         <div class="col-md-6">
                             
                             <textarea id="notification_message" type="text" class="form-control" name="notification_message" placeholder="Notification Message"   autofocus></textarea>
-                                    <p class="text-danger" id="error_notification_title"></p>
+                                    <p class="text-danger" id="error_notification_message"></p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -81,6 +81,9 @@
                             <option value="1">Email</option>
                             <option value="2">SMS</option>
                         </select>
+                    </div>
+                    <div class="col-md-4 float-right">
+                        <p class="text-danger" id="error_notification_type"></p>
                     </div>
                 </form>
                 
@@ -175,6 +178,13 @@ $(document).ready(function (){
                 setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
                 }, 250);
+                /*Add Error Field*/
+                $('#notification_title').addClass('is-invalid');
+                $('#error_notification_title').html('Notification Title is Required');
+                $('#notification_message').addClass('is-invalid');
+                $('#error_notification_message').html('Notification Message is Required ');
+                $('#notification_type').addClass('is-invalid');
+                // $('#error_notification_type').html('Notification Type is Required');
             }
         });
     });
