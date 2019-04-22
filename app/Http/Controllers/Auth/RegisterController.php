@@ -86,10 +86,28 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
+        $user_type_for = "";
+        $check_type = DB::connection('mysql')->select("SELECT id,user_type_for FROM user_type WHERE id = '".auth()->user()->user_type_id."' " );
+        if(!empty($check_type))
+        {
+            if($check_type[0]->user_type_for == "1" || $check_type[0]->user_type_for == "2")
+            {
+                $user_type_for = "2";
+            }
+            else if($check_type[0]->user_type_for == "3" || $check_type[0]->user_type_for == "4")
+            {
+                $user_type_for = "4";
+            }
+            else if($check_type[0]->user_type_for == "5" || $check_type[0]->user_type_for == "6")
+            {
+                $user_type_for = "6";
+            }
+        }
         return User::create([
             'name' => $data['name'],
             'user_type_id' => $data['cmbUser_type'],
-            'username' => $data['username'],            
+            'username' => $data['username'],       
+            'user_type_for' => $user_type_for,     
             'password' => Hash::make($data['password']),
             'created_by' => auth()->user()->name,
             'updated_by' => auth()->user()->name
