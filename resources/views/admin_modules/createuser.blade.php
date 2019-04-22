@@ -106,7 +106,7 @@
 
                         <div class="col-md-6">
                             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-                            <p class="text-danger" id="error-no-pass" hidden>* Field is Required</p>  
+                            <p class="text-danger" id="error-no-pass" hidden>* Field is Required | Password must be 6 characters</p>  
                             @if ($errors->has('password'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('password') }}</strong>
@@ -274,7 +274,7 @@
                 $('#error-no-username').attr("hidden", true);
             }
 
-            if(password == "")
+            if(password == "" || password < 6)
             {
                 $('#password').addClass("is-invalid");
                 $('#error-no-pass').removeAttr("hidden");
