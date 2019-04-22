@@ -11,7 +11,7 @@
 				<a class="d-block" href="#">{{ Auth::user()->name }}</a>
 			</div>
 		</div><!-- Sidebar Menu -->
-		{{Session::get("employer_id")}}
+		{{-- {{Session::get("employer_id")}} --}}
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
 				<!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
