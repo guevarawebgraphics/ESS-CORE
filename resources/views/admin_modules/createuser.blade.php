@@ -172,6 +172,7 @@
                         "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                         "paging": true,
                         "pageLength": 10000,
+                        "ordering": false,
                         scrollY: 300,
                         //  scrollX: true,
                         "autoWidth": true,
@@ -298,7 +299,7 @@
             if(name != "" && username != "" && password != "" && repassword != "")
             {      
                 var action = $("#action").val();
-                alert(action);   
+                //alert(action);   
                 //ADD 
                 if(action == "add")      
                 {

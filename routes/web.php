@@ -49,6 +49,7 @@ Route::post('/manageuser/updateusertype_post', 'ManageUserController@updateusert
 Route::post('/manageuser/deleteusertype_post', 'ManageUserController@deleteusertype_post')->name('deleteusertype_post');
 Route::post('/manageuser/updateuser_post', 'Auth\\RegisterController@updateuser_post')->name('updateuser_post');
 Route::post('/manageuser/deleteuser_post', 'ManageUserController@deleteuser_post')->name('deleteuser_post');
+Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer');
 
 //My Profile
 Route::get('/myprofile/settings', 'MyProfileController@settings');
@@ -81,6 +82,40 @@ Route::get('/Notification/edit_notification', 'NotificationController@edit_notif
 Route::post('/Notification/update_notification/{id}', 'NotificationController@update_notification');
 Route::post('/Notification/destroy_notification', 'NotificationController@destroy_notification');
 
+////// EMPLOYER
+
+//Employees Enrollment
+Route::get('/enrollemployee/encode', 'EmployeesEnrollmentController@encode');
+Route::get('/enrollemployee/upload', 'EmployeesEnrollmentController@upload');
+
+//Employer Content
+Route::get('/employercontent/create', 'EmployerContentController@create');
+Route::get('/employercontent/manage', 'EmployerContentController@manage');
+
+//Payroll Management
+Route::get('/payrollmanagement/upload', 'PayrollManagementController@upload');
+Route::get('/payrollmanagement/view', 'PayrollManagementController@view');
+
+
+
+//Cash Advance
+Route::get('/cashadvance', 'CashAdvanceController@index');
+
+
+//E wallet
+Route::get('/ewallet', 'EWalletController@index');
+
+//Financial Calendar
+Route::get('/financialcalendar', 'FinancialCalendarController@index');
+
+//ICredit
+Route::get('/icredit', 'iCreditController@index');
+
+//Payslips
+Route::get('/payslips', 'PayslipsController@index');
+
+//Time Attendance
+Route::get('/timeattendance', 'TimeAttendanceController@index');
 
 
 Route::get('/error', function () { // for no access

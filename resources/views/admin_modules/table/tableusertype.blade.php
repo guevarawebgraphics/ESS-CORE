@@ -2,7 +2,7 @@
     <thead>
         <tr>
         <th scope="col">User Type Name</th>
-        <th scope="col">User Type Description</th>       
+        <th scope="col">User Type Description</th>
         <th scope="col">Action</th>        
         </tr>
     </thead>

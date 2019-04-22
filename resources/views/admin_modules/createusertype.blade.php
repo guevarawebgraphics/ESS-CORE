@@ -33,6 +33,7 @@
                 <div class="card-body">
                     <form id="usertype_form">
                         @csrf
+                       
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">User Type Name</label>
                             <div id="typename"  class="col-md-6">

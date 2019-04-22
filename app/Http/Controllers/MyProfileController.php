@@ -167,7 +167,8 @@ class MyProfileController extends Controller
     //show view system logs
     public function systemlogs()
     {
-        $system_logs = Logs::where('account_id', auth()->user()->id)->get();
+        $system_logs = Logs::where('account_id', auth()->user()->id)->orderBy('created_at', 'DESC')->get();
+        // $system_logs = DB::connection('mysql')->select("SELECT * FROM logs WHERE account_id = '".auth()->user()->id."' ORDER BY created_at DESC ");
         //$time_record = DTR::where('company_id', auth()->user()->company_id)->get();
         // $system_logs = Logs::all();
         return view('admin_modules.myprofile.systemlogs')->with('logs', $system_logs);

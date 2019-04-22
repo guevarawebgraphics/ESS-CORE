@@ -83,6 +83,38 @@
                 <div class="card-body">
                     <form id="usertype_form">
                         @csrf
+
+                        {{-- <div class="form-group row">
+                            <input type="radio" name="gender" value="admin" checked> For ESS Admin
+                            <input type="radio" name="gender" value="employer"> For Employer             
+                        </div>
+                        <div class="form-group row" id="employer_field" hidden>
+                            <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
+                            <div class="col-md-6">
+                                <select id="employer" class="form-control" name="cmbUser_type">                                                                 
+                                </select>
+                            </div>                   
+                        </div> --}}
+
+                        <div class="form-group row">
+                            <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type for</label>
+                            <div class="col-md-6">
+                                <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">                                   
+                                    <option value="2">ESS Admin</option>
+                                    <option value="4">Employer</option>   
+                                    <option value="6">CMS</option>                                                        
+                                </select>
+                            </div>                   
+                        </div>
+
+                        <div class="form-group row" id="employer_field" hidden>
+                            <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
+                            <div class="col-md-6">
+                                <select id="employer" class="form-control" name="cmb_Employe">                                                                 
+                                </select>
+                            </div>                   
+                        </div>
+
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">User Type Name</label>
                             <div id="typename"  class="col-md-6">
@@ -120,6 +152,7 @@
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10000,
+            "ordering": false,
             scrollY: 300,
             //  scrollX: true,
             "autoWidth": true,
@@ -293,6 +326,33 @@
 
             }
         });
+
+        //FOR EMPLOYER SELECTION
+        $("#userTypeFor").change(function (){
+
+            val = $('#userTypeFor').val();
+            //alert(val);
+            if(val == 4)
+            {
+                $('#employer_field').removeAttr("hidden");
+                $.ajax({
+                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url: "{{ route('loademployer') }}",
+                    method: "GET",
+                    data:{},                 
+                    success:function(data)
+                    {
+                        $("#employer").html(data);
+                    }
+                });
+            }
+            else
+            {
+                $('#employer_field').attr("hidden", true);
+            }
+        });
+
+        
     });
 </script>
 @endsection

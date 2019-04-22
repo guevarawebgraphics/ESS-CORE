@@ -2,7 +2,8 @@
     <thead>
         <tr>
         <th scope="col">Name</th>
-        <th scope="col">Username</th>       
+        <th scope="col">Username</th>
+        <th scope="col">User Access</th>       
         <th scope="col">Action</th>        
         </tr>
     </thead>
@@ -12,6 +13,7 @@
             <tr>
                 <td>{{$user->name}}</td>
                 <td>{{$user->username}}</td>
+                <td>{{$user->type_name}}</td>
                 @if($user->user_type_id == 1)
                     <td>                   
                         <button class="btn btn-sm btn-primary" id="edit_user" data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}" disabled>Edit</button>

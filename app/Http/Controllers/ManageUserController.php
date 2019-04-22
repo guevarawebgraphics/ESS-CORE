@@ -7,6 +7,7 @@ use App\User;
 use App\UserType;
 use App\UserModuleAccess;
 use App\Logs;
+use App\Account;
 use Session;
 use DB;
 
@@ -29,28 +30,32 @@ class ManageUserController extends Controller
     //show view create user
     public function createuser()
     {
-        $users = DB::connection('mysql')->select("SELECT * FROM users WHERE AccountStatus = '1' AND created_by = 'default' OR created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
+        // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
+        $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
         return view('admin_modules.createuser')->with('users', $users);
     }
 
     //show user types on table for Manage User Access View
     public function manageusertypes()
-    {       
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
-        return view ('admin_modules.manageusers')->with('user_type', $user_type);              
+    {        
+        // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");           
+        return view ('admin_modules.manageusers')->with('user_type', $user_type);        
     }
 
     //refresh user table
     public function refreshtable_user()
     {
-        $users = DB::connection('mysql')->select("SELECT * FROM users WHERE AccountStatus = '1'  AND created_by = 'default' OR created_by = '".auth()->user()->id."' "); //--> Same sa create user function
+        // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> Same sa create user function
+        $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
         return view ('admin_modules.table.tableuser')->with('users', $users);        
     }
 
     //refresh user type table
     public function refreshtable_usertype()
     {
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
+        // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC ");
         return view ('admin_modules.table.tableusertype')->with('user_type', $user_type);        
     }
 
@@ -58,24 +63,60 @@ class ManageUserController extends Controller
     public function load_usertype()
     {       
         $data = "";
-        $i = 1;
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
-
-        if(count($user_type) > 0)
+        $query = "";
+        
+        if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
         {
-            foreach($user_type as $user)
-            {   
-                $data .= '<option value="'. $i .'">'. $user->type_name .'</option>';
-
-                $i++;
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '2' ");
+            if(count($user_type) > 0)
+            {
+                foreach($user_type as $user)
+                {   
+                    $data .= '<option value="'. $user->id .'">'. $user->type_name .'</option>';               
+                }
             }
+            else 
+            {
+                $data .= '<option value="">No User Type</option>';
+            }
+    
+            echo $data;  
         }
-        else 
+        else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
-            $data .= '<option value="">No User Type</option>';
+            //$get_employer = DB::connection('mysql')->select("SELECT id FROM employer WHERE account_id = '".auth()->user()->id."' ");
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '4' AND (employer_id = '".Session::get("employer_id")."' OR employer_id = 'default')  ");
+            if(count($user_type) > 0)
+            {
+                foreach($user_type as $user)
+                {   
+                    $data .= '<option value="'. $user->id .'">'. $user->type_name .'</option>';               
+                }
+            }
+            else 
+            {
+                $data .= '<option value="">No User Type</option>';
+            }
+    
+            echo $data;  
         }
-
-        echo $data;      
+        else if(auth()->user()->user_type_for == 5 || auth()->user()->user_type_for == 6)
+        {
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '6' ");
+            if(count($user_type) > 0)
+            {
+                foreach($user_type as $user)
+                {   
+                    $data .= '<option value="'. $user->id .'">'. $user->type_name .'</option>';               
+                }
+            }
+            else 
+            {
+                $data .= '<option value="">No User Type</option>';
+            }
+    
+            echo $data;  
+        }
     }
 
     //show module access on table
@@ -115,10 +156,14 @@ class ManageUserController extends Controller
     {
         $typename = $request->input('type_name');
         $typedesc = $request->input('type_desc');
+        $typefor = $request->input('cmb_userTypeFor');
+        $employer_id = $request->input('cmb_Employe');
        
         $insert_query = new UserType;
         $insert_query->type_name = $typename;
         $insert_query->type_description = $typedesc;
+        $insert_query->type_for = $typefor;
+        $insert_query->employer_id = $employer_id;
         $insert_query->deleted = 0;
         $insert_query->account_id = auth()->user()->id;
         $insert_query->created_by = auth()->user()->id;
@@ -187,5 +232,27 @@ class ManageUserController extends Controller
         $inserlog->account_id = auth()->user()->id;
         $inserlog->log_event = $event;
         $inserlog->save();
+    }
+
+    //sample employer
+    public function loademployer()
+    {
+        $data = "";
+    
+        $employer = DB::connection('mysql')->select("SELECT * FROM employer");
+
+        if(count($employer) > 0)
+        {
+            foreach($employer as $user)
+            {   
+                $data .= '<option value="'. $user->id .'">'. $user->shortname .'</option>';   
+            }
+        }
+        else 
+        {
+            $data .= '<option value="">No User Type</option>';
+        }
+
+        echo $data;      
     }
 }
