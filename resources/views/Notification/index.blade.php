@@ -3,12 +3,12 @@
 @section('content')
     <div class="card card-info card-outline">
         <div class="card-header">
-            <h3 class="card-title">Notification</h3>
+            <h3 class="card-title"><i class="fa fa-bell"></i> System Notification</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
             <div class="form-group row">
-                <label for="searchbox" class="col-md-2 text-md-center">Search:</label>
+                <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search:</label>
                 <div class="col-md-4">
                     <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
                 </div>
@@ -20,7 +20,7 @@
             <table id="Notification" class="table table-boredered table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        {{-- <th>ID</th> --}}
                         <th>Employer</th>
                         <th>Notificatiion Title</th>
                         <th>Notification Message</th>
@@ -171,7 +171,7 @@ $(document).ready(function (){
                 toastr.success('Notification Saved Successfully', 'Success')
                 setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 3000);
+                }, 1500);
             },
             error: function (data, status){
                 toastr.error('Error. Please Choose a Option', 'Error!')
@@ -179,12 +179,25 @@ $(document).ready(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
                 }, 250);
                 /*Add Error Field*/
-                $('#notification_title').addClass('is-invalid');
-                $('#error_notification_title').html('Notification Title is Required');
-                $('#notification_message').addClass('is-invalid');
-                $('#error_notification_message').html('Notification Message is Required ');
-                $('#notification_type').addClass('is-invalid');
-                // $('#error_notification_type').html('Notification Type is Required');
+                var errors = $.parseJSON(data.responseText);
+                $.each(errors, function (i, errors){
+                    if(errors.notification_title)
+                    {
+                        $('#notification_title').addClass('is-invalid');
+                        $('#error_notification_title').html('Notification Title is Required');
+                    }
+                    if(errors.notification_message)
+                    {
+                        $('#notification_message').addClass('is-invalid');
+                        $('#error_notification_message').html('Notification Message is Required ');
+                    }
+                    if(errors.notification_type)
+                    {
+                        $('#notification_type').addClass('is-invalid');
+                        // $('#error_notification_type').html('Notification Type is Required');
+                    }
+                });
+                
             }
         });
     });
@@ -196,6 +209,12 @@ $(document).ready(function (){
         $('#AddNotificationModal').find('#title_modal').text('Edit Notification');
         $('#notification_form').attr('action', '/Notification/update_notification/' + id);
         $('#notification_form').removeAttr('hidden');
+        /*Remove Errors Error Field*/
+        $('#notification_title').removeClass('is-invalid');
+        $('#error_notification_title').remove();
+        $('#notification_message').removeClass('is-invalid');
+        $('#error_notification_message').remove();
+        $('#notification_type').removeClass('is-invalid');
         toastr.remove()
         $.ajax({
             type: 'ajax',
@@ -264,15 +283,15 @@ $(document).ready(function (){
                     var html = '';
                     var i;
                     for(i=0; i<data.length; i++){
-                        var type = (data[i].notification_type == 1 ? "Email" : "SMS");
+                        var type = (data[i].notification_type == 1 ? "Email" : data[i].notification_type == 2 ? "SMS" : null);
                         html +='<tr>'+
-                                    '<td>'+data[i].id+'</td>'+
+                                    // '<td>'+data[i].id+'</td>'+
                                      '<td>'+data[i].business_name+'</td>'+
                                      '<td>'+data[i].notification_title+'</td>'+
                                      '<td>'+data[i].notification_message+'</td>'+
                                      '<td>'+type+'</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-info" id="ShowNotification" data-toggle="modal" data-target="#AddNotificationModal" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-eye"></i></span>&nbsp;View</a>'+' '+
+                                        // '<a href="javascript:;" class="btn btn-sm btn-info" id="ShowNotification" data-toggle="modal" data-target="#AddNotificationModal" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-eye"></i></span>&nbsp;View</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-secondary notification-edit" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-danger notification-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+

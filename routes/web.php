@@ -63,6 +63,7 @@ Route::post('/myprofile/changepassword_post', 'MyProfileController@changepasswor
 
 /*Route Config For Account*/
 Route::get('/Account', 'AccountController@index')->name('Account.index');
+Route::get('/Account/get_all_account', 'AccountController@get_all_account');
 Route::get('/Account/create', 'AccountController@create')->name('Account.create');
 Route::get('/Account/edit/{id}', 'AccountController@edit')->name('Account.edit');
 Route::get('/Account/get_province', 'AccountController@get_province')->name('Account.get_province');
@@ -81,6 +82,15 @@ Route::post('/Notification/store_notification', 'NotificationController@store_no
 Route::get('/Notification/edit_notification', 'NotificationController@edit_notification');
 Route::post('/Notification/update_notification/{id}', 'NotificationController@update_notification');
 Route::post('/Notification/destroy_notification', 'NotificationController@destroy_notification');
+
+/*Route Config For Template*/
+Route::get('/Template', 'TemplateController@index')->name('Template.index'); 
+Route::get('/Template/get_all_template', 'TemplateController@get_all_template');
+Route::get('/Template/edit_template', 'TemplateController@edit_template');
+Route::post('/Template/update_template/{id}', 'TemplateController@update_template');
+Route::post('/Template/store_template', 'TemplateController@store_template');
+Route::post('/Template/destroy_template', 'TemplateController@destroy_template');
+
 
 ////// EMPLOYER
 

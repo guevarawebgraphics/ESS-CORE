@@ -352,7 +352,7 @@
 							<p>Create</p></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {{$manage_managedocs}}" href="/managedocs/manage"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$manage_managedocs}}" href="/Template"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage</p></a>
 						</li>
 					</ul>
