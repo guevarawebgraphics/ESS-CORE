@@ -12,7 +12,7 @@
             <tr>
                 <td>{{$user->type_name}}</td>
                 <td>{{$user->type_description}}</td>
-                @if($user->account_id == "default")
+                @if($user->created_by == "default")
                     <td>
                         <button class="btn btn-sm btn-secondary" id="edit_usertype" data-add="{{$user->id}}]]{{$user->type_name}}]]{{$user->type_description}}" disabled>Edit</button>
                         <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user->id}}" disabled>Manage Access</button>
