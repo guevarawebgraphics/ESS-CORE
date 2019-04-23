@@ -122,7 +122,7 @@ class MyProfileController extends Controller
             $update_query->save();
         }
         
-       
+        $this->insert_log("Updated Settings");
     }
     //show view change password
     public function changepassword()
@@ -162,7 +162,17 @@ class MyProfileController extends Controller
         $update_query->password = Hash::make($newPassword); 
         $update_query->updated_by = auth()->user()->id;
         $update_query->ischange = 0;     
-        $update_query->save();     
+        $update_query->save();    
+        
+        $this->insert_log("Change Password");
+    }
+    // Method for inserting into logs
+    public function insert_log($event)
+    {
+        $inserlog = new Logs;
+        $inserlog->account_id = auth()->user()->id;
+        $inserlog->log_event = $event;
+        $inserlog->save();
     }
     //show view system logs
     public function systemlogs()
