@@ -30,9 +30,18 @@ class ManageUserController extends Controller
     //show view create user
     public function createuser()
     {
+        $users = "";
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
-        $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
-        return view('admin_modules.createuser')->with('users', $users);
+        if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
+        {
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
+            return view('admin_modules.createuser')->with('users', $users);
+        }
+        else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
+        {
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".Session::get("employer_id")."' ");
+            return view('admin_modules.createuser')->with('users', $users);
+        }
     }
 
     //show user types on table for Manage User Access View
@@ -67,7 +76,8 @@ class ManageUserController extends Controller
         
         if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
         {
-            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '2' ");
+            // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '2' ");
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ");
             if(count($user_type) > 0)
             {
                 foreach($user_type as $user)
@@ -165,7 +175,7 @@ class ManageUserController extends Controller
         $insert_query->type_for = $typefor;
         $insert_query->employer_id = $employer_id;
         $insert_query->deleted = 0;
-        $insert_query->account_id = auth()->user()->id;
+        //$insert_query->account_id = auth()->user()->id;
         $insert_query->created_by = auth()->user()->id;
         $insert_query->updated_by = auth()->user()->id;
 
@@ -245,7 +255,7 @@ class ManageUserController extends Controller
         {
             foreach($employer as $user)
             {   
-                $data .= '<option value="'. $user->id .'">'. $user->shortname .'</option>';   
+                $data .= '<option value="'. $user->id .'">'. $user->business_name .'</option>';   
             }
         }
         else 

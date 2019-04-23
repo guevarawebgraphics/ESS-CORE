@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use DB;
+use Session;
 use App\User;
+use App\Logs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -103,17 +105,24 @@ class RegisterController extends Controller
                 $user_type_for = "6";
             }
         }
-        return User::create([
+        $this->insert_log("Created new user");
+        $user = User::create([
             'name' => $data['name'],
             'user_type_id' => $data['cmbUser_type'],
             'username' => $data['username'],       
-            'user_type_for' => $user_type_for,     
+            'user_type_for' => $user_type_for,
+            'employer_id' => "default",     
             'password' => Hash::make($data['password']),
-            'created_by' => auth()->user()->name,
-            'updated_by' => auth()->user()->name
+            'created_by' => auth()->user()->id,
+            'updated_by' => auth()->user()->id
         ]);
 
-        $this->insert_log("Created new user");
+        $id = $user->id;
+        
+        DB::table('users')->where('id', '=', $id)
+        ->update(array(
+            'employer_id' => Session::get("employer_id")
+        ));     
     }
 
     public function updateuser_post(Request $request)
