@@ -47,6 +47,15 @@ class AccountController extends Controller
         return view('Account.index', compact('Account'));
     }
 
+    public function get_all_account(){
+        $Account = DB::table('employer')
+                        ->join('user_type', 'employer.user_type', '=', 'user_type.id')
+                        ->join('users', 'employer.account_id', '=', 'users.id')
+                        ->select('employer.id', 'employer.business_name', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name', 'users.AccountStatus', 'employer.account_id')
+                        ->get();
+        return json_encode($Account);
+    }
+
     public function create()
     {
         return view('Account.create');
@@ -68,15 +77,15 @@ class AccountController extends Controller
             'accountname' => 'required|unique:employer|min:3',
             'business_name' => 'required|unique:employer|min:3',
             'user_type' => 'required',
-            'address_unit' => 'required|min:3',
+            'address_unit' => 'required|min:1',
             'address_country' => 'required|min:3',
             'address_town' => 'required|min:3',
             'address_cityprovince' => 'required|min:3',
             'address_barangay' => 'required|min:3',
             'address_zipcode' => 'required|min:3',
             'contact_person' => 'required|min:3',
-            'contact_phone' => 'required|unique:employer',
-            'contact_mobile' => 'required|unique:employer',
+            'contact_phone' => 'required|numeric|unique:employer',
+            'contact_mobile' => 'required|numeric|unique:employer',
             'contact_email' => 'required|unique:employer|email',
             'sss' => 'required|unique:employer|min:3',
             'tin' => 'required|unique:employer|min:3',
@@ -119,8 +128,10 @@ class AccountController extends Controller
                 /*Create User*/
                 $user = User::create([
                     'user_type_id' => $request->input('user_type'),
+                    'user_type_for' => 3,
+                    'employer_id' => "default",     
                     'name' => $request->input('accountname'),
-                    'username' => $request->input('accountname'),
+                    'username' => $request->input('accountname'), //Temporary Username
                     'password' => Hash::make($password),
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,
@@ -170,7 +181,16 @@ class AccountController extends Controller
                     'sec' => $fileNameToStore_sec,
                     'bir' => $fileNameToStore_bir
                 ]);
+
+                $employer_id = $employer->id;
+
+                DB::table('users')->where('id', '=', $Account_id)
+                ->update(array(
+                    'employer_id' => $employer_id
+                )); 
             }
+
+            
 
             //$account_id = $employer->id;
 
@@ -255,9 +275,9 @@ class AccountController extends Controller
             'address_barangay' => 'required|min:3',
             'address_zipcode' => 'required|min:3',
             'contact_person' => 'required|min:3',
-            'contact_phone' => 'required',
-            'contact_mobile' => 'required',
-            'contact_email' => 'required',
+            'contact_phone' => 'required|numeric',
+            'contact_mobile' => 'required|numeric',
+            'contact_email' => 'required|email',
             'sss' => 'required|min:3',
             'tin' => 'required|min:3',
             'phic' => 'required|min:3',
@@ -282,9 +302,6 @@ class AccountController extends Controller
             // Upload Image
             $path_sec = $request->file('sec')->storeAs('public/Documents/sec', $fileNameToStore_sec);
             $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
-        } else {
-            $fileNameToStore_sec = 'noifile.txt';
-            $fileNameToStore_bir = 'noifile.txt';
         }
 
         /*Update Account Employer*/

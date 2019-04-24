@@ -8,13 +8,13 @@
 @endif
 <div class="card card-info card-outline">
     <div class="card-header">
-      <h3 class="card-title">Manage Accounts</h3>
+      <h3 class="card-title"><i class="fa fa-edit"></i> Manage Accounts</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
       {{-- <input type="text" id="searchbox" class="form-control col-md-4"> --}}
       <div class="form-group row">
-          <label for="search" class="col-md-2 text-md-center">Search: </label>
+          <label for="search" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search: </label>
           <div class="col-md-4">
               
               <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
@@ -29,7 +29,7 @@
       <table id="Accounts" class="table table-bordered table-striped">
         <thead>
         <tr>
-          <th>Id</th>
+          {{-- <th>Id</th> --}}
           <th>Business Name</th>
           <th>AccountName</th>
           <th>Account Type</th>
@@ -41,8 +41,8 @@
           <th>Action</th>
         </tr>
         </thead>
-        <tbody>
-            @foreach($Account as $Accounts)
+        <tbody id="showdata">
+            {{-- @foreach($Account as $Accounts)
                 <tr>
                     <td>{{ $Accounts->id }}</td>
                     <td>{{ $Accounts->business_name }}</td>
@@ -69,11 +69,11 @@
                     <a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="{{ $Accounts->account_id }}" data-business_name="{{ $Accounts->business_name}}"><i class="fa fa-trash"></i> Delete</a>
                     </td>
                 </tr>
-            @endforeach
+            @endforeach --}}
         </tbody>
         <tfoot>
             <tr>
-                <th>Id</th>
+                {{-- <th>Id</th> --}}
                 <th>business_name</th>
                 <th>AccountName</th>
                 <th>Account Type</th>
@@ -145,6 +145,8 @@
     
 <script type="text/javascript">
     $(document).ready(function () {
+      showAllAccount();
+
         /*DataTable*/ 
         var table = $("#Accounts").DataTable({
           // "searching": false,
@@ -163,11 +165,12 @@
         });
 
         // Delete Function
-        $('.Delete').on('click', function (){
+        $('#showdata').on('click', '.Delete', function (){
           var id = $(this).attr("data-id");
           var business_name = $(this).attr("data-business_name");
           $("#DeleteForm").attr('action', '/Account/' + id);
            $("#business_name").html(business_name);
+           toastr.remove()
            console.log(id);
           // Prevent Previous handler - unbind()
            $('#confirm').unbind().click(function (){
@@ -182,6 +185,8 @@
                     toastr.success('Successfully Delete!')
                     //Close Modal
                     $('#deleteModal').modal('hide');
+                    //Show All Account
+                    showAllAccount();
                   },
                   error: function(data){
                     toastr.error('Error Deleting Account')
@@ -192,16 +197,18 @@
 
 
         // Change Status
-        $('.CS').on('click', function (){
+        $('#showdata').on('click', '.CS', function (){
           var id = $(this).attr("data-id");
           //console.log(id);
           $('#account_id').val(id);
+          toastr.remove()
         });
         //Change Status
         $('#ChangeStatusConfirm').click(function (){
           $("#spinner").addClass('fa fa-refresh fa-spin');
           let Account_id = $('#account_id').val();
           let AccountStatus = $('#AccountStatus').val();
+          toastr.remove()
           $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -226,6 +233,10 @@
                       _token:     '{{ csrf_token() }}'
                     },
                     success: function (data, response){
+                      //Show All Account
+                      showAllAccount();
+                      //Set the dropdown to the default selected
+                      $('#AccountStatus option[value=""]').prop('selected', true);
                       //console.log('Success');
                       // Display a success toast, with a title
                       toastr.success('Account Updated Successfully', 'Success')
@@ -249,6 +260,43 @@
                 });
             }
         });
+
+        function showAllAccount(){
+          $.ajax({
+            type: 'GET',
+            url: '/Account/get_all_account',
+            async: false,
+            dataType: 'json',
+            success: function(data){
+              var html = '';
+              var i;
+              for(i=0; i<data.length; i++){
+                var AccountStatus = (data[i].AccountStatus == 1 ? "Active" : data[i].AccountStatus == 2 ? "In-Active" : data[i].AccountStatus == 3 ? "Deactivated" : null);
+                html +='<tr>'+
+                        // '<td>'+data[i].id+'</td>'+
+                        '<td>'+data[i].business_name+'</td>'+
+                        '<td>'+data[i].accountname+'</td>'+
+                        '<td>'+data[i].type_name+'</td>'+
+                        '<td>'+data[i].contact_email+'</td>'+
+                        '<td>'+AccountStatus+'</td>'+
+                        '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" download>' +data[i].sec+ +'</a>' + '</td>'+
+                        '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" download>' +data[i].bir+ +'</a>' + '</td>'+
+                        '<td>' + '<a href="#ChangeStatus" class="CS btn-sm btn btn-info" data-toggle="modal" data-target="#csModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'"><i class="fa fa-info"></i> Change Status</a>' +'</td>'+
+                        '<td>' + '<a href="/Account/edit/'+data[i].account_id+'" class="btn btn-sm btn-secondary"><i class="fa fa-edit"></i> Edit</a> ' +
+                          '<a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'"><i class="fa fa-trash"></i> Delete</a>' +
+                         '</td>'+
+                        '</tr>';
+
+              }
+              if(AccountStatus != null){
+                $('#showdata').html(html);
+              }
+            },
+            error: function(){
+              console.log('Could not get data from database');
+            }
+          });
+        }
 
         $('#AccountStatus').on('change', function(){
           $('#AccountStatus').removeClass('is-invalid');

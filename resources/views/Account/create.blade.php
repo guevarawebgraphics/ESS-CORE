@@ -4,7 +4,7 @@
     <!-- general form elements -->
     <div class="card card-info card-outline">
         <div class="card-header">
-          <h3 class="card-title">Create Account</h3>
+          <h3 class="card-title"><i class="fa fa-edit"></i> Create Account</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
@@ -191,22 +191,20 @@
                 </div>
 
                 <div class="form-group row">
-                        <label for="accountstatus" class="col-md-2 text-md-center">Upload Documents:</label>
-                        <div class="col-xs-2">
+                        <label for="accountstatus" class="col-md-2 text-md-center">Select File SEC/DTI:</label>
+                        <div class="col-md-4">
                             
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="sec" name="sec">
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input type="file" class="form-control-file" id="sec" name="sec">
                                 </div>
                                 
                         </div>
                         
                         <label for="accountstatus" class="col-md-2 text-md-center">Select File BIR COR:</label>
-                        <div class="col-xs-2">
+                        <div class="col-md-4">
                             
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="bir" name="bir">
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input type="file" class="form-control-file" id="bir" name="bir">
                                 </div>
                         </div>
                 </div>
@@ -303,84 +301,11 @@ $(document).ready(function (){
     });
 
 
-    /*Remove Errors*/
-    $('#business_name').keypress(function (){
-        $('#business_name').removeClass('is-invalid');
-        $('#error_business_name').attr('hidden', true);
-    });
-    $('#contact_person').keypress(function (){
-        $('#contact_person').removeClass('is-invalid');
-        $('#error_contact_person').attr('hidden', true);
-    });
-    $('#accountname').keypress(function (){
-        $('#accountname').removeClass('is-invalid');
-        $('#error_accountname').attr('hidden', true);
-    });
-    $('#contact_phone').keypress(function (){
-        $('#contact_phone').removeClass('is-invalid');
-        $('#error_contact_phone').attr('hidden', true);
-    });
-    $('#address_unit').keypress(function (){
-        $('#address_unit').removeClass('is-invalid');
-        $('#error_address_unit').attr('hidden', true);
-    });
-    $('#contact_mobile').keypress(function (){
-        $('#contact_mobile').removeClass('is-invalid');
-        $('#error_contact_mobile').attr('hidden', true);
-    });
-    $('#address_country').change(function (){
-        $('#address_country').removeClass('is-invalid');
-        $('#error_address_country').attr('hidden', true);
-    });
-    $('#contact_email').keypress(function (){
-        $('#contact_email').removeClass('is-invalid');
-        $('#error_contact_email').attr('hidden', true);
-    });
-    $('#address_cityprovince').change(function (){
-        $('#address_cityprovince').removeClass('is-invalid');
-        $('#error_address_cityprovince').attr('hidden', true);
-    });
-    $('#tin').keypress(function (){
-        $('#tin').removeClass('is-invalid');
-        $('#error_tin').attr('hidden', true);
-    });
-    $('#address_town').change(function (){
-        $('#address_town').removeClass('is-invalid');
-        $('#error_address_town').attr('hidden', true);
-    });
-    $('#sss').keypress(function (){
-        $('#sss').removeClass('is-invalid');
-        $('#error_sss').attr('hidden', true);
-    });
-    $('#address_barangay').change(function (){
-        $('#address_barangay').removeClass('is-invalid');
-        $('#error_address_barangay').attr('hidden', true);
-    });
-    $('#phic').keypress(function (){
-        $('#phic').removeClass('is-invalid');
-        $('#error_phic').attr('hidden', true);
-    });
-    $('#address_zipcode').change(function (){
-        $('#address_zipcode').removeClass('is-invalid');
-        $('#error_address_zipcode').attr('hidden', true);
-    });
-    $('#hdmf').keypress(function (){
-        $('#hdmf').removeClass('is-invalid');
-        $('#error_hdmf').attr('hidden', true);
-    });
-    $('#user_type').change(function (){
-        $('#user_type').removeClass('is-invalid');
-        $('#error_user_type').attr('hidden', true);
-    });
-    $('#nid').keypress(function (){
-        $('#nid').removeClass('is-invalid');
-        $('#error_nid').attr('hidden', true);
-    });
-
     /*Add Account*/
     $('#AccountForm').submit(function (e){
         $("#spinner").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
+        toastr.remove();
         var formData = new FormData($(this)[0]);
         $.ajaxSetup({
             headers: {
@@ -407,6 +332,11 @@ $(document).ready(function (){
                 setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
                 }, 3000);
+                //Remove Errors
+                $('.form-control').each(function(i, obj){
+                    $('.form-control').removeClass('is-invalid');
+                    $('.text-danger').attr('hidden', true);
+                });
             },
             error: function(data, status){
                 //console.log("Error");
