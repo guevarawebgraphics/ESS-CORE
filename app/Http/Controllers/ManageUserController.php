@@ -56,8 +56,20 @@ class ManageUserController extends Controller
     public function refreshtable_user()
     {
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> Same sa create user function
-        $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
-        return view ('admin_modules.table.tableuser')->with('users', $users);        
+        // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
+        // return view ('admin_modules.table.tableuser')->with('users', $users);
+        $users = "";
+        // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
+        if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
+        {
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
+            return view('admin_modules.table.tableuser')->with('users', $users);
+        }
+        else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
+        {
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".Session::get("employer_id")."' ");
+            return view('admin_modules.table.tableuser')->with('users', $users);
+        }        
     }
 
     //refresh user type table

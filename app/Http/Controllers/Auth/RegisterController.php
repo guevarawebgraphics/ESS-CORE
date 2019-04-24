@@ -89,6 +89,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user_type_for = "";
+        $counter = 0;
         $check_type = DB::connection('mysql')->select("SELECT id,user_type_for FROM user_type WHERE id = '".auth()->user()->user_type_id."' " );
         if(!empty($check_type))
         {
@@ -99,6 +100,7 @@ class RegisterController extends Controller
             else if($check_type[0]->user_type_for == "3" || $check_type[0]->user_type_for == "4")
             {
                 $user_type_for = "4";
+                $counter++;
             }
             else if($check_type[0]->user_type_for == "5" || $check_type[0]->user_type_for == "6")
             {
@@ -119,10 +121,14 @@ class RegisterController extends Controller
 
         $id = $user->id;
         
-        DB::table('users')->where('id', '=', $id)
-        ->update(array(
-            'employer_id' => Session::get("employer_id")
-        ));     
+        if($counter > 0)
+        {
+            DB::table('users')->where('id', '=', $id)
+            ->update(array(
+                'employer_id' => Session::get("employer_id")
+            )); 
+        }
+            
     }
 
     public function updateuser_post(Request $request)

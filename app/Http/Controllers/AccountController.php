@@ -129,6 +129,7 @@ class AccountController extends Controller
                 $user = User::create([
                     'user_type_id' => $request->input('user_type'),
                     'user_type_for' => 3,
+                    'employer_id' => "default",     
                     'name' => $request->input('accountname'),
                     'username' => $request->input('accountname'), //Temporary Username
                     'password' => Hash::make($password),
@@ -180,7 +181,16 @@ class AccountController extends Controller
                     'sec' => $fileNameToStore_sec,
                     'bir' => $fileNameToStore_bir
                 ]);
+
+                $employer_id = $employer->id;
+
+                DB::table('users')->where('id', '=', $Account_id)
+                ->update(array(
+                    'employer_id' => $employer_id
+                )); 
             }
+
+            
 
             //$account_id = $employer->id;
 
