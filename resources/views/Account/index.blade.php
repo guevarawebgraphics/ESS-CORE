@@ -74,10 +74,11 @@
         <tfoot>
             <tr>
                 {{-- <th>Id</th> --}}
-                <th>business_name</th>
+                <th>Business Name</th>
                 <th>AccountName</th>
                 <th>Account Type</th>
                 <th>Email</th>
+                <th>Account Status</th>
                 <th>Document Sec</th>
                 <th>Document Bir</th>
                 <th>Change Status</th>
@@ -158,6 +159,7 @@
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
+          "order": [[0, "desc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {
@@ -271,7 +273,7 @@
               var html = '';
               var i;
               for(i=0; i<data.length; i++){
-                var AccountStatus = (data[i].AccountStatus == 1 ? "Active" : data[i].AccountStatus == 2 ? "In-Active" : data[i].AccountStatus == 3 ? "Deactivated" : null);
+                var AccountStatus = (data[i].AccountStatus == 1 ? '<span class="badge badge-success">'+"Active"+'</span>' : data[i].AccountStatus == 2 ? '<span class="badge badge-secondary">'+"In-Active"+'</span>' : data[i].AccountStatus == 3 ? '<span class="badge badge-danger">'+"Deactivated"+'</span>' : null);
                 html +='<tr>'+
                         // '<td>'+data[i].id+'</td>'+
                         '<td>'+data[i].business_name+'</td>'+
@@ -279,8 +281,8 @@
                         '<td>'+data[i].type_name+'</td>'+
                         '<td>'+data[i].contact_email+'</td>'+
                         '<td>'+AccountStatus+'</td>'+
-                        '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" download>' +data[i].sec+ +'</a>' + '</td>'+
-                        '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" download>' +data[i].bir+ +'</a>' + '</td>'+
+                        '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +data[i].sec+ +'</a>' + '</td>'+
+                        '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +data[i].bir+ +'</a>' + '</td>'+
                         '<td>' + '<a href="#ChangeStatus" class="CS btn-sm btn btn-info" data-toggle="modal" data-target="#csModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'"><i class="fa fa-info"></i> Change Status</a>' +'</td>'+
                         '<td>' + '<a href="/Account/edit/'+data[i].account_id+'" class="btn btn-sm btn-secondary"><i class="fa fa-edit"></i> Edit</a> ' +
                           '<a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'"><i class="fa fa-trash"></i> Delete</a>' +
