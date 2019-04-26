@@ -51,14 +51,14 @@ elseif(Session::get('manage_users') == 'delete'){
 @endphp
 
 <div class="container-fluid">
-    <div class="card">
+    <div class="card card-info card-outline">
         <div class="card-header">
-            <h3 class="card-title">Manage User Access</h3>
+            <h3 class="card-title"><i class="fa fa-gears"></i> Manage User Access</h3>
         </div>
         
         <div class="card-body">
             <div class="pull-right">
-                <button type="button" class="btn btn-primary" id="btnCreateUser" {{$add}}>Create User Type</button>
+                <button type="button" class="btn btn-primary" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User Type</button>
             </div>
             <br>
             <br>
@@ -80,7 +80,7 @@ elseif(Session::get('manage_users') == 'delete'){
 <div class="modal fade bd-example-modal-lg" id="userAccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-info">
+            <div class="modal-header bg-primary">
                 <h5 class="modal-title" id="exampleModalLabel">Manage User Access</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -105,7 +105,7 @@ elseif(Session::get('manage_users') == 'delete'){
 <div class="modal fade" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-info">
+            <div class="modal-header bg-primary">
                 <h5 class="modal-title" id="userTypeTitle">Create User Type</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>

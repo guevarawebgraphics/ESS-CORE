@@ -50,6 +50,7 @@ Route::post('/manageuser/deleteusertype_post', 'ManageUserController@deleteusert
 Route::post('/manageuser/updateuser_post', 'Auth\\RegisterController@updateuser_post')->name('updateuser_post');
 Route::post('/manageuser/deleteuser_post', 'ManageUserController@deleteuser_post')->name('deleteuser_post');
 Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer');
+Route::get('/manageuser/checkusername', 'Auth\\RegisterController@checkusername')->name('checkusername');
 
 //My Profile
 Route::get('/myprofile/settings', 'MyProfileController@settings');

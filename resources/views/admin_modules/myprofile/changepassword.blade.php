@@ -49,7 +49,7 @@ elseif(Session::get('my_profile') == 'delete'){
 }                   
 @endphp
 <div class="container-fluid">
-    <div class="card">
+    <div class="card card-info card-outline">
         <div class="card-header">
             <center><strong>Change Password</strong></center>
         </div>

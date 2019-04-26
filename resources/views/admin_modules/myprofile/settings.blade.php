@@ -51,8 +51,8 @@ elseif(Session::get('my_profile') == 'delete'){
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-header bg-primary">
+            <div class="card card-info card-outline">
+                <div class="card-header">
                     <center><strong>Admin</strong></center>
                 </div>
                 <div class="card-body">           
@@ -63,8 +63,8 @@ elseif(Session::get('my_profile') == 'delete'){
                     </div>                                    
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header bg-primary">
+            <div class="card card-info card-outline">
+                <div class="card-header">
                     <center><strong>About Me</strong></center>
                 </div>
                 <div class="card-body">
@@ -81,8 +81,8 @@ elseif(Session::get('my_profile') == 'delete'){
             </div>
         </div>
         <div class="col-md-9">
-            <div class="card">
-                <div class="card-header bg-primary">
+            <div class="card card-info card-outline">
+                <div class="card-header">
                     <center><strong>Account Settings</strong></center>
                 </div>
                 <div class="card-body">

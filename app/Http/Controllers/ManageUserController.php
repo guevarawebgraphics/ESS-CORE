@@ -208,7 +208,7 @@ class ManageUserController extends Controller
             $userAccess = DB::connection("mysql")->select("UPDATE user_module_access SET ". $um->module_code ." = '$valType' WHERE user_type_id = '$userId'");           
         }
         
-        $this->insert_log("Update manage access");
+        $this->insert_log("Updated manage access");
     }
 
     //create user type post
