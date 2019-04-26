@@ -46,6 +46,7 @@
 	<script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('/plugins/datatables/dataTables.bootstrap4.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
 	<script src="{{ asset('js/scripts.js') }}"></script>
     
 	<div class="wrapper">

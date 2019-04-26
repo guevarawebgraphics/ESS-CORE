@@ -38,11 +38,16 @@ class NotificationController extends Controller
             'notification_type' => 'required'
         ]);
 
+        $employer = DB::table('employer')
+                        ->select('account_id')
+                        ->where('business_name', '=', $request->employer_id)
+                        ->first();
+
         /*Insert To Notification Table*/
         $Notification = Notifications::create([
             // Array Fields Here
             'account_id' => auth()->user()->id,
-            'employer_id' => $request->input('employer_id'),
+            'employer_id' => $employer->account_id,
             'notification_title' => $request->input('notification_title'),
             'notification_message' => $request->input('notification_message'),
             'notification_type' => $request->input('notification_type'),
@@ -70,7 +75,7 @@ class NotificationController extends Controller
     {
         /*Validate Request*/
         $this->validate($request, [
-            'employer_id' => 'required',
+            //'employer_id' => 'required',
             'notification_title' => 'required',
             'notification_message' => 'required',
             'notification_type' => 'required'
@@ -81,7 +86,7 @@ class NotificationController extends Controller
         DB::table('notification')->where('id', '=', $id)
                                 ->update(array(
                                         // Array Fields Here
-                                        'employer_id' => $request->input('employer_id'),
+                                        //'employer_id' => $request->input('employer_id'),
                                         'notification_title' => $request->input('notification_title'),
                                         'notification_message' => $request->input('notification_message'),
                                         'notification_type' => $request->input('notification_type'),

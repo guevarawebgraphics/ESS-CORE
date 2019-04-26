@@ -70,16 +70,22 @@
                     <label for="notification_message" class="control-label col-md-4 text-md-center">Notification Message:</label>
                         <div class="col-md-6">
                             
-                            <textarea id="notification_message" type="text" class="form-control" name="notification_message" placeholder="Notification Message"   autofocus></textarea>
+                            <textarea id="notification_message" class="form-control" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>
                                     <p class="text-danger" id="error_notification_message"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                             <label for="employer_id" class="control-label col-md-4 text-md-center">Select Employer:</label>
-                            <select class="form-control col-md-4" name="employer_id" id="employer_id">
+                            {{-- <select class="form-control col-md-4" name="employer_id" id="employer_id">
                                 <option value="" selected>Select Employer</option>>
-                            </select>
-                        </div>
+                            </select> --}}
+
+                            <input id="employer_id" type="text" class="form-control" name="employer_id" list="business_name" placeholder="Employer" style="width: 260px !important;"   autofocus>
+                                <p class="text-danger" id="error_employer_id"></p>
+                                <datalist id="business_name">
+                                    {{-- <option value="1"> --}}
+                                </datalist>
+                    </div>
                     <div class="form-group row">
                         <label for="notification_type" class="control-label col-md-4 text-md-center">Notification Type:</label>
                         <select class="form-control col-md-4" name="notification_type" id="notification_type">
@@ -128,24 +134,26 @@
 $(document).ready(function (){
     // Show All Notification
     showAllNotification();
-
-    /*DataTable*/ 
-    var table = $("#Notification").DataTable({
-          // "searching": false,
-          "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
-          "paging": true,
-          "pageLength": 10000,
-           scrollY: 300,
-          //  scrollX: true,
-          "autoWidth": true,
-          lengthChange: false,
-          responsive: true,
-          "order": [[0, "desc"]]
-    }); 
-    /*Custom Search For DataTable*/
-    $("#searchbox").on("keyup search input paste cut", function () {
-        table.search(this.value).draw();
-    });
+    InitDatatable();
+    function InitDatatable(){
+        /*DataTable*/ 
+        var table = $("#Notification").DataTable({
+            // "searching": false,
+            "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+            "paging": true,
+            "pageLength": 10000,
+            scrollY: 300,
+            //  scrollX: true,
+            "autoWidth": true,
+            lengthChange: false,
+            responsive: true,
+            "order": [[0, "desc"]]
+        }); 
+        /*Custom Search For DataTable*/
+        $("#searchbox").on("keyup search input paste cut", function () {
+            table.search(this.value).draw();
+        });
+    }
 
     // Get User Type
     $.ajax({
@@ -154,7 +162,7 @@ $(document).ready(function (){
         dataType: 'json',
         success: function (data) {
             $.each(data, function (i, data) {
-                $("#employer_id").append('<option value="' + data.account_id + '">' + data.business_name + '</option>');
+                $("#business_name").append('<option value="' + data.business_name + '">');
             });
         },
         error: function (response) {
@@ -204,8 +212,9 @@ $(document).ready(function (){
             },
             success: function (data){
                 $('#notification_form')[0].reset();
-                // Show All Data
-                showAllNotification();
+                if ($.fn.dataTable.isDataTable('#Notification')) {
+                    $("#Notification").DataTable().clear().destroy();
+                }
                 // Modal hide
                 //$('#AddNotificationModal').modal('hide');
                 setTimeout(function (){
@@ -215,7 +224,10 @@ $(document).ready(function (){
                 toastr.success('Notification Saved Successfully', 'Success')
                 setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 1500);
+                }, 1000);
+                // Show All Data
+                showAllNotification();
+                InitDatatable();
             },
             error: function (data, status){
                 toastr.error('Error. Please Choose a Option', 'Error!')
@@ -269,7 +281,10 @@ $(document).ready(function (){
             success: function(data){
                 $('#notification_title').val(data[0].notification_title);
                 $('#notification_message').val(data[0].notification_message);
-                $('#employer_id option[value="'+data[0].employer_id+'"]').prop('selected', true);
+                $('#employer_id').val(data[0].business_name);
+                $('#employer_id').attr('disabled', true);
+                $('#employer_id').addClass('disabled');
+                //$('#employer_id option[value="'+data[0].employer_id+'"]').prop('selected', true);
                 $('#notification_type option[value="'+data[0].notification_type+'"]').prop('selected', true);
                 
             },
@@ -305,7 +320,7 @@ $(document).ready(function (){
                     toastr.success('Notification Deleted Successfully', 'Success')
                     setTimeout(function (){
                         $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
-                    }, 1500);
+                    }, 1000);
                     showAllNotification();
                   },
                   error: function(data){
@@ -313,6 +328,38 @@ $(document).ready(function (){
                   }
             });
         });
+    });
+
+    /*Suggest Employer*/
+    var bloodhound = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/Account/get_all_employer?q=%QUERY%',
+                    wildcard: '%QUERY%'
+                },
+            });
+            $('#employer_id').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                name: 'users',
+                source: bloodhound,
+                display: function(data) {
+                    return data.business_name  //Input value to be set when you select a suggestion. 
+                },
+                templates: {
+                    empty: [
+                        '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+                    ],
+                    header: [
+                        '<div class="list-group search-results-dropdown">'
+                    ],
+                    suggestion: function(data) {
+                    return '<div style="font-weight:normal; margin-top:-5px ! important; width: 200px !important;" class="list-group-item">' + data.business_name + '</div></div>'
+                    }
+                }
     });
 
     
