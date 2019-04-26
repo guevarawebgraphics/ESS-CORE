@@ -125,9 +125,6 @@ class AccountController extends Controller
         }
         else {
 
-<<<<<<< HEAD
-            
-=======
             /*Check if All Request is not null*/
             if($request->all() != null){
                 /*Create User*/
@@ -279,7 +276,6 @@ class AccountController extends Controller
 
             // return redirect('Account')->with('success', 'Account Successfully Created');
             return Response::json($msg);
->>>>>>> 713b7d74af7b6571cb59264bbe1fdc0071920760
         }
         
 
