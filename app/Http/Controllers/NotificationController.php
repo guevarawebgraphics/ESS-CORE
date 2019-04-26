@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Notifications;
 use DB;
+use App\Logs;
 use Response;
 
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class NotificationController extends Controller
 
     public function get_all_notifications(){
         $Notification = DB::table('notification')
-                            ->join('employer', 'employer.account_id', '=', 'notification.account_id')
+                            ->join('employer', 'employer.account_id', '=', 'notification.employer_id')
                             ->select('notification.id', 'notification.notification_title', 'notification.notification_message', 'notification.notification_type', 'employer.business_name')
                             ->get();
         return json_encode($Notification);
@@ -31,15 +32,22 @@ class NotificationController extends Controller
 
         /*Validate Request*/
         $this->validate($request, [
+            'employer_id' => 'required',
             'notification_title' => 'required',
             'notification_message' => 'required',
             'notification_type' => 'required'
         ]);
 
+        $employer = DB::table('employer')
+                        ->select('account_id')
+                        ->where('business_name', '=', $request->employer_id)
+                        ->first();
+
         /*Insert To Notification Table*/
         $Notification = Notifications::create([
             // Array Fields Here
-            'account_id' => 2,
+            'account_id' => auth()->user()->id,
+            'employer_id' => $employer->account_id,
             'notification_title' => $request->input('notification_title'),
             'notification_message' => $request->input('notification_message'),
             'notification_type' => $request->input('notification_type'),
@@ -47,6 +55,8 @@ class NotificationController extends Controller
             'updated_by' => auth()->user()->id 
         ]);
         $msg = 'Success!';
+        // Insert Log
+        $this->insert_log("Create Notification");
         return response::json($msg);
     }
 
@@ -54,8 +64,8 @@ class NotificationController extends Controller
     {
         $Notification_id = $request->id;
         $Notification = DB::table('notification')
-                            ->join('employer', 'employer.account_id', '=', 'notification.account_id')
-                            ->select('notification.id', 'notification.notification_title', 'notification.notification_message', 'notification.notification_type', 'employer.business_name')
+                            ->join('employer', 'employer.account_id', '=', 'notification.employer_id')
+                            ->select('notification.id', 'notification.employer_id', 'notification.notification_title', 'notification.notification_message', 'notification.notification_type', 'employer.business_name')
                             ->where('notification.id', $Notification_id)
                             ->get();
         return json_encode($Notification);
@@ -65,6 +75,7 @@ class NotificationController extends Controller
     {
         /*Validate Request*/
         $this->validate($request, [
+            //'employer_id' => 'required',
             'notification_title' => 'required',
             'notification_message' => 'required',
             'notification_type' => 'required'
@@ -75,7 +86,7 @@ class NotificationController extends Controller
         DB::table('notification')->where('id', '=', $id)
                                 ->update(array(
                                         // Array Fields Here
-                                        'account_id' => 2,
+                                        //'employer_id' => $request->input('employer_id'),
                                         'notification_title' => $request->input('notification_title'),
                                         'notification_message' => $request->input('notification_message'),
                                         'notification_type' => $request->input('notification_type'),
@@ -83,6 +94,8 @@ class NotificationController extends Controller
                                         'updated_by' => auth()->user()->id 
                                 ));
         $msg = 'Updated!';
+        // Insert Log
+        $this->insert_log("Update Notification");
         return response::json($msg);
     }
 
@@ -93,5 +106,14 @@ class NotificationController extends Controller
         $Notification = Notifications::where('id', '=', $Notification_id)->delete();
 
         return response()->json($Notification);
+    }
+
+    // Method for inserting into logs
+    public function insert_log($event)
+    {
+        $inserlog = new Logs;
+        $inserlog->account_id = auth()->user()->id;
+        $inserlog->log_event = $event;
+        $inserlog->save();
     }
 }
