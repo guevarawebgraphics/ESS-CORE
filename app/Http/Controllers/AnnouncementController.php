@@ -43,7 +43,7 @@ class AnnouncementController extends Controller
                              'announcement.announcement_status',
                              'employer.business_name',
                              'user_type.type_name',
-                             'user_type.id as user_type_id',)
+                             'user_type.id as user_type_id')
                             ->get();
         return json_encode($Announcement);
      }
@@ -90,7 +90,7 @@ class AnnouncementController extends Controller
                              'announcement.announcement_type',
                              'employer.business_name',
                              'user_type.type_name',
-                             'user_type.id as user_type_id',)
+                             'user_type.id as user_type_id')
                             ->where('announcement.id', $Announcement_id)
                             ->get();
         return json_decode($Announcement);

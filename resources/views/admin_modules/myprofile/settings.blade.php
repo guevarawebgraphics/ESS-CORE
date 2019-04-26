@@ -17,11 +17,42 @@
 @endsection
 
 @section('content')
+@php
+if(Session::get('my_profile') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('my_profile') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('my_profile') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('my_profile') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('my_profile') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-header bg-primary">
+            <div class="card card-info card-outline">
+                <div class="card-header">
                     <center><strong>Admin</strong></center>
                 </div>
                 <div class="card-body">           
@@ -32,8 +63,8 @@
                     </div>                                    
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header bg-primary">
+            <div class="card card-info card-outline">
+                <div class="card-header">
                     <center><strong>About Me</strong></center>
                 </div>
                 <div class="card-body">
@@ -50,8 +81,8 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="card">
-                <div class="card-header bg-primary">
+            <div class="card card-info card-outline">
+                <div class="card-header">
                     <center><strong>Account Settings</strong></center>
                 </div>
                 <div class="card-body">
@@ -75,7 +106,7 @@
                             <div id="email"></div>                                   
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" id="btnUpdate">Update Account</button>                                                                      
+                    <button type="button" class="btn btn-primary" id="btnUpdate" {{$edit}}>Update Account</button>                                                                      
                 </div>              
             </div>           
         </div>
