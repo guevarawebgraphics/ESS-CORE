@@ -20,9 +20,9 @@
                     </td>
                 @else
                     <td>
-                        <button class="btn btn-sm btn-secondary" id="edit_usertype" data-add="{{$user->id}}]]{{$user->type_name}}]]{{$user->type_description}}" >Edit</button>
-                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user->id}}" >Manage Access</button>
-                        <button class="btn btn-sm btn-danger" id="delete_usertype" data-add="{{$user->id}}]]{{$user->type_name}}" >Delete</button>                       
+                        <button class="btn btn-sm btn-secondary" id="edit_usertype" data-add="{{$user->id}}]]{{$user->type_name}}]]{{$user->type_description}}" {{$edit}}>Edit</button>
+                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user->id}}" {{$edit}}>Manage Access</button>
+                        <button class="btn btn-sm btn-danger" id="delete_usertype" data-add="{{$user->id}}]]{{$user->type_name}}" {{$delete}}>Delete</button>                       
                     </td>
                 @endif
             </tr>    

@@ -17,15 +17,48 @@
 @endsection
 
 @section('content')
+
+@php
+if(Session::get('manage_users') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('manage_users') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_users') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_users') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_users') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
+
 <div class="container-fluid">
-    <div class="card">
+    <div class="card card-info card-outline">
         <div class="card-header">
-            <h3 class="card-title">Create User</h3>
+            <h3 class="card-title"><i class="fa fa-user-o"></i> Create User</h3>
         </div>
         
         <div class="card-body">
             <div class="pull-right">
-                <button type="button" class="btn btn-primary" id="btnCreateUser">Create User</button>
+                <button type="button" class="btn btn-primary" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User</button>
             </div>
             <br>
             <br>
@@ -48,7 +81,7 @@
 <div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-info">
+            <div class="modal-header bg-primary">
                 <h5 class="modal-title" id="UserTitle">Create User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -211,7 +244,8 @@
         });
 
         //EDIT USER TYPE
-        var data
+        var data;
+        var olduserName;
         $(document).on("click", "#edit_user", function(){
             var id = $(this).data("add");
 
@@ -240,6 +274,8 @@
             $("#name").val(data[1]);
             $("#txtusername").val(data[2]);
             $("#cmbUser").val(data[3]);
+            olduserName = $('#txtusername').val();
+            alert(olduserName);
             
         });
 
@@ -330,25 +366,49 @@
                 {
                     $.ajax({
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        url: "{{ route('updateuser_post') }}",
-                        method: "POST",
-                        data:{id: data[0], name:name, userName:username, userType:usertype, password:password},  
-                        dataType: "JSON",               
+                        url: "{{ route('checkusername') }}",
+                        method: "GET",
+                        data:{userName:username},          
                         success:function(data)
                         {   
-                            if(data == "taken")
-                            {                          
-                                $('#txtusername').addClass("is-invalid");
-                                $('#error-taken').removeAttr("hidden");                           
-                            }
-                            if(data == "suc")
+                            if(username == olduserName)
                             {
-                                toastr.success('User Updated Successfully', 'Success')
-                                $('#createUserModal').modal('hide');
-                                refreshUserTable();
-                            }                              
+                                alert("AJAX1");
+                            }
+                            else if(data == "taken")
+                            {
+                                alert("taken");
+                                $('#txtusername').addClass("is-invalid");
+                                $('#error-taken').removeAttr("hidden");             
+                            }
+                            else if(data == "suc")
+                            {
+                                alert("AJAX");
+                                // $.ajax({
+                                //     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                //     url: "{{ route('updateuser_post') }}",
+                                //     method: "POST",
+                                //     data:{id: data[0], name:name, userName:username, userType:usertype, password:password},  
+                                //     dataType: "JSON",               
+                                //     success:function(data)
+                                //     {   
+                                //         if(data == "taken")
+                                //         {                          
+                                //             $('#txtusername').addClass("is-invalid");
+                                //             $('#error-taken').removeAttr("hidden");                           
+                                //         }
+                                //         if(data == "suc")
+                                //         {
+                                //             toastr.success('User Updated Successfully', 'Success')
+                                //             $('#createUserModal').modal('hide');
+                                //             refreshUserTable();
+                                //         }                              
+                                //     }
+                                // });
+                            }
                         }
                     });
+                    
                 }
                 
             }

@@ -42,6 +42,41 @@ class RegisterController extends Controller
      *
      * @return void
      */
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('manage_users') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('manage_users') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     public function __construct()
     {
         $this->middleware('auth');
@@ -71,6 +106,7 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        $this->getaccount();
         $username = $request->input('username');       
         $check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$username' ");
 
@@ -88,7 +124,9 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
+        $this->getaccount();
         $user_type_for = "";
+        $counter = 0;
         $check_type = DB::connection('mysql')->select("SELECT id,user_type_for FROM user_type WHERE id = '".auth()->user()->user_type_id."' " );
         if(!empty($check_type))
         {
@@ -99,6 +137,7 @@ class RegisterController extends Controller
             else if($check_type[0]->user_type_for == "3" || $check_type[0]->user_type_for == "4")
             {
                 $user_type_for = "4";
+                $counter++;
             }
             else if($check_type[0]->user_type_for == "5" || $check_type[0]->user_type_for == "6")
             {
@@ -119,41 +158,81 @@ class RegisterController extends Controller
 
         $id = $user->id;
         
-        DB::table('users')->where('id', '=', $id)
-        ->update(array(
-            'employer_id' => Session::get("employer_id")
-        ));     
+        if($counter > 0)
+        {
+            DB::table('users')->where('id', '=', $id)
+            ->update(array(
+                'employer_id' => Session::get("employer_id")
+            )); 
+        }
+            
     }
-
+    //update user 
     public function updateuser_post(Request $request)
     {
+        $this->getaccount();
         $userId = $request->id;
         $name = $request->name;
         $userName = $request->userName;
         $userType = $request->userType;
-        $password = $request->password;
+        $password = $request->password;  
+           
+        $update_query = User::find($userId);
+        $update_query->name = $name;
+        $update_query->user_type_id = $userType;
+        $update_query->username = $userName;
+        $update_query->password = Hash::make($password);
+        $update_query->updated_by = auth()->user()->id;
+        $update_query->save();
 
-        $check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$userName' ");
+        $this->insert_log("Updated user");                  
+    }
+    //check username
+    public function checkusername(Request $request)
+    {
+        $userName = $request->userName;
+        $count = 0;
 
-        if(count($check_username) > 0)
+        //$check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$userName' ");
+        $check_username = DB::connection('mysql')->select("SELECT username FROM users");
+
+        if(!empty($check_username))
         {
-            echo json_encode("taken");
+            foreach($check_username as $username)
+            {
+                // if($username->username == $userName)
+                // {
+                //     $count += 1;
+                // }
+                // else
+                // {
+                //     $count = 0;
+                // }
+                echo $username->username . "<br>";
+            }
         }
         else
         {
-            echo json_encode("suc");
-            $update_query = User::find($userId);
-            $update_query->name = $name;
-            $update_query->user_type_id = $userType;
-            $update_query->username = $userName;
-            $update_query->password = Hash::make($password);
-            $update_query->updated_by = auth()->user()->id;
-            $update_query->save();
-
-            $this->insert_log("Updated user");
-        }            
+            echo "No Username";
+        }
+ 
+        // if(count($check_username) > 0)
+        // {
+        //     echo "taken";
+        // }
+        // else
+        // {
+        //     echo "suc";
+        // }
+        if($count > 0)
+        {
+            echo "taken";
+        }
+        else
+        {
+            echo "suc";
+        }
     }
-
     // Method for inserting into logs
     public function insert_log($event)
     {
