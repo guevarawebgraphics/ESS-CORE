@@ -18,6 +18,38 @@
 
 @section('content')
 
+@php
+if(Session::get('manage_users') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('manage_users') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_users') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_users') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_users') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
+
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
@@ -26,7 +58,7 @@
         
         <div class="card-body">
             <div class="pull-right">
-                <button type="button" class="btn btn-primary" id="btnCreateUser">Create User Type</button>
+                <button type="button" class="btn btn-primary" id="btnCreateUser" {{$add}}>Create User Type</button>
             </div>
             <br>
             <br>

@@ -21,8 +21,8 @@
                     </td>
                 @else
                     <td>                   
-                        <button class="btn btn-sm btn-primary" id="edit_user" data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}" >Edit</button>
-                        <button class="btn btn-sm btn-danger" id="delete_user" data-add="{{$user->id}}]]{{$user->name}}" >Delete</button>    
+                        <button class="btn btn-sm btn-primary" id="edit_user" data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}" {{$edit}}>Edit</button>
+                        <button class="btn btn-sm btn-danger" id="delete_user" data-add="{{$user->id}}]]{{$user->name}}" {{$delete}}>Delete</button>    
                     </td>
                 @endif    
                                

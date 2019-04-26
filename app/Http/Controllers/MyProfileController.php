@@ -12,6 +12,41 @@ use DB;
 
 class MyProfileController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('my_profile') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('my_profile') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('my_profile') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('my_profile') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('my_profile') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     public function __construct()
     {
         $this->middleware('auth');      
@@ -105,6 +140,7 @@ class MyProfileController extends Controller
     //settings update
     public function settingsupdate_post(Request $request)
     {
+        $this->getaccount();
         $id_to_update = $request->id;
         $email = $request->email;
         $contact = $request->contact;
@@ -154,7 +190,8 @@ class MyProfileController extends Controller
     }
     //change password post
     public function changepassword_post(Request $request)
-    {      
+    {   
+        $this->getaccount();   
         $newPassword = $request->newPass;
 
         $update_query = User::find(auth()->user()->id);

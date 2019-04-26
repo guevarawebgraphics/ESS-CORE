@@ -13,6 +13,41 @@ use DB;
 
 class ManageUserController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('manage_users') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('manage_users') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     public function __construct()
     {
         $this->middleware('auth');
@@ -39,9 +74,10 @@ class ManageUserController extends Controller
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".Session::get("employer_id")."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
             return view('admin_modules.createuser')->with('users', $users);
         }
+        //Wala pang cms dito pero dapat may cms
     }
 
     //show user types on table for Manage User Access View
@@ -67,9 +103,10 @@ class ManageUserController extends Controller
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".Session::get("employer_id")."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
             return view('admin_modules.table.tableuser')->with('users', $users);
         }        
+        //Wala pang cms dito pero dapat may cms
     }
 
     //refresh user type table
@@ -160,6 +197,7 @@ class ManageUserController extends Controller
     //update module access
     public function update_module_access(Request $request)
     {
+        $this->getaccount();
         $userId = $request->input('hidden_id');
         $module_name = DB::connection('mysql')->select("SELECT module_code,module_name FROM user_modules WHERE deleted = '0'");
         
@@ -176,6 +214,7 @@ class ManageUserController extends Controller
     //create user type post
     public function createusertype_post(Request $request)
     {
+        $this->getaccount();
         $typename = $request->input('type_name');
         $typedesc = $request->input('type_desc');
         $typefor = $request->input('cmb_userTypeFor');
@@ -208,6 +247,7 @@ class ManageUserController extends Controller
     //update user type post
     public function updateusertype_post(Request $request)
     {
+        $this->getaccount();
         $typeName = $request->typeName;
         $typeDesc = $request->typeDesc;
         $userTypeID = $request->userTypeID;
@@ -224,6 +264,7 @@ class ManageUserController extends Controller
     //delete user type post
     public function deleteusertype_post(Request $request)
     {
+        $this->getaccount();
         $userTypeID = $request->userTypeID;
         
         $update_query = UserType::find($userTypeID);
@@ -237,6 +278,7 @@ class ManageUserController extends Controller
     //delete user post
     public function deleteuser_post(Request $request)
     {
+        $this->getaccount();
         $userTypeID = $request->userTypeID;
         
         $update_query = User::find($userTypeID);
