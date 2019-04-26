@@ -289,69 +289,6 @@
 				@endif
 				<!-- END -->
 
-<<<<<<< HEAD
-				<!-- ESS CONTENT -->
-				@if(Session::get("ess_content") != "none")	
-				<li class="nav-item has-treeview {{$systemnotifications}}">
-					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-bell"></i>
-					<p>System Notifications <i class="fa fa-angle-left right"></i></p></a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a class="nav-link {{$create_notif}}" href="/systemnotifications/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Notifications</p></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$manage_notif}}" href="/Notification"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage Notifications</p></a>
-						</li>
-					</ul>
-				</li>	
-				@else								
-				@endif
-				<!-- END -->
-
-				<!--SEND ANNOUNCEMENTS  -->
-				@if(Session::get("send_announcement") != "none")
-				<li class="nav-item has-treeview {{$sendannounce}}">
-					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-bullhorn"></i>
-					<p>Send Announcements <i class="fa fa-angle-left right"></i></p></a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a class="nav-link {{$create_sendannounce}}" href="/sendannouncements/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Announcements</p></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$manage_sendannounce}}" href="/Announcement"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage Announcements</p></a>
-						</li>
-					</ul>
-				</li>	
-				@else								
-				@endif	
-				<!-- END -->
-
-				<!-- DOCS AND TEMPLATES -->
-				@if(Session::get("manage_docs") != "none")
-				<li class="nav-item has-treeview {{$managedocs}}">
-					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-file"></i>
-					<p>Manage Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a class="nav-link {{$create_managedocs}}" href="/managedocs/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create</p></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$manage_managedocs}}" href="/Template"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage</p></a>
-						</li>
-					</ul>
-				</li>	
-				@else								
-				@endif
-				<!-- END -->
-
-=======
->>>>>>> develop-paul
 				<!-- END ADMIN -->
 
 				<!-- EMPLOYER -->
@@ -523,7 +460,7 @@
 							<p>Create Announcements</p></a>
 						</li> --}}
 						<li class="nav-item">
-							<a class="nav-link {{$manage_sendannounce}}" href="/sendannouncements/manage"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$manage_sendannounce}}" href="/Announcement"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Announcements</p></a>
 						</li>
 					</ul>
