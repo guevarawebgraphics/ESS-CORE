@@ -10,6 +10,7 @@ use Session;
 use DB;
 use Response;
 use Mail;
+use Keygen;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -64,7 +65,8 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $business_name = Input::get('business_name');
-        $password = $this->generate_password(8);
+        /*Generate A Alphanumeric Characters for Password*/
+        $password = Keygen::alphanum(10)->generate();
 
         // Custom Message
         $customMessages = [
@@ -496,5 +498,34 @@ class AccountController extends Controller
 
 
         return Response::json($msg);
+    }
+
+    public function get_all_employer(Request $request){
+
+        // $Account = DB::table('users')
+        //             ->where('business_name', 'LIKE', '%'.$request->search.'%')->get();
+        $Account = Account::where('business_name', 'LIKE', $request->q.'%')->get();
+        return response()->json($Account);
+                    
+    }
+
+    /*Generate Key*/
+    protected function generateESSKey(){
+        // prefixes the key with a random integer between 1 - 9 (inclusive)
+        return Keygen::numeric(7)->prefix(mt_rand(1, 9))->generate(true);
+    }
+
+    /*Generate ESS ID*/
+    protected function generateESSID(){
+
+        $ess_id = $this->generateESSKey();
+
+        // Ensure ID does not exist
+        // Generate new one if ID already exists
+        while (ESSBase::where('ess_id', $ess_id)->count() > 0){
+            $ess_id = $this->generateESSKey();
+        }
+
+        return $ess_id;
     }
 }

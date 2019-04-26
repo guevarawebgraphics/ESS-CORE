@@ -460,7 +460,7 @@
 							<p>Create Announcements</p></a>
 						</li> --}}
 						<li class="nav-item">
-							<a class="nav-link {{$manage_sendannounce}}" href="/sendannouncements/manage"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$manage_sendannounce}}" href="/Announcement"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Announcements</p></a>
 						</li>
 					</ul>
