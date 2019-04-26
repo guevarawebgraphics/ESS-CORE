@@ -86,6 +86,28 @@
         </div>
       </div>
 
+
+<!-- Delete System Notification -->
+<div class="modal fade" id="DeleteTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="title_modal"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+               <h4>D you wanna Delete This Template?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="DeleteTemplate">Confirm <i id="spinner_delete" class=""></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 <script>
 $(document).ready(function (){
     // Show All Data
@@ -101,6 +123,7 @@ $(document).ready(function (){
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
+          "order": [[0, "desc"]]
     });
     /*Custom Search For DataTable*/
     $("#searchbox").on("keyup search input paste cut", function () {
@@ -210,14 +233,14 @@ $(document).ready(function (){
     /*Delete Template*/
     $('#showdata').on('click', '.template-delete', function(){
         var id = $(this).attr('data');
-        $('#AddTemplateModal').modal('show');
-        $('#AddTemplateModal').find('#title_modal').text('Delete Template');
+        $('#DeleteTemplateModal').modal('show');
+        $('#DeleteTemplateModal').find('#title_modal').text('Delete Template');
         $('#template_form').attr('hidden', true);
-        $("#SaveTemplate").prop("type", "button");
+        //$("#SaveTemplate").prop("type", "button");
         toastr.remove()
         // Prevent Previous handler - unbind()
-        $('#SaveTemplate').unbind().click(function(){
-            $("#spinner").addClass('fa fa-refresh fa-spin');
+        $('#DeleteTemplate').unbind().click(function(){
+            $("#spinner_delete").addClass('fa fa-refresh fa-spin');
             $.ajax({
                 type: 'POST',
                 url: '/Template/destroy_template',
@@ -227,15 +250,14 @@ $(document).ready(function (){
                 },
                 success: function(data){
                     setTimeout(function (){
-                          $('#AddTemplateModal').modal('hide');
+                          $('#DeleteTemplateModal').modal('hide');
                     }, 400);
                     // Display a success toast, with a title
                     toastr.success('Template Deleted Successfully', 'Success')
                     setTimeout(function (){
-                        $("#spinner").removeClass('fa fa-refresh fa-spin');
-                    }, 1000);
+                        $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
+                    }, 300);
                     showAllTemplate();
-                    $("#SaveTemplate").prop("type", "submit");
                   },
                   error: function(data){
                     toastr.error('Error Deleting Template')
@@ -261,7 +283,7 @@ $(document).ready(function (){
                                      '<td>'+data[i].business_name+'</td>'+
                                      '<td>'+data[i].document_code+'</td>'+
                                      '<td>'+data[i].document_description+'</td>'+
-                                     '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/template/'+data[i].document_file+'" download>' +file_name+'</a>'+'</td>'+
+                                     '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'   <i class="fa fa-download"></i>'+'</a>'+'</td>'+
                                      '<td>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+

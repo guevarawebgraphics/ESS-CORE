@@ -74,6 +74,7 @@ Route::post('/Account/destroy', 'AccountController@destroy')->name('Account.dest
 Route::patch('/Account/{id}', 'AccountController@update')->name('Account.update');
 Route::patch('/Account/UpdateAccountStatus/{id}', 'AccountController@UpdateAccountStatus')->name('Account.UpdateAccountStatus');
 Route::post('/Account', 'AccountController@store')->name('Account');
+Route::get('/Account/get_all_employer', 'AccountController@get_all_employer')->name('Account');
 
 /*Route Config For Notification*/
 Route::get('/Notification', 'NotificationController@index')->name('Notification.index');
@@ -90,6 +91,15 @@ Route::get('/Template/edit_template', 'TemplateController@edit_template');
 Route::post('/Template/update_template/{id}', 'TemplateController@update_template');
 Route::post('/Template/store_template', 'TemplateController@store_template');
 Route::post('/Template/destroy_template', 'TemplateController@destroy_template');
+
+/*Route Config For Announcement*/
+Route::get('/Announcement', 'AnnouncementController@index')->name('Announcement.index');
+Route::get('/Announcement/get_all_announcement', 'AnnouncementController@get_all_announcement');
+Route::get('/Announcement/edit_announcement', 'AnnouncementController@edit_announcement');
+Route::post('/Announcement/store_announcement', 'AnnouncementController@store_announcement');
+Route::post('/Announcement/update_announcement/{id}', 'AnnouncementController@update_announcement');
+Route::post('/Announcement/destroy_announcement', 'AnnouncementController@destroy_announcement');
+Route::post('/Announcement/update_announcement_status', 'AnnouncementController@update_announcement_status');
 
 
 ////// EMPLOYER
