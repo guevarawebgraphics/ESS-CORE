@@ -49,7 +49,7 @@ elseif(Session::get('manage_users') == 'delete'){
     $delete = 'disabled';
 }                   
 @endphp
-
+{{Session::get("employer_id")}}
 <div class="container-fluid">
     <div class="card card-info card-outline">
         <div class="card-header">
@@ -81,7 +81,7 @@ elseif(Session::get('manage_users') == 'delete'){
 <div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
+            <div class="modal-header">
                 <h5 class="modal-title" id="UserTitle">Create User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -153,14 +153,14 @@ elseif(Session::get('manage_users') == 'delete'){
 
                         <div class="col-md-6">
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            <p class="text-danger" id="error-no-repass" hidden>* Field is Required</p>  
+                            <p class="text-danger" id="error-no-repass" hidden>* Field is Required | Must be same as Password</p>  
                         </div>
                     </div>                      
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnRegister">Register</button>
+                <button type="button" class="btn btn-primary" id="btnRegister">Create User</button>
             </div>
         </div>
     </div>
@@ -175,6 +175,7 @@ elseif(Session::get('manage_users') == 'delete'){
             // "searching": false,
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
+            "ordering": false,
             "pageLength": 10000,
             scrollY: 300,
             //  scrollX: true,
@@ -219,6 +220,8 @@ elseif(Session::get('manage_users') == 'delete'){
         //Create new User
         $(document).on("click","#btnCreateUser", function(){
 
+            $('#btnRegister').html("Create User");
+
             $('#createUserModal').modal();
             $("#UserTitle").html("Create User");
 
@@ -244,7 +247,7 @@ elseif(Session::get('manage_users') == 'delete'){
         });
 
         //EDIT USER TYPE
-        var data;
+        var info;
         var olduserName;
         $(document).on("click", "#edit_user", function(){
             var id = $(this).data("add");
@@ -253,6 +256,8 @@ elseif(Session::get('manage_users') == 'delete'){
             $('#txtusername').val("");
             $('#password').val("");
             $('#password-confirm').val("");
+
+            $('#btnRegister').html("Update User");
 
             $('#name').removeClass("is-invalid");           
             $('#txtusername').removeClass("is-invalid");           
@@ -266,16 +271,16 @@ elseif(Session::get('manage_users') == 'delete'){
             $('#error-taken').attr("hidden", true);     
             $('#txtusername').removeClass("is-invalid");
 
-            data = id.split("]]");
+            info = id.split("]]");
             $('#createUserModal').modal();
             $("#UserTitle").html("Edit User");
-            $("#hidden_id").val(data[0]);
+            $("#hidden_id").val(info[0]);
             $("#action").val("edit");                    
-            $("#name").val(data[1]);
-            $("#txtusername").val(data[2]);
-            $("#cmbUser").val(data[3]);
+            $("#name").val(info[1]);
+            $("#txtusername").val(info[2]);
+            $("#cmbUser").val(info[3]);
             olduserName = $('#txtusername').val();
-            alert(olduserName);
+            //alert(info[0]);
             
         });
 
@@ -321,7 +326,7 @@ elseif(Session::get('manage_users') == 'delete'){
                 $('#error-no-pass').attr("hidden", true);
             }
 
-            if(repassword == "")
+            if(repassword == "" || password != repassword)
             {
                 $('#password-confirm').addClass("is-invalid"); 
                 $('#error-no-repass').removeAttr("hidden");
@@ -332,7 +337,7 @@ elseif(Session::get('manage_users') == 'delete'){
                 $('#error-no-repass').attr("hidden", true);
             }   
                
-            if(name != "" && username != "" && password != "" && repassword != "")
+            if(name != "" && username != "" && password != "" && repassword != "" && password == repassword)
             {      
                 var action = $("#action").val();
                 //alert(action);   
@@ -343,8 +348,8 @@ elseif(Session::get('manage_users') == 'delete'){
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         url: "{{ route('register') }}",
                         method: "POST",
-                        data:$("#createuser_form").serialize(),  
-                        dataType: "JSON",               
+                        data:$("#createuser_form").serialize(),
+                        dataType: "json",  
                         success:function(data)
                         {   
                             if(data == "taken")
@@ -370,50 +375,54 @@ elseif(Session::get('manage_users') == 'delete'){
                         method: "GET",
                         data:{userName:username},          
                         success:function(data)
-                        {   
-                            if(username == olduserName)
+                        {                            
+                            if(data == "taken")
                             {
-                                alert("AJAX1");
+                                if(olduserName == username)
+                                {
+                                    //alert("SAME");
+                                    $.ajax({
+                                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                        url: "{{ route('updateuser_post') }}",
+                                        method: "POST",
+                                        data:{id: info[0], name:name, userName:username, userType:usertype, password:password},            
+                                        success:function(data)
+                                        {                               
+                                            toastr.success('User Updated Successfully', 'Success')
+                                            $('#createUserModal').modal('hide');
+                                            refreshUserTable();                                                                       
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    //alert("taken");
+                                    $('#txtusername').addClass("is-invalid");
+                                    $('#error-taken').removeAttr("hidden"); 
+                                }                                         
                             }
-                            else if(data == "taken")
+                            else if(data == "not")
                             {
-                                alert("taken");
-                                $('#txtusername').addClass("is-invalid");
-                                $('#error-taken').removeAttr("hidden");             
-                            }
-                            else if(data == "suc")
-                            {
-                                alert("AJAX");
-                                // $.ajax({
-                                //     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                //     url: "{{ route('updateuser_post') }}",
-                                //     method: "POST",
-                                //     data:{id: data[0], name:name, userName:username, userType:usertype, password:password},  
-                                //     dataType: "JSON",               
-                                //     success:function(data)
-                                //     {   
-                                //         if(data == "taken")
-                                //         {                          
-                                //             $('#txtusername').addClass("is-invalid");
-                                //             $('#error-taken').removeAttr("hidden");                           
-                                //         }
-                                //         if(data == "suc")
-                                //         {
-                                //             toastr.success('User Updated Successfully', 'Success')
-                                //             $('#createUserModal').modal('hide');
-                                //             refreshUserTable();
-                                //         }                              
-                                //     }
-                                // });
+                                //alert("AJAX");
+                                $.ajax({
+                                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                    url: "{{ route('updateuser_post') }}",
+                                    method: "POST",
+                                    data:{id: info[0], name:name, userName:username, userType:usertype, password:password},             
+                                    success:function(data)
+                                    {                          
+                                        toastr.success('User Updated Successfully', 'Success')
+                                        $('#createUserModal').modal('hide');
+                                        refreshUserTable();                                                                   
+                                    }
+                                });
                             }
                         }
-                    });
-                    
-                }
-                
+                    });                 
+                }              
             }
             else{
-
+                alert("Unexpected Error");
             }
                                                                
         });

@@ -82,10 +82,19 @@ class ManageUserController extends Controller
 
     //show user types on table for Manage User Access View
     public function manageusertypes()
-    {        
+    {     
         // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");           
-        return view ('admin_modules.manageusers')->with('user_type', $user_type);        
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");
+       
+        if(Session::get("employer_id") != "admin")
+        {                    
+            return view('welcome');
+        }
+        else
+        {                   
+            return view ('admin_modules.manageusers')->with('user_type', $user_type);         
+        } 
+        // return view ('admin_modules.manageusers')->with('user_type', $user_type);        
     }
 
     //refresh user table
@@ -223,7 +232,7 @@ class ManageUserController extends Controller
         $insert_query = new UserType;
         $insert_query->type_name = $typename;
         $insert_query->type_description = $typedesc;
-        $insert_query->type_for = $typefor;
+        $insert_query->user_type_for = $typefor;
         $insert_query->employer_id = $employer_id;
         $insert_query->deleted = 0;
         //$insert_query->account_id = auth()->user()->id;

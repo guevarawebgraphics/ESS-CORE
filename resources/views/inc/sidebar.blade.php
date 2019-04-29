@@ -127,18 +127,11 @@
 						$systemnotifications_tree = "active";
 						$manage_notif = "active";					
 					}
-					else if(Request::segment(1) == 'sendannouncements')
+					else if(Request::segment(1) == 'Announcement')
 					{
 						$sendannounce = "menu-open";
-						$sendannounce_tree = "active";
-						if(Request::segment(2) == 'create')
-						{
-							$create_sendannounce = "active";
-						}
-						if(Request::segment(2) == 'manage')
-						{
-							$manage_sendannounce = "active";
-						}					
+						$sendannounce_tree = "active";					
+						$manage_sendannounce = "active";										
 					}
 					else if(Request::segment(1) == 'Template')
 					{
@@ -276,7 +269,7 @@
 							<a class="nav-link {{$create}}" href="/manageuser/create"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Create User</p></a>
 						</li>
-						@if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
+						@if(Session::get('employer_id') == "admin")
 							<li class="nav-item">
 								<a class="nav-link {{$manage}}" href="/manageuser/manage"><i class="fa fa-circle-o nav-icon"></i>
 								<p>Manage User Access</p></a>

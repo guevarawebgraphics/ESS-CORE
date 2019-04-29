@@ -72,14 +72,14 @@ class MyProfileController extends Controller
         $Account = '';
         $Account_info = '';
         $data = array();
-        if(auth()->user()->user_type_id == "3")
+        if(auth()->user()->user_type_id == "3" || auth()->user()->user_type_id == "8" || auth()->user()->user_type_id == "9")
         {
             $Account = DB::table('employer')
             ->join('users', 'employer.account_id', '=', 'users.id')
             ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')  
             ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
             ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')       
-            ->select('employer.id' ,'employer.shortname', 'employer.contact_mobile', 'employer.contact_email', 'employer.address_unit','refprovince.provDesc'
+            ->select('employer.id' ,'employer.business_name', 'employer.contact_mobile', 'employer.contact_email', 'employer.address_unit','refprovince.provDesc'
             , 'refcitymun.citymunDesc', 'refbrgy.brgyDesc')
             ->where('employer.account_id', '=', auth()->user()->id)
             ->get();         
@@ -103,7 +103,7 @@ class MyProfileController extends Controller
         if(!empty($Account))
         {
             $id = $Account[0]->id;
-            $shortname = $Account[0]->shortname;
+            $shortname = $Account[0]->business_name;
             $contact = $Account[0]->contact_mobile;
             $email = $Account[0]->contact_email;
             $unit = $Account[0]->address_unit;

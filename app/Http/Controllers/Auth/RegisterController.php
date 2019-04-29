@@ -184,6 +184,7 @@ class RegisterController extends Controller
         $update_query->password = Hash::make($password);
         $update_query->updated_by = auth()->user()->id;
         $update_query->save();
+        //echo $userId;
 
         $this->insert_log("Updated user");                  
     }
@@ -192,31 +193,18 @@ class RegisterController extends Controller
     {
         $userName = $request->userName;
         $count = 0;
-
-        //$check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$userName' ");
-        $check_username = DB::connection('mysql')->select("SELECT username FROM users");
-
-        if(!empty($check_username))
+        
+        $check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$userName' ");
+        if(count($check_username) > 0)
         {
-            foreach($check_username as $username)
-            {
-                // if($username->username == $userName)
-                // {
-                //     $count += 1;
-                // }
-                // else
-                // {
-                //     $count = 0;
-                // }
-                echo $username->username . "<br>";
-            }
+            echo "taken";
         }
         else
         {
-            echo "No Username";
+            echo "not";
         }
- 
-        // if(count($check_username) > 0)
+
+        // if($count > 0)
         // {
         //     echo "taken";
         // }
@@ -224,14 +212,6 @@ class RegisterController extends Controller
         // {
         //     echo "suc";
         // }
-        if($count > 0)
-        {
-            echo "taken";
-        }
-        else
-        {
-            echo "suc";
-        }
     }
     // Method for inserting into logs
     public function insert_log($event)
