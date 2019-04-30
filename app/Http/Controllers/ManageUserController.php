@@ -228,12 +228,15 @@ class ManageUserController extends Controller
         $typedesc = $request->input('type_desc');
         $typefor = $request->input('cmb_userTypeFor');
         $employer_id = $request->input('cmb_Employe');
-       
+     
         $insert_query = new UserType;
         $insert_query->type_name = $typename;
         $insert_query->type_description = $typedesc;
         $insert_query->user_type_for = $typefor;
-        $insert_query->employer_id = $employer_id;
+        if($employer_id != "")
+        {
+            $insert_query->employer_id = $employer_id;
+        }
         $insert_query->deleted = 0;
         //$insert_query->account_id = auth()->user()->id;
         $insert_query->created_by = auth()->user()->id;

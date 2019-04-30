@@ -110,8 +110,8 @@ Route::get('/enrollemployee/encode', 'EmployeesEnrollmentController@encode');
 Route::get('/enrollemployee/upload', 'EmployeesEnrollmentController@upload');
 
 //Employer Content
-Route::get('/employercontent/create', 'EmployerContentController@create');
 Route::get('/employercontent/manage', 'EmployerContentController@manage');
+Route::post('/employercontent/create', 'EmployerContentController@create_employercontent')->name('createemployercontent');
 
 //Payroll Management
 Route::get('/payrollmanagement/upload', 'PayrollManagementController@upload');

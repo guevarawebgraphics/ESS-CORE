@@ -408,10 +408,10 @@
 					<a class="nav-link {{$employercontent_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
 					<p>Employer Content <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
-						<li class="nav-item">
+						{{-- <li class="nav-item">
 							<a class="nav-link {{$create_employercontent}}" href="/employercontent/create"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Create Content</p></a>
-						</li>
+						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$manage_employercontent}}" href="/employercontent/manage"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Content</p></a>

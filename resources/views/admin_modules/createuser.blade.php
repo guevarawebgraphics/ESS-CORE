@@ -49,7 +49,7 @@ elseif(Session::get('manage_users') == 'delete'){
     $delete = 'disabled';
 }                   
 @endphp
-{{Session::get("employer_id")}}
+{{-- {{Session::get("employer_id")}} --}}
 <div class="container-fluid">
     <div class="card card-info card-outline">
         <div class="card-header">
