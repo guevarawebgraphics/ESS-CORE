@@ -1,4 +1,9 @@
 {{-- This is For Mail Template --}}
-hi <strong>Username :{{ $name }}</strong>
+hi <strong>Username :{{ $username }}</strong>
 
-<p>ESS Password: {{ $body }}</p>
+<p>ESS Password: {{ $password }}</p>
+
+<p>{{ $template }}</p>
+
+
+

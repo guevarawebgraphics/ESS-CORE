@@ -24,6 +24,7 @@
                         <th>Employer</th>
                         <th>Notificatiion Title</th>
                         <th>Notification Message</th>
+                        <th>Notification Message Type</th>
                         <th>Notification Type</th>
                         <th>Action</th>
                     </tr>
@@ -46,7 +47,7 @@
 
 
     <!-- Add System Notification -->
-<div class="modal fade" id="AddNotificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="AddNotificationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:hidden;">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -66,9 +67,9 @@
                                     <p class="text-danger" id="error_notification_title"></p>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group">
                     <label for="notification_message" class="control-label col-md-4 text-md-center">Notification Message:</label>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             
                             <textarea id="notification_message" class="form-control" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>
                                     <p class="text-danger" id="error_notification_message"></p>
@@ -80,19 +81,44 @@
                                 <option value="" selected>Select Employer</option>>
                             </select> --}}
 
-                            <input id="employer_id" type="text" class="form-control" name="employer_id" list="business_name" placeholder="Employer" style="width: 260px !important;"   autofocus>
+                            {{-- <input id="employer_id" type="text" class="form-control" name="employer_id" list="business_name" placeholder="Employer" style="width: 260px !important;"   autofocus>
                                 <p class="text-danger" id="error_employer_id"></p>
                                 <datalist id="business_name">
-                                    {{-- <option value="1"> --}}
-                                </datalist>
+                                    <option value="1">
+                                </datalist> --}}
+
+                                <div class="col-md-8">
+                                    <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
+                                        <option selected value="">--Select Employer</option>
+                                        @foreach($employers as $employer)
+                                            <option value="{{$employer->account_id}}">{{$employer->business_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="text-danger" id="error_employer_id"></p>
+                                </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="message_type_id" class="control-label col-md-4 text-md-center">Message Type:</label>
+                        <div class="col-md-8">
+                            <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="message_type_id" id="message_type_id">
+                                <option selected value="">--Select Message Type</option>
+                                @foreach($notification_message_type as $notification_message_types)
+                                    <option value="{{$notification_message_types->id}}">{{$notification_message_types->message_type}}</option>
+                                @endforeach
+                            </select>
+                            <p class="text-danger" id="error_message_type_id"></p>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="notification_type" class="control-label col-md-4 text-md-center">Notification Type:</label>
-                        <select class="form-control col-md-4" name="notification_type" id="notification_type">
-                            <option value="" selected>Select Notification Type</option>
-                            <option value="1">Email</option>
-                            <option value="2">SMS</option>
-                        </select>
+                        <div class="col-md-8">
+                            <select class="form-control col-md-8" name="notification_type" id="notification_type">
+                                <option value="" selected>Select Notification Type</option>
+                                <option value="1">Email</option>
+                                <option value="2">SMS</option>
+                            </select>
+                            <p class="text-danger" id="error_notification_type"></p>
+                        </div>
                     </div>
                     <div class="col-md-4 float-right">
                         <p class="text-danger" id="error_notification_type"></p>
@@ -132,6 +158,18 @@
 
 <script>
 $(document).ready(function (){
+    // CKEDITOR Config
+    let notification_message;
+    ClassicEditor
+        .create( document.querySelector( '#notification_message' ) )
+        .then( newNotification_message => {
+            notification_message = newNotification_message;
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+    //Initialize Select2 Elements
+    $('.select2').select2()
     // Show All Notification
     showAllNotification();
     InitDatatable();
@@ -206,7 +244,8 @@ $(document).ready(function (){
                 _token:     '{{ csrf_token() }}',
                 employer_id: $('#employer_id').val(),
                 notification_title: $('#notification_title').val(),
-                notification_message: $('#notification_message').val(),
+                notification_message: notification_message.getData(),//$('#notification_message').val(),
+                message_type_id: $('#message_type_id').val(),
                 notification_type: $('#notification_type').val(),
                 
             },
@@ -250,7 +289,16 @@ $(document).ready(function (){
                     if(errors.notification_type)
                     {
                         $('#notification_type').addClass('is-invalid');
-                        // $('#error_notification_type').html('Notification Type is Required');
+                        $('#error_notification_type').html('Notification Type is Required');
+                    }
+                    if(errors.employer_id)
+                    {
+                        $('#employer_id').addClass('is-invalid');
+                        $('#error_employer_id').html('Employer Field is Required');
+                    }
+                    if(errors.message_type_id){
+                        $('#message_type_id').addClass('is-invalid');
+                        $('#error_message_type_id').html('Message Type Field is Required');
                     }
                 });
                 
@@ -281,10 +329,14 @@ $(document).ready(function (){
             success: function(data){
                 $('#notification_title').val(data[0].notification_title);
                 $('#notification_message').val(data[0].notification_message);
-                $('#employer_id').val(data[0].business_name);
-                $('#employer_id').attr('disabled', true);
-                $('#employer_id').addClass('disabled');
-                //$('#employer_id option[value="'+data[0].employer_id+'"]').prop('selected', true);
+                notification_message.setData(data[0].notification_message);
+                //$('#employer_id').val(data[0].business_name);
+                // $('#employer_id').attr('disabled', true);
+                // $('#employer_id').addClass('disabled');
+                $('#select2-employer_id-container').attr('title', data[0].employer_id).text(data[0].business_name);
+                $('#select2-message_type_id-container').attr('title', data[0].message_type_id).text(data[0].message_type);
+                $('#employer_id option[value="'+data[0].employer_id+'"]').prop('selected', true);
+                $('#message_type_id option[value="'+data[0].message_type_id+'"]').prop('selected', true);
                 $('#notification_type option[value="'+data[0].notification_type+'"]').prop('selected', true);
                 
             },
@@ -331,36 +383,36 @@ $(document).ready(function (){
     });
 
     /*Suggest Employer*/
-    var bloodhound = new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.whitespace,
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                remote: {
-                    url: '/Account/get_all_employer?q=%QUERY%',
-                    wildcard: '%QUERY%'
-                },
-            });
-            $('#employer_id').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: 'users',
-                source: bloodhound,
-                display: function(data) {
-                    return data.business_name  //Input value to be set when you select a suggestion. 
-                },
-                templates: {
-                    empty: [
-                        '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-                    ],
-                    header: [
-                        '<div class="list-group search-results-dropdown">'
-                    ],
-                    suggestion: function(data) {
-                    return '<div style="font-weight:normal; margin-top:-5px ! important; width: 200px !important;" class="list-group-item">' + data.business_name + '</div></div>'
-                    }
-                }
-    });
+    // var bloodhound = new Bloodhound({
+    //             datumTokenizer: Bloodhound.tokenizers.whitespace,
+    //             queryTokenizer: Bloodhound.tokenizers.whitespace,
+    //             remote: {
+    //                 url: '/Account/get_all_employer?q=%QUERY%',
+    //                 wildcard: '%QUERY%'
+    //             },
+    //         });
+    //         $('#employer_id').typeahead({
+    //             hint: true,
+    //             highlight: true,
+    //             minLength: 1
+    //         }, {
+    //             name: 'users',
+    //             source: bloodhound,
+    //             display: function(data) {
+    //                 return data.business_name  //Input value to be set when you select a suggestion. 
+    //             },
+    //             templates: {
+    //                 empty: [
+    //                     '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+    //                 ],
+    //                 header: [
+    //                     '<div class="list-group search-results-dropdown">'
+    //                 ],
+    //                 suggestion: function(data) {
+    //                 return '<div style="font-weight:normal; margin-top:-5px ! important; width: 200px !important;" class="list-group-item">' + data.business_name + '</div></div>'
+    //                 }
+    //             }
+    // });
 
     
 
@@ -377,11 +429,13 @@ $(document).ready(function (){
                     var i;
                     for(i=0; i<data.length; i++){
                         var type = (data[i].notification_type == 1 ? "Email" : data[i].notification_type == 2 ? "SMS" : null);
+                        var notification_message = data[i].notification_message;
                         html +='<tr>'+
                                     // '<td>'+data[i].id+'</td>'+
                                      '<td>'+data[i].business_name+'</td>'+
                                      '<td>'+data[i].notification_title+'</td>'+
-                                     '<td>'+data[i].notification_message+'</td>'+
+                                     '<td>'+(notification_message.length > 10 ? notification_message.substring(0, 10)+'...' : data[i].notification_message)+'</td>'+
+                                     '<td>'+data[i].message_type+'</td>'+
                                      '<td>'+type+'</td>'+
                                      '<td>'+
                                         // '<a href="javascript:;" class="btn btn-sm btn-info" id="ShowNotification" data-toggle="modal" data-target="#AddNotificationModal" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-eye"></i></span>&nbsp;View</a>'+' '+

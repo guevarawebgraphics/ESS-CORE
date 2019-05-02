@@ -33,7 +33,7 @@ class AnnouncementController extends Controller
         return view('Announcement.index');
      }
 
-     public function get_all_announcement(){
+     public function get_all_announcement(Request $request){
         $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.account_id', '=', 'announcement.account_id')
                             ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
@@ -45,7 +45,15 @@ class AnnouncementController extends Controller
                              'user_type.type_name',
                              'user_type.id as user_type_id')
                             ->get();
-        return json_encode($Announcement);
+
+        /*Protection for Data View as Json*/
+        if($request->ajax()){
+            return json_encode($Announcement);
+        }
+        else {
+            abort(404);
+        }
+        
      }
 
      public function store_announcement(Request $request){
