@@ -19,7 +19,6 @@ class AddEmployerContentTable extends Migration
             $table->string('content_title');
             $table->string('content_description');
             $table->integer('content_status')->unsigned();
-            $table->integer('content_type')->unsigned();
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->timestamps();

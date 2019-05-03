@@ -158,7 +158,7 @@ class MyProfileController extends Controller
             $update_query->save();
         }
         
-        $this->insert_log("Updated Settings");
+        $this->insert_log("Updated My Settings");
     }
     //show view change password
     public function changepassword()
@@ -201,7 +201,7 @@ class MyProfileController extends Controller
         $update_query->ischange = 0;     
         $update_query->save();    
         
-        $this->insert_log("Change Password");
+        $this->insert_log("Change My Password");
     }
     // Method for inserting into logs
     public function insert_log($event)

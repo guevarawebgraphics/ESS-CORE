@@ -50,7 +50,7 @@ elseif(Session::get('manage_users') == 'delete'){
                     </td>
                 @else
                     <td>                      
-                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user->id}}" {{$edit}}><i class="fa fa-info"></i> Manage Access</button>               
+                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user->id}}||{{$user->type_name}}" {{$edit}}><i class="fa fa-info"></i> Manage Access</button>               
                     </td>
                 @endif
                 @if($user->created_by == "default")
