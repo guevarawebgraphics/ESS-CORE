@@ -188,51 +188,71 @@ $(document).ready(function (){
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
-        $.ajax({
-            type: 'ajax',
-            url: url,
-            method: 'POST',
-            dataType: 'json',
-            async: false,
-            data: data,
-            success: function(data){
-                $('#annoucement_form')[0].reset();
-                // Show All Data
-                showAllAnnouncement();
-                // Modal hide
-                //$('#AddNotificationModal').modal('hide');
-                setTimeout(function (){
-                          $('#AddAnnouncementModal').modal('hide');
-                }, 400);
-                // Display a success toast, with a title
-                toastr.success('Announcement Saved Successfully', 'Success')
-                setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 1500);
-            },
-            error: function(data, status){
-                toastr.error('Error. Please Complete the fields', 'Error!')
-                setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 250);
-                /*Add Error Field*/
-                var errors = $.parseJSON(data.responseText);
-                $.each(errors, function(i, errors){
-                    if(errors.announcement_title){
-                        $('#announcement_title').addClass('is-invalid');
-                        $('#error_announcement_title').html('Annoucement Title is Required');
-                    }
-                    if(errors.announcement_description){
-                        $('#announcement_description').addClass('is-invalid');
-                        $('#error_annoucement_description').html('Annoucement Description is Required');
-                    }
-                    if(errors.announcement_type){
-                        $('#announcement_type').addClass('is-invalid');
-                        $('#error_announcement_type').html('Annoucement Type is Required');
+        if($('#announcement_title').val() == ""){
+            $('#announcement_title').addClass('is-invalid');
+            $('#error_announcement_title').html('Annoucement Title is Required');
+            spinnerTimout();
+        }
+        if($('#announcement_description').val() == ""){
+            $('#announcement_description').addClass('is-invalid');
+            $('#error_annoucement_description').html('Annoucement Description is Required');
+            spinnerTimout();
+        }
+        if($('#announcement_type').val() == ""){
+            $('#announcement_type').addClass('is-invalid');
+            $('#error_announcement_type').html('Annoucement Type is Required');
+            spinnerTimout();
+        }
+        if($('#announcement_title').val() != "" &&
+           $('#announcement_description').val() != "" &&
+           $('#announcement_type').val() != "") {
+                    $.ajax({
+                    type: 'ajax',
+                    url: url,
+                    method: 'POST',
+                    dataType: 'json',
+                    async: false,
+                    data: data,
+                    success: function(data){
+                        $('#annoucement_form')[0].reset();
+                        // Show All Data
+                        showAllAnnouncement();
+                        // Modal hide
+                        //$('#AddNotificationModal').modal('hide');
+                        setTimeout(function (){
+                                $('#AddAnnouncementModal').modal('hide');
+                        }, 400);
+                        // Display a success toast, with a title
+                        toastr.success('Announcement Saved Successfully', 'Success')
+                        setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 1500);
+                    },
+                    error: function(data, status){
+                        toastr.error('Error. Please Complete the fields', 'Error!')
+                        setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+                        /*Add Error Field*/
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(i, errors){
+                            if(errors.announcement_title){
+                                $('#announcement_title').addClass('is-invalid');
+                                $('#error_announcement_title').html('Annoucement Title is Required');
+                            }
+                            if(errors.announcement_description){
+                                $('#announcement_description').addClass('is-invalid');
+                                $('#error_annoucement_description').html('Annoucement Description is Required');
+                            }
+                            if(errors.announcement_type){
+                                $('#announcement_type').addClass('is-invalid');
+                                $('#error_announcement_type').html('Annoucement Type is Required');
+                            }
+                        });
                     }
                 });
-            }
-        });
+           }
+        
     });
 
     // Edit Announcement
@@ -270,8 +290,11 @@ $(document).ready(function (){
     /*Post Announcement*/
     $('#showdata').on('click', '.announcement-post', function(){
         var id = $(this).attr('data');
+        var announcement_type = $(this).attr('data-announcementtype');
         $('#PostModal').modal('show');
         $('#PostModal').find('#title_modal').text('Post Announcement');
+        // console.log(id);
+        // console.log(announcement_type);
         toastr.remove()
         $('#PostAnnouncement').unbind().click(function(){
             $('#spinner_post').addClass('fa fa-refresh fa-spin');
@@ -280,6 +303,7 @@ $(document).ready(function (){
                 url: '/Announcement/update_announcement_status',
                 data: {
                     id: id,
+                    announcement_type: announcement_type,
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data){
@@ -314,6 +338,8 @@ $(document).ready(function (){
         $('#DeleteModal').find('#title_modal').text('Delete Announcement');
         $('#annoucement_form').attr('hidden', true);
         toastr.remove()
+        // Remove current toasts using animation
+        toastr.clear()
         // Prevent Previous handler - unbind()
         $('#DeleteAnnouncement').click(function(){
             $("#spinner_delete").addClass('fa fa-refresh fa-spin');
@@ -368,7 +394,7 @@ $(document).ready(function (){
                                      '<td>'+data[i].announcement_description+'</td>'+
                                      '<td>'+AnnouncementStatus+'</td>' +
                                      '<td>'+data[i].type_name+'</td>'+
-                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'"><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
+                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'" data-announcementtype="'+data[i].announcement_type+'"><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
                                      '<td>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-secondary announcement-edit '+posted+'" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-danger annoucement-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
@@ -384,6 +410,12 @@ $(document).ready(function (){
                     console.log('Could not get data from database');
             }
         });
+    }
+
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+        }, 250);
     }
 });
 </script>
