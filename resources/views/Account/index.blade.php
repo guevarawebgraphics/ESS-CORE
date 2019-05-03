@@ -90,7 +90,7 @@ elseif(Session::get('create_profile') == 'delete'){
         </thead>
         <tbody id="showdata">
             {{-- @foreach($Account as $Accounts)
-                <tr>
+                <tr> updated develop
                     <td>{{ $Accounts->id }}</td>
                     <td>{{ $Accounts->business_name }}</td>
                     <td>{{ $Accounts->accountname }}</td>
