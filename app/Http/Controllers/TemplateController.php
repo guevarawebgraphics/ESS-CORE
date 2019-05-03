@@ -12,12 +12,52 @@ use Illuminate\Support\Facades\Storage;
 
 class TemplateController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('	
+manage_docs') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('	
+manage_docs') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('	
+manage_docs') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('	
+manage_docs') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('	
+manage_docs') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     // Security Authentication
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware(function($request, $next){
-            if(Session::get("create_profile") == "none")
+            if(Session::get("manage_docs") == "none")
             {
                 return redirect('error')->send();
             }
@@ -42,7 +82,7 @@ class TemplateController extends Controller
     }
 
     public function store_template(Request $request){
-
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'document_code' => 'required',
@@ -95,6 +135,7 @@ class TemplateController extends Controller
     }
 
     public function update_template(Request $request, $id){
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'document_code' => 'required',
@@ -141,6 +182,7 @@ class TemplateController extends Controller
     }
 
     public function destroy_template(Request $request){
+        $this->getaccount();
         $id = $request->id;
         /*Delete Template*/
         $template = Template::where('id', '=', $id)->delete();

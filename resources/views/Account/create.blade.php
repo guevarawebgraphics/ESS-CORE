@@ -1,6 +1,52 @@
 @extends('layouts.master')
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Create Profile</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">Create Profile</a>
+            </li>
+            <li class="breadcrumb-item active">Create Account</li>
+        </ol>
+    </div>
+</div>
+@endsection
 
 @section('content')
+@php
+if(Session::get('create_profile') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('create_profile') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
     <!-- general form elements -->
     <div class="card card-info card-outline">
         <div class="card-header">
@@ -214,7 +260,7 @@
 
           <div class="card-footer">
               <button type="button" class="btn btn-default">Back</button>
-            <button type="submit" class="btn btn-primary float-right" id="submit">Submit <i id="spinner" class=""></i></button>
+            <button type="submit" class="btn btn-primary float-right" id="submit" {{$add}}>Submit <i id="spinner" class=""></i></button>
           </div>
         </form>
       </div>

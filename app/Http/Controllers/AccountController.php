@@ -19,7 +19,42 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class AccountController extends Controller
-{
+{   
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('create_profile') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('create_profile') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     // Security Authentication
     public function __construct()
     {
@@ -71,6 +106,7 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
+        $this->getaccount();
         $business_name = Input::get('business_name');
         /*Generate A Alphanumeric Characters for Password*/
         $password = Keygen::alphanum(10)->generate();
@@ -341,7 +377,7 @@ class AccountController extends Controller
     }
 
     public function update(Request $request, $id){
-
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
@@ -419,6 +455,7 @@ class AccountController extends Controller
     }
 
     public function destroy(Request $request){
+        $this->getaccount();
         $Account_id = $request->id;
         /*Delete User From Users*/
         $user = User::where('id','=',$Account_id)->delete();
@@ -502,6 +539,7 @@ class AccountController extends Controller
 
     // Update Account Status
     public function UpdateAccountStatus(Request $request, $id){
+        $this->getaccount();
         /*Update Account Employer*/
         $user = User::findOrFail($id);
         $user->AccountStatus = $request->input('AccountStatus');

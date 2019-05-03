@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
+use Response;
+use App\EmployerContent;
+use App\Logs;
+use DB;
 
 class EmployerContentController extends Controller
 {
@@ -21,14 +25,112 @@ class EmployerContentController extends Controller
             }
         });     
     }
-    //show create content
-    public function create()
-    {          
-        return view('employer_modules.employer_content.create');
-    }
+    
     //show manage content
     public function manage()
-    {          
-        return view('employer_modules.employer_content.manage');
+    {   
+        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent");   
+        return view('employer_modules.employer_content.manage')->with('employer_content', $employer_content);
+    }
+    //refresh manage content
+    public function refresh_manage()
+    {
+        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent");
+        return view('employer_modules.employer_content.tablemanage')->with('employer_content', $employer_content);
+    }
+    //create employer content
+    public function create_employercontent(Request $request)
+    {
+        /*Validate Request*/
+        $this->validate($request, [
+            'content_title' => 'required',
+            'content_description' => 'required',
+        ]);
+
+        /*Check if all Request is not null*/
+        if($request->all() != null){
+            /*Create Content*/
+            $Content = EmployerContent::create([
+                'account_id' => 2, //Temporary Account Id
+                'content_title' => $request->input('content_title'),
+                'content_description' => $request->input('content_description'),
+                'content_status' => 0, //0 Means Pending Staus
+                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id,
+
+            ]);
+
+             // Insert Log
+            $this->insert_log("Create Employer Content '" . $request->input('content_title') . "'" );
+        }
+
+        return Response::json($Content);
+    }
+    //show edit content
+    public function edit_content(Request $request)
+    {
+        $content_id = $request->id;
+        $employer_content = EmployerContent::where('id', '=', $content_id)->get();
+
+        return json_decode($employer_content);
+    }
+
+    //post update content
+    public function update_content(Request $request)
+    {       
+        /*Validate Request*/
+        $this->validate($request, [
+            'content_title' => 'required',
+            'content_description' => 'required',
+        ]);
+
+        /*Check if all Request is not null*/
+        if($request->all() != null){
+            /*Update Content*/
+            $update_content = DB::table('employercontent')->where('id', '=', $request->input('hidden_id'))
+                                ->update(array(
+                                    'account_id' => 2, // Temporary
+                                    'content_title' => $request->input('content_title'),
+                                    'content_description' => $request->input('content_description'),
+                                    'content_status' => 0, //0 Means Pending Staus
+                                    'updated_by' => auth()->user()->id,
+                        ));
+
+             // Insert Log
+            $this->insert_log("Update Employer Content '" . $request->input('content_title') . "'");
+        }
+
+        
+         return Response::json($update_content);
+    }
+
+    //delete function
+    public function delete_content(Request $request)
+    {
+        $id = $request->id;
+        $content_title = $request->title;
+        /*Delete Content*/
+        $content = EmployerContent::where('id', '=', $id)->delete();
+        $message = 'Successfully Deleted';
+        $this->insert_log("Deleted Employer Content '" . $content_title . "'");
+        return response()->json($message);      
+    }
+
+    //post content
+    public function post_content(Request $request)
+    {
+        $post_content = EmployerContent::find($request->id);
+        $post_content->content_status = 1;
+        $post_content->save();
+        $this->insert_log("Post Employer Content '" . $request->title . "'");
+    }
+
+    // Method for inserting into logs
+    public function insert_log($event)
+    {
+        $inserlog = new Logs;
+        $inserlog->account_id = auth()->user()->id;
+        $inserlog->log_event = $event;
+        $inserlog->save();
     }
 }

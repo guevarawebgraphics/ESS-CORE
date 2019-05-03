@@ -169,17 +169,24 @@ elseif(Session::get('my_profile') == 'delete'){
 
                 if(counter == 0)
                 {
-                    var c = confirm("Update Password?");
-
-                    if(c == true)
-                    {                    
+                    swal({
+                        title: "Update Password?",
+                        //text: "Your will not be able to recover this imaginary file!",
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-info",
+                        confirmButtonText: "Yes",
+                        closeOnConfirm: true
+                    },
+                    function(){
+                        //swal("Deleted!", "Your imaginary file has been deleted.", "success");
                         $.ajax({
                             headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             url: "{{ route('changepassword_post') }}",
                             method: "POST",
                             data:{newPass: newPass},               
                             success:function(data)
-                            {
+                            {                               
                                 toastr.success('Password Changed Successfully', 'Success')
                                 //alert("Changed");      
                                 curPass_valid = '';
@@ -193,12 +200,39 @@ elseif(Session::get('my_profile') == 'delete'){
                                 $('#txtconpass').removeClass("is-invalid");
                                 $('#error-no-newcon').attr("hidden", true);                  
                             }                      
-                        });                       
-                    }
-                    else
-                    {
+                        });        
+                    });
+                    
+                    // var c = confirm("Update Password?");
 
-                    }                  
+                    // if(c == true)
+                    // {                    
+                    //     $.ajax({
+                    //         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    //         url: "{{ route('changepassword_post') }}",
+                    //         method: "POST",
+                    //         data:{newPass: newPass},               
+                    //         success:function(data)
+                    //         {
+                    //             toastr.success('Password Changed Successfully', 'Success')
+                    //             //alert("Changed");      
+                    //             curPass_valid = '';
+                    //             $('#txtnewpass').val("");
+                    //             $('#txtcurpass').val("");  
+                    //             $('#txtconpass').val("");   
+                    //             $('#txtcurpass').removeClass("is-invalid");
+                    //             $('#error-no-cur').attr("hidden", true);   
+                    //             $('#txtnewpass').removeClass("is-invalid");
+                    //             $('#error-no-new').attr("hidden", true);   
+                    //             $('#txtconpass').removeClass("is-invalid");
+                    //             $('#error-no-newcon').attr("hidden", true);                  
+                    //         }                      
+                    //     });                       
+                    // }
+                    // else
+                    // {
+
+                    // }                  
                 }
             }
             else
