@@ -142,6 +142,8 @@ class AccountController extends Controller
                     'name' => $request->input('accountname'),
                     'username' => $request->input('accountname'), //Temporary Username
                     'password' => Hash::make($password),
+                    'enrollment_date' => $request->input('enrollmentdate'),
+                    'expiry_date' => $request->input('expirydate'),
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,
                 ]);

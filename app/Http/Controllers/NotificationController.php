@@ -73,7 +73,7 @@ class NotificationController extends Controller
 
         /*Validate Request*/
         $this->validate($request, [
-            'employer_id' => 'required',
+            (auth()->user()->user_type_id == 1 ? "'employer_id' => 'required',": ""),
             'notification_title' => 'required',
             'notification_message' => 'required',
             'message_type_id' => 'required',
@@ -89,7 +89,7 @@ class NotificationController extends Controller
         $Notification = Notifications::create([
             // Array Fields Here
             'account_id' => auth()->user()->id,
-            'employer_id' => $request->input('employer_id'),
+            'employer_id' => (auth()->user()->user_type_id == 3 ? auth()->user()->id : $request->input('employer_id')),
             'notification_title' => $request->input('notification_title'),
             'notification_message' => $request->input('notification_message'),
             'message_type_id' => $request->input('message_type_id'),

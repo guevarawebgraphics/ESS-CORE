@@ -149,7 +149,18 @@ $(document).ready(function (){
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
-        $.ajax({
+        if($('#document_code').val() == ""){
+            $('#document_code').addClass('is-invalid');
+            $('#error_document_code').html('Document Code is Required');
+            spinnerTimout();
+        }
+        if($('#document_description').val() == ""){
+            $('#document_description').addClass('is-invalid');
+            $('#error_document_description').html('Document Description is Required');
+            spinnerTimout();
+        }
+        if($('#document_code').val() != "" && $('#document_description').val() != "") {
+            $.ajax({
             url: url,
             method: 'POST',
             async: false,
@@ -189,11 +200,10 @@ $(document).ready(function (){
                     }
                 });
                
-                
-        
-                
             }
         });
+        }
+        
     });
 
     /*Edit Template*/
@@ -299,6 +309,12 @@ $(document).ready(function (){
                     console.log('Could not get data from database');
                 }
             });
+    }
+
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+        }, 250);
     }
 
 

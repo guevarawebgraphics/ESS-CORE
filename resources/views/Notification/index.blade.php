@@ -7,6 +7,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
+            @if(auth()->user()->user_type_id == 1)
             <div class="form-group row">
                 <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search:</label>
                 <div class="col-md-4">
@@ -16,7 +17,7 @@
                     <a href="#Add" class="btn btn-primary float-md-right" id="btn_addnotification" data-toggle="modal" data-target="#AddNotificationModal"><i class="fa fa-plus-square"></i> Add System Notification</a>
                 </div>
             </div>
-
+            @endif
             <table id="Notification" class="table table-boredered table-striped">
                 <thead>
                     <tr>
@@ -26,7 +27,9 @@
                         <th>Notification Message</th>
                         <th>Notification Message Type</th>
                         <th>Notification Type</th>
+                        @if(auth()->user()->user_type_id == 1)
                         <th>Action</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody id="showdata">
@@ -75,6 +78,7 @@
                                     <p class="text-danger" id="error_notification_message"></p>
                         </div>
                     </div>
+                    @if(auth()->user()->user_type_id == 1)
                     <div class="form-group row">
                             <label for="employer_id" class="control-label col-md-4 text-md-center">Select Employer:</label>
                             {{-- <select class="form-control col-md-4" name="employer_id" id="employer_id">
@@ -97,6 +101,7 @@
                                     <p class="text-danger" id="error_employer_id"></p>
                                 </div>
                     </div>
+                    @endif
                     <div class="form-group row">
                         <label for="message_type_id" class="control-label col-md-4 text-md-center">Message Type:</label>
                         <div class="col-md-8">
@@ -234,76 +239,108 @@ $(document).ready(function (){
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
-        $.ajax({
-            type: 'ajax',
-            url: url,
-            method: 'POST',
-            dataType: 'json',
-            async: false,
-            data: {
-                _token:     '{{ csrf_token() }}',
-                employer_id: $('#employer_id').val(),
-                notification_title: $('#notification_title').val(),
-                notification_message: notification_message.getData(),//$('#notification_message').val(),
-                message_type_id: $('#message_type_id').val(),
-                notification_type: $('#notification_type').val(),
-                
-            },
-            success: function (data){
-                $('#notification_form')[0].reset();
-                if ($.fn.dataTable.isDataTable('#Notification')) {
-                    $("#Notification").DataTable().clear().destroy();
+        if($('#employer_id').val() == ""){
+            $('#employer_id').addClass('is-invalid');
+            $('#error_employer_id').html('Employer Field is Required');
+            spinnerTimout();
+        }
+        if($('#notification_title').val() == ""){
+            $('#notification_title').addClass('is-invalid');
+            $('#error_notification_title').html('Notification Field is Required');
+            spinnerTimout();
+        }
+        if(notification_message.getData() == ""){
+            $('#notification_message').addClass('is-invalid');
+            $('#error_notification_message').html('Notification Message is Required ');
+            spinnerTimout();
+        }
+        if($('#message_type_id').val()== ""){
+            $('#message_type_id').addClass('is-invalid');
+            $('#error_message_type_id').html('Message Type is Required ');
+            spinnerTimout();
+        }
+        if($('#notification_type').val()== ""){
+            $('#notification_type').addClass('is-invalid');
+            $('#error_notification_type').html('Notification Type is Required ');
+            spinnerTimout();
+        }
+        
+        if($('#employer_id').val() != "" &&
+           $('#notification_title').val() != "" &&
+           notification_message.getData() != "" &&
+           $('#message_type_id').val() != "" &&
+           $('#notification_type').val() != "") {
+                $.ajax({
+                type: 'ajax',
+                url: url,
+                method: 'POST',
+                dataType: 'json',
+                async: false,
+                data: {
+                    _token:     '{{ csrf_token() }}',
+                    employer_id: $('#employer_id').val(),
+                    notification_title: $('#notification_title').val(),
+                    notification_message: notification_message.getData(),//$('#notification_message').val(),
+                    message_type_id: $('#message_type_id').val(),
+                    notification_type: $('#notification_type').val(),
+                    
+                },
+                success: function (data){
+                    $('#notification_form')[0].reset();
+                    if ($.fn.dataTable.isDataTable('#Notification')) {
+                        $("#Notification").DataTable().clear().destroy();
+                    }
+                    // Modal hide
+                    //$('#AddNotificationModal').modal('hide');
+                    setTimeout(function (){
+                            $('#AddNotificationModal').modal('hide');
+                    }, 400);
+                    // Display a success toast, with a title
+                    toastr.success('Notification Saved Successfully', 'Success')
+                    setTimeout(function (){
+                        $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    }, 1000);
+                    // Show All Data
+                    showAllNotification();
+                    InitDatatable();
+                },
+                error: function (data, status){
+                    toastr.error('Error. Please Choose a Option', 'Error!')
+                    setTimeout(function (){
+                        $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    }, 250);
+                    /*Add Error Field*/
+                    var errors = $.parseJSON(data.responseText);
+                    $.each(errors, function (i, errors){
+                        if(errors.notification_title)
+                        {
+                            $('#notification_title').addClass('is-invalid');
+                            $('#error_notification_title').html('Notification Title is Required');
+                        }
+                        if(errors.notification_message)
+                        {
+                            $('#notification_message').addClass('is-invalid');
+                            $('#error_notification_message').html('Notification Message is Required ');
+                        }
+                        if(errors.notification_type)
+                        {
+                            $('#notification_type').addClass('is-invalid');
+                            $('#error_notification_type').html('Notification Type is Required');
+                        }
+                        if(errors.employer_id)
+                        {
+                            $('#employer_id').addClass('is-invalid');
+                            $('#error_employer_id').html('Employer Field is Required');
+                        }
+                        if(errors.message_type_id){
+                            $('#message_type_id').addClass('is-invalid');
+                            $('#error_message_type_id').html('Message Type Field is Required');
+                        }
+                    });
+                    
                 }
-                // Modal hide
-                //$('#AddNotificationModal').modal('hide');
-                setTimeout(function (){
-                          $('#AddNotificationModal').modal('hide');
-                }, 400);
-                // Display a success toast, with a title
-                toastr.success('Notification Saved Successfully', 'Success')
-                setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 1000);
-                // Show All Data
-                showAllNotification();
-                InitDatatable();
-            },
-            error: function (data, status){
-                toastr.error('Error. Please Choose a Option', 'Error!')
-                setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 250);
-                /*Add Error Field*/
-                var errors = $.parseJSON(data.responseText);
-                $.each(errors, function (i, errors){
-                    if(errors.notification_title)
-                    {
-                        $('#notification_title').addClass('is-invalid');
-                        $('#error_notification_title').html('Notification Title is Required');
-                    }
-                    if(errors.notification_message)
-                    {
-                        $('#notification_message').addClass('is-invalid');
-                        $('#error_notification_message').html('Notification Message is Required ');
-                    }
-                    if(errors.notification_type)
-                    {
-                        $('#notification_type').addClass('is-invalid');
-                        $('#error_notification_type').html('Notification Type is Required');
-                    }
-                    if(errors.employer_id)
-                    {
-                        $('#employer_id').addClass('is-invalid');
-                        $('#error_employer_id').html('Employer Field is Required');
-                    }
-                    if(errors.message_type_id){
-                        $('#message_type_id').addClass('is-invalid');
-                        $('#error_message_type_id').html('Message Type Field is Required');
-                    }
-                });
-                
-            }
-        });
+            });
+        }
     });
 
     // Edit Notification
@@ -365,6 +402,10 @@ $(document).ready(function (){
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data){
+                    $('#notification_form')[0].reset();
+                    if ($.fn.dataTable.isDataTable('#Notification')) {
+                        $("#Notification").DataTable().clear().destroy();
+                    }
                     setTimeout(function (){
                           $('#DeleteNotificationModal').modal('hide');
                     }, 400);
@@ -374,6 +415,7 @@ $(document).ready(function (){
                         $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
                     }, 1000);
                     showAllNotification();
+                    InitDatatable();
                   },
                   error: function(data){
                     toastr.error('Error Deleting Account')
@@ -381,40 +423,6 @@ $(document).ready(function (){
             });
         });
     });
-
-    /*Suggest Employer*/
-    // var bloodhound = new Bloodhound({
-    //             datumTokenizer: Bloodhound.tokenizers.whitespace,
-    //             queryTokenizer: Bloodhound.tokenizers.whitespace,
-    //             remote: {
-    //                 url: '/Account/get_all_employer?q=%QUERY%',
-    //                 wildcard: '%QUERY%'
-    //             },
-    //         });
-    //         $('#employer_id').typeahead({
-    //             hint: true,
-    //             highlight: true,
-    //             minLength: 1
-    //         }, {
-    //             name: 'users',
-    //             source: bloodhound,
-    //             display: function(data) {
-    //                 return data.business_name  //Input value to be set when you select a suggestion. 
-    //             },
-    //             templates: {
-    //                 empty: [
-    //                     '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-    //                 ],
-    //                 header: [
-    //                     '<div class="list-group search-results-dropdown">'
-    //                 ],
-    //                 suggestion: function(data) {
-    //                 return '<div style="font-weight:normal; margin-top:-5px ! important; width: 200px !important;" class="list-group-item">' + data.business_name + '</div></div>'
-    //                 }
-    //             }
-    // });
-
-    
 
 
     //Show Data
@@ -437,11 +445,11 @@ $(document).ready(function (){
                                      '<td>'+(notification_message.length > 10 ? notification_message.substring(0, 10)+'...' : data[i].notification_message)+'</td>'+
                                      '<td>'+data[i].message_type+'</td>'+
                                      '<td>'+type+'</td>'+
-                                     '<td>'+
+                                     '@if(auth()->user()->user_type_id == 1)<td>'+
                                         // '<a href="javascript:;" class="btn btn-sm btn-info" id="ShowNotification" data-toggle="modal" data-target="#AddNotificationModal" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-eye"></i></span>&nbsp;View</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-secondary notification-edit" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-danger notification-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
-                                    '</td>'+
+                                    '</td>@endif'+
                                 '</tr>';
                     }
                     if(type != null){
@@ -452,6 +460,12 @@ $(document).ready(function (){
                     console.log('Could not get data from database');
                 }
             });
+    }
+
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+        }, 250);
     }
 });
 </script>

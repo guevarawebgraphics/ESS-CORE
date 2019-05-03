@@ -6,6 +6,7 @@ use Session;
 use App\Logs;
 use Response;
 use DB;
+use Mail;
 
 use Illuminate\Http\Request;
 
@@ -41,6 +42,7 @@ class AnnouncementController extends Controller
                              'announcement.announcement_title',
                              'announcement.announcement_description',
                              'announcement.announcement_status',
+                             'announcement.announcement_type',
                              'employer.business_name',
                              'user_type.type_name',
                              'user_type.id as user_type_id')
@@ -136,6 +138,7 @@ class AnnouncementController extends Controller
 
      public function update_announcement_status(Request $request){
          $Announcement_id = $request->id;
+         $announcement_type = $request->announcement_type;
          /*Validate Request*/
          $this->validate($request, [
             'id' => 'required',
@@ -151,6 +154,27 @@ class AnnouncementController extends Controller
 
          // Insert Log
          $this->insert_log("Post Announcement");
+         // Get Template
+         $template_result = DB::table('announcement')
+                                ->where('id', $Announcement_id)
+                                ->select('announcement_description')
+                                ->get();
+         // Get all emails of employers
+        $type = DB::table('employer')
+                                ->where('user_type', $announcement_type)
+                                ->pluck('contact_email');
+
+         /*Send Mail */
+         $data = array("template" => strip_tags($template_result[0]->announcement_description), "emails" => $type);
+         // Note in Blast Email Use Gmail smtp
+         foreach ($type as $key => $tests) {
+            Mail::send('Email.mail', $data, function($message) use($tests){
+                $message->to($tests, 'ess announcement')
+                        ->subject("ESS Announcement ");
+                $message->from('esssample@gmail.com', "ESS");
+            });
+         }
+         
 
          return Response::json();
      }

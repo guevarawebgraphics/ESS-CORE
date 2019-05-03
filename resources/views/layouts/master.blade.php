@@ -54,7 +54,12 @@
 	<!-- Bootstrap WYSIHTML5 -->
 	<script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-	<script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
+	{{-- SWEET ALERT --}}
+	<link href="{{ asset('sweetalert/sweetalert.css') }} rel="stylesheet">
+	<script src="{{ asset('sweetalert/sweetalert.js')}}" ></script>
+	<link href="{{ asset('sweetalert/sweetalert.min.css') }}" rel="stylesheet">	
+	<link href="{{ asset('sweetalert/sweetalert.min.css.map') }}" rel="stylesheet">
+	<script src="{{ asset('sweetalert/sweetalert.min.js') }}" ></script>
 	<script src="{{ asset('js/scripts.js') }}"></script>
     
 	<div class="wrapper">
