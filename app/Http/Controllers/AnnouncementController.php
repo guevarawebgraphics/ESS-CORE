@@ -6,17 +6,53 @@ use Session;
 use App\Logs;
 use Response;
 use DB;
+use Mail;
 
 use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('send_announcement') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('send_announcement') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('send_announcement') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('send_announcement') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('send_announcement') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
      // Security Authentication
      public function __construct()
      {
          $this->middleware('auth');
          $this->middleware(function($request, $next){
-             if(Session::get("create_profile") == "none")
+             if(Session::get("send_announcement") == "none")
              {
                  return redirect('error')->send();
              }
@@ -33,7 +69,7 @@ class AnnouncementController extends Controller
         return view('Announcement.index');
      }
 
-     public function get_all_announcement(){
+     public function get_all_announcement(Request $request){
         $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.account_id', '=', 'announcement.account_id')
                             ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
@@ -41,14 +77,24 @@ class AnnouncementController extends Controller
                              'announcement.announcement_title',
                              'announcement.announcement_description',
                              'announcement.announcement_status',
+                             'announcement.announcement_type',
                              'employer.business_name',
                              'user_type.type_name',
                              'user_type.id as user_type_id')
                             ->get();
-        return json_encode($Announcement);
+
+        /*Protection for Data View as Json*/
+        if($request->ajax()){
+            return json_encode($Announcement);
+        }
+        else {
+            abort(404);
+        }
+        
      }
 
      public function store_announcement(Request $request){
+         $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'announcement_title' => 'required',
@@ -97,6 +143,7 @@ class AnnouncementController extends Controller
      }
 
      public function update_announcement(Request $request, $id){
+        $this->getaccount();
          /*Validate Request*/
         $this->validate($request, [
             'announcement_title' => 'required',
@@ -127,7 +174,9 @@ class AnnouncementController extends Controller
      }
 
      public function update_announcement_status(Request $request){
+        $this->getaccount();
          $Announcement_id = $request->id;
+         $announcement_type = $request->announcement_type;
          /*Validate Request*/
          $this->validate($request, [
             'id' => 'required',
@@ -143,11 +192,33 @@ class AnnouncementController extends Controller
 
          // Insert Log
          $this->insert_log("Post Announcement");
+         // Get Template
+         $template_result = DB::table('announcement')
+                                ->where('id', $Announcement_id)
+                                ->select('announcement_description')
+                                ->get();
+         // Get all emails of employers
+        $type = DB::table('employer')
+                                ->where('user_type', $announcement_type)
+                                ->pluck('contact_email');
+
+         /*Send Mail */
+         $data = array("template" => strip_tags($template_result[0]->announcement_description), "emails" => $type);
+         // Note in Blast Email Use Gmail smtp
+         foreach ($type as $key => $tests) {
+            Mail::send('Email.mail', $data, function($message) use($tests){
+                $message->to($tests, 'ess announcement')
+                        ->subject("ESS Announcement ");
+                $message->from('esssample@gmail.com', "ESS");
+            });
+         }
+         
 
          return Response::json();
      }
 
      public function destroy_announcement(Request $request){
+        $this->getaccount();
          $id = $request->id;
          /*Delete Announcement*/
          $Announcement = Announcement::where('id', '=', $id)->delete();
