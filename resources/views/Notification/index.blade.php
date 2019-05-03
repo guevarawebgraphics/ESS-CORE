@@ -1,6 +1,51 @@
 @extends('layouts.master')
-
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">System Notifications</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">System Notifications</a>
+            </li>
+            <li class="breadcrumb-item active">Manage Notifications</li>
+        </ol>
+    </div>
+</div>
+@endsection
 @section('content')
+@php
+if(Session::get('system_notifications') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('system_notifications') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('system_notifications') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('system_notifications') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('system_notifications') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
     <div class="card card-info card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-bell"></i> System Notification</h3>
@@ -14,7 +59,7 @@
                     <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
                 </div>
                 <div class="col-md-6">
-                    <a href="#Add" class="btn btn-primary float-md-right" id="btn_addnotification" data-toggle="modal" data-target="#AddNotificationModal"><i class="fa fa-plus-square"></i> Add System Notification</a>
+                    <a href="#Add" class="btn btn-primary float-md-right" id="btn_addnotification" data-toggle="modal" data-target="#AddNotificationModal" {{$add}}><i class="fa fa-plus-square"></i> Add System Notification</a>
                 </div>
             </div>
             @endif
@@ -447,8 +492,8 @@ $(document).ready(function (){
                                      '<td>'+type+'</td>'+
                                      '@if(auth()->user()->user_type_id == 1)<td>'+
                                         // '<a href="javascript:;" class="btn btn-sm btn-info" id="ShowNotification" data-toggle="modal" data-target="#AddNotificationModal" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-eye"></i></span>&nbsp;View</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary notification-edit" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger notification-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-secondary notification-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-danger notification-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>@endif'+
                                 '</tr>';
                     }

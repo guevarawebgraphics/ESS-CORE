@@ -1,6 +1,51 @@
 @extends('layouts.master')
-
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Send Announcements</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">Send Announcements</a>
+            </li>
+            <li class="breadcrumb-item active">Manage Announement</li>
+        </ol>
+    </div>
+</div>
+@endsection
 @section('content')
+@php
+if(Session::get('send_announcement') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('send_announcement') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('send_announcement') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('send_announcement') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('send_announcement') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
 <div class="card card-info card-outline">
     <div class="card-header">
         <h3 class="card-title"><i class="fa fa-bullhorn"></i> Announcements</h3>
@@ -13,7 +58,7 @@
                 <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
             </div>
             <div class="col-md-6">
-                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square"></i> Create Announcement</a>
+                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square" {{$add}}></i> Create Announcement</a>
             </div>
         </div>
 
@@ -81,7 +126,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="SaveAnnoucement">Save <i id="spinner" class=""></button>
+            <button type="button" class="btn btn-primary" id="SaveAnnoucement" {{$add}}>Save <i id="spinner" class=""></button>
         </div>
     
       </div>
@@ -394,10 +439,10 @@ $(document).ready(function (){
                                      '<td>'+data[i].announcement_description+'</td>'+
                                      '<td>'+AnnouncementStatus+'</td>' +
                                      '<td>'+data[i].type_name+'</td>'+
-                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'" data-announcementtype="'+data[i].announcement_type+'"><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
+                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'" data-announcementtype="'+data[i].announcement_type+'" {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary announcement-edit '+posted+'" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger annoucement-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-secondary announcement-edit '+posted+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-danger annoucement-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }
