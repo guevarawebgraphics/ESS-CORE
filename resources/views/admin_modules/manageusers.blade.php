@@ -80,7 +80,7 @@ elseif(Session::get('manage_users') == 'delete'){
 <div class="modal fade bd-example-modal-lg" id="userAccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
+            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Manage User Access</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -90,6 +90,7 @@ elseif(Session::get('manage_users') == 'delete'){
                 <form id="formUserLevel">
                     @csrf
                     <input type="hidden" id="hidden_id" name="hidden_id">
+                    <input type="hidden" id="hidden_typename" name="hidden_typename">
                     <div id="modal_module"></div>
                 </form>
             </div>
@@ -105,7 +106,7 @@ elseif(Session::get('manage_users') == 'delete'){
 <div class="modal fade" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
+            <div class="modal-header">
                 <h5 class="modal-title" id="userTypeTitle">Create User Type</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -128,7 +129,7 @@ elseif(Session::get('manage_users') == 'delete'){
                             </div>                   
                         </div> --}}
 
-                        <div class="form-group row">
+                        <div class="form-group row" id="user_type_for_field">
                             <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type for</label>
                             <div class="col-md-6">
                                 <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">                                   
@@ -207,6 +208,7 @@ elseif(Session::get('manage_users') == 'delete'){
                 data:{},                 
                 success:function(data)
                 {
+                    //alert(data);
                     $('#table_usertype').html(data);       
                     /*DataTable*/ 
                     var table = $("#usertype_table").DataTable({
@@ -214,6 +216,7 @@ elseif(Session::get('manage_users') == 'delete'){
                         "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                         "paging": true,
                         "pageLength": 10000,
+                        "ordering": false,
                         scrollY: 300,
                         //  scrollX: true,
                         "autoWidth": true,
@@ -227,17 +230,20 @@ elseif(Session::get('manage_users') == 'delete'){
         //Manage User Access Modal
         $(document).on("click", "#manage", function(){
             $('#userAccessModal').modal('show');
-            userid = $(this).data("add");
+            manage_info = $(this).data("add");
+            manage_data = manage_info.split("||");
+            console.log(manage_data[0] + " " + manage_data[1]);
             //alert(userid);
             $.ajax({
                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 url: "{{ route('showmodule') }}",
                 method: "GET",
-                data:{id: userid},                 
+                data:{id: manage_data[0]},                 
                 success:function(data)
                 {
                     $('#modal_module').html(data);
-                    $('#hidden_id').val(userid);                  
+                    $('#hidden_id').val(manage_data[0]); 
+                    $('#hidden_typename').val(manage_data[1]);                  
                 }
             });
         });
@@ -268,21 +274,23 @@ elseif(Session::get('manage_users') == 'delete'){
             $('#action').val("add");
             $('#userTypeTitle').html("Create User Type");
             $('#hidden_id_usertype').val("");
-            $('#userTypeModal').modal();            
+            $('#userTypeModal').modal();
+            $("#user_type_for_field").removeAttr("hidden");            
         });
 
         //EDIT USER TYPE
-        var data;
+        var info;
         $(document).on("click", "#edit_usertype", function(){
             var id = $(this).data("add");
-            data = id.split("]]");
-            //alert(data);
+            info = id.split("]]");
+            //alert(info);
             $('#userTypeModal').modal();
             $('#userTypeTitle').html("Edit User Type");
             $('#action').val("edit");
-            $('#name').val(data[1]);
-            $('#desc').val(data[2]);
-            $('#hidden_id_usertype').val(data[0]);
+            $('#name').val(info[1]);
+            $('#desc').val(info[2]);
+            $('#hidden_id_usertype').val(info[0]);
+            $("#user_type_for_field").attr("hidden", true);
         });
 
          //Saving of new user type
@@ -319,7 +327,7 @@ elseif(Session::get('manage_users') == 'delete'){
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         url: "{{ route('updateusertype_post') }}",
                         method: "POST",
-                        data:{typeName: type_name, typeDesc: type_desc, userTypeID: data[0]},                 
+                        data:{typeName: type_name, typeDesc: type_desc, userTypeID: info[0]},                 
                         success:function(data)
                         {
                             toastr.success('User Type Updated!', 'Success')
@@ -335,28 +343,33 @@ elseif(Session::get('manage_users') == 'delete'){
         //DELETE USER TYPE
         $(document).on("click", "#delete_usertype", function(){
             var id = $(this).data("add");
-            var data = id.split("]]");
+            var data_info = id.split("]]");
             //alert(id);
-            var c = confirm("Do you want to delete User Type " + "'" + data[1] + "'?");
-            if(c == true)
-            {
-                $.ajax({
-                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('deleteusertype_post') }}",
-                    method: "POST",
-                    data:{userTypeID: data[0]},                 
-                    success:function(data)
-                    {
-                        toastr.success('User Type Deleted!', 'Success') 
-                        refreshUsertypeTable();
-                        $('#userTypeModal').modal('hide');           
-                    }
-                });
-            }
-            else
-            {
-
-            }
+            swal({
+                title: "Do you want to delete User Type " + "'" + data_info[1] + "'?",
+                //text: "Your will not be able to recover this imaginary file!",
+                type: "error",             
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                },
+                function()
+                {                   
+                    $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('deleteusertype_post') }}",
+                        method: "POST",
+                        data:{userTypeID: data_info[0], userTypeName: data_info[1]},                 
+                        success:function(data)
+                        {
+                            toastr.success('User Type Deleted!', 'Success') 
+                            refreshUsertypeTable();
+                            $('#userTypeModal').modal('hide');           
+                        }
+                    });
+                }
+            );       
         });
 
         //FOR EMPLOYER SELECTION

@@ -169,17 +169,29 @@ elseif(Session::get('my_profile') == 'delete'){
             }
             else
             {
-                $.ajax({
-                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('settingsupdate_post') }}",
-                    method: "POST",
-                    data:{id: id, email: email, contact: mobile},               
-                    success:function(data)
-                    {
-                        toastr.success('Account Updated Successfully', 'Success')
+                swal({
+                    title: "Update this account?",
+                    //text: "Your will not be able to recover this imaginary file!",
+                    type: "warning",             
+                    confirmButtonClass: "btn-info",
+                    confirmButtonText: "Yes",
+                    showCancelButton: true,
+                    closeOnConfirm: true,
+                    },
+                    function()
+                    {                   
+                        $.ajax({
+                            headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            url: "{{ route('settingsupdate_post') }}",
+                            method: "POST",
+                            data:{id: id, email: email, contact: mobile},               
+                            success:function(data)
+                            {
+                                toastr.success('Account Updated Successfully', 'Success')
+                            }                  
+                        });  
                     }
-                    
-                });  
+                );                
             }                   
         });
 

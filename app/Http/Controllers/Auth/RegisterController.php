@@ -144,7 +144,7 @@ class RegisterController extends Controller
                 $user_type_for = "6";
             }
         }
-        $this->insert_log("Created new user");
+        
         $user = User::create([
             'name' => $data['name'],
             'user_type_id' => $data['cmbUser_type'],
@@ -165,6 +165,8 @@ class RegisterController extends Controller
                 'employer_id' => Session::get("employer_id")
             )); 
         }
+
+        $this->insert_log("Created '". $data['username'] ."' User Account");
             
     }
     //update user 
@@ -175,48 +177,60 @@ class RegisterController extends Controller
         $name = $request->name;
         $userName = $request->userName;
         $userType = $request->userType;
-        $password = $request->password;  
+        //$password = $request->password;  
            
         $update_query = User::find($userId);
         $update_query->name = $name;
         $update_query->user_type_id = $userType;
         $update_query->username = $userName;
-        $update_query->password = Hash::make($password);
+        //$update_query->password = Hash::make($password);
         $update_query->updated_by = auth()->user()->id;
         $update_query->save();
+        $update_username = $update_query->username;
 
-        $this->insert_log("Updated user");                  
+        $this->insert_log("Updated '". $update_username ."' User Account");                  
+    }
+    //reset_password
+    public function reset_password(Request $request)
+    {
+        $this->getaccount();
+        $userId = $request->id;
+        $password = $request->password;
+
+        if($userId == "" && $password == "")
+        {
+            echo "NO INPUT";
+        }
+        else
+        {
+            $update_query = User::find($userId);
+            $update_query->password = Hash::make($password);
+            $update_query->updated_by = auth()->user()->id;
+            $update_query->save();
+    
+            $update_username = $update_query->username;
+    
+            $this->insert_log("Reset Password of '". $update_username ."' User Account");      
+        }
+         
     }
     //check username
     public function checkusername(Request $request)
     {
         $userName = $request->userName;
         $count = 0;
-
-        //$check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$userName' ");
-        $check_username = DB::connection('mysql')->select("SELECT username FROM users");
-
-        if(!empty($check_username))
+        
+        $check_username = DB::connection('mysql')->select("SELECT username FROM users WHERE username = '$userName' ");
+        if(count($check_username) > 0)
         {
-            foreach($check_username as $username)
-            {
-                // if($username->username == $userName)
-                // {
-                //     $count += 1;
-                // }
-                // else
-                // {
-                //     $count = 0;
-                // }
-                echo $username->username . "<br>";
-            }
+            echo "taken";
         }
         else
         {
-            echo "No Username";
+            echo "not";
         }
- 
-        // if(count($check_username) > 0)
+
+        // if($count > 0)
         // {
         //     echo "taken";
         // }
@@ -224,14 +238,6 @@ class RegisterController extends Controller
         // {
         //     echo "suc";
         // }
-        if($count > 0)
-        {
-            echo "taken";
-        }
-        else
-        {
-            echo "suc";
-        }
     }
     // Method for inserting into logs
     public function insert_log($event)
