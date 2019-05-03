@@ -119,6 +119,7 @@ Route::post('/employercontent/edit/post', 'EmployerContentController@update_cont
 Route::post('/employercontent/delete', 'EmployerContentController@delete_content')->name('deleteemployercontent');
 Route::post('/employercontent/post_content', 'EmployerContentController@post_content')->name('postemployercontent');
 
+
 //Payroll Management
 Route::get('/payrollmanagement/upload', 'PayrollManagementController@upload');
 Route::get('/payrollmanagement/view', 'PayrollManagementController@view');

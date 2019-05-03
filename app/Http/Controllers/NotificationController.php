@@ -5,13 +5,64 @@ use App\Notifications;
 use DB;
 use App\Logs;
 use Response;
+use Session;
 
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('	
+system_notifications') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('	
+system_notifications') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('	
+system_notifications') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('	
+system_notifications') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('	
+system_notifications') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     public function __construct(){
         $this->middleware('auth');
+        $this->middleware(function($request, $next){
+            if(Session::get("system_notifications") == "none")
+            {
+                return redirect('error')->send();
+            }
+            else
+            {
+                return $next($request);
+            }
+        }); 
     }
 
     public function index(){
@@ -70,7 +121,7 @@ class NotificationController extends Controller
 
     public function store_notification(Request $request)
     {
-
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             (auth()->user()->user_type_id == 1 ? "'employer_id' => 'required',": ""),
@@ -124,6 +175,7 @@ class NotificationController extends Controller
 
     public function update_notification(Request $request, $id)
     {
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             //'employer_id' => 'required',
@@ -153,6 +205,7 @@ class NotificationController extends Controller
 
     public function destroy_notification(Request $request)
     {
+        $this->getaccount();
         $Notification_id = $request->id;
 
         $Notification = Notifications::where('id', '=', $Notification_id)->delete();

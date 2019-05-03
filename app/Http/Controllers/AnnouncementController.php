@@ -12,12 +12,47 @@ use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('send_announcement') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('send_announcement') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('send_announcement') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('send_announcement') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('send_announcement') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
      // Security Authentication
      public function __construct()
      {
          $this->middleware('auth');
          $this->middleware(function($request, $next){
-             if(Session::get("create_profile") == "none")
+             if(Session::get("send_announcement") == "none")
              {
                  return redirect('error')->send();
              }
@@ -59,6 +94,7 @@ class AnnouncementController extends Controller
      }
 
      public function store_announcement(Request $request){
+         $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'announcement_title' => 'required',
@@ -107,6 +143,7 @@ class AnnouncementController extends Controller
      }
 
      public function update_announcement(Request $request, $id){
+        $this->getaccount();
          /*Validate Request*/
         $this->validate($request, [
             'announcement_title' => 'required',
@@ -137,6 +174,7 @@ class AnnouncementController extends Controller
      }
 
      public function update_announcement_status(Request $request){
+        $this->getaccount();
          $Announcement_id = $request->id;
          $announcement_type = $request->announcement_type;
          /*Validate Request*/
@@ -180,6 +218,7 @@ class AnnouncementController extends Controller
      }
 
      public function destroy_announcement(Request $request){
+        $this->getaccount();
          $id = $request->id;
          /*Delete Announcement*/
          $Announcement = Announcement::where('id', '=', $id)->delete();

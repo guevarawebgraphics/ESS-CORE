@@ -1,6 +1,51 @@
 @extends('layouts.master')
-
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Manage Docs & Template</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">Manage Docs & Template</a>
+            </li>
+            <li class="breadcrumb-item active">Manage</li>
+        </ol>
+    </div>
+</div>
+@endsection
 @section('content')
+@php
+if(Session::get('manage_docs') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('manage_docs') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_docs') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_docs') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_docs') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
 <div class="card card-info card-outline">
     <div class="card-header">
         <h3 class="card-title"><i class="fa fa-file"></i> Manage Document and Templates</h3>
@@ -13,7 +58,7 @@
                 <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
             </div>
             <div class="col-md-6">
-                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addtemplate" data-toggle="modal" data-target="#AddTemplateModal"><i class="fa fa-plus-square"></i> Create Template</a>
+                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addtemplate" data-toggle="modal" data-target="#AddTemplateModal" {{$add}}><i class="fa fa-plus-square"></i> Create Template</a>
             </div>
         </div>
 
@@ -295,8 +340,8 @@ $(document).ready(function (){
                                      '<td>'+data[i].document_description+'</td>'+
                                      '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'   <i class="fa fa-download"></i>'+'</a>'+'</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }
