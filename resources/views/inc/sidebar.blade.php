@@ -149,7 +149,7 @@
 						{
 							$upload_employee_enrollment = "active";
 						}
-						if(Request::segment(2) == 'encode')
+						if(Request::segment(2) == '' || Request::segment(2) == 'encode')
 						{
 							$encode_employee_enrollment = "active";
 						}					
@@ -297,7 +297,7 @@
 							<p>Upload Employee</p></a>                                   
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee/encode"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Encode Employee</p></a>
 						</li>						
 					</ul>

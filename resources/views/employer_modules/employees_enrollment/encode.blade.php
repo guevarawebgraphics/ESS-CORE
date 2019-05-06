@@ -249,6 +249,13 @@
 
                 <div class="form-group row">
                     <div class="col-md-1"></div>                  
+                    <div class="col-md-5">
+                        <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
+                        <select id="address_cityprovince" name="address_cityprovince" class="form-control">
+                            <option value="" selected>Choose Province</option>
+                        </select>
+                            <p class="text-danger" id="error_address_cityprovince"></p>
+                    </div>
                     
                     <div class="col-md-5">
                         <label for="address_town" class="text-md-center">City/Town:</label>
@@ -258,24 +265,18 @@
                             <p class="text-danger" id="error_address_town"></p>
                     </div>
                                      
-                    <div class="col-md-5">
-                        <label for="address_barangay" class="text-md-center">Barangay:</label>
-                        <select id="address_barangay" name="address_barangay" class="form-control">
-                            <option value="" selected>Choose Barangay</option>
-                        </select>
-                            <p class="text-danger" id="error_address_barangay"></p>
-                    </div>
+                    
                     <div class="col-md-1"></div>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-md-1"></div>                                   
                     <div class="col-md-5">
-                        <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
-                        <select id="address_cityprovince" name="address_cityprovince" class="form-control">
-                            <option value="" selected>Choose Province</option>
+                        <label for="address_barangay" class="text-md-center">Barangay:</label>
+                        <select id="address_barangay" name="address_barangay" class="form-control">
+                            <option value="" selected>Choose Barangay</option>
                         </select>
-                            <p class="text-danger" id="error_address_cityprovince"></p>
+                            <p class="text-danger" id="error_address_barangay"></p>
                     </div>
                                         
                     <div class="col-md-5">
@@ -293,4 +294,68 @@
         </form>            
     </div>      
 </div>
+<script>
+$(document).ready(function(){
+    /*Get Province*/
+    $.ajax({
+			method: 'get',
+            url: '/enrollemployee/getprovince',
+            dataType: 'json',
+			success: function (data) {
+                // console.log("success");
+                // console.log(data);
+                $.each(data, function (i, data) {
+                    $("#address_cityprovince").append('<option value="' + data.provCode + '">' + data.provDesc + '</option>');
+                });
+			},
+			error: function (response) {
+					console.log("Error cannot be");
+			}
+    });
+
+    /*Get City town*/
+    $('#address_cityprovince').change(function (){
+        $("#address_town").empty();
+        $code = $('#address_cityprovince').val();
+        $.ajax({
+                method: 'get',
+                url: '/enrollemployee/getcity/' + $code,
+                dataType: 'json',
+                success: function (data) {
+                    // console.log("success");
+                    // console.log(data);
+                    $("#address_town").append('<option value="">Choose City/Town</option>');
+                    $.each(data, function (i, data) {
+                        $("#address_town").append('<option value="' + data.citymunCode + '">' + data.citymunDesc + '</option>');
+                    });
+                },
+                error: function (response) {
+                        console.log("Error cannot be");
+                }
+        });
+    });
+
+    /*Get Barangay*/
+    $('#address_town').change(function (){
+        $("#address_barangay").empty();
+        $code = $('#address_town').val();
+        $.ajax({
+                method: 'get',
+                url: '/enrollemployee/getbarangay/' + $code,
+                dataType: 'json',
+                success: function (data) {
+                    // console.log("success");
+                    // console.log(data);
+                    $("#address_barangay").append('<option value="">Choose Barangay</option>');
+                    $.each(data, function (i, data) {
+                        $("#address_barangay").append('<option value="' + data.id + '">' + data.brgyDesc + '</option>');
+                    });
+                },
+                error: function (response) {
+                        console.log("Error cannot be");
+                }
+        });
+    });
+});
+</script>
 @endsection

@@ -107,6 +107,10 @@ Route::post('/Announcement/update_announcement_status', 'AnnouncementController@
 ////// EMPLOYER
 
 //Employees Enrollment
+Route::get('/enrollemployee', 'EmployeesEnrollmentController@index');
+Route::get('/enrollemployee/getcity/{provCode}', 'EmployeesEnrollmentController@get_citytown');
+Route::get('/enrollemployee/getbarangay/{citymunCode}', 'EmployeesEnrollmentController@get_barangay');
+Route::get('/enrollemployee/getprovince', 'EmployeesEnrollmentController@get_province');
 Route::get('/enrollemployee/encode', 'EmployeesEnrollmentController@encode');
 Route::get('/enrollemployee/upload', 'EmployeesEnrollmentController@upload');
 
