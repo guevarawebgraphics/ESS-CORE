@@ -1,6 +1,53 @@
 @extends('layouts.master')
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Create Profile</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">Create Profile</a>
+            </li>
+            <li class="breadcrumb-item active">Update Profile</li>
+        </ol>
+    </div>
+</div>
+@endsection
+
 
 @section('content')
+@php
+if(Session::get('create_profile') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('create_profile') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
 @if(session('success'))
     <div class="alert alert-success">
         {{session('success')}}
@@ -43,7 +90,7 @@
         </thead>
         <tbody id="showdata">
             {{-- @foreach($Account as $Accounts)
-                <tr>
+                <tr> updated develop
                     <td>{{ $Accounts->id }}</td>
                     <td>{{ $Accounts->business_name }}</td>
                     <td>{{ $Accounts->accountname }}</td>
@@ -74,10 +121,11 @@
         <tfoot>
             <tr>
                 {{-- <th>Id</th> --}}
-                <th>business_name</th>
+                <th>Business Name</th>
                 <th>AccountName</th>
                 <th>Account Type</th>
                 <th>Email</th>
+                <th>Account Status</th>
                 <th>Document Sec</th>
                 <th>Document Bir</th>
                 <th>Change Status</th>
@@ -93,7 +141,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+        <h5 class="modal-title" id="exampleModalLabel" >Delete</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -107,7 +155,7 @@
           {{-- <form method="POST" action="" id="DeleteForm">
             @method('DELETE')
             @csrf --}}
-            <button type="button" class="btn btn-primary" id="confirm">Confirm</button>
+            <button type="button" class="btn btn-primary" id="confirm" >Confirm</button>
           {{-- </form> --}}
       </div>
     </div>
@@ -119,7 +167,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Change Status</h5>
+        <h5 class="modal-title" id="exampleModalLabel" >Change Status</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -146,7 +194,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
       showAllAccount();
-
+      initDataTable();
+      function initDataTable(){
         /*DataTable*/ 
         var table = $("#Accounts").DataTable({
           // "searching": false,
@@ -158,11 +207,14 @@
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
+          "order": [[4, "asc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {
                 table.search(this.value).draw();
         });
+      }
+        
 
         // Delete Function
         $('#showdata').on('click', '.Delete', function (){
@@ -233,8 +285,12 @@
                       _token:     '{{ csrf_token() }}'
                     },
                     success: function (data, response){
+                      if ($.fn.dataTable.isDataTable('#Accounts')) {
+                        $("#Accounts").DataTable().clear().destroy();
+                      }
                       //Show All Account
                       showAllAccount();
+                      initDataTable();
                       //Set the dropdown to the default selected
                       $('#AccountStatus option[value=""]').prop('selected', true);
                       //console.log('Success');
@@ -271,7 +327,9 @@
               var html = '';
               var i;
               for(i=0; i<data.length; i++){
-                var AccountStatus = (data[i].AccountStatus == 1 ? "Active" : data[i].AccountStatus == 2 ? "In-Active" : data[i].AccountStatus == 3 ? "Deactivated" : null);
+                var AccountStatus = (data[i].AccountStatus == 1 ? '<span class="badge badge-success">'+"Active"+'</span>' : data[i].AccountStatus == 2 ? '<span class="badge badge-secondary">'+"In-Active"+'</span>' : data[i].AccountStatus == 3 ? '<span class="badge badge-danger">'+"Deactivated"+'</span>' : null);
+                var bir = data[i].bir;
+                var sec = data[i].sec;
                 html +='<tr>'+
                         // '<td>'+data[i].id+'</td>'+
                         '<td>'+data[i].business_name+'</td>'+
@@ -279,11 +337,11 @@
                         '<td>'+data[i].type_name+'</td>'+
                         '<td>'+data[i].contact_email+'</td>'+
                         '<td>'+AccountStatus+'</td>'+
-                        '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" download>' +data[i].sec+ +'</a>' + '</td>'+
-                        '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" download>' +data[i].bir+ +'</a>' + '</td>'+
-                        '<td>' + '<a href="#ChangeStatus" class="CS btn-sm btn btn-info" data-toggle="modal" data-target="#csModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'"><i class="fa fa-info"></i> Change Status</a>' +'</td>'+
-                        '<td>' + '<a href="/Account/edit/'+data[i].account_id+'" class="btn btn-sm btn-secondary"><i class="fa fa-edit"></i> Edit</a> ' +
-                          '<a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'"><i class="fa fa-trash"></i> Delete</a>' +
+                        '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(sec.length > 10 ? sec.substring(0, 10)+'...' : data[i].sec) +'</a>' + '</td>'+
+                        '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(bir.length > 10 ? bir.substring(0, 10)+'...' : data[i].bir) +'</a>' + '</td>'+
+                        '<td>' + '<a href="#ChangeStatus" class="CS btn-sm btn btn-info" data-toggle="modal" data-target="#csModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'" {{$edit}}><i class="fa fa-info"></i> Change Status</a>' +'</td>'+
+                        '<td>' + '<a href="/Account/edit/'+data[i].account_id+'" class="btn btn-sm btn-secondary" {{$edit}}><i class="fa fa-edit"></i> Edit</a> ' +
+                          '<a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'" {{$delete}}><i class="fa fa-trash"></i> Delete</a>' +
                          '</td>'+
                         '</tr>';
 

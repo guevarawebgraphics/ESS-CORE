@@ -121,44 +121,25 @@
 							$manage = "active";
 						}					
 					}
-					else if(Request::segment(1) == 'systemnotifications')
+					else if(Request::segment(1) == 'Notification')
 					{
 						$systemnotifications = "menu-open";
 						$systemnotifications_tree = "active";
-						if(Request::segment(2) == 'create')
-						{
-							$create_notif = "active";
-						}
-						if(Request::segment(2) == 'manage')
-						{
-							$manage_notif = "active";
-						}					
+						$manage_notif = "active";					
 					}
-					else if(Request::segment(1) == 'sendannouncements')
+					else if(Request::segment(1) == 'Announcement')
 					{
 						$sendannounce = "menu-open";
-						$sendannounce_tree = "active";
-						if(Request::segment(2) == 'create')
-						{
-							$create_sendannounce = "active";
-						}
-						if(Request::segment(2) == 'manage')
-						{
-							$manage_sendannounce = "active";
-						}					
+						$sendannounce_tree = "active";					
+						$manage_sendannounce = "active";										
 					}
-					else if(Request::segment(1) == 'managedocs')
+					else if(Request::segment(1) == 'Template')
 					{
 						$managedocs = "menu-open";
 						$managedocs_tree = "active";
-						if(Request::segment(2) == 'create')
-						{
-							$create_managedocs = "active";
-						}
-						if(Request::segment(2) == 'manage')
-						{
-							$manage_managedocs = "active";
-						}					
+						
+						$manage_managedocs = "active";
+											
 					}	
 					else if(Request::segment(1) == 'enrollemployee')
 					{
@@ -288,7 +269,7 @@
 							<a class="nav-link {{$create}}" href="/manageuser/create"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Create User</p></a>
 						</li>
-						@if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
+						@if(Session::get('employer_id') == "admin")
 							<li class="nav-item">
 								<a class="nav-link {{$manage}}" href="/manageuser/manage"><i class="fa fa-circle-o nav-icon"></i>
 								<p>Manage User Access</p></a>
@@ -297,66 +278,6 @@
 						@endif								
 					</ul>
 				</li>
-				@else								
-				@endif
-				<!-- END -->
-
-				<!-- ESS CONTENT -->
-				@if(Session::get("ess_content") != "none")	
-				<li class="nav-item has-treeview {{$systemnotifications}}">
-					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
-					<p>System Notifications <i class="fa fa-angle-left right"></i></p></a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a class="nav-link {{$create_notif}}" href="/systemnotifications/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Notifications</p></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$manage_notif}}" href="/Notification"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage Notifications</p></a>
-						</li>
-					</ul>
-				</li>	
-				@else								
-				@endif
-				<!-- END -->
-
-				<!--SEND ANNOUNCEMENTS  -->
-				@if(Session::get("send_announcement") != "none")
-				<li class="nav-item has-treeview {{$sendannounce}}">
-					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
-					<p>Send Announcements <i class="fa fa-angle-left right"></i></p></a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a class="nav-link {{$create_sendannounce}}" href="/sendannouncements/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Announcements</p></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$manage_sendannounce}}" href="/sendannouncements/manage"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage Announcements</p></a>
-						</li>
-					</ul>
-				</li>	
-				@else								
-				@endif	
-				<!-- END -->
-
-				<!-- DOCS AND TEMPLATES -->
-				@if(Session::get("manage_docs") != "none")
-				<li class="nav-item has-treeview {{$managedocs}}">
-					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
-					<p>Manage Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a class="nav-link {{$create_managedocs}}" href="/managedocs/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create</p></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$manage_managedocs}}" href="/Template"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage</p></a>
-						</li>
-					</ul>
-				</li>	
 				@else								
 				@endif
 				<!-- END -->
@@ -405,26 +326,6 @@
 				@endif
 				<!-- END -->
 				
-				@if(Session::get("employer_content") != "none")				
-				<!-- EMPLOYER CONTENT -->
-				<li class="nav-item has-treeview {{$employercontent}}">
-					<a class="nav-link {{$employercontent_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
-					<p>Employer Content <i class="fa fa-angle-left right"></i></p></a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a class="nav-link {{$create_employercontent}}" href="/employercontent/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Content</p></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$manage_employercontent}}" href="/employercontent/manage"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage Content</p></a>
-						</li>
-					</ul>
-				</li>					
-				@else							
-				@endif
-				<!-- END -->
-
 				<!-- END EMPLOYER -->
 
 				<!-- EMPLOYEE -->
@@ -448,7 +349,7 @@
 				@else							
 				@endif
 				<!-- END  -->
-
+				
 				<!-- I CREDIT -->
 				@if(Session::get("icredit") != "none")
 				<li class="nav-item has-treeview">
@@ -500,6 +401,87 @@
 				<!-- END  -->
 
 				<!-- END EMPLOYEE -->
+
+				@if(Session::get("employer_content") != "none")				
+				<!-- EMPLOYER CONTENT -->
+				<li class="nav-item has-treeview {{$employercontent}}">
+					<a class="nav-link {{$employercontent_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<p>Employer Content <i class="fa fa-angle-left right"></i></p></a>
+					<ul class="nav nav-treeview">
+						{{-- <li class="nav-item">
+							<a class="nav-link {{$create_employercontent}}" href="/employercontent/create"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Create Content</p></a>
+						</li> --}}
+						<li class="nav-item">
+							<a class="nav-link {{$manage_employercontent}}" href="/employercontent/manage"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Manage Content</p></a>
+						</li>
+					</ul>
+				</li>					
+				@else							
+				@endif
+				<!-- END -->
+
+				<!-- NOTIFICATION -->
+				@if(Session::get("system_notifications") != "none")	
+				<li class="nav-item has-treeview {{$systemnotifications}}">
+					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<p>System Notifications <i class="fa fa-angle-left right"></i></p></a>
+					<ul class="nav nav-treeview">
+						{{-- <li class="nav-item">
+							<a class="nav-link {{$create_notif}}" href="/systemnotifications/create"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Create Notifications</p></a>
+						</li> --}}
+						<li class="nav-item">
+							<a class="nav-link {{$manage_notif}}" href="/Notification"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Manage Notifications</p></a>
+						</li>
+					</ul>
+				</li>	
+				@else								
+				@endif
+				<!-- END -->
+
+				<!--SEND ANNOUNCEMENTS  -->
+				@if(Session::get("send_announcement") != "none")
+				<li class="nav-item has-treeview {{$sendannounce}}">
+					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<p>Send Announcements <i class="fa fa-angle-left right"></i></p></a>
+					<ul class="nav nav-treeview">
+						{{-- <li class="nav-item">
+							<a class="nav-link {{$create_sendannounce}}" href="/sendannouncements/create"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Create Announcements</p></a>
+						</li> --}}
+						<li class="nav-item">
+							<a class="nav-link {{$manage_sendannounce}}" href="/Announcement"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Manage Announcements</p></a>
+						</li>
+					</ul>
+				</li>	
+				@else								
+				@endif	
+				<!-- END -->
+
+				<!-- DOCS AND TEMPLATES -->
+				@if(Session::get("manage_docs") != "none")
+				<li class="nav-item has-treeview {{$managedocs}}">
+					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<p>Manage Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
+					<ul class="nav nav-treeview">
+						{{-- <li class="nav-item">
+							<a class="nav-link {{$create_managedocs}}" href="/managedocs/create"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Create</p></a>
+						</li> --}}
+						<li class="nav-item">
+							<a class="nav-link {{$manage_managedocs}}" href="/Template"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Manage</p></a>
+						</li>
+					</ul>
+				</li>	
+				@else								
+				@endif
+				<!-- END -->
+
 
 			</ul>           
 		</nav><!-- /.sidebar-menu -->

@@ -12,6 +12,41 @@ use DB;
 
 class MyProfileController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('my_profile') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('my_profile') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('my_profile') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('my_profile') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('my_profile') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     public function __construct()
     {
         $this->middleware('auth');      
@@ -37,14 +72,14 @@ class MyProfileController extends Controller
         $Account = '';
         $Account_info = '';
         $data = array();
-        if(auth()->user()->user_type_id == "3")
+        if(auth()->user()->user_type_id == "3" || auth()->user()->user_type_id == "8" || auth()->user()->user_type_id == "9")
         {
             $Account = DB::table('employer')
             ->join('users', 'employer.account_id', '=', 'users.id')
             ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')  
             ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
             ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')       
-            ->select('employer.id' ,'employer.shortname', 'employer.contact_mobile', 'employer.contact_email', 'employer.address_unit','refprovince.provDesc'
+            ->select('employer.id' ,'employer.business_name', 'employer.contact_mobile', 'employer.contact_email', 'employer.address_unit','refprovince.provDesc'
             , 'refcitymun.citymunDesc', 'refbrgy.brgyDesc')
             ->where('employer.account_id', '=', auth()->user()->id)
             ->get();         
@@ -68,7 +103,7 @@ class MyProfileController extends Controller
         if(!empty($Account))
         {
             $id = $Account[0]->id;
-            $shortname = $Account[0]->shortname;
+            $shortname = $Account[0]->business_name;
             $contact = $Account[0]->contact_mobile;
             $email = $Account[0]->contact_email;
             $unit = $Account[0]->address_unit;
@@ -105,6 +140,7 @@ class MyProfileController extends Controller
     //settings update
     public function settingsupdate_post(Request $request)
     {
+        $this->getaccount();
         $id_to_update = $request->id;
         $email = $request->email;
         $contact = $request->contact;
@@ -122,7 +158,7 @@ class MyProfileController extends Controller
             $update_query->save();
         }
         
-        $this->insert_log("Updated Settings");
+        $this->insert_log("Updated My Settings");
     }
     //show view change password
     public function changepassword()
@@ -154,7 +190,8 @@ class MyProfileController extends Controller
     }
     //change password post
     public function changepassword_post(Request $request)
-    {      
+    {   
+        $this->getaccount();   
         $newPassword = $request->newPass;
 
         $update_query = User::find(auth()->user()->id);
@@ -164,7 +201,7 @@ class MyProfileController extends Controller
         $update_query->ischange = 0;     
         $update_query->save();    
         
-        $this->insert_log("Change Password");
+        $this->insert_log("Change My Password");
     }
     // Method for inserting into logs
     public function insert_log($event)

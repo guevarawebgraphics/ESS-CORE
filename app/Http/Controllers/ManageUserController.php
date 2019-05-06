@@ -13,6 +13,41 @@ use DB;
 
 class ManageUserController extends Controller
 {
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('manage_users') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('manage_users') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('manage_users') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     public function __construct()
     {
         $this->middleware('auth');
@@ -39,17 +74,27 @@ class ManageUserController extends Controller
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".Session::get("employer_id")."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
             return view('admin_modules.createuser')->with('users', $users);
         }
+        //Wala pang cms dito pero dapat may cms
     }
 
     //show user types on table for Manage User Access View
     public function manageusertypes()
-    {        
+    {     
         // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");           
-        return view ('admin_modules.manageusers')->with('user_type', $user_type);        
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");
+       
+        if(Session::get("employer_id") != "admin")
+        {                    
+            return view('welcome');
+        }
+        else
+        {                   
+            return view ('admin_modules.manageusers')->with('user_type', $user_type);         
+        } 
+        // return view ('admin_modules.manageusers')->with('user_type', $user_type);        
     }
 
     //refresh user table
@@ -67,9 +112,10 @@ class ManageUserController extends Controller
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".Session::get("employer_id")."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
             return view('admin_modules.table.tableuser')->with('users', $users);
         }        
+        //Wala pang cms dito pero dapat may cms
     }
 
     //refresh user type table
@@ -160,6 +206,7 @@ class ManageUserController extends Controller
     //update module access
     public function update_module_access(Request $request)
     {
+        $this->getaccount();
         $userId = $request->input('hidden_id');
         $module_name = DB::connection('mysql')->select("SELECT module_code,module_name FROM user_modules WHERE deleted = '0'");
         
@@ -169,45 +216,62 @@ class ManageUserController extends Controller
             $valType = $request->get($um->module_code);  
             $userAccess = DB::connection("mysql")->select("UPDATE user_module_access SET ". $um->module_code ." = '$valType' WHERE user_type_id = '$userId'");           
         }
-        
-        $this->insert_log("Update manage access");
+        $type_name = $request->input('hidden_typename');
+        $this->insert_log("Updated Manage Access of User Type '" . $type_name . "'");
     }
 
     //create user type post
     public function createusertype_post(Request $request)
     {
+        $this->getaccount();
         $typename = $request->input('type_name');
         $typedesc = $request->input('type_desc');
         $typefor = $request->input('cmb_userTypeFor');
         $employer_id = $request->input('cmb_Employe');
-       
-        $insert_query = new UserType;
-        $insert_query->type_name = $typename;
-        $insert_query->type_description = $typedesc;
-        $insert_query->type_for = $typefor;
-        $insert_query->employer_id = $employer_id;
-        $insert_query->deleted = 0;
-        //$insert_query->account_id = auth()->user()->id;
-        $insert_query->created_by = auth()->user()->id;
-        $insert_query->updated_by = auth()->user()->id;
 
-        $insert_query->save();
+        $this->validate($request, [
+            'type_name' => 'required',
+            'cmb_Employe' => 'required',
+        ]);
 
-        $user_type_id = $insert_query->id;
-        
-        $insert_access = new UserModuleAccess;
-        $insert_access->user_type_id = $user_type_id;           
-        $insert_access->deleted = 0;
-        $insert_access->created_by = auth()->user()->id;
-        $insert_access->updated_by = auth()->user()->id;   
-        $insert_access->save();       
-        
-        $this->insert_log("Created user type");
+        if($request->all() != null)
+        {
+            $insert_query = new UserType;
+            $insert_query->type_name = $typename;
+            $insert_query->type_description = $typedesc;
+            $insert_query->user_type_for = $typefor;
+            if($employer_id != "")
+            {
+                $insert_query->employer_id = $employer_id;
+            }
+            $insert_query->deleted = 0;
+            //$insert_query->account_id = auth()->user()->id;
+            $insert_query->created_by = auth()->user()->id;
+            $insert_query->updated_by = auth()->user()->id;
+    
+            $insert_query->save();
+    
+            $user_type_id = $insert_query->id;
+            
+            $insert_access = new UserModuleAccess;
+            $insert_access->user_type_id = $user_type_id;           
+            $insert_access->deleted = 0;
+            $insert_access->created_by = auth()->user()->id;
+            $insert_access->updated_by = auth()->user()->id;   
+            $insert_access->save();       
+            
+            $this->insert_log("Created User Type '" . $typename . "'");
+        }
+        else
+        {
+            echo "ERROR";
+        }      
     }
 
     //update user type post
     public function updateusertype_post(Request $request)
     {
+        $this->getaccount();
         $typeName = $request->typeName;
         $typeDesc = $request->typeDesc;
         $userTypeID = $request->userTypeID;
@@ -217,34 +281,38 @@ class ManageUserController extends Controller
         $update_query->type_description = $typeDesc;
         $update_query->updated_by = auth()->user()->id;
         $update_query->save();
-
-        $this->insert_log("Updated user type");
+        $usertypeid = $update_query->id;
+        $this->insert_log("Updated User Type '" . $typeName . "'");
     }
 
     //delete user type post
     public function deleteusertype_post(Request $request)
     {
+        $this->getaccount();
         $userTypeID = $request->userTypeID;
+        $userTypeName = $request->userTypeName;
         
         $update_query = UserType::find($userTypeID);
         $update_query->deleted = 1;
         $update_query->updated_by = auth()->user()->id;
         $update_query->save();
 
-        $this->insert_log("Deleted user type");
+        $this->insert_log("Deleted User Type '" . $userTypeName . "'");
     }
 
     //delete user post
     public function deleteuser_post(Request $request)
     {
+        $this->getaccount();
         $userTypeID = $request->userTypeID;
+        $userName = $request->userName;
         
         $update_query = User::find($userTypeID);
         $update_query->AccountStatus = 0;
         $update_query->updated_by = auth()->user()->id;
         $update_query->save();
 
-        $this->insert_log("Deleted user");
+        $this->insert_log("Deleted User '" . $userName  . "'");
     }
 
     // Method for inserting into logs

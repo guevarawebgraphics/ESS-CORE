@@ -17,8 +17,39 @@
 @endsection
 
 @section('content')
+@php
+if(Session::get('my_profile') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('my_profile') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('my_profile') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('my_profile') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('my_profile') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
 <div class="container-fluid">
-    <div class="card">
+    <div class="card card-info card-outline">
         <div class="card-header">
             <center><strong>Change Password</strong></center>
         </div>
@@ -46,7 +77,7 @@
                     {{-- <p class="text-danger" id="error-notmatch" hidden>* Confirm Password not match</p> --}}
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" id="btnUpdate">Update Password</button>                                                                      
+            <button type="button" class="btn btn-primary" id="btnUpdate" {{$edit}}>Update Password</button>                                                                      
         </div>              
     </div>      
 </div>
@@ -138,17 +169,24 @@
 
                 if(counter == 0)
                 {
-                    var c = confirm("Update Password?");
-
-                    if(c == true)
-                    {                    
+                    swal({
+                        title: "Update Password?",
+                        //text: "Your will not be able to recover this imaginary file!",
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-info",
+                        confirmButtonText: "Yes",
+                        closeOnConfirm: true
+                    },
+                    function(){
+                        //swal("Deleted!", "Your imaginary file has been deleted.", "success");
                         $.ajax({
                             headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             url: "{{ route('changepassword_post') }}",
                             method: "POST",
                             data:{newPass: newPass},               
                             success:function(data)
-                            {
+                            {                               
                                 toastr.success('Password Changed Successfully', 'Success')
                                 //alert("Changed");      
                                 curPass_valid = '';
@@ -162,12 +200,39 @@
                                 $('#txtconpass').removeClass("is-invalid");
                                 $('#error-no-newcon').attr("hidden", true);                  
                             }                      
-                        });                       
-                    }
-                    else
-                    {
+                        });        
+                    });
+                    
+                    // var c = confirm("Update Password?");
 
-                    }                  
+                    // if(c == true)
+                    // {                    
+                    //     $.ajax({
+                    //         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    //         url: "{{ route('changepassword_post') }}",
+                    //         method: "POST",
+                    //         data:{newPass: newPass},               
+                    //         success:function(data)
+                    //         {
+                    //             toastr.success('Password Changed Successfully', 'Success')
+                    //             //alert("Changed");      
+                    //             curPass_valid = '';
+                    //             $('#txtnewpass').val("");
+                    //             $('#txtcurpass').val("");  
+                    //             $('#txtconpass').val("");   
+                    //             $('#txtcurpass').removeClass("is-invalid");
+                    //             $('#error-no-cur').attr("hidden", true);   
+                    //             $('#txtnewpass').removeClass("is-invalid");
+                    //             $('#error-no-new').attr("hidden", true);   
+                    //             $('#txtconpass').removeClass("is-invalid");
+                    //             $('#error-no-newcon').attr("hidden", true);                  
+                    //         }                      
+                    //     });                       
+                    // }
+                    // else
+                    // {
+
+                    // }                  
                 }
             }
             else

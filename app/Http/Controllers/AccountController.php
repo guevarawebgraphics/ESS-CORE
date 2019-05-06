@@ -10,6 +10,7 @@ use Session;
 use DB;
 use Response;
 use Mail;
+use Keygen;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -18,7 +19,42 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class AccountController extends Controller
-{
+{   
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('create_profile') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('create_profile') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     // Security Authentication
     public function __construct()
     {
@@ -47,13 +83,20 @@ class AccountController extends Controller
         return view('Account.index', compact('Account'));
     }
 
-    public function get_all_account(){
+    public function get_all_account(Request $request){
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
                         ->join('users', 'employer.account_id', '=', 'users.id')
                         ->select('employer.id', 'employer.business_name', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name', 'users.AccountStatus', 'employer.account_id')
                         ->get();
-        return json_encode($Account);
+                        
+        if($request->ajax()){
+            return json_encode($Account);
+        }
+        else {
+            abort(404);
+        }
+        
     }
 
     public function create()
@@ -63,8 +106,10 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
+        $this->getaccount();
         $business_name = Input::get('business_name');
-        $password = $this->generate_password(8);
+        /*Generate A Alphanumeric Characters for Password*/
+        $password = Keygen::alphanum(10)->generate();
 
         // Custom Message
         $customMessages = [
@@ -129,10 +174,12 @@ class AccountController extends Controller
                 $user = User::create([
                     'user_type_id' => $request->input('user_type'),
                     'user_type_for' => 3,
-                    'employer_id' => "default",     
+                    'employer_id' => 2, //Temporary
                     'name' => $request->input('accountname'),
                     'username' => $request->input('accountname'), //Temporary Username
                     'password' => Hash::make($password),
+                    'enrollment_date' => $request->input('enrollmentdate'),
+                    'expiry_date' => $request->input('expirydate'),
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,
                 ]);
@@ -143,68 +190,137 @@ class AccountController extends Controller
                 /*Create a User In Base Table*/
                 $insert_ess = new ESSBase;
                 $insert_ess->account_id = $Account_id;
-                /*Temporary ESS ID 12345*/
-                $insert_ess->ess_id = 12345;
+                $insert_ess->ess_id = "ESSID" . $this->generateESSID();
                 $insert_ess->user_type_id = $request->input('user_type');            
                 $insert_ess->created_by = auth()->user()->id;
                 $insert_ess->updated_by = auth()->user()->id;
                 $insert_ess->save();
+
+
+                /*Check if the request is Employer*/
+                if ($request->input('user_type') == 3){
+                    /*Create Account Employer*/
+                    $employer = Account::create([
+                        // Array Fields Here
+                        'account_id' => $Account_id,
+                        'business_name' => $request->input('business_name'),
+                        'accountname' => $request->input('accountname'),
+                        'user_type' => $request->input('user_type'),
+                        'address_unit' => $request->input('address_unit'),
+                        'address_country' => $request->input('address_country'),
+                        'address_town' => $request->input('address_town'),
+                        'address_cityprovince' => $request->input('address_cityprovince'),
+                        'address_barangay' => $request->input('address_barangay'),
+                        'address_zipcode' => $request->input('address_zipcode'),
+                        'contact_person' => $request->input('contact_person'),
+                        'contact_phone' => $request->input('contact_phone'),   
+                        'contact_mobile' => $request->input('contact_mobile'),
+                        'contact_email' => $request->input('contact_email'),
+                        'tin' =>$request->input('tin'),
+                        'sss' => $request->input('sss'),
+                        'phic' => $request->input('phic'),
+                        'hdmf' => $request->input('hdmf'),
+                        'nid' => $request->input('nid'),
+                        'sec' => $fileNameToStore_sec,
+                        'bir' => $fileNameToStore_bir
+                    ]);
+
+                    $employer_id = $employer->id;
+
+                    DB::table('users')->where('id', '=', $Account_id)
+                    ->update(array(
+                        'employer_id' => $employer_id
+                    )); 
+                }
+                if ($request->input('user_type') == 8){
+                    /*Create Account Employer*/
+                    $employer = Account::create([
+                        // Array Fields Here
+                        'account_id' => $Account_id,
+                        'business_name' => $request->input('business_name'),
+                        'accountname' => $request->input('accountname'),
+                        'user_type' => $request->input('user_type'),
+                        'address_unit' => $request->input('address_unit'),
+                        'address_country' => $request->input('address_country'),
+                        'address_town' => $request->input('address_town'),
+                        'address_cityprovince' => $request->input('address_cityprovince'),
+                        'address_barangay' => $request->input('address_barangay'),
+                        'address_zipcode' => $request->input('address_zipcode'),
+                        'contact_person' => $request->input('contact_person'),
+                        'contact_phone' => $request->input('contact_phone'),   
+                        'contact_mobile' => $request->input('contact_mobile'),
+                        'contact_email' => $request->input('contact_email'),
+                        'tin' =>$request->input('tin'),
+                        'sss' => $request->input('sss'),
+                        'phic' => $request->input('phic'),
+                        'hdmf' => $request->input('hdmf'),
+                        'nid' => $request->input('nid'),
+                        'sec' => $fileNameToStore_sec,
+                        'bir' => $fileNameToStore_bir
+                    ]);
+
+                    $employer_id = $employer->id;
+
+                    DB::table('users')->where('id', '=', $Account_id)
+                    ->update(array(
+                        'employer_id' => $employer_id
+                    )); 
+                }
+                if ($request->input('user_type') == 9){
+                    /*Create Account Employer*/
+                    $employer = Account::create([
+                        // Array Fields Here
+                        'account_id' => $Account_id,
+                        'business_name' => $request->input('business_name'),
+                        'accountname' => $request->input('accountname'),
+                        'user_type' => $request->input('user_type'),
+                        'address_unit' => $request->input('address_unit'),
+                        'address_country' => $request->input('address_country'),
+                        'address_town' => $request->input('address_town'),
+                        'address_cityprovince' => $request->input('address_cityprovince'),
+                        'address_barangay' => $request->input('address_barangay'),
+                        'address_zipcode' => $request->input('address_zipcode'),
+                        'contact_person' => $request->input('contact_person'),
+                        'contact_phone' => $request->input('contact_phone'),   
+                        'contact_mobile' => $request->input('contact_mobile'),
+                        'contact_email' => $request->input('contact_email'),
+                        'tin' =>$request->input('tin'),
+                        'sss' => $request->input('sss'),
+                        'phic' => $request->input('phic'),
+                        'hdmf' => $request->input('hdmf'),
+                        'nid' => $request->input('nid'),
+                        'sec' => $fileNameToStore_sec,
+                        'bir' => $fileNameToStore_bir
+                    ]);
+
+                    $employer_id = $employer->id;
+
+                    DB::table('users')->where('id', '=', $Account_id)
+                    ->update(array(
+                        'employer_id' => $employer_id
+                    )); 
+                }
             }
             
+            /*Email Template*/
+            /*Need To be Dynamic HardCoded For Now*/
+            $mail_template = DB::table('notification')
+                            ->where('id', 31)
+                            ->where('notification_type', 1)
+                            ->select('notification_message')
+                            ->first();
 
 
-            
-            /*Check if the request is Employer*/
-            if ($request->input('user_type') == 3){
-                /*Create Account Employer*/
-                $employer = Account::create([
-                    // Array Fields Here
-                    'account_id' => $Account_id,
-                    'business_name' => $request->input('business_name'),
-                    'accountname' => $request->input('accountname'),
-                    'user_type' => $request->input('user_type'),
-                    'address_unit' => $request->input('address_unit'),
-                    'address_country' => $request->input('address_country'),
-                    'address_town' => $request->input('address_town'),
-                    'address_cityprovince' => $request->input('address_cityprovince'),
-                    'address_barangay' => $request->input('address_barangay'),
-                    'address_zipcode' => $request->input('address_zipcode'),
-                    'contact_person' => $request->input('contact_person'),
-                    'contact_phone' => $request->input('contact_phone'),   
-                    'contact_mobile' => $request->input('contact_mobile'),
-                    'contact_email' => $request->input('contact_email'),
-                    'tin' =>$request->input('tin'),
-                    'sss' => $request->input('sss'),
-                    'phic' => $request->input('phic'),
-                    'hdmf' => $request->input('hdmf'),
-                    'nid' => $request->input('nid'),
-                    'sec' => $fileNameToStore_sec,
-                    'bir' => $fileNameToStore_bir
-                ]);
+            // Replace All The String in the Notification Message
+            $search = ["name", "username", "password"];
+            $replace = [$user->name, $user->name, $password];                
+            $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+                             
 
-                $employer_id = $employer->id;
-
-                DB::table('users')->where('id', '=', $Account_id)
-                ->update(array(
-                    'employer_id' => $employer_id
-                )); 
-            }
-
-            
-
-            //$account_id = $employer->id;
-
-            
-
-            //$ess_id = $insert_ess->id;
-            
-
-            
             /*Send Mail */
-            /*Tmp*/
-            $data = array('name' => $user->name, "body" => $password);
+            $data = array('username' => $user->name, "password" => $password, "template" => strip_tags($template_result));
 
-            Mail::send('Email.mail', $data, function($message) use($employer, $user){
+            Mail::send('Email.mail', $data, function($message) use($employer, $user, $mail_template){
                 $message->to($employer->contact_email, $employer->business_name)
                         ->subject("ESS Successfully Registered ");
                 $message->from('esssample@gmail.com', "ESS");
@@ -261,7 +377,7 @@ class AccountController extends Controller
     }
 
     public function update(Request $request, $id){
-
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
@@ -339,6 +455,7 @@ class AccountController extends Controller
     }
 
     public function destroy(Request $request){
+        $this->getaccount();
         $Account_id = $request->id;
         /*Delete User From Users*/
         $user = User::where('id','=',$Account_id)->delete();
@@ -422,6 +539,7 @@ class AccountController extends Controller
 
     // Update Account Status
     public function UpdateAccountStatus(Request $request, $id){
+        $this->getaccount();
         /*Update Account Employer*/
         $user = User::findOrFail($id);
         $user->AccountStatus = $request->input('AccountStatus');
@@ -438,5 +556,34 @@ class AccountController extends Controller
 
 
         return Response::json($msg);
+    }
+
+    public function get_all_employer(Request $request){
+
+        // $Account = DB::table('users')
+        //             ->where('business_name', 'LIKE', '%'.$request->search.'%')->get();
+        $Account = Account::where('business_name', 'LIKE', $request->q.'%')->get();
+        return response()->json($Account);
+                    
+    }
+
+    /*Generate Key*/
+    protected function generateESSKey(){
+        // prefixes the key with a random integer between 1 - 9 (inclusive)
+        return Keygen::numeric(7)->prefix(mt_rand(1, 9))->generate(true);
+    }
+
+    /*Generate ESS ID*/
+    protected function generateESSID(){
+
+        $ess_id = $this->generateESSKey();
+
+        // Ensure ID does not exist
+        // Generate new one if ID already exists
+        while (ESSBase::where('ess_id', $ess_id)->count() > 0){
+            $ess_id = $this->generateESSKey();
+        }
+
+        return $ess_id;
     }
 }

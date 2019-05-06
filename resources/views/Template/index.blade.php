@@ -1,6 +1,51 @@
 @extends('layouts.master')
-
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Manage Docs & Template</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">Manage Docs & Template</a>
+            </li>
+            <li class="breadcrumb-item active">Manage</li>
+        </ol>
+    </div>
+</div>
+@endsection
 @section('content')
+@php
+if(Session::get('manage_docs') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('manage_docs') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_docs') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_docs') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('manage_docs') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
 <div class="card card-info card-outline">
     <div class="card-header">
         <h3 class="card-title"><i class="fa fa-file"></i> Manage Document and Templates</h3>
@@ -13,7 +58,7 @@
                 <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
             </div>
             <div class="col-md-6">
-                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addtemplate" data-toggle="modal" data-target="#AddTemplateModal"><i class="fa fa-plus-square"></i> Create Template</a>
+                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addtemplate" data-toggle="modal" data-target="#AddTemplateModal" {{$add}}><i class="fa fa-plus-square"></i> Create Template</a>
             </div>
         </div>
 
@@ -86,6 +131,28 @@
         </div>
       </div>
 
+
+<!-- Delete System Notification -->
+<div class="modal fade" id="DeleteTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="title_modal"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+               <h4>D you wanna Delete This Template?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="DeleteTemplate">Confirm <i id="spinner_delete" class=""></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 <script>
 $(document).ready(function (){
     // Show All Data
@@ -101,6 +168,7 @@ $(document).ready(function (){
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
+          "order": [[0, "desc"]]
     });
     /*Custom Search For DataTable*/
     $("#searchbox").on("keyup search input paste cut", function () {
@@ -126,7 +194,18 @@ $(document).ready(function (){
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
-        $.ajax({
+        if($('#document_code').val() == ""){
+            $('#document_code').addClass('is-invalid');
+            $('#error_document_code').html('Document Code is Required');
+            spinnerTimout();
+        }
+        if($('#document_description').val() == ""){
+            $('#document_description').addClass('is-invalid');
+            $('#error_document_description').html('Document Description is Required');
+            spinnerTimout();
+        }
+        if($('#document_code').val() != "" && $('#document_description').val() != "") {
+            $.ajax({
             url: url,
             method: 'POST',
             async: false,
@@ -166,11 +245,10 @@ $(document).ready(function (){
                     }
                 });
                
-                
-        
-                
             }
         });
+        }
+        
     });
 
     /*Edit Template*/
@@ -210,14 +288,14 @@ $(document).ready(function (){
     /*Delete Template*/
     $('#showdata').on('click', '.template-delete', function(){
         var id = $(this).attr('data');
-        $('#AddTemplateModal').modal('show');
-        $('#AddTemplateModal').find('#title_modal').text('Delete Template');
+        $('#DeleteTemplateModal').modal('show');
+        $('#DeleteTemplateModal').find('#title_modal').text('Delete Template');
         $('#template_form').attr('hidden', true);
-        $("#SaveTemplate").prop("type", "button");
+        //$("#SaveTemplate").prop("type", "button");
         toastr.remove()
         // Prevent Previous handler - unbind()
-        $('#SaveTemplate').unbind().click(function(){
-            $("#spinner").addClass('fa fa-refresh fa-spin');
+        $('#DeleteTemplate').unbind().click(function(){
+            $("#spinner_delete").addClass('fa fa-refresh fa-spin');
             $.ajax({
                 type: 'POST',
                 url: '/Template/destroy_template',
@@ -227,15 +305,14 @@ $(document).ready(function (){
                 },
                 success: function(data){
                     setTimeout(function (){
-                          $('#AddTemplateModal').modal('hide');
+                          $('#DeleteTemplateModal').modal('hide');
                     }, 400);
                     // Display a success toast, with a title
                     toastr.success('Template Deleted Successfully', 'Success')
                     setTimeout(function (){
-                        $("#spinner").removeClass('fa fa-refresh fa-spin');
-                    }, 1000);
+                        $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
+                    }, 300);
                     showAllTemplate();
-                    $("#SaveTemplate").prop("type", "submit");
                   },
                   error: function(data){
                     toastr.error('Error Deleting Template')
@@ -261,10 +338,10 @@ $(document).ready(function (){
                                      '<td>'+data[i].business_name+'</td>'+
                                      '<td>'+data[i].document_code+'</td>'+
                                      '<td>'+data[i].document_description+'</td>'+
-                                     '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/template/'+data[i].document_file+'" download>' +file_name+'</a>'+'</td>'+
+                                     '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'   <i class="fa fa-download"></i>'+'</a>'+'</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }
@@ -277,6 +354,12 @@ $(document).ready(function (){
                     console.log('Could not get data from database');
                 }
             });
+    }
+
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+        }, 250);
     }
 
 
