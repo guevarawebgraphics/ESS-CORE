@@ -199,7 +199,7 @@ class RegisterController extends Controller
 
         if($userId == "" && $password == "")
         {
-            echo "NO INPUT";
+            echo "No Input";
         }
         else
         {
