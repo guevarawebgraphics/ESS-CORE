@@ -54,8 +54,8 @@
             <form id="content_form">
             {{-- CSRF --}}
                 @csrf
-                <input type="text" id="action" value="">
-                <input type="text" id="hidden_id" name="hidden_id" value="">
+                <input type="hidden" id="action" value="">
+                <input type="hidden" id="hidden_id" name="hidden_id" value="">
                 <div class="form-group row">
                 <label for="content_title" class="control-label col-md-4 text-md-center">Content Title:</label>
                     <div class="col-md-6">
@@ -137,70 +137,103 @@
             action_to_do = $("#action").val();
             //alert(action_to_do);
             //console.log("asa");
-            if(action_to_do == "add")
+            content_title = $("#content_title").val();
+            content_desc = $("#content_description").val();
+
+            if(content_title == "")
             {
-                $.ajax({
-                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('createemployercontent') }}",
-                    method: "POST",
-                    data:$("#content_form").serialize(),             
-                    success:function(data)
-                    {                          
-                        toastr.success('Content Created Successfully', 'Success')
-                        $('#AddContentModal').modal('hide');
-                        refreshTable();                                                    
-                    },
-                    error:function(data, status)
-                    {
-                        toastr.error('Error. Please Complete the fields', 'Error!')
-                        /*Add Error Field*/
-                        var errors = $.parseJSON(data.responseText);
-                        $.each(errors, function(i, errors){
-                            if(errors.content_title){
-                                $('#content_title').addClass('is-invalid');
-                                $('#error_content_title').html('Content Title is Required');
-                            }
-                            if(errors.content_description){
-                                $('#content_description').addClass('is-invalid');
-                                $('#error_content_description').html('Content Description is Required');
-                            }
-                            
-                        });
-                    }
-                });
+                toastr.error('Error. Please Complete the fields', 'Error!')
+                $('#content_title').addClass('is-invalid');
+                $('#error_content_title').html('Content Title is Required');
             }
-            else if(action_to_do == "edit")
+            else
             {
-                $.ajax({
-                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('updateemployercontent') }}",
-                    method: "POST",
-                    data:$("#content_form").serialize(),             
-                    success:function(data)
-                    {                          
-                        toastr.success('Content Updated Successfully', 'Success')
-                        $('#AddContentModal').modal('hide');
-                        refreshTable();                                                                  
-                    },
-                    error:function(data, status)
-                    {
-                        toastr.error('Error. Please Complete the fields', 'Error!')
-                        /*Add Error Field*/
-                        var errors = $.parseJSON(data.responseText);
-                        $.each(errors, function(i, errors){
-                            if(errors.content_title){
-                                $('#content_title').addClass('is-invalid');
-                                $('#error_content_title').html('Content Title is Required');
-                            }
-                            if(errors.content_description){
-                                $('#content_description').addClass('is-invalid');
-                                $('#error_content_description').html('Content Description is Required');
-                            }                           
-                        });
-                    }              
-                });
+                $('#content_title').removeClass('is-invalid');
+                $('#error_content_title').html('');
+            }
+
+            if(content_desc == "")
+            {
+                toastr.error('Error. Please Complete the fields', 'Error!')
+                $('#content_description').addClass('is-invalid');
+                $('#error_content_description').html('Content Description is Required');
+            }
+            else
+            {
+                $('#content_description').removeClass('is-invalid');
+                $('#error_content_description').html('');
             }
             
+            if(content_title != "" && content_desc != "")
+            {
+                if(action_to_do == "add")
+                {
+                    $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('createemployercontent') }}",
+                        method: "POST",
+                        data:$("#content_form").serialize(),             
+                        success:function(data)
+                        {                          
+                            toastr.success('Content Created Successfully', 'Success')
+                            $('#AddContentModal').modal('hide');
+                            refreshTable();                                                    
+                        },
+                        error:function(data, status)
+                        {
+                            toastr.error('Error. Please Complete the fields', 'Error!')
+                            /*Add Error Field*/
+                            var errors = $.parseJSON(data.responseText);
+                            $.each(errors, function(i, errors){
+                                if(errors.content_title){
+                                    $('#content_title').addClass('is-invalid');
+                                    $('#error_content_title').html('Content Title is Required');
+                                }
+                                if(errors.content_description){
+                                    $('#content_description').addClass('is-invalid');
+                                    $('#error_content_description').html('Content Description is Required');
+                                }
+                                
+                            });
+                        }
+                    });
+                }
+                else if(action_to_do == "edit")
+                {
+                    $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('updateemployercontent') }}",
+                        method: "POST",
+                        data:$("#content_form").serialize(),             
+                        success:function(data)
+                        {                          
+                            toastr.success('Content Updated Successfully', 'Success')
+                            $('#AddContentModal').modal('hide');
+                            refreshTable();                                                                  
+                        },
+                        error:function(data, status)
+                        {
+                            toastr.error('Error. Please Complete the fields', 'Error!')
+                            /*Add Error Field*/
+                            var errors = $.parseJSON(data.responseText);
+                            $.each(errors, function(i, errors){
+                                if(errors.content_title){
+                                    $('#content_title').addClass('is-invalid');
+                                    $('#error_content_title').html('Content Title is Required');
+                                }
+                                if(errors.content_description){
+                                    $('#content_description').addClass('is-invalid');
+                                    $('#error_content_description').html('Content Description is Required');
+                                }                           
+                            });
+                        }              
+                    });
+                }
+            }
+            else
+            {
+                console.log("ERROR");
+            }           
         });
 
         //click create content

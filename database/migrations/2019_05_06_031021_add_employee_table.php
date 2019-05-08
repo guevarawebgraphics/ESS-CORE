@@ -23,7 +23,7 @@ class AddEmployeeTable extends Migration
             $table->string('firstname');
             $table->string('middlename');
             $table->string('TIN');
-            $table->string('SSS/GSIS');
+            $table->string('SSSGSIS');
             $table->string('PHIC');
             $table->string('HDMF');
             $table->string('NID');
@@ -44,7 +44,7 @@ class AddEmployeeTable extends Migration
             //address field
             $table->string('country');
             $table->string('address_unit');
-            $table->string('city/town');
+            $table->string('citytown');
             $table->string('barangay');
             $table->string('province');
             $table->string('zipcode');

@@ -20,7 +20,7 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
-            <center><strong>Encode Employees</strong></center>
+            <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>
         <div class="card-body">
             <div class="pull-right">

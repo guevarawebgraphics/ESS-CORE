@@ -2,24 +2,6 @@
 <html>
 <head>
 	<title>{{ config('app.name', 'Laravel') }}</title>
-	<style>
-		table td{
-			font-size: 85%;
-			text-align: center;			
-		}
-
-		table th{
-			text-align: center;
-			font-size: 95%;
-		}
-
-		li a p{
-			font-size: 90%;
-		}
-		
-	</style>
-</head>
-<body>
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<meta content="ie=edge" http-equiv="x-ua-compatible"><!-- Font Awesome Icons -->
@@ -62,10 +44,28 @@
 	<script src="{{ asset('sweetalert/sweetalert.min.js') }}" ></script>
 	<script src="{{ asset('js/scripts.js') }}"></script>
     
+	<style>
+		table td{
+			font-size: 85%;
+			text-align: center;			
+		}
+
+		table th{
+			text-align: center;
+			font-size: 95%;
+		}
+
+		li a p{
+			font-size: 90%;
+		}
+
+	</style>
+</head>
+<body class="hold-transition sidebar-mini">
 	<div class="wrapper">
         @guest
 
-        @else
+		@else	
             @include('inc/navbar')           
             @include('inc/sidebar')
             <div class="content-wrapper">			
