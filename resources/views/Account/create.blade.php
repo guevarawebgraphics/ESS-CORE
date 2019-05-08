@@ -1,6 +1,52 @@
 @extends('layouts.master')
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Create Profile</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">Create Profile</a>
+            </li>
+            <li class="breadcrumb-item active">Create Account</li>
+        </ol>
+    </div>
+</div>
+@endsection
 
 @section('content')
+@php
+if(Session::get('create_profile') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('create_profile') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('create_profile') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
     <!-- general form elements -->
     <div class="card card-info card-outline">
         <div class="card-header">
@@ -72,7 +118,7 @@
                         <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_email" type="contact_email" class="form-control" name="contact_email" placeholder="Contact Email"  autofocus>
+                            <input id="contact_email" type="email" class="form-control" name="contact_email" placeholder="Contact Email"  autofocus>
                                     <p class="text-danger" id="error_contact_email"></p>
                         </div>
                 </div>
@@ -170,7 +216,7 @@
                         <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                         <div class="col-md-4">
                             
-                            <input id="enrollmentdate" type="date" class="form-control" name="enrollmentdate"  autofocus>
+                            <input id="enrollmentdate" type="date" class="form-control datepicker" name="enrollmentdate"  autofocus>
                             @if ($errors->has('enrollmentdate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('enrollmentdate') }}</strong>
@@ -214,7 +260,7 @@
 
           <div class="card-footer">
               <button type="button" class="btn btn-default">Back</button>
-            <button type="submit" class="btn btn-primary float-right" id="submit">Submit <i id="spinner" class=""></i></button>
+            <button type="submit" class="btn btn-primary float-right" id="submit" {{$add}}>Submit <i id="spinner" class=""></i></button>
           </div>
         </form>
       </div>
@@ -223,6 +269,8 @@
 
 <script type="text/javascript">
 $(document).ready(function (){
+    
+
     /*Get Province*/
     $.ajax({
 			method: 'get',
@@ -312,7 +360,272 @@ $(document).ready(function (){
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
-        $.ajax({
+        if($('#business_name').val() == ""){
+            $('#error_business_name').html('Business Name is Required');
+            $('#error_business_name').attr('hidden', false);
+            $('#business_name').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#business_name').val() == 0 || $('#business_name').val() < 0){
+            $('#error_business_name').html('Business Name is Invalid');
+            $('#error_business_name').attr('hidden', false);
+            $('#business_name').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#contact_person').val() == ""){
+            $('#error_contact_person').html('Contact Person is Required');
+            $('#error_contact_person').attr('hidden', false);
+            $('#contact_person').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#contact_person').val() == 0 || $('#contact_person').val() < 0) {
+            $('#error_contact_person').html('Contact Person is Invalid');
+            $('#error_contact_person').attr('hidden', false);
+            $('#contact_person').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#accountname').val() == ""){
+            $('#error_accountname').html('Account Name is Required');
+            $('#error_accountname').attr('hidden', false);
+            $('#accountname').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#accountname').val() == 0 || $('#accountname').val() < 0) {
+            $('#error_accountname').html('Account Name is Invalid');
+            $('#error_accountname').attr('hidden', false);
+            $('#accountname').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#contact_phone').val() == ""){
+            $('#error_contact_phone').html('Contact Phone is Required');
+            $('#error_contact_phone').attr('hidden', false);
+            $('#contact_phone').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#contact_phone').val() == 0 || $('#contact_phone').val() < 0) {
+            $('#error_contact_phone').html('Contact Phone is Invalid');
+            $('#error_contact_phone').attr('hidden', false);
+            $('#contact_phone').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#contact_phone').val() == ""){
+            $('#error_contact_phone').html('Contact Phone is Required');
+            $('#error_contact_phone').attr('hidden', false);
+            $('#contact_phone').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if(isNaN($('#contact_phone').val())) {
+            $('#error_contact_phone').html('Contact Phone is Must be Number');
+            $('#error_contact_phone').attr('hidden', false);
+            $('#contact_phone').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#address_unit').val() == ""){
+            $('#error_address_unit').html('Address Unit is Required');
+            $('#error_address_unit').attr('hidden', false);
+            $('#address_unit').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#address_unit').val() == 0 || $('#address_unit').val() < 0) {
+            $('#error_address_unit').html('Address Unit is Invalid');
+            $('#error_address_unit').attr('hidden', false);
+            $('#address_unit').addClass('is-invalid');
+            spinnerTimout();
+        }            
+        if($('#contact_mobile').val() == ""){
+            $('#error_contact_mobile').html('Contact Mobile is Required');
+            $('#error_contact_mobile').attr('hidden', false);
+            $('#contact_mobile').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#contact_mobile').val() == 0 || $('#contact_mobile').val() < 0) {
+            $('#error_contact_mobile').html('Contact Mobile is Invalid');
+            $('#error_contact_mobile').attr('hidden', false);
+            $('#contact_mobile').addClass('is-invalid');
+            spinnerTimout();
+        } 
+        else if (isNaN($('#contact_mobile').val())){
+            $('#error_contact_mobile').html('Contact Mobile is Must Be Number');
+            $('#error_contact_mobile').attr('hidden', false);
+            $('#contact_mobile').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#address_country').val() == ""){
+            $('#error_address_country').html('Address Country is Required');
+            $('#error_address_country').attr('hidden', false);
+            $('#address_country').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#address_country').val() == 0 || $('#address_country').val() < 0) {
+            $('#error_address_country').html('Address Country is Invalid');
+            $('#error_address_country').attr('hidden', false);
+            $('#address_country').addClass('is-invalid');
+            spinnerTimout();
+        } 
+        if($('#contact_email').val() == ""){
+            $('#error_contact_email').html('Contact Email is Required');
+            $('#error_contact_email').attr('hidden', false);
+            $('#contact_email').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#contact_email').val() == 0 || $('#contact_email').val() < 0) {
+            $('#error_contact_email').html('Contact Email is invalid');
+            $('#error_contact_email').attr('hidden', false);
+            $('#contact_email').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#address_cityprovince').val() == ""){
+            $('#error_address_cityprovince').html('Address City Province is Required');
+            $('#error_address_cityprovince').attr('hidden', false);
+            $('#address_cityprovince').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#tin').val() == ""){
+            $('#error_tin').html('tin is Required');
+            $('#error_tin').attr('hidden', false);
+            $('#tin').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#tin').val() == 0 || $('#tin').val() < 0) {
+            $('#error_tin').html('tin is Invalid');
+            $('#error_tin').attr('hidden', false);
+            $('#tin').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if (isNaN($('#tin').val())){
+            $('#error_tin').html('tin Must be Number');
+            $('#error_tin').attr('hidden', false);
+            $('#tin').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#address_town').val() == ""){
+            $('#error_address_town').html('Town is Required');
+            $('#error_address_town').attr('hidden', false);
+            $('#address_town').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#sss').val() == ""){
+            $('#error_sss').html('sss is Required');
+            $('#error_sss').attr('hidden', false);
+            $('#sss').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#sss').val() == 0 || $('#sss').val() < 0) {
+            $('#error_sss').html('sss is Invalid');
+            $('#error_sss').attr('hidden', false);
+            $('#sss').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if (isNaN($('#sss').val())){
+            $('#error_sss').html('sss Must Be Number');
+            $('#error_sss').attr('hidden', false);
+            $('#sss').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#address_barangay').val() == ""){
+            $('#error_address_barangay').html('Address Barangay is Required');
+            $('#error_address_barangay').attr('hidden', false);
+            $('#address_barangay').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#phic').val() == ""){
+            $('#error_phic').html('phic is Required');
+            $('#error_phic').attr('hidden', false);
+            $('#phic').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#phic').val() == 0 || $('#phic').val() < 0) {
+            $('#error_phic').html('phic is Invalid');
+            $('#error_phic').attr('hidden', false);
+            $('#phic').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if (isNaN($('#phic').val())){
+            $('#error_phic').html('phic Must be Number');
+            $('#error_phic').attr('hidden', false);
+            $('#phic').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#address_zipcode').val() == ""){
+            $('#error_address_zipcode').html('Zip Code is Required');
+            $('#error_address_zipcode').attr('hidden', false);
+            $('#address_zipcode').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#address_zipcode').val() == 0 || $('#address_zipcode').val() < 0) {
+            $('#error_address_zipcode').html('Zip Code is Invalid');
+            $('#error_address_zipcode').attr('hidden', false);
+            $('#address_zipcode').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if (isNaN($('#address_zipcode').val())){
+            $('#error_address_zipcode').html('Zip Code Must be Number');
+            $('#error_address_zipcode').attr('hidden', false);
+            $('#address_zipcode').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#hdmf').val() == ""){
+            $('#error_hdmf').html('hdmf is Required');
+            $('#error_hdmf').attr('hidden', false);
+            $('#hdmf').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#hdmf').val() == 0 || $('#hdmf').val() < 0) {
+            $('#error_hdmf').html('hdmf is Invalid');
+            $('#error_hdmf').attr('hidden', false);
+            $('#hdmf').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if (isNaN($('#hdmf').val())){
+            $('#error_hdmf').html('hdmf Must be Number');
+            $('#error_hdmf').attr('hidden', false);
+            $('#hdmf').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#user_type').val() == ""){
+            $('#error_user_type').html('Account Type is Required');
+            $('#error_user_type').attr('hidden', false);
+            $('#user_type').addClass('is-invalid');
+            spinnerTimout();
+        }
+        if($('#nid').val() == ""){
+            $('#error_nid').html('nid is Required');
+            $('#error_nid').attr('hidden', false);
+            $('#nid').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#nid').val() == 0 || $('#nid').val() < 0) {
+            $('#error_nid').html('nid is Invalid');
+            $('#error_nid').attr('hidden', false);
+            $('#nid').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if(isNaN($('#nid').val())){
+            $('#error_nid').html('nid must be Number');
+            $('#error_nid').attr('hidden', false);
+            $('#nid').addClass('is-invalid');
+            spinnerTimout();
+        }
+
+        if($('#business_name').val() != "" &&
+         $('#contact_person').val() != "" &&
+         $('#accountname').val() != "" &&
+         $('#contact_phone').val() != "" &&
+         $('#address_unit').val() != "" &&
+         $('#contact_mobile').val() != "" &&
+         $('#address_country').val() != "" &&
+         $('#contact_email').val() != ""  &&
+         $('#address_cityprovince').val() != "" &&
+         $('#tin').val() != "" &&
+         $('#address_town').val() != "" &&
+         $('#sss').val() != "" &&
+         $('#address_barangay').val() != "" &&
+         $('#phic').val() != "" &&
+         $('#address_zipcode').val() != "" &&
+         $('#hdmf').val() != "" &&
+         $('#user_type').val() != "" &&
+         $('#nid').val() != ""){
+            $.ajax({
             url: "{{ url('/Account') }}",
             method: 'POST',
             async: false,
@@ -448,18 +761,14 @@ $(document).ready(function (){
                 }
             }
         });
+        }
     });
 
-
-    // $('#user_type').on('change', function (){
-    //     if ($('#user_type').val() == 3){
-    //         $('#payrollcalendar_row').removeAttr('hidden');
-    //     }
-    //     else {
-    //         $('#payrollcalendar_row').attr('hidden', true);
-    //     }
-    // });
-
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+        }, 250);
+    }
 
  
 });

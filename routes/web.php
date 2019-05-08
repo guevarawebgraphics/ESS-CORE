@@ -51,6 +51,7 @@ Route::post('/manageuser/updateuser_post', 'Auth\\RegisterController@updateuser_
 Route::post('/manageuser/deleteuser_post', 'ManageUserController@deleteuser_post')->name('deleteuser_post');
 Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer');
 Route::get('/manageuser/checkusername', 'Auth\\RegisterController@checkusername')->name('checkusername');
+Route::post('/manageuser/create/reset_password', 'Auth\\RegisterController@reset_password')->name('resetpassword');
 
 //My Profile
 Route::get('/myprofile/settings', 'MyProfileController@settings');
@@ -106,12 +107,23 @@ Route::post('/Announcement/update_announcement_status', 'AnnouncementController@
 ////// EMPLOYER
 
 //Employees Enrollment
+Route::get('/enrollemployee', 'EmployeesEnrollmentController@index');
+Route::get('/enrollemployee/getcity/{provCode}', 'EmployeesEnrollmentController@get_citytown');
+Route::get('/enrollemployee/getbarangay/{citymunCode}', 'EmployeesEnrollmentController@get_barangay');
+Route::get('/enrollemployee/getprovince', 'EmployeesEnrollmentController@get_province');
 Route::get('/enrollemployee/encode', 'EmployeesEnrollmentController@encode');
 Route::get('/enrollemployee/upload', 'EmployeesEnrollmentController@upload');
+Route::post('/enrollemployee/encode/post', 'EmployeesEnrollmentController@encode_post');
 
 //Employer Content
 Route::get('/employercontent/manage', 'EmployerContentController@manage');
+Route::get('/employercontent/manage/refresh', 'EmployerContentController@refresh_manage')->name('refreshmanage');
+Route::get('/employercontent/edit', 'EmployerContentController@edit_content')->name('editemployercontent');
 Route::post('/employercontent/create', 'EmployerContentController@create_employercontent')->name('createemployercontent');
+Route::post('/employercontent/edit/post', 'EmployerContentController@update_content')->name('updateemployercontent');
+Route::post('/employercontent/delete', 'EmployerContentController@delete_content')->name('deleteemployercontent');
+Route::post('/employercontent/post_content', 'EmployerContentController@post_content')->name('postemployercontent');
+
 
 //Payroll Management
 Route::get('/payrollmanagement/upload', 'PayrollManagementController@upload');
@@ -143,4 +155,8 @@ Route::get('/error', function () { // for no access
    
     return view('welcome');
     
+});
+
+Route::get('/email', function() {
+    return view('Email.employee_email');
 });

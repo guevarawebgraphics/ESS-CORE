@@ -19,7 +19,42 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class AccountController extends Controller
-{
+{   
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('create_profile') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('create_profile') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('create_profile') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     // Security Authentication
     public function __construct()
     {
@@ -48,13 +83,20 @@ class AccountController extends Controller
         return view('Account.index', compact('Account'));
     }
 
-    public function get_all_account(){
+    public function get_all_account(Request $request){
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
                         ->join('users', 'employer.account_id', '=', 'users.id')
                         ->select('employer.id', 'employer.business_name', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name', 'users.AccountStatus', 'employer.account_id')
                         ->get();
-        return json_encode($Account);
+                        
+        if($request->ajax()){
+            return json_encode($Account);
+        }
+        else {
+            abort(404);
+        }
+        
     }
 
     public function create()
@@ -64,6 +106,7 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
+        $this->getaccount();
         $business_name = Input::get('business_name');
         /*Generate A Alphanumeric Characters for Password*/
         $password = Keygen::alphanum(10)->generate();
@@ -131,10 +174,12 @@ class AccountController extends Controller
                 $user = User::create([
                     'user_type_id' => $request->input('user_type'),
                     'user_type_for' => 3,
-                    'employer_id' => 2, //Temporary
+                    'employer_id' => "none", //Temporary
                     'name' => $request->input('accountname'),
                     'username' => $request->input('accountname'), //Temporary Username
                     'password' => Hash::make($password),
+                    'enrollment_date' => $request->input('enrollmentdate'),
+                    'expiry_date' => $request->input('expirydate'),
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,
                 ]);
@@ -145,7 +190,6 @@ class AccountController extends Controller
                 /*Create a User In Base Table*/
                 $insert_ess = new ESSBase;
                 $insert_ess->account_id = $Account_id;
-                /*Temporary ESS ID 12345*/
                 $insert_ess->ess_id = "ESSID" . $this->generateESSID();
                 $insert_ess->user_type_id = $request->input('user_type');            
                 $insert_ess->created_by = auth()->user()->id;
@@ -258,13 +302,25 @@ class AccountController extends Controller
                 }
             }
             
-            
+            /*Email Template*/
+            /*Need To be Dynamic HardCoded For Now*/
+            $mail_template = DB::table('notification')
+                            ->where('id', 1)
+                            ->where('notification_type', 1)
+                            ->select('notification_message')
+                            ->first();
+
+
+            // Replace All The String in the Notification Message
+            $search = ["name", "username", "password"];
+            $replace = [$user->name, $user->name, $password];                
+            $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+                             
 
             /*Send Mail */
-            /*Tmp*/
-            $data = array('name' => $user->name, "body" => $password);
+            $data = array('username' => $user->name, "password" => $password, "template" => strip_tags($template_result));
 
-            Mail::send('Email.mail', $data, function($message) use($employer, $user){
+            Mail::send('Email.mail', $data, function($message) use($employer, $user, $mail_template){
                 $message->to($employer->contact_email, $employer->business_name)
                         ->subject("ESS Successfully Registered ");
                 $message->from('esssample@gmail.com', "ESS");
@@ -321,7 +377,7 @@ class AccountController extends Controller
     }
 
     public function update(Request $request, $id){
-
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
@@ -399,6 +455,7 @@ class AccountController extends Controller
     }
 
     public function destroy(Request $request){
+        $this->getaccount();
         $Account_id = $request->id;
         /*Delete User From Users*/
         $user = User::where('id','=',$Account_id)->delete();
@@ -482,6 +539,7 @@ class AccountController extends Controller
 
     // Update Account Status
     public function UpdateAccountStatus(Request $request, $id){
+        $this->getaccount();
         /*Update Account Employer*/
         $user = User::findOrFail($id);
         $user->AccountStatus = $request->input('AccountStatus');

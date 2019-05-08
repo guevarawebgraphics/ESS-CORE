@@ -1,6 +1,51 @@
 @extends('layouts.master')
-
+@section('crumb')
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Send Announcements</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+                <a href="#">Send Announcements</a>
+            </li>
+            <li class="breadcrumb-item active">Manage Announement</li>
+        </ol>
+    </div>
+</div>
+@endsection
 @section('content')
+@php
+if(Session::get('send_announcement') == 'all'){
+    $add = '';
+    $edit = '';
+    $delete = '';
+}
+elseif(Session::get('send_announcement') == 'view'){
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('send_announcement') == 'add'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}
+elseif(Session::get('send_announcement') == 'edit'){
+    $add = '';
+    $edit = '';
+    $delete = 'disabled';
+}
+elseif(Session::get('send_announcement') == 'delete'){
+    $add = '';
+    $edit = 'disabled';
+    $delete = '';
+}else{
+    $add = 'disabled';
+    $edit = 'disabled';
+    $delete = 'disabled';
+}                   
+@endphp
 <div class="card card-info card-outline">
     <div class="card-header">
         <h3 class="card-title"><i class="fa fa-bullhorn"></i> Announcements</h3>
@@ -13,7 +58,7 @@
                 <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
             </div>
             <div class="col-md-6">
-                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square"></i> Create Announcement</a>
+                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square" {{$add}}></i> Create Announcement</a>
             </div>
         </div>
 
@@ -81,7 +126,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="SaveAnnoucement">Save <i id="spinner" class=""></button>
+            <button type="button" class="btn btn-primary" id="SaveAnnoucement" {{$add}}>Save <i id="spinner" class=""></button>
         </div>
     
       </div>
@@ -188,51 +233,71 @@ $(document).ready(function (){
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
-        $.ajax({
-            type: 'ajax',
-            url: url,
-            method: 'POST',
-            dataType: 'json',
-            async: false,
-            data: data,
-            success: function(data){
-                $('#annoucement_form')[0].reset();
-                // Show All Data
-                showAllAnnouncement();
-                // Modal hide
-                //$('#AddNotificationModal').modal('hide');
-                setTimeout(function (){
-                          $('#AddAnnouncementModal').modal('hide');
-                }, 400);
-                // Display a success toast, with a title
-                toastr.success('Announcement Saved Successfully', 'Success')
-                setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 1500);
-            },
-            error: function(data, status){
-                toastr.error('Error. Please Complete the fields', 'Error!')
-                setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 250);
-                /*Add Error Field*/
-                var errors = $.parseJSON(data.responseText);
-                $.each(errors, function(i, errors){
-                    if(errors.announcement_title){
-                        $('#announcement_title').addClass('is-invalid');
-                        $('#error_announcement_title').html('Annoucement Title is Required');
-                    }
-                    if(errors.announcement_description){
-                        $('#announcement_description').addClass('is-invalid');
-                        $('#error_annoucement_description').html('Annoucement Description is Required');
-                    }
-                    if(errors.announcement_type){
-                        $('#announcement_type').addClass('is-invalid');
-                        $('#error_announcement_type').html('Annoucement Type is Required');
+        if($('#announcement_title').val() == ""){
+            $('#announcement_title').addClass('is-invalid');
+            $('#error_announcement_title').html('Annoucement Title is Required');
+            spinnerTimout();
+        }
+        if($('#announcement_description').val() == ""){
+            $('#announcement_description').addClass('is-invalid');
+            $('#error_annoucement_description').html('Annoucement Description is Required');
+            spinnerTimout();
+        }
+        if($('#announcement_type').val() == ""){
+            $('#announcement_type').addClass('is-invalid');
+            $('#error_announcement_type').html('Annoucement Type is Required');
+            spinnerTimout();
+        }
+        if($('#announcement_title').val() != "" &&
+           $('#announcement_description').val() != "" &&
+           $('#announcement_type').val() != "") {
+                    $.ajax({
+                    type: 'ajax',
+                    url: url,
+                    method: 'POST',
+                    dataType: 'json',
+                    async: false,
+                    data: data,
+                    success: function(data){
+                        $('#annoucement_form')[0].reset();
+                        // Show All Data
+                        showAllAnnouncement();
+                        // Modal hide
+                        //$('#AddNotificationModal').modal('hide');
+                        setTimeout(function (){
+                                $('#AddAnnouncementModal').modal('hide');
+                        }, 400);
+                        // Display a success toast, with a title
+                        toastr.success('Announcement Saved Successfully', 'Success')
+                        setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 1500);
+                    },
+                    error: function(data, status){
+                        toastr.error('Error. Please Complete the fields', 'Error!')
+                        setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+                        /*Add Error Field*/
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(i, errors){
+                            if(errors.announcement_title){
+                                $('#announcement_title').addClass('is-invalid');
+                                $('#error_announcement_title').html('Annoucement Title is Required');
+                            }
+                            if(errors.announcement_description){
+                                $('#announcement_description').addClass('is-invalid');
+                                $('#error_annoucement_description').html('Annoucement Description is Required');
+                            }
+                            if(errors.announcement_type){
+                                $('#announcement_type').addClass('is-invalid');
+                                $('#error_announcement_type').html('Annoucement Type is Required');
+                            }
+                        });
                     }
                 });
-            }
-        });
+           }
+        
     });
 
     // Edit Announcement
@@ -270,8 +335,11 @@ $(document).ready(function (){
     /*Post Announcement*/
     $('#showdata').on('click', '.announcement-post', function(){
         var id = $(this).attr('data');
+        var announcement_type = $(this).attr('data-announcementtype');
         $('#PostModal').modal('show');
         $('#PostModal').find('#title_modal').text('Post Announcement');
+        // console.log(id);
+        // console.log(announcement_type);
         toastr.remove()
         $('#PostAnnouncement').unbind().click(function(){
             $('#spinner_post').addClass('fa fa-refresh fa-spin');
@@ -280,6 +348,7 @@ $(document).ready(function (){
                 url: '/Announcement/update_announcement_status',
                 data: {
                     id: id,
+                    announcement_type: announcement_type,
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data){
@@ -314,6 +383,8 @@ $(document).ready(function (){
         $('#DeleteModal').find('#title_modal').text('Delete Announcement');
         $('#annoucement_form').attr('hidden', true);
         toastr.remove()
+        // Remove current toasts using animation
+        toastr.clear()
         // Prevent Previous handler - unbind()
         $('#DeleteAnnouncement').click(function(){
             $("#spinner_delete").addClass('fa fa-refresh fa-spin');
@@ -368,10 +439,10 @@ $(document).ready(function (){
                                      '<td>'+data[i].announcement_description+'</td>'+
                                      '<td>'+AnnouncementStatus+'</td>' +
                                      '<td>'+data[i].type_name+'</td>'+
-                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'"><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
+                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'" data-announcementtype="'+data[i].announcement_type+'" {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary announcement-edit '+posted+'" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger annoucement-delete" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-secondary announcement-edit '+posted+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-danger annoucement-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }
@@ -384,6 +455,12 @@ $(document).ready(function (){
                     console.log('Could not get data from database');
             }
         });
+    }
+
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+        }, 250);
     }
 });
 </script>

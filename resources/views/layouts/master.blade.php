@@ -2,24 +2,6 @@
 <html>
 <head>
 	<title>{{ config('app.name', 'Laravel') }}</title>
-	<style>
-		table td{
-			font-size: 85%;
-			text-align: center;			
-		}
-
-		table th{
-			text-align: center;
-			font-size: 95%;
-		}
-
-		li a p{
-			font-size: 90%;
-		}
-		
-	</style>
-</head>
-<body>
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<meta content="ie=edge" http-equiv="x-ua-compatible"><!-- Font Awesome Icons -->
@@ -29,6 +11,8 @@
 	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
 	<link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+	<link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet"><!-- select -->
+	<link href="{{ asset('plugins//bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}" rel="stylesheet">
 
 	<!-- REQUIRED SCRIPTS -->
 	<!-- jQuery -->
@@ -45,14 +29,43 @@
 	<!-- DataTables -->
 	<script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('/plugins/datatables/dataTables.bootstrap4.js') }}"></script>
+	<!-- SELECT 2 -->
+	<script src="{{ asset('/plugins/select2/select2.full.min.js') }}"></script>
+	<!-- CK Editor -->
+	<script src="{{ asset('/plugins/ckeditor/ckeditor.js') }}"></script>
+	<!-- Bootstrap WYSIHTML5 -->
+	<script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-	<script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
+	{{-- SWEET ALERT --}}
+	<link href="{{ asset('sweetalert/sweetalert.css') }} rel="stylesheet">
+	<script src="{{ asset('sweetalert/sweetalert.js')}}" ></script>
+	<link href="{{ asset('sweetalert/sweetalert.min.css') }}" rel="stylesheet">	
+	<link href="{{ asset('sweetalert/sweetalert.min.css.map') }}" rel="stylesheet">
+	<script src="{{ asset('sweetalert/sweetalert.min.js') }}" ></script>
 	<script src="{{ asset('js/scripts.js') }}"></script>
     
+	<style>
+		table td{
+			font-size: 85%;
+			text-align: center;			
+		}
+
+		table th{
+			text-align: center;
+			font-size: 95%;
+		}
+
+		li a p{
+			font-size: 90%;
+		}
+
+	</style>
+</head>
+<body class="hold-transition sidebar-mini">
 	<div class="wrapper">
         @guest
 
-        @else
+		@else	
             @include('inc/navbar')           
             @include('inc/sidebar')
             <div class="content-wrapper">			
