@@ -201,7 +201,7 @@ $delete = 'disabled';
                         <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                         <div class="col-md-6">
-                            <input id="username" type="text" class="form-control" name="username" required disabled>                           
+                            <input id="username" type="text" class="form-control" name="username" required disabled>
                         </div>
                     </div>
 
@@ -213,7 +213,8 @@ $delete = 'disabled';
                             <input id="newpassword" type="password"
                                 class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"
                                 required>
-                            <p class="text-danger" id="error-no-pass-reset" hidden>* Field is Required | Password must be 6
+                            <p class="text-danger" id="error-no-pass-reset" hidden>* Field is Required | Password must
+                                be 6
                                 characters</p>
                             @if ($errors->has('password'))
                             <span class="invalid-feedback" role="alert">
@@ -230,7 +231,8 @@ $delete = 'disabled';
                         <div class="col-md-6">
                             <input id="newpassword-confirm" type="password" class="form-control"
                                 name="password_confirmation" required>
-                            <p class="text-danger" id="error-no-repass-reset" hidden>* Field is Required | Must be same as
+                            <p class="text-danger" id="error-no-repass-reset" hidden>* Field is Required | Must be same
+                                as
                                 Password</p>
                         </div>
                     </div>
@@ -576,6 +578,7 @@ $delete = 'disabled';
             reset_info = reset_data.split("]]");
             console.log(reset_info[0]);
             $("#hidden_id_password").val(reset_info[0]);
+            $("#username").val(reset_info[1]);
         });
 
         //RESET PASSWORD POST
@@ -585,8 +588,7 @@ $delete = 'disabled';
             password = $('#newpassword').val();
             con_newpassword = $('#newpassword-confirm').val();
 
-            if(password == "" || password.length < 6)
-            {
+            if (password == "" || password.length < 6) {
                 $('#newpassword').addClass("is-invalid");
                 $('#error-no-pass-reset').removeAttr("hidden");
             } else {
@@ -594,44 +596,44 @@ $delete = 'disabled';
                 $('#error-no-pass-reset').attr("hidden", true);
             }
 
-            if(con_newpassword == "")
-            {
+            if (con_newpassword == "" || password != con_newpassword) {
                 $('#newpassword-confirm').addClass("is-invalid");
                 $('#error-no-repass-reset').removeAttr("hidden");
             } else {
                 $('#newpassword-confirm').removeClass("is-invalid");
                 $('#error-no-repass-reset').attr("hidden", true);
             }
-            
-            if(password != "" && con_newpassword != "" && password.length > 6 && password == con_newpassword)
-            swal({
-                    title: "Reset Password?",
-                    //text: "Your will not be able to recover this imaginary file!",
-                    type: "warning",
-                    confirmButtonClass: "btn-info",
-                    confirmButtonText: "Yes",
-                    showCancelButton: true,
-                    closeOnConfirm: true,
-                },
-                function () {
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url: "{{ route('resetpassword') }}",
-                        method: "POST",
-                        data: {
-                            id: data[0],
-                            password: password
-                        },
-                        success: function (data) {
-                            toastr.success('Password Reset Successfully!', 'Success')
-                            //refreshUserTable();                         
-                            $('#resetPasswordModal').modal('hide');
-                        }
-                    });
-                }
-            );
+
+            if (password != "" && con_newpassword != "" && password.length > 6 && password ==
+                con_newpassword)
+                swal({
+                        title: "Reset Password?",
+                        //text: "Your will not be able to recover this imaginary file!",
+                        type: "warning",
+                        confirmButtonClass: "btn-info",
+                        confirmButtonText: "Yes",
+                        showCancelButton: true,
+                        closeOnConfirm: true,
+                    },
+                    function () {
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            url: "{{ route('resetpassword') }}",
+                            method: "POST",
+                            data: {
+                                id: data[0],
+                                password: password
+                            },
+                            success: function (data) {
+                                toastr.success('Password Reset Successfully!', 'Success')
+                                //refreshUserTable();                         
+                                $('#resetPasswordModal').modal('hide');
+                            }
+                        });
+                    }
+                );
         });
 
     });

@@ -159,3 +159,7 @@ Route::get('/error', function () { // for no access
     return view('welcome');
     
 });
+
+Route::get('/email', function() {
+    return view('Email.employee_email');
+});

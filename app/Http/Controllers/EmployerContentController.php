@@ -25,6 +25,41 @@ class EmployerContentController extends Controller
             }
         });     
     }
+    private $add = '';
+    private $edit = '';
+    private $delete = '';
+    public function getaccount()// call for every function for security of the system
+    { 
+        if(Session::get('employer_content') == 'all'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = '';
+        }
+        elseif(Session::get('employer_content') == 'view'){
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('employer_content') == 'add'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('employer_content') == 'edit'){
+            $this->add = '';
+            $this->edit = '';
+            $this->delete = 'disabled';
+        }
+        elseif(Session::get('employer_content') == 'delete'){
+            $this->add = '';
+            $this->edit = 'disabled';
+            $this->delete = '';
+        }else{
+            $this->add = 'disabled';
+            $this->edit = 'disabled';
+            $this->delete = 'disabled';
+        } 
+    }
     
     //show manage content
     public function manage()
@@ -41,6 +76,7 @@ class EmployerContentController extends Controller
     //create employer content
     public function create_employercontent(Request $request)
     {
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'content_title' => 'required',
@@ -78,6 +114,7 @@ class EmployerContentController extends Controller
     //post update content
     public function update_content(Request $request)
     {       
+        $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
             'content_title' => 'required',
@@ -107,6 +144,7 @@ class EmployerContentController extends Controller
     //delete function
     public function delete_content(Request $request)
     {
+        $this->getaccount();
         $id = $request->id;
         $content_title = $request->title;
         /*Delete Content*/
@@ -119,6 +157,7 @@ class EmployerContentController extends Controller
     //post content
     public function post_content(Request $request)
     {
+        $this->getaccount();
         $post_content = EmployerContent::find($request->id);
         $post_content->content_status = 1;
         $post_content->save();
