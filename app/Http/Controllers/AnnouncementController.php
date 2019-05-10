@@ -7,7 +7,7 @@ use App\Logs;
 use Response;
 use DB;
 use Mail;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
@@ -80,12 +80,62 @@ class AnnouncementController extends Controller
                              'announcement.announcement_type',
                              'employer.business_name',
                              'user_type.type_name',
-                             'user_type.id as user_type_id')
+                             'user_type.id as user_type_id',
+                             '.announcement.created_at')
                             ->get();
 
         /*Protection for Data View as Json*/
         if($request->ajax()){
             return json_encode($Announcement);
+        }
+        else {
+            abort(404);
+        }
+        
+     }
+
+     public function get_all_announcement_to_notification(Request $request){
+        $Announcement = DB::table('announcement')
+                            ->join('employer', 'employer.account_id', '=', 'announcement.account_id')
+                            ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
+                            ->select('announcement.id',
+                             'announcement.announcement_title',
+                             'announcement.announcement_description',
+                             'announcement.announcement_status',
+                             'announcement.announcement_type',
+                             'employer.business_name',
+                             'user_type.type_name',
+                             'user_type.id as user_type_id',
+                             'announcement.created_at',
+                             'announcement.updated_at')
+                             ->orderBy('announcement.created_at','desc')
+                            ->get();
+
+        /*Protection for Data View as Json*/
+        if($request->ajax()){
+            foreach ($Announcement as $key => $test){
+                if($test->announcement_status == 1){
+                    $Announcement1 = DB::table('announcement')
+                            ->join('employer', 'employer.account_id', '=', 'announcement.account_id')
+                            ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
+                            ->select('announcement.id',
+                             'announcement.announcement_title',
+                             'announcement.announcement_description',
+                             'announcement.announcement_status',
+                             'announcement.announcement_type',
+                             'employer.business_name',
+                             'user_type.type_name',
+                             'user_type.id as user_type_id',
+                             'announcement.created_at',
+                             'announcement.updated_at')
+                            ->orderBy('announcement.created_at','desc')
+                            ->where('announcement.announcement_status', '=', '1')
+                             ->get();
+                    return json_encode($Announcement1);
+                }
+            }
+            
+            
         }
         else {
             abort(404);
@@ -187,6 +237,7 @@ class AnnouncementController extends Controller
             $Announcement = DB::table('announcement')->where('id', '=', $Announcement_id)
                                 ->update(array(
                                     'announcement_status' => 1,
+                                    'updated_at' => Carbon::now(),
                                 ));
          }
 
@@ -197,23 +248,24 @@ class AnnouncementController extends Controller
                                 ->where('id', $Announcement_id)
                                 ->select('announcement_description')
                                 ->get();
-         // Get all emails of employers
-        $type = DB::table('employer')
-                                ->where('user_type', $announcement_type)
-                                ->pluck('contact_email');
+        // Get all emails of employers Should be Employees
+        // $type = DB::table('employer')
+        //                         ->where('user_type', $announcement_type)
+        //                         ->pluck('contact_email');
 
-         /*Send Mail */
-         $data = array("template" => strip_tags($template_result[0]->announcement_description), "emails" => $type);
-         // Note in Blast Email Use Gmail smtp
-         foreach ($type as $key => $tests) {
-            Mail::send('Email.mail', $data, function($message) use($tests){
-                $message->to($tests, 'ess announcement')
-                        ->subject("ESS Announcement ");
-                $message->from('esssample@gmail.com', "ESS");
-            });
-         }
+        //  /*Send Mail */
+        //  $data = array("template" => strip_tags($template_result[0]->announcement_description), "emails" => $type);
+        //  // Note in Blast Email Use Gmail smtp
+        //  foreach ($type as $key => $tests) {
+        //     Mail::send('Email.mail', $data, function($message) use($tests){
+        //         $message->to($tests, 'ess announcement')
+        //                 ->subject("ESS Announcement ");
+        //         $message->from('esssample@gmail.com', "ESS");
+        //     });
+        //  }
          
-
+         // Insert Log
+         $this->insert_log("Post Announcement");
          return Response::json();
      }
 

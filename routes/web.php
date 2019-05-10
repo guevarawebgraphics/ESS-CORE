@@ -25,7 +25,8 @@ Route::get('/', function () { // root if the user is login
         }
         else
         {
-            return view('dashboard'); 
+            $employers = DB::table('employer')->count();
+            return view('dashboard', compact('employers')); 
         }
         
         //return "ASA";          
@@ -77,6 +78,7 @@ Route::patch('/Account/{id}', 'AccountController@update')->name('Account.update'
 Route::patch('/Account/UpdateAccountStatus/{id}', 'AccountController@UpdateAccountStatus')->name('Account.UpdateAccountStatus');
 Route::post('/Account', 'AccountController@store')->name('Account');
 Route::get('/Account/get_all_employer', 'AccountController@get_all_employer')->name('Account');
+Route::get('/Account/Activation/{id}', 'AccountController@UserActivation');
 
 /*Route Config For Notification*/
 Route::get('/Notification', 'NotificationController@index')->name('Notification.index');
@@ -97,6 +99,7 @@ Route::post('/Template/destroy_template', 'TemplateController@destroy_template')
 /*Route Config For Announcement*/
 Route::get('/Announcement', 'AnnouncementController@index')->name('Announcement.index');
 Route::get('/Announcement/get_all_announcement', 'AnnouncementController@get_all_announcement');
+Route::get('/Announcement/get_all_announcement_to_notification', 'Announcementcontroller@get_all_announcement_to_notification');
 Route::get('/Announcement/edit_announcement', 'AnnouncementController@edit_announcement');
 Route::post('/Announcement/store_announcement', 'AnnouncementController@store_announcement');
 Route::post('/Announcement/update_announcement/{id}', 'AnnouncementController@update_announcement');

@@ -101,7 +101,7 @@ elseif(Session::get('my_profile') == 'delete'){
                         </div>
                     </div>  
                     <div class="form-group row">
-                        <label for="txtemail" class="col-form-label col-md-2">Email</label>
+                        <label for="txtemail" class="col-form-label col-md-2">Email @if(auth()->user()->email_verified_at != "")<span data-toggle="tooltip" data-placement="right" title="Verified"><i class="fa fa-check-circle"></i></span>@endif</label>
                         <div class="col-md-6">
                             <div id="email"></div>                                   
                         </div>
