@@ -107,8 +107,13 @@ Route::post('/Announcement/update_announcement_status', 'AnnouncementController@
 ////// EMPLOYER
 
 //Employees Enrollment
+Route::get('/enrollemployee', 'EmployeesEnrollmentController@index');
+Route::get('/enrollemployee/getcity/{provCode}', 'EmployeesEnrollmentController@get_citytown');
+Route::get('/enrollemployee/getbarangay/{citymunCode}', 'EmployeesEnrollmentController@get_barangay');
+Route::get('/enrollemployee/getprovince', 'EmployeesEnrollmentController@get_province');
 Route::get('/enrollemployee/encode', 'EmployeesEnrollmentController@encode');
 Route::get('/enrollemployee/upload', 'EmployeesEnrollmentController@upload');
+Route::post('/enrollemployee/encode/post', 'EmployeesEnrollmentController@encode_post');
 
 //Employer Content
 Route::get('/employercontent/manage', 'EmployerContentController@manage');
@@ -150,4 +155,8 @@ Route::get('/error', function () { // for no access
    
     return view('welcome');
     
+});
+
+Route::get('/email', function() {
+    return view('Email.employee_email');
 });
