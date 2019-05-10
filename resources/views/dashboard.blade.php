@@ -40,14 +40,14 @@
           <!-- small box -->
           <div class="small-box" style="background-color:#F39C12">
             <div class="inner">
-              <h3>0</h3>
+              <h3>{{ $employers}}</h3>
 
               <p>Registered Employer</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/Account" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
