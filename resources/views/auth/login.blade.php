@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <div class="row justify-content-center text-center">
+    <div class="row justify-content-center text-center" style="margin-top: 20%;">
         <div class="col-md-6">
             <h2>Company Logo Here</h2>
         </div>
@@ -19,14 +19,14 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('email') }}" required autofocus>
+                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('username'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -46,7 +46,29 @@
                             </div>
                         </div>
                         <br>
-                        <div class="form-group row">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                <span><i class="fa fa-check-circle"></i></span>
+                                {{session('success')}}
+                            </div>
+                        @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                <span><i class="fa fa-exclamation-circle"></i></span>
+                                {{session('error')}}
+                            </div>
+                        @endif
+                        <br>
+                        {{-- <div class="form-group row">
                             <div class="col-md-6 offset-md-1">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -55,19 +77,20 @@
                                     </label>
                                 </div>                               
                             </div>                                                    
-                        </div>
+                        </div> --}}
 
                         <div class="form-group row">
-                            <div class="col-md-7 offset-md-1">                               
+                            {{-- <div class="col-md-7 offset-md-1">                               
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif                               
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-3">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="col-md-3 offset-md-4">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="fa fa-sign-in-alt"></i>
                                     {{ __('Login') }}
                                 </button>                                
                             </div>              
