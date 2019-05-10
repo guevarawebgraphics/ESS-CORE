@@ -199,7 +199,7 @@ class AccountController extends Controller
                 $user = User::create([
                     'user_type_id' => $request->input('user_type'),
                     'user_type_for' => 3,
-                    'employer_id' => 2, //Temporary
+                    'employer_id' => "none", //Temporary
                     'name' => $request->input('accountname'),
                     'username' => $request->input('accountname'), //Temporary Username
                     'password' => Hash::make($password),
@@ -345,7 +345,7 @@ class AccountController extends Controller
             /*Email Template*/
             /*Need To be Dynamic HardCoded For Now*/
             $mail_template = DB::table('notification')
-                            ->where('id', 31)
+                            ->where('id', 1)
                             ->where('notification_type', 1)
                             ->select('notification_message')
                             ->first();
