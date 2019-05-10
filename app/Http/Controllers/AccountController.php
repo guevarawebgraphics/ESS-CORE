@@ -6,12 +6,14 @@ use App\UserType;
 use App\User;
 use App\ESSBase;
 use App\Logs;
+use App\UserActivation;
 use Session;
 use DB;
 use Response;
 use Mail;
 use Keygen;
-
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
@@ -58,7 +60,7 @@ class AccountController extends Controller
     // Security Authentication
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'UserActivation']);
         $this->middleware(function($request, $next){
             if(Session::get("create_profile") == "none")
             {
@@ -167,19 +169,42 @@ class AccountController extends Controller
             /*Do Somethin or ....*/
         }
         else {
+            // Parse Enrollment Date and Expiry Date
+            $enrollment_date = Carbon::parse($request->enrollmentdate)->format('Y-m-d');
+            $expiry_date = Carbon::parse($request->expirydate)->format('Y-m-d');
+
 
             /*Check if All Request is not null*/
-            if($request->all() != null){
+            if($request->all() != null && $request->has([
+                'business_name',
+                'accountname',
+                'user_type',
+                'address_unit',
+                'address_country',
+                'address_town',
+                'address_cityprovince',
+                'address_barangay',
+                'address_zipcode',
+                'contact_person',
+                'contact_phone',
+                'contact_mobile',
+                'contact_email',
+                'tin',
+                'sss',
+                'phic',
+                'hdmf',
+                'nid',
+            ])){
                 /*Create User*/
                 $user = User::create([
                     'user_type_id' => $request->input('user_type'),
                     'user_type_for' => 3,
-                    'employer_id' => 2, //Temporary
+                    'employer_id' => "none", //Temporary
                     'name' => $request->input('accountname'),
                     'username' => $request->input('accountname'), //Temporary Username
                     'password' => Hash::make($password),
-                    'enrollment_date' => $request->input('enrollmentdate'),
-                    'expiry_date' => $request->input('expirydate'),
+                    'enrollment_date' => $enrollment_date,
+                    'expiry_date' => 14,
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,
                 ]);
@@ -195,6 +220,21 @@ class AccountController extends Controller
                 $insert_ess->created_by = auth()->user()->id;
                 $insert_ess->updated_by = auth()->user()->id;
                 $insert_ess->save();
+
+                $activation_code = $this->generateActivationCode();
+                $activation_id = $this->generateUserActivationId();
+
+                /*Create A User Activation with link*/ 
+                $user_activation = UserActivation::create([
+                    'account_id' => $Account_id,
+                    'activation_code' => $activation_code,
+                    'user_activation_id' => $activation_id,
+                    'expiration_date' => 14,
+                    'created_by' => auth()->user()->id,
+                    'updated_by' => auth()->user()->id,
+                ]);
+
+
 
 
                 /*Check if the request is Employer*/
@@ -305,20 +345,22 @@ class AccountController extends Controller
             /*Email Template*/
             /*Need To be Dynamic HardCoded For Now*/
             $mail_template = DB::table('notification')
-                            ->where('id', 31)
+                            ->where('id', 1)
                             ->where('notification_type', 1)
                             ->select('notification_message')
                             ->first();
 
+            $activation_link = "http://127.0.0.1:8000/Account/Activation/".$activation_id;
+
 
             // Replace All The String in the Notification Message
-            $search = ["name", "username", "password"];
-            $replace = [$user->name, $user->name, $password];                
+            $search = ["name", "username", "url", "password"];
+            $replace = [$user->name, $user->name, "<a href=".$activation_link.">Click Here</a>", $password];                
             $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                              
 
             /*Send Mail */
-            $data = array('username' => $user->name, "password" => $password, "template" => strip_tags($template_result));
+            $data = array('username' => $user->name, "password" => $password, "template" => $template_result);
 
             Mail::send('Email.mail', $data, function($message) use($employer, $user, $mail_template){
                 $message->to($employer->contact_email, $employer->business_name)
@@ -418,6 +460,31 @@ class AccountController extends Controller
             // Upload Image
             $path_sec = $request->file('sec')->storeAs('public/Documents/sec', $fileNameToStore_sec);
             $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
+
+            /*Update Account Employer*/
+            DB::table('employer')->where('account_id', '=', $id)
+                                ->update(array(
+                                    'business_name' => $request->input('business_name'),
+                                    'accountname' => $request->input('accountname'),
+                                    'user_type' => $request->input('user_type'),
+                                    'address_unit' => $request->input('address_unit'),
+                                    'address_country' => $request->input('address_country'),
+                                    'address_town' => $request->input('address_town'),
+                                    'address_cityprovince' => $request->input('address_cityprovince'),
+                                    'address_barangay' => $request->input('address_barangay'),
+                                    'address_zipcode' => $request->input('address_zipcode'),
+                                    'contact_person' => $request->input('contact_person'),
+                                    'contact_phone' => $request->input('contact_phone'),   
+                                    'contact_mobile' => $request->input('contact_mobile'),
+                                    'contact_email' => $request->input('contact_email'),
+                                    'tin' =>$request->input('tin'),
+                                    'sss' => $request->input('sss'),
+                                    'phic' => $request->input('phic'),
+                                    'hdmf' => $request->input('hdmf'),
+                                    'nid' => $request->input('nid'),
+                                    'sec' => $fileNameToStore_sec,
+                                    'bir' => $fileNameToStore_bir
+            ));
         }
 
         /*Update Account Employer*/
@@ -441,8 +508,6 @@ class AccountController extends Controller
                                 'phic' => $request->input('phic'),
                                 'hdmf' => $request->input('hdmf'),
                                 'nid' => $request->input('nid'),
-                                'sec' => $fileNameToStore_sec,
-                                'bir' => $fileNameToStore_bir
                             ));
 
         $msg = 'Success';
@@ -585,5 +650,70 @@ class AccountController extends Controller
         }
 
         return $ess_id;
+    }
+
+    /*This unique Activation ID will serves as mask to the users id*/
+    protected function generateUserActivationId() {
+        $user_activation_id = Keygen::length(11)->alphanum()->generate();
+
+        return $user_activation_id;
+    }
+
+    /*This Code will send to mobile*/
+    protected function generateActivationCode(){
+        $user_activation_code = Keygen::length(6)->numeric()->generate();
+
+        return $user_activation_code;
+    }
+    /*Activate User*/ 
+    protected function UserActivation(Request $request, $id){
+        $account_id = UserActivation::where('user_activation_id', '=', $id)->pluck('account_id');
+        $user = User::where('id', '=', $account_id)->first();
+        $updated_at = $user->updated_at;
+        $expiry_date = $user->expiry_date;
+        $password_expiry_at = Carbon::parse($updated_at)->addDays($expiry_date);
+        if($id != null){
+            
+            if(!UserActivation::where('user_activation_id', '=', $id)->count() > 0) {
+                abort(404);
+            }
+            else {
+                // Check if the Account is Expired
+                if($password_expiry_at->lessThan(Carbon::now())) {
+                    if($user->expiry_date == "14") {
+                        // return 'Link Expired';
+                        return redirect('login')->with('error', 'Link Expired');
+                    }
+                    elseif($user->expiry_date == "0") {
+                        //return 'Account Already Activated'. $user->id;
+                        return redirect('login')->with('error', 'Account Already Activated');
+                    }
+                    
+                }
+                else {
+                    // Check if the Account is not yet Activated
+                    if($user->expiry_date == "14") {
+                        // Check if the User Is Logged In
+                        if(Auth::check()){
+                            return abort(404);
+                        }
+                        else {
+                            $activate_user = DB::table('users')
+                                    ->where('id', '=', $account_id)
+                                    ->update(array(
+                                        'email_verified_at' => Carbon::now(),
+                                        'expiry_date' => 0,
+                                    ));
+                            //return 'Successfully Activated';
+                            return redirect('login')->with('success', 'Account Successfully Activated You can now Log in');
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+
+        
     }
 }

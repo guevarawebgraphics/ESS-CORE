@@ -150,7 +150,7 @@ class RegisterController extends Controller
             'user_type_id' => $data['cmbUser_type'],
             'username' => $data['username'],       
             'user_type_for' => $user_type_for,
-            'employer_id' => "default",     
+            'employer_id' => "none",     
             'password' => Hash::make($data['password']),
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id

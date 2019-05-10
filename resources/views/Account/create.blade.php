@@ -216,7 +216,7 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                         <div class="col-md-4">
                             
-                            <input id="enrollmentdate" type="date" class="form-control datepicker" name="enrollmentdate"  autofocus>
+                            <input id="enrollmentdate" type="date" class="form-control datepicker" name="enrollmentdate" disabled="true"  autofocus>
                             @if ($errors->has('enrollmentdate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('enrollmentdate') }}</strong>
@@ -227,7 +227,7 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
                         <div class="col-md-4">
                             
-                        <input id="expirydate" type="date" class="form-control" name="expirydate"  autofocus>
+                        <input id="expirydate" type="date" class="form-control" name="expirydate" disabled="true"  autofocus>
                             @if ($errors->has('expirydate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('expirydate') }}</strong>
@@ -269,9 +269,48 @@ elseif(Session::get('create_profile') == 'delete'){
 
 <script type="text/javascript">
 $(document).ready(function (){
-    $('#enrollmentdate').datepicker({
-        format: 'yyyy/dd/mm'
-    });
+<<<<<<< HEAD
+    
+=======
+    setExpiryDate();
+    SetEnrollmentDate();
+    function setExpiryDate(){
+        // var date = new Date(); // Now
+        // date.setDate(date.getDate() + 30); // Set now + 30 days as the new date
+        // var day = date.getDate();
+        // var month = date.getMonth();
+        // var year = date.getFullYear();
+        // console.log([day, month, year].join('/'));
+        // $('#expirydate').val([day, month, year].join('/'));
+
+        
+        // 14 Days Before The Expiration of the Account
+        //$('#enrollmentdate').on('change', function(){
+            var today = new Date();
+            var dd = today.getDate() + 14;
+            var mm = today.getMonth()+1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if(dd<10){dd='0'+dd} 
+            if(mm<10){mm='0'+mm} 
+            var today = yyyy+'-'+mm+'-'+dd;   
+            $('#expirydate').val(today);  
+        //});
+        //console.log(today);
+    }
+
+    function SetEnrollmentDate(){
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if(dd<10){dd='0'+dd} 
+            if(mm<10){mm='0'+mm} 
+            var today = yyyy+'-'+mm+'-'+dd;   
+            $('#enrollmentdate').val(today);  
+    }
+>>>>>>> develop
 
     /*Get Province*/
     $.ajax({

@@ -208,16 +208,17 @@ elseif(Session::get('system_notifications') == 'delete'){
 
 <script>
 $(document).ready(function (){
+    CKEDITOR.replace( 'notification_message' );
     // CKEDITOR Config
-    let notification_message;
-    ClassicEditor
-        .create( document.querySelector( '#notification_message' ) )
-        .then( newNotification_message => {
-            notification_message = newNotification_message;
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
+    // let notification_message;
+    // ClassicEditor
+    //     .create( document.querySelector( '#notification_message' ) )
+    //     .then( newNotification_message => {
+    //         notification_message = newNotification_message;
+    //     } )
+    //     .catch( error => {
+    //         console.error( error );
+    //     } );
     //Initialize Select2 Elements
     $('.select2').select2()
     // Show All Notification
@@ -271,6 +272,9 @@ $(document).ready(function (){
         $('#AddNotification').removeAttr('hidden');
         $('#title_modal').html('Add System Notification');
         $('#notification_form').attr('action', '/Notification/store_notification');
+        $('#notification_form')[0].reset();
+        //notification_message.setData('');
+        CKEDITOR.instances.notification_message.setData('');
     });
 
     // Store Notification
@@ -294,7 +298,8 @@ $(document).ready(function (){
             $('#error_notification_title').html('Notification Field is Required');
             spinnerTimout();
         }
-        if(notification_message.getData() == ""){
+        //if(notification_message.getData() == ""){
+        if(CKEDITOR.instances.notification_message.getData() == ""){
             $('#notification_message').addClass('is-invalid');
             $('#error_notification_message').html('Notification Message is Required ');
             spinnerTimout();
@@ -312,7 +317,8 @@ $(document).ready(function (){
         
         if($('#employer_id').val() != "" &&
            $('#notification_title').val() != "" &&
-           notification_message.getData() != "" &&
+           //notification_message.getData() != "" &&
+           CKEDITOR.instances.notification_message.getData() != "" &&
            $('#message_type_id').val() != "" &&
            $('#notification_type').val() != "") {
                 $.ajax({
@@ -325,7 +331,7 @@ $(document).ready(function (){
                     _token:     '{{ csrf_token() }}',
                     employer_id: $('#employer_id').val(),
                     notification_title: $('#notification_title').val(),
-                    notification_message: notification_message.getData(),//$('#notification_message').val(),
+                    notification_message: CKEDITOR.instances.notification_message.getData(),//notification_message.getData(),//$('#notification_message').val(),
                     message_type_id: $('#message_type_id').val(),
                     notification_type: $('#notification_type').val(),
                     
@@ -411,7 +417,8 @@ $(document).ready(function (){
             success: function(data){
                 $('#notification_title').val(data[0].notification_title);
                 $('#notification_message').val(data[0].notification_message);
-                notification_message.setData(data[0].notification_message);
+                CKEDITOR.instances.notification_message.setData(data[0].notification_message);
+                //notification_message.setData(data[0].notification_message);
                 //$('#employer_id').val(data[0].business_name);
                 // $('#employer_id').attr('disabled', true);
                 // $('#employer_id').addClass('disabled');

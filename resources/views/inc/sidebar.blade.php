@@ -1,14 +1,15 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
-	<a class="brand-link" href="/">        
-		<span class="brand-text font-weight-light"><b><center>ESS Portal</center></b></span>
+	<a class="brand-link" href="/">  
+		<img src="../storage/ess.png" alt="AdminLTE Logo" class="img-circle" style="height: 45px">      
+		<span class="brand-text font-weight-light">ESS PORTAL</span>
 	</a> <!-- Sidebar -->
 	<div class="sidebar">
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 			<div class="image"><img alt="User Image" class="img-circle elevation-2" src="../storage/pic.jpg"></div>
 			<div class="info">
-				<a class="d-block" href="#">{{ Auth::user()->name }}</a>
+				<a class="d-block">{{ Auth::user()->name }}</a>
 			</div>
 		</div><!-- Sidebar Menu -->
 		{{-- {{Session::get("employer_id")}} --}}
@@ -149,7 +150,7 @@
 						{
 							$upload_employee_enrollment = "active";
 						}
-						if(Request::segment(2) == 'encode')
+						if(Request::segment(2) == '' || Request::segment(2) == 'encode')
 						{
 							$encode_employee_enrollment = "active";
 						}					
@@ -297,7 +298,7 @@
 							<p>Upload Employee</p></a>                                   
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee/encode"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Encode Employee</p></a>
 						</li>						
 					</ul>
@@ -425,7 +426,7 @@
 				<!-- NOTIFICATION -->
 				@if(Session::get("system_notifications") != "none")	
 				<li class="nav-item has-treeview {{$systemnotifications}}">
-					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-bell"></i>
 					<p>System Notifications <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						{{-- <li class="nav-item">
@@ -445,7 +446,7 @@
 				<!--SEND ANNOUNCEMENTS  -->
 				@if(Session::get("send_announcement") != "none")
 				<li class="nav-item has-treeview {{$sendannounce}}">
-					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-bullhorn"></i>
 					<p>Send Announcements <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						{{-- <li class="nav-item">
@@ -465,7 +466,7 @@
 				<!-- DOCS AND TEMPLATES -->
 				@if(Session::get("manage_docs") != "none")
 				<li class="nav-item has-treeview {{$managedocs}}">
-					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-file"></i>
 					<p>Manage Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						{{-- <li class="nav-item">
