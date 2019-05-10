@@ -269,9 +269,7 @@ elseif(Session::get('create_profile') == 'delete'){
 
 <script type="text/javascript">
 $(document).ready(function (){
-<<<<<<< HEAD
-    
-=======
+
     setExpiryDate();
     SetEnrollmentDate();
     function setExpiryDate(){
