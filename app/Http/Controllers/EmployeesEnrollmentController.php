@@ -11,14 +11,15 @@ use Twilio\Jwt\ClientToken;
 use Session;
 use DB;
 use Response;
+use Mail;
+use Keygen;
+use Uppercase;
+use DateTime;
 use App\User;
 use App\EmployeeEnrollment;
 use App\ESSBase;
 use App\Logs;
-use Mail;
-use Keygen;
-use Uppercase;
-use App\Notifications\OTPNotif;
+use App\OTP;
 
 class EmployeesEnrollmentController extends Controller
 {
@@ -216,6 +217,15 @@ class EmployeesEnrollmentController extends Controller
 
             $this->sendSms($request->input('mobile_no'), $OTP, $get_employer_name[0]->business_name);
             
+            //$date = new DateTime();
+            $date_unitl = date("Y-m-d H:i:s", strtotime('+5 minutes'));
+
+            $otp = OTP::create([
+                'account_id' => 1,
+                'otp' => $OTP,
+                'valid_until' => $date_unitl
+            ]);
+            
         // }
         // else{
         //     echo "Error input";
@@ -244,7 +254,12 @@ class EmployeesEnrollmentController extends Controller
                     // A Twilio phone number you purchased at twilio.com/console
                     'from' => '+15186204736',
                     // the body of the text message you'd like to send
-                    'body' => 'Congratulations! You have been enrolled by your Employer ' . $employer_name . '. This is your ONE-TIME-PIN (O-T-P) to activate your ESS Account ' . $otp . '. Sincerely - MyCASHere Team'
+                    'body' => 'Congratulations! You have been enrolled by your Employer ' . $employer_name . '.' . 
+                                "\n" . 'This is your One-Time-Pin (OTP) to activate your ESS Account ' . $otp . '.' . 
+                                "\n" . 'This OTP will expire after 5 mins.' . 
+                                "\n" . 'Thank you!' . 
+                                "\n" . 'Sincerely' . 
+                                "\n" . 'MyCASHere Team'
                 )
             );
         }

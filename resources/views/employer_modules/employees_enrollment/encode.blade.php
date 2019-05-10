@@ -18,13 +18,21 @@
 @section('content')
 <div class="container-fluid">
     <div class="card">
-            {{-- @php
+            @php
             $message_to = "09127784095";
             if( preg_match('/^(09|\+639)\d{9}$/', $message_to))
             {
                 echo preg_replace('/^09/', '+639', $message_to);
             }
-            @endphp --}}
+            echo "<br>";
+            //echo date("Y-m-d H:i");
+            // $date_now = new DateTime();
+            // $date_now = $date_now->format('Y-m-d h:i:s');
+
+            //$date_now = date("Y-m-d h:i:s");
+            $date_unitl = date("Y-m-d H:i:s", strtotime('+5 minutes'));
+            echo $date_unitl;
+            @endphp
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>
