@@ -178,6 +178,14 @@ elseif(Session::get('send_announcement') == 'delete'){
 
 <script>
 $(document).ready(function (){
+    //Get Scripts
+    $.getScript( "js/scripts.js" )
+        .done(function( script, textStatus ) {
+            //console.log( textStatus );
+        })
+        .fail(function( jqxhr, settings, exception ) {
+            //console.log("Error")
+    });
     // Show All Data
     showAllAnnouncement();
     /*DataTable*/ 
@@ -353,6 +361,7 @@ $(document).ready(function (){
                 },
                 success: function(data){
                     showAllAnnouncement();
+                    showAllAnnouncementToNotification();
                     // Modal hide
                     //$('#AddNotificationModal').modal('hide');
                     setTimeout(function (){
@@ -379,42 +388,55 @@ $(document).ready(function (){
     // Delete Announcement
     $('#showdata').on('click', '.annoucement-delete', function(){
         var id = $(this).attr('data');
-        $('#DeleteModal').modal('show');
-        $('#DeleteModal').find('#title_modal').text('Delete Announcement');
-        $('#annoucement_form').attr('hidden', true);
+        // $('#DeleteModal').modal('show');
+        // $('#DeleteModal').find('#title_modal').text('Delete Announcement');
+        // $('#annoucement_form').attr('hidden', true);
         toastr.remove()
         // Remove current toasts using animation
         toastr.clear()
+        swal({
+                title: "Do you wanna Delete This Announcement?",
+                type: "error",
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                showCancelButton: true,
+                closeOnConfirm: true,
+        },
+            function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/Announcement/destroy_announcement',
+                    data: {
+                        id: id,
+                        '_token': $('input[name=_token]').val(),
+                    },
+                    success: function(data){
+                        // Modal hide
+                        setTimeout(function (){
+                                $('#DeleteModal').modal('hide');
+                        }, 400);
+                        // Display a success toast, with a title
+                        toastr.success('Announcement Deleted', 'Success')
+                        setTimeout(function (){
+                            $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
+                        }, 300);
+                        showAllAnnouncement();
+                        showAllAnnouncementToNotification();
+                    },
+                    error: function(data){
+                        toastr.error('Error Deleting Announcement')
+                        setTimeout(function (){
+                            $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+                    }
+
+                });
+            }
+        );
         // Prevent Previous handler - unbind()
         $('#DeleteAnnouncement').click(function(){
             $("#spinner_delete").addClass('fa fa-refresh fa-spin');
-            $.ajax({
-                type: 'POST',
-                url: '/Announcement/destroy_announcement',
-                data: {
-                    id: id,
-                     '_token': $('input[name=_token]').val(),
-                },
-                success: function(data){
-                    // Modal hide
-                    setTimeout(function (){
-                            $('#DeleteModal').modal('hide');
-                    }, 400);
-                    // Display a success toast, with a title
-                    toastr.success('Announcement Deleted', 'Success')
-                    setTimeout(function (){
-                        $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
-                    }, 300);
-                    showAllAnnouncement();
-                },
-                error: function(data){
-                    toastr.error('Error Deleting Announcement')
-                    setTimeout(function (){
-                        $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
-                    }, 250);
-                }
-
-            });
+           
         });
     });
 

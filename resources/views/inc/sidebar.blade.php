@@ -425,7 +425,7 @@
 				<!-- NOTIFICATION -->
 				@if(Session::get("system_notifications") != "none")	
 				<li class="nav-item has-treeview {{$systemnotifications}}">
-					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-bell"></i>
 					<p>System Notifications <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						{{-- <li class="nav-item">
@@ -445,7 +445,7 @@
 				<!--SEND ANNOUNCEMENTS  -->
 				@if(Session::get("send_announcement") != "none")
 				<li class="nav-item has-treeview {{$sendannounce}}">
-					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-bullhorn"></i>
 					<p>Send Announcements <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						{{-- <li class="nav-item">
@@ -465,7 +465,7 @@
 				<!-- DOCS AND TEMPLATES -->
 				@if(Session::get("manage_docs") != "none")
 				<li class="nav-item has-treeview {{$managedocs}}">
-					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
+					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-file"></i>
 					<p>Manage Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
 						{{-- <li class="nav-item">

@@ -147,7 +147,7 @@ elseif(Session::get('create_profile') == 'delete'){
         </button>
       </div>
       <div class="modal-body">
-        Are You Sure You Want To DelEtE This User?
+        Are you sure you want to delete this User?
         <label id="business_name"></label>
       </div>
       <div class="modal-footer">
@@ -155,7 +155,7 @@ elseif(Session::get('create_profile') == 'delete'){
           {{-- <form method="POST" action="" id="DeleteForm">
             @method('DELETE')
             @csrf --}}
-            <button type="button" class="btn btn-primary" id="confirm" >Confirm</button>
+            <button type="button" class="btn btn-primary" id="confirm" >Confirm <i id="spinner_del" class=""></button>
           {{-- </form> --}}
       </div>
     </div>
@@ -226,6 +226,7 @@ elseif(Session::get('create_profile') == 'delete'){
            console.log(id);
           // Prevent Previous handler - unbind()
            $('#confirm').unbind().click(function (){
+            $("#spinner_del").addClass('fa fa-refresh fa-spin');
                 $.ajax({
                   type: 'POST',
                   url: '/Account/destroy',
@@ -235,10 +236,22 @@ elseif(Session::get('create_profile') == 'delete'){
                   },
                   success: function(data){
                     toastr.success('Successfully Delete!')
+                    setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+                        // Hide Modal
+                        setTimeout(function (){
+                          $('#csModal').modal('hide');
+                        }, 550);
                     //Close Modal
                     $('#deleteModal').modal('hide');
+                    //Reinitialize Table
+                    if ($.fn.dataTable.isDataTable('#Accounts')) {
+                        $("#Accounts").DataTable().clear().destroy();
+                      }
                     //Show All Account
                     showAllAccount();
+                    initDataTable();
                   },
                   error: function(data){
                     toastr.error('Error Deleting Account')
