@@ -269,9 +269,6 @@ elseif(Session::get('create_profile') == 'delete'){
 
 <script type="text/javascript">
 $(document).ready(function (){
-<<<<<<< HEAD
-    
-=======
     setExpiryDate();
     SetEnrollmentDate();
     function setExpiryDate(){
@@ -310,7 +307,7 @@ $(document).ready(function (){
             var today = yyyy+'-'+mm+'-'+dd;   
             $('#enrollmentdate').val(today);  
     }
->>>>>>> develop
+
 
     /*Get Province*/
     $.ajax({
