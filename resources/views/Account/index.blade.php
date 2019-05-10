@@ -223,7 +223,7 @@ elseif(Session::get('create_profile') == 'delete'){
           $("#DeleteForm").attr('action', '/Account/' + id);
            $("#business_name").html(business_name);
            toastr.remove()
-           console.log(id);
+           //console.log(id);
           // Prevent Previous handler - unbind()
            $('#confirm').unbind().click(function (){
             $("#spinner_del").addClass('fa fa-refresh fa-spin');
@@ -237,7 +237,7 @@ elseif(Session::get('create_profile') == 'delete'){
                   success: function(data){
                     toastr.success('Successfully Delete!')
                     setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_del").removeClass('fa fa-refresh fa-spin');
                         }, 250);
                         // Hide Modal
                         setTimeout(function (){

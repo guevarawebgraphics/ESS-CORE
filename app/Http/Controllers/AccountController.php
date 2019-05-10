@@ -345,7 +345,7 @@ class AccountController extends Controller
             /*Email Template*/
             /*Need To be Dynamic HardCoded For Now*/
             $mail_template = DB::table('notification')
-                            ->where('id', 1)
+                            ->where('id', 31)
                             ->where('notification_type', 1)
                             ->select('notification_message')
                             ->first();
