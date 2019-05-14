@@ -8,7 +8,7 @@ class OTP extends Model
 {
     protected $guarded = [];
     // Table Name
-    protected $table = 'otp';
+    protected $table = 'user_activation';
     // Primary Key
     public $primaryKey = 'id';
     // Timestamps

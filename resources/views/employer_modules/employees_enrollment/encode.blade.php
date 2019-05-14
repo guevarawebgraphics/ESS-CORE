@@ -19,6 +19,7 @@
 <div class="container-fluid">
     <div class="card">
             @php
+            /*
             $message_to = "09127784095";
             if( preg_match('/^(09|\+639)\d{9}$/', $message_to))
             {
@@ -32,7 +33,10 @@
             //$date_now = date("Y-m-d h:i:s");
             $date_unitl = date("Y-m-d H:i:s", strtotime('+5 minutes'));
             echo $date_unitl;
+            echo "<br>";
+            */
             @endphp
+        {{-- <a href="{{ url('/employee/activation') }}">ASA</a> --}}
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>
