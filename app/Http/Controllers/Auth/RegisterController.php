@@ -6,6 +6,7 @@ use DB;
 use Session;
 use App\User;
 use App\Logs;
+use App\ESSBase;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -145,30 +146,54 @@ class RegisterController extends Controller
             }
         }
         
-        $user = User::create([
-            'name' => $data['name'],
-            'user_type_id' => $data['cmbUser_type'],
-            'username' => $data['username'],       
-            'user_type_for' => $user_type_for,
-            'employer_id' => "none",     
-            'password' => Hash::make($data['password']),
-            'created_by' => auth()->user()->id,
-            'updated_by' => auth()->user()->id
-        ]);
+        // $user = User::create([
+        //     'name' => $data['name'],
+        //     'user_type_id' => $data['cmbUser_type'],
+        //     'username' => $data['username'],       
+        //     'user_type_for' => $user_type_for,
+        //     'employer_id' => "none",     
+        //     'password' => Hash::make($data['password']),
+        //     'created_by' => auth()->user()->id,
+        //     'updated_by' => auth()->user()->id
+        // ]);
 
-        $id = $user->id;
+        // $id = $user->id;
         
-        if($counter > 0)
-        {
-            DB::table('users')->where('id', '=', $id)
+        // if($counter > 0)
+        // {
+        //     DB::table('users')->where('id', '=', $id)
+        //     ->update(array(
+        //         'employer_id' => Session::get("employer_id")
+        //     )); 
+        // }
+        //echo $data['cmbEmployer'];
+
+        DB::table('users')->where('id', '=', $data['hidden_account_id'])
             ->update(array(
-                'employer_id' => Session::get("employer_id")
-            )); 
-        }
+                'name' => $data['name'],
+                //'user_type_id' => $data['cmbUser_type'],
+                'username' => $data['username'],       
+                //'user_type_for' => $user_type_for,
+                'employer_id' => $data['cmbEmployer'],     
+                'password' => Hash::make($data['password']),
+                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id,
+        ));
+
+        //Inserting into ESS BASE TABLE
+        $insert_ess = new ESSBase;
+        $insert_ess->account_id = $data['hidden_account_id'];
+        $insert_ess->employer_id = $data['cmbEmployer'];
+        $insert_ess->ess_id = $data['username'];
+        $insert_ess->user_type_id = $data['cmbUser_type'];            
+        $insert_ess->created_by = auth()->user()->id;
+        $insert_ess->updated_by = auth()->user()->id;
+        $insert_ess->save();
 
         $this->insert_log("Created '". $data['username'] ."' User Account");
             
     }
+
     //update user 
     public function updateuser_post(Request $request)
     {
