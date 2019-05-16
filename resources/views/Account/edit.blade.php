@@ -178,7 +178,7 @@
                     <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                     <div class="col-md-4">
                         
-                        <input id="enrollmentdate" type="date" class="form-control" name="enrollmentdate"  autofocus>
+                    <input id="enrollmentdate" type="text" class="form-control" name="enrollmentdate" value="{{ \Carbon\Carbon::parse($Account[0]->enrollment_date)->format('m/d/Y')}}" placeholder="MM/DD/YYYY"  autofocus>
                         @if ($errors->has('enrollmentdate'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('enrollmentdate') }}</strong>
@@ -189,7 +189,7 @@
                     <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
                     <div class="col-md-4">
                         
-                    <input id="expirydate" type="date" class="form-control" name="expirydate"   autofocus>
+                    <input id="expirydate" type="text" class="form-control" name="expirydate" value="{{ \Carbon\Carbon::parse($Account[0]->expiry_date)->format('m/d/Y') }}" placeholder="MM/DD/YYYY"   autofocus>
                         @if ($errors->has('expirydate'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('expirydate') }}</strong>
@@ -205,6 +205,7 @@
                         <div class="custom-file">
                             <input type="file" class="form-control-file" id="sec" name="sec">
                         </div>
+                        <input type="text" class="form-control-file" value="{{ $Account[0]->sec }}" disabled="true" id="secval" name="secval">
                         
                 </div>
                 
@@ -214,6 +215,7 @@
                         <div class="custom-file">
                             <input type="file" class="form-control-file" id="bir" name="bir">
                         </div>
+                        <input type="text" class="form-control-file" value="{{ $Account[0]->bir }}" disabled="true" id="birval" name="birval">
                 </div>
         </div>
                 
@@ -232,6 +234,15 @@
 
 <script type="text/javascript">
 $(document).ready(function (){
+    // Config Restriction for Pass Date
+    var date = new Date();
+    date.setDate(date.getDate());
+    $('#enrollmentdate').datepicker();
+    $('#expirydate').datepicker({
+        autoclose: true,
+        startDate: date
+    });
+
     /*Get Province*/
     let provCode = $('#provCode').val();
     $.ajax({
@@ -453,6 +464,25 @@ $(document).ready(function (){
             $('#nid').addClass('is-invalid');
             spinnerTimout();
         }
+        if($('#expirydate').val() == ""){
+            $('#error_expirydate').html('Expiry Date is Required');
+            $('#error_expirydate').attr('hidden', false);
+            $('#expirydate').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#expirydate').val() == 0 || $('#expirydate').val() < 0) {
+            $('#error_expirydate').html('Expiry Date is Invalid');
+            $('#error_expirydate').attr('hidden', false);
+            $('#expirydate').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if(isNaN($('#expirydate').val())){
+            $('#error_expirydate').html('Expiry Date must be Number');
+            $('#error_expirydate').attr('hidden', false);
+            $('#expirydate').addClass('is-invalid');
+            spinnerTimout();
+        }
+
         if($('#business_name').val() != "" &&
          $('#contact_person').val() != "" &&
          $('#accountname').val() != "" &&
@@ -470,7 +500,8 @@ $(document).ready(function (){
          $('#address_zipcode').val() != "" &&
          $('#hdmf').val() != "" &&
          $('#user_type').val() != "" &&
-         $('#nid').val() != ""){
+         $('#nid').val() != "" &&
+         $('#expirydate').val() != ""){
                 $.ajax({
                 url: "/Account/" + EmployerId,
                 method: 'POST',

@@ -1,13 +1,13 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
 	<a class="brand-link" href="/">  
-		<img src="../storage/ess.png" alt="AdminLTE Logo" class="img-circle" style="height: 45px">      
+		<img src="/storage/ess.png" alt="AdminLTE Logo" class="img-circle" style="height: 45px">      
 		<span class="brand-text font-weight-light">ESS PORTAL</span>
 	</a> <!-- Sidebar -->
 	<div class="sidebar">
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-			<div class="image"><img alt="User Image" class="img-circle elevation-2" src="../storage/pic.jpg"></div>
+			<div class="image"><img alt="User Image" class="img-circle elevation-2" src="/storage/pic.jpg"></div>
 			<div class="info">
 				<a class="d-block">{{ Auth::user()->name }}</a>
 			</div>

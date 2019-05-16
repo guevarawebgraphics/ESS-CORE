@@ -61,10 +61,14 @@ elseif(Session::get('create_profile') == 'delete'){
     <div class="card-body">
       {{-- <input type="text" id="searchbox" class="form-control col-md-4"> --}}
       <div class="form-group row">
-          <label for="search" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search: </label>
-          <div class="col-md-4">
-              
-              <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
+          {{-- <label for="search" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search: </label> --}}
+          <div class="col-md-6">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <span class="fa fa-search input-group-text"></span>
+                    </div>
+                  <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
+              </div>
               @if ($errors->has('address_zipcode'))
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $errors->first('address_zipcode') }}</strong>
@@ -136,31 +140,6 @@ elseif(Session::get('create_profile') == 'delete'){
       {{-- {{ $Account->links() }} --}}
     </div>
 
-    <!-- Modal For delete -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" >Delete</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this User?
-        <label id="business_name"></label>
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          {{-- <form method="POST" action="" id="DeleteForm">
-            @method('DELETE')
-            @csrf --}}
-            <button type="button" class="btn btn-primary" id="confirm" >Confirm <i id="spinner_del" class=""></button>
-          {{-- </form> --}}
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Modal For Change Status -->
 <div class="modal fade" id="csModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -202,11 +181,12 @@ elseif(Session::get('create_profile') == 'delete'){
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
           "pageLength": 10000,
-           scrollY: 300,
+           scrollY: 500,
           //  scrollX: true,
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
+          fixedColumns: true,
           "order": [[4, "asc"]]
         }); 
         /*Custom Search For DataTable*/
@@ -223,11 +203,25 @@ elseif(Session::get('create_profile') == 'delete'){
           $("#DeleteForm").attr('action', '/Account/' + id);
            $("#business_name").html(business_name);
            toastr.remove()
+<<<<<<< HEAD
            //console.log(id);
           // Prevent Previous handler - unbind()
            $('#confirm').unbind().click(function (){
             $("#spinner_del").addClass('fa fa-refresh fa-spin');
                 $.ajax({
+=======
+           console.log(id);
+           swal({
+                title: "Do you wanna Delete This Employer?",
+                type: "error",
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                showCancelButton: true,
+                closeOnConfirm: true,
+           },
+            function(){
+              $.ajax({
+>>>>>>> develop
                   type: 'POST',
                   url: '/Account/destroy',
                   data: {
@@ -235,7 +229,7 @@ elseif(Session::get('create_profile') == 'delete'){
                     '_token': $('input[name=_token]').val(),
                   },
                   success: function(data){
-                    toastr.success('Successfully Delete!')
+                    toastr.success('Successfully Deleted!')
                     setTimeout(function (){
                             $("#spinner_del").removeClass('fa fa-refresh fa-spin');
                         }, 250);
@@ -257,7 +251,9 @@ elseif(Session::get('create_profile') == 'delete'){
                     toastr.error('Error Deleting Account')
                   }
               });
-           });
+            }
+           
+           );
         });
 
 

@@ -22,8 +22,13 @@
                             <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
-
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                            <span class="fa fa-user input-group-text"></span>
+                                        </div>
+                                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username" required autofocus>
+                                </div>
+                                
                                 @if ($errors->has('username'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('username') }}</strong>
@@ -36,8 +41,12 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="fa fa-key input-group-text"></span>
+                                    </div>
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
+                                </div>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -88,8 +97,8 @@
                                 @endif                               
                             </div> --}}
 
-                            <div class="col-md-3 offset-md-4">
-                                <button type="submit" class="btn btn-primary btn-block">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">
                                         <i class="fa fa-sign-in-alt"></i>
                                     {{ __('Login') }}
                                 </button>                                

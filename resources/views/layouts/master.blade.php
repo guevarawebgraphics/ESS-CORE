@@ -12,6 +12,8 @@
 	<link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
 	<link href="{{ asset('Toastr/toastr.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet"><!-- select -->
+	<link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
+	<link href="{{ asset('/plugins/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
 	{{-- <link href="{{ asset('plugins//bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}" rel="stylesheet"> --}}
 
 	<!-- REQUIRED SCRIPTS -->
@@ -29,6 +31,9 @@
 	<!-- DataTables -->
 	<script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('/plugins/datatables/dataTables.bootstrap4.js') }}"></script>
+	<script src="{{ asset('plugins/jQueryUI/jquery-ui.js') }}"></script>
+	<script src="{{ asset('plugins/JQueryUI/jquery-ui.min.js') }}"></script>
+	<script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 	<!-- SELECT 2 -->
 	<script src="{{ asset('/plugins/select2/select2.full.min.js') }}"></script>
 	{{-- <!-- CK Editor -->
