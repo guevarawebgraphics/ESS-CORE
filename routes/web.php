@@ -80,6 +80,9 @@ Route::patch('/Account/UpdateAccountStatus/{id}', 'AccountController@UpdateAccou
 Route::post('/Account', 'AccountController@store')->name('Account');
 Route::get('/Account/get_all_employer', 'AccountController@get_all_employer')->name('Account');
 Route::get('/Account/Activation/{id}', 'AccountController@UserActivation');
+Route::get('/Account/edit', function(){
+    abort(404);
+});
 
 /*Route Config For Notification*/
 Route::get('/Notification', 'NotificationController@index')->name('Notification.index');
