@@ -203,13 +203,6 @@ elseif(Session::get('create_profile') == 'delete'){
           $("#DeleteForm").attr('action', '/Account/' + id);
            $("#business_name").html(business_name);
            toastr.remove()
-<<<<<<< HEAD
-           //console.log(id);
-          // Prevent Previous handler - unbind()
-           $('#confirm').unbind().click(function (){
-            $("#spinner_del").addClass('fa fa-refresh fa-spin');
-                $.ajax({
-=======
            console.log(id);
            swal({
                 title: "Do you wanna Delete This Employer?",
@@ -221,7 +214,6 @@ elseif(Session::get('create_profile') == 'delete'){
            },
             function(){
               $.ajax({
->>>>>>> develop
                   type: 'POST',
                   url: '/Account/destroy',
                   data: {
@@ -231,7 +223,7 @@ elseif(Session::get('create_profile') == 'delete'){
                   success: function(data){
                     toastr.success('Successfully Deleted!')
                     setTimeout(function (){
-                            $("#spinner_del").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
                         }, 250);
                         // Hide Modal
                         setTimeout(function (){
