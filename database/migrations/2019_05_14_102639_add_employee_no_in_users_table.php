@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOtpTable extends Migration
+class AddEmployeeNoInUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class CreateOtpTable extends Migration
      */
     public function up()
     {
-        
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('employee_no')->after('employer_id')->default('none');
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class CreateOtpTable extends Migration
      */
     public function down()
     {
-        
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('employee_no');
+        });
     }
 }
