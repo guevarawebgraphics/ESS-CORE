@@ -55,10 +55,11 @@ class LoginController extends Controller
 
         $updated_at = $user->updated_at;
         $expiry_date = $user->expiry_date;
-        $password_expiry_at = Carbon::parse($updated_at)->addDays($expiry_date);
-        if($password_expiry_at->lessThan(Carbon::now())){
+        $CheckExpirationDate = Carbon::parse($user->expiry_date);
+        $account_expiry_at = Carbon::parse($updated_at)->addDays($expiry_date);
+        if($CheckExpirationDate->isPast()){
             // Check if the user is not yet Verified
-            if($user->expiry_date == "14") {
+            if($user->expiry_date && $user->user_type_id != "1") {
                 $errors = [$this->username() => trans('auth.expired')];
                 auth()->logout();
                 return redirect('login')->withErrors($errors);
@@ -101,7 +102,13 @@ class LoginController extends Controller
         // Check if user was successfully loaded, that the password matches
         // and active is not 1. If so, override the default error message.
         if ($user->AccountStatus != 1) {
-            $errors = [$this->username() => trans('auth.deactivated')];
+            if($user->AccountStatus === 0){
+                $errors = [$this->username() => trans('auth.failed')];
+            }
+            else {
+                $errors = [$this->username() => trans('auth.deactivated')];
+            }
+            
         }
 
         return redirect()->back()
