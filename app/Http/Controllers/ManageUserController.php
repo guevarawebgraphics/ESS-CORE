@@ -10,6 +10,8 @@ use App\Logs;
 use App\Account;
 use Session;
 use DB;
+use Keygen;
+use LasseRafn\Initials\Initials;
 
 class ManageUserController extends Controller
 {
@@ -69,7 +71,7 @@ class ManageUserController extends Controller
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
         if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND a.employer_id != 'none' ");
             return view('admin_modules.createuser')->with('users', $users);
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
@@ -121,6 +123,7 @@ class ManageUserController extends Controller
     //refresh user type table
     public function refreshtable_usertype()
     {
+        
         // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
         $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC ");
         return view ('admin_modules.table.tableusertype')->with('user_type', $user_type);        
@@ -331,18 +334,54 @@ class ManageUserController extends Controller
     
         $employer = DB::connection('mysql')->select("SELECT * FROM employer");
 
+        $data .= "<option value=''>Select Employer</option>";
         if(count($employer) > 0)
         {
             foreach($employer as $user)
             {   
-                $data .= '<option value="'. $user->id .'">'. $user->business_name .'</option>';   
+                $data .= '<option value="'. $user->id . '" data-add="'.$user->business_name.'">'. $user->business_name .'</option>';   
             }
         }
         else 
         {
-            $data .= '<option value="">No User Type</option>';
+            $data .= '<option value="">No employer</option>';
         }
 
         echo $data;      
+    }
+
+    // // employer load
+    // public function ()
+    // {
+    //     $data = "";
+    
+    //     $employer = DB::connection('mysql')->select("SELECT * FROM employer");
+
+    //     if(count($employer) > 0)
+    //     {
+    //         foreach($employer as $user)
+    //         {   
+    //             $data .= '<option value="'. $user->id .'">'. $user->business_name .'</option>';   
+    //         }
+    //     }
+    //     else 
+    //     {
+    //         $data .= '<option value="">No employer</option>';
+    //     }
+
+    //     echo $data;      
+    // }
+
+    //generating ESS ID
+    public function ESSIDGenerate(Request $request)
+    {
+        $employer_name = $request->employername;
+
+        $initial = (new Initials)->length(3)->generate($employer_name);    
+
+        // return $initial;
+
+        $essId = Keygen::length(6)->numeric()->generate();
+        return $initial . $essId;
     }
 }

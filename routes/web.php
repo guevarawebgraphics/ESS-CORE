@@ -53,6 +53,7 @@ Route::post('/manageuser/deleteuser_post', 'ManageUserController@deleteuser_post
 Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer');
 Route::get('/manageuser/checkusername', 'Auth\\RegisterController@checkusername')->name('checkusername');
 Route::post('/manageuser/create/reset_password', 'Auth\\RegisterController@reset_password')->name('resetpassword');
+Route::get('/manageuser/generate', 'ManageUserController@ESSIDGenerate');
 
 //My Profile
 Route::get('/myprofile/settings', 'MyProfileController@settings');
@@ -79,6 +80,9 @@ Route::patch('/Account/UpdateAccountStatus/{id}', 'AccountController@UpdateAccou
 Route::post('/Account', 'AccountController@store')->name('Account');
 Route::get('/Account/get_all_employer', 'AccountController@get_all_employer')->name('Account');
 Route::get('/Account/Activation/{id}', 'AccountController@UserActivation');
+Route::get('/Account/edit', function(){
+    abort(404);
+});
 
 /*Route Config For Notification*/
 Route::get('/Notification', 'NotificationController@index')->name('Notification.index');

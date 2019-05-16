@@ -117,6 +117,14 @@ $delete = 'disabled';
                     </div>
 
                     <div class="form-group row">
+                        <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
+                        <div class="col-md-6">
+                            <select id="cmbEmployer" class="form-control" name="cmbEmployer">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                         <div class="col-md-6">
@@ -131,7 +139,7 @@ $delete = 'disabled';
                             </span>
                             @endif
                         </div>
-                    </div>
+                    </div>                 
 
                     <div class="form-group row">
                         <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type</label>
@@ -267,6 +275,45 @@ $delete = 'disabled';
         $("#searchbox").on("keyup search input paste cut", function () {
             table.search(this.value).draw();
         });
+
+        //ajax on loading the EMPLOYER
+        $.ajax({
+            headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "{{ route('loademployer') }}",
+            method: "GET",
+            data:{},                 
+            success:function(data)
+            {
+                $("#cmbEmployer").html(data);
+            }
+        });
+
+        
+        //AJAX ON LOADING THE ESS USER ID
+        $("#cmbEmployer").change(function(){
+
+            val = $('#cmbEmployer').val();
+            var selected = $(this).find('option:selected');
+            var extra = selected.data('add'); 
+
+            console.log(extra);
+            
+            // var name = val.split("]]");
+
+            $.ajax({
+                headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url: "/manageuser/generate",
+                method: "GET",
+                data:{employername: extra},                 
+                success:function(data)
+                {
+                    //console.log(data);
+                    $("#txtusername").val(data);
+                }
+            });
+
+        });
+        
 
         //AJAX ON GETTING THE USERTYPE
         $.ajax({
