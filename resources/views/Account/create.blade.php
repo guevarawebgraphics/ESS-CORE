@@ -275,15 +275,8 @@ elseif(Session::get('create_profile') == 'delete'){
 
 <script type="text/javascript">
 $(document).ready(function (){
-<<<<<<< HEAD
-<<<<<<< HEAD
-    setExpiryDate();
-=======
-=======
-
     setExpiryDate();
 
->>>>>>> develop
     // Config Restriction for Pass Date
     var date = new Date();
     date.setDate(date.getDate());
@@ -292,11 +285,6 @@ $(document).ready(function (){
         startDate: date
     });
     //setExpiryDate();
-<<<<<<< HEAD
->>>>>>> develop
-=======
-
->>>>>>> develop
     SetEnrollmentDate();
     function setExpiryDate(){
             var today = new Date();
