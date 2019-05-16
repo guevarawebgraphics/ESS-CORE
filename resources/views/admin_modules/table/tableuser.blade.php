@@ -67,7 +67,7 @@ $delete = 'disabled';
             </td>
             <td>
                 <button class="btn btn-sm btn-primary" id="edit_user"
-                    data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}" {{$edit}}><i
+                    data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}]]{{$user->employer_id}}" {{$edit}}><i
                         class="fa fa-edit"></i> Edit</button>
                 <button class="btn btn-sm btn-danger" id="delete_user" data-add="{{$user->id}}]]{{$user->name}}"
                     {{$delete}}><i class="fa fa-trash"></i> Delete</button>

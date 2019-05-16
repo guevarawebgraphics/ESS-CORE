@@ -374,6 +374,7 @@ $delete = 'disabled';
             $('#txtusername').val("");
             $('#password').val("");
             $('#password-confirm').val("");
+            $("#cmbEmployer").val('');
 
             $('#name').removeClass("is-invalid");
             $('#txtusername').removeClass("is-invalid");
@@ -390,6 +391,7 @@ $delete = 'disabled';
             $("#hidden_id").val("");
             $("#action").val("add");
             $("#password_field").removeAttr("hidden");
+            $("#cmbEmployer").removeAttr('disabled');
         });
 
         //EDIT USER TYPE
@@ -423,8 +425,10 @@ $delete = 'disabled';
             $("#hidden_id").val(info[0]);
             $("#action").val("edit");
             $("#name").val(info[1]);
-            $("#txtusername").val(info[2]);
+            $("#txtusername").val(info[2]).attr('disabled', true);
             $("#cmbUser").val(info[3]);
+            $("#cmbEmployer").val(info[4]).attr('disabled', true);
+            console.log(info[4]);
             olduserName = $('#txtusername').val();
             //alert(info[0]);
             $("#password_field").attr("hidden", true);
@@ -626,7 +630,9 @@ $delete = 'disabled';
 
         //OPEN MODAL RESET PASSWORD
         $(document).on("click", "#reset_password", function () {
-            $("#resetPasswordModal").modal();
+            $("#resetPasswordModal").modal();           
+            $("#newpassword").val("");
+            $("#newpassword-confirm").val("");
             reset_data = $(this).data("add");
             reset_info = reset_data.split("]]");
             console.log(reset_info[0]);
@@ -676,7 +682,7 @@ $delete = 'disabled';
                             url: "{{ route('resetpassword') }}",
                             method: "POST",
                             data: {
-                                id: data[0],
+                                id: reset_info[0],
                                 password: password
                             },
                             success: function (data) {

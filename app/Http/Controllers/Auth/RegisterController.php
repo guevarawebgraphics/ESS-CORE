@@ -6,6 +6,7 @@ use DB;
 use Session;
 use App\User;
 use App\Logs;
+use App\ESSBase;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -166,6 +167,7 @@ class RegisterController extends Controller
         //     )); 
         // }
         //echo $data['cmbEmployer'];
+
         DB::table('users')->where('id', '=', $data['hidden_account_id'])
             ->update(array(
                 'name' => $data['name'],
@@ -177,6 +179,16 @@ class RegisterController extends Controller
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
         ));
+
+        //Inserting into ESS BASE TABLE
+        $insert_ess = new ESSBase;
+        $insert_ess->account_id = $data['hidden_account_id'];
+        $insert_ess->employer_id = $data['cmbEmployer'];
+        $insert_ess->ess_id = $data['username'];
+        $insert_ess->user_type_id = $data['cmbUser_type'];            
+        $insert_ess->created_by = auth()->user()->id;
+        $insert_ess->updated_by = auth()->user()->id;
+        $insert_ess->save();
 
         $this->insert_log("Created '". $data['username'] ."' User Account");
             
