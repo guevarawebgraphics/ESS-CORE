@@ -286,7 +286,6 @@ $(document).ready(function (){
         startDate: date
     });
     //setExpiryDate();
-
     SetEnrollmentDate();
     function setExpiryDate(){
             var today = new Date();
@@ -311,10 +310,6 @@ $(document).ready(function (){
             var today = yyyy+'-'+mm+'-'+dd;   
             $('#enrollmentdate').val(today);  
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 36b952e7d6e0459746d11050562d2143aeb70cac
 
     /*Get Province*/
     $.ajax({
@@ -696,7 +691,7 @@ $(document).ready(function (){
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data){
-                console.log("success");
+                //console.log("success");
                 //Reset Form
                 $('#AccountForm')[0].reset();
                 // Display a success toast, with a title

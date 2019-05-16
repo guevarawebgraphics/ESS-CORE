@@ -352,6 +352,7 @@ class AccountController extends Controller
             //                 ->select('notification_message')
             //                 ->first();
 
+
             // $activation_link = "http://127.0.0.1:8000/Account/Activation/".$activation_id;
 
 
@@ -459,6 +460,9 @@ class AccountController extends Controller
             'nid' => 'required|min:3',
         ]);
 
+        $enrollment_date = Carbon::parse($request->enrollmentdate)->format('Y-m-d');
+        $expiry_date = Carbon::parse($request->expirydate)->format('Y-m-d');
+
         // Handle File Upload
          if($request->hasFile('sec') && $request->hasFile('bir')){
             // Get filename with the extension
@@ -501,6 +505,14 @@ class AccountController extends Controller
                                     'sec' => $fileNameToStore_sec,
                                     'bir' => $fileNameToStore_bir
             ));
+
+            
+
+            DB::table('users')->where('id', '=', $id)
+                                ->update(array(
+                                    'enrollment_date' => $enrollment_date,
+                                    'expiry_date' => $expiry_date,
+                                ));
         }
 
         /*Update Account Employer*/
@@ -524,6 +536,12 @@ class AccountController extends Controller
                                 'phic' => $request->input('phic'),
                                 'hdmf' => $request->input('hdmf'),
                                 'nid' => $request->input('nid'),
+                            ));
+                            
+        DB::table('users')->where('id', '=', $id)
+                            ->update(array(
+                                'enrollment_date' => $enrollment_date,
+                                'expiry_date' => $expiry_date,
                             ));
 
         $msg = 'Success';
@@ -716,14 +734,14 @@ class AccountController extends Controller
                         $current = Carbon::now();
                         $ed = Carbon::parse($user->expiry_date);
                         $res = $current->diffInDays($ed);
-                        $password_expiry_at = Carbon::parse($updated_at)->addDays($res);
+                        $account_expiry_at = Carbon::parse($updated_at)->addDays($res);
                         // Check if the Account is Expired
-                        if($password_expiry_at->lessThan(Carbon::now())) {
-                            if($user->expiry_date == "14") {
+                        if($account_expiry_at->isPast()) {
+                            if($user->expiry_date) {
                                 // return 'Link Expired';
                                 return redirect('login')->with('error', 'Link Expired');
                             }
-                            elseif($user->expiry_date == "0") {
+                            elseif($user->expiry_date != null) {
                                 //return 'Account Already Activated'. $user->id;
                                 return redirect('login')->with('error', 'Account Already Activated');
                             }

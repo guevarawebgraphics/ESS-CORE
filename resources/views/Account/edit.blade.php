@@ -178,7 +178,7 @@
                     <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                     <div class="col-md-4">
                         
-                    <input id="enrollmentdate" type="text" class="form-control" name="enrollmentdate" value="{{ \Carbon\Carbon::parse($Account[0]->enrollment_date)->format('m/d/Y')}}" placeholder="MM/DD/YYYY"  autofocus>
+                    <input id="enrollmentdate" type="text" class="form-control" name="enrollmentdate" value="{{ \Carbon\Carbon::parse($Account[0]->enrollment_date)->format('m/d/Y')}}" placeholder="MM/DD/YYYY" disabled="true"  autofocus>
                         @if ($errors->has('enrollmentdate'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('enrollmentdate') }}</strong>
@@ -239,8 +239,8 @@ $(document).ready(function (){
     date.setDate(date.getDate());
     $('#enrollmentdate').datepicker();
     $('#expirydate').datepicker({
-        autoclose: true,
-        startDate: date
+        // autoclose: true,
+        // startDate: date
     });
 
     /*Get Province*/

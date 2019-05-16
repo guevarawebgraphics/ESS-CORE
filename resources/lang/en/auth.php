@@ -16,6 +16,6 @@ return [
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'deactivated' => 'This account is Deactivated',
-    'expired' => 'This account is Expired Please Contact The ESS Admin For Password Reset',
+    'expired' => 'This account is Expired Please Contact The ESS Admin To Re-new the Subscription',
 
 ];
