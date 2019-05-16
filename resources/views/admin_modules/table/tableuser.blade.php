@@ -33,7 +33,7 @@ $delete = 'disabled';
     <thead>
         <tr>
             <th scope="col">Name</th>
-            <th scope="col">Username</th>
+            <th scope="col">User ID / ESS ID</th>
             <th scope="col">User Type Access</th>
             <th scope="col">Reset Password</th>
             <th scope="col">Action</th>

@@ -119,13 +119,14 @@ $delete = 'disabled';
                     <div class="form-group row">
                         <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
                         <div class="col-md-6">
+                            <input type="hidden" name = "hidden_account_id" id = "hidden_account_id" >
                             <select id="cmbEmployer" class="form-control" name="cmbEmployer">
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                        <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('User ID / ESS ID') }}</label>
 
                         <div class="col-md-6">
                             <input id="txtusername" type="text"
@@ -296,8 +297,13 @@ $delete = 'disabled';
             var selected = $(this).find('option:selected');
             var extra = selected.data('add'); 
 
+            var data_split = extra.split("]]");
+
+            console.log(data_split[1]);
+
             console.log(extra);
             
+            $("#hidden_account_id").val(data_split[1]);
             // var name = val.split("]]");
 
             $.ajax({

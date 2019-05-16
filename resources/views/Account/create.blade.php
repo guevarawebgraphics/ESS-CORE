@@ -311,10 +311,6 @@ $(document).ready(function (){
             var today = yyyy+'-'+mm+'-'+dd;   
             $('#enrollmentdate').val(today);  
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 36b952e7d6e0459746d11050562d2143aeb70cac
 
     /*Get Province*/
     $.ajax({
