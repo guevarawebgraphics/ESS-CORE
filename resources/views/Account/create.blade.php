@@ -227,7 +227,8 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
                         <div class="col-md-4">
                             
-                        <input id="expirydate" type="date" class="form-control" name="expirydate" disabled="true"  autofocus>
+                        <input id="expirydate" type="text" class="form-control" name="expirydate" placeholder="MM/DD/YYYY"  autofocus>
+                        <p class="text-danger" id="error_expirydate"></p>
                             @if ($errors->has('expirydate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('expirydate') }}</strong>
@@ -260,32 +261,30 @@ elseif(Session::get('create_profile') == 'delete'){
 
           <div class="card-footer">
               <button type="button" class="btn btn-default">Back</button>
-            <button type="submit" class="btn btn-primary float-right" id="submit" {{$add}}>Submit <i id="spinner" class=""></i></button>
+            <button type="submit" class="btn btn-primary float-right btn-flat" id="submit" {{$add}}>Submit <i  class=""></i></button>
           </div>
         </form>
+        <!-- Loading (remove the following to stop the loading)-->
+        <div class="" id="formOverlay">
+            <i class="" id="spinner"></i>
+          </div>
+          <!-- end loading -->
       </div>
       <!-- /.card -->
 {{-- </div> --}}
 
 <script type="text/javascript">
 $(document).ready(function (){
-<<<<<<< HEAD
-    
-=======
-    setExpiryDate();
+    // Config Restriction for Pass Date
+    var date = new Date();
+    date.setDate(date.getDate());
+    $('#expirydate').datepicker({
+        autoclose: true,
+        startDate: date
+    });
+    //setExpiryDate();
     SetEnrollmentDate();
     function setExpiryDate(){
-        // var date = new Date(); // Now
-        // date.setDate(date.getDate() + 30); // Set now + 30 days as the new date
-        // var day = date.getDate();
-        // var month = date.getMonth();
-        // var year = date.getFullYear();
-        // console.log([day, month, year].join('/'));
-        // $('#expirydate').val([day, month, year].join('/'));
-
-        
-        // 14 Days Before The Expiration of the Account
-        //$('#enrollmentdate').on('change', function(){
             var today = new Date();
             var dd = today.getDate() + 14;
             var mm = today.getMonth()+1; //January is 0!
@@ -294,9 +293,7 @@ $(document).ready(function (){
             if(dd<10){dd='0'+dd} 
             if(mm<10){mm='0'+mm} 
             var today = yyyy+'-'+mm+'-'+dd;   
-            $('#expirydate').val(today);  
-        //});
-        //console.log(today);
+            //$('#expirydate').val(today);  
     }
 
     function SetEnrollmentDate(){
@@ -310,7 +307,7 @@ $(document).ready(function (){
             var today = yyyy+'-'+mm+'-'+dd;   
             $('#enrollmentdate').val(today);  
     }
->>>>>>> develop
+
 
     /*Get Province*/
     $.ajax({
@@ -392,6 +389,7 @@ $(document).ready(function (){
 
     /*Add Account*/
     $('#AccountForm').submit(function (e){
+        $('#formOverlay').addClass('overlay');
         $("#spinner").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
         toastr.remove();
@@ -647,6 +645,19 @@ $(document).ready(function (){
             $('#nid').addClass('is-invalid');
             spinnerTimout();
         }
+        if($('#expirydate').val() == ""){
+            $('#error_expirydate').html('Expiry Date is Required');
+            $('#error_expirydate').attr('hidden', false);
+            $('#expirydate').addClass('is-invalid');
+            spinnerTimout();
+        }
+        else if ($('#expirydate').val() == 0 || $('#expirydate').val() < 0) {
+            $('#error_expirydate').html('Expiry Date is Invalid');
+            $('#error_expirydate').attr('hidden', false);
+            $('#expirydate').addClass('is-invalid');
+            spinnerTimout();
+        }
+        
 
         if($('#business_name').val() != "" &&
          $('#contact_person').val() != "" &&
@@ -665,7 +676,8 @@ $(document).ready(function (){
          $('#address_zipcode').val() != "" &&
          $('#hdmf').val() != "" &&
          $('#user_type').val() != "" &&
-         $('#nid').val() != ""){
+         $('#nid').val() != "" &&
+         $('#expirydate').val() != ""){
             $.ajax({
             url: "{{ url('/Account') }}",
             method: 'POST',
@@ -685,6 +697,7 @@ $(document).ready(function (){
                 // Set Timeout For Loading in Submit button
                 setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    $('#formOverlay').removeClass('overlay');
                 }, 3000);
                 //Remove Errors
                 $('.form-control').each(function(i, obj){
@@ -699,6 +712,7 @@ $(document).ready(function (){
                 // Set Timeout For Loading in Submit button
                 setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    $('#formOverlay').removeClass('overlay');
                 }, 250);
                 // Handle a 422 Status Code
                 if(data.status === 422) {
@@ -808,6 +822,7 @@ $(document).ready(function (){
     function spinnerTimout(){
         setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    $('#formOverlay').removeClass('overlay');
         }, 250);
     }
 
