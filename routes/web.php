@@ -53,6 +53,7 @@ Route::post('/manageuser/deleteuser_post', 'ManageUserController@deleteuser_post
 Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer');
 Route::get('/manageuser/checkusername', 'Auth\\RegisterController@checkusername')->name('checkusername');
 Route::post('/manageuser/create/reset_password', 'Auth\\RegisterController@reset_password')->name('resetpassword');
+Route::get('/manageuser/generate', 'ManageUserController@ESSIDGenerate');
 
 //My Profile
 Route::get('/myprofile/settings', 'MyProfileController@settings');

@@ -13,6 +13,7 @@
         "gladcodes/keygen": "^1.1",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "lasserafn/php-initials": "^2.20",
         "twilio/sdk": "^5.31"
     },
     "require-dev": {

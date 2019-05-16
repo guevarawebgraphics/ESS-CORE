@@ -22,9 +22,11 @@
        
 <p style="font-size:15px;">Dear <b>{{ucfirst($lastname) . ", " . ucfirst($firstname) . " " . ucfirst($middlename)}} </b></p>
 <br>
-
+{{-- @php
+    $activation_link = "http://ess.prj/employee/activation/".$activation_id;   
+@endphp --}}
 <p>Congratulations! You have been registered by your Employer, {{$employer_name}}, to MyCASHere Payroll & Financial Services. Kindly verify your 
-email and activate your account by clicking this link <a href="#">click here to subscribe</a>. You will be redirected to MyCASHere account activation 
+email and activate your account by clicking this link <a href="{{ url('/employee/activation/'.$user_activation_id) }}">click here to subscribe</a>. You will be redirected to MyCASHere account activation 
 page and you will be required to enter your access credentials below and the verification code sent to your registered Mobile No. <b>{{$mobile_no}}</b>. If you have recently changed your mobile no. 
 kindly advise your HR immediately to update your registration details. 
 </p>

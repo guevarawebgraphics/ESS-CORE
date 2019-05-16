@@ -308,7 +308,6 @@ $(document).ready(function (){
             var today = yyyy+'-'+mm+'-'+dd;   
             $('#enrollmentdate').val(today);  
     }
->>>>>>> develop
 
     /*Get Province*/
     $.ajax({
