@@ -96,8 +96,23 @@ $delete = 'disabled';
                     <input type="hidden" id="hidden_id" name="hidden_id">
                     <div id="modal_module"></div>
                 </form> --}}
+
                 <form method="POST" id="createuser_form">
                     @csrf
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-4">            
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" id="customRadio" name="example"
+                                    value="customEx">
+                                <label class="custom-control-label" for="customRadio">New Account</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" id="customRadio2" name="example"
+                                    value="customEx">
+                                <label class="custom-control-label" for="customRadio2">Account for Employer</label>
+                            </div>                                             
+                        </div>
+                    </div>
 
                     <div class="form-group row">
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -392,6 +407,7 @@ $delete = 'disabled';
             $("#action").val("add");
             $("#password_field").removeAttr("hidden");
             $("#cmbEmployer").removeAttr('disabled');
+            $("#txtusername").removeAttr('disabled');
         });
 
         //EDIT USER TYPE
