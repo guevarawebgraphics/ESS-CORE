@@ -102,7 +102,13 @@ class LoginController extends Controller
         // Check if user was successfully loaded, that the password matches
         // and active is not 1. If so, override the default error message.
         if ($user->AccountStatus != 1) {
-            $errors = [$this->username() => trans('auth.deactivated')];
+            if($user->AccountStatus === 0){
+                $errors = [$this->username() => trans('auth.failed')];
+            }
+            else {
+                $errors = [$this->username() => trans('auth.deactivated')];
+            }
+            
         }
 
         return redirect()->back()

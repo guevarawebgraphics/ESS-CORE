@@ -232,9 +232,9 @@ elseif(Session::get('create_profile') == 'delete'){
                     //Close Modal
                     $('#deleteModal').modal('hide');
                     //Reinitialize Table
-                    if ($.fn.dataTable.isDataTable('#Accounts')) {
-                        $("#Accounts").DataTable().clear().destroy();
-                      }
+                    //if ($.fn.dataTable.isDataTable('#Accounts')) {
+                        $("#Accounts").DataTable().destroy();
+                      //}
                     //Show All Account
                     showAllAccount();
                     initDataTable();
@@ -286,9 +286,9 @@ elseif(Session::get('create_profile') == 'delete'){
                       _token:     '{{ csrf_token() }}'
                     },
                     success: function (data, response){
-                      if ($.fn.dataTable.isDataTable('#Accounts')) {
-                        $("#Accounts").DataTable().clear().destroy();
-                      }
+                      //if ($.fn.dataTable.isDataTable('#Accounts')) {
+                        $("#Accounts").DataTable().destroy();
+                      //}
                       //Show All Account
                       showAllAccount();
                       initDataTable();
@@ -328,7 +328,7 @@ elseif(Session::get('create_profile') == 'delete'){
               var html = '';
               var i;
               for(i=0; i<data.length; i++){
-                var AccountStatus = (data[i].AccountStatus == 1 ? '<span class="badge badge-success">'+"Active"+'</span>' : data[i].AccountStatus == 2 ? '<span class="badge badge-secondary">'+"In-Active"+'</span>' : data[i].AccountStatus == 3 ? '<span class="badge badge-danger">'+"Deactivated"+'</span>' : null);
+                var AccountStatus = (data[i].AccountStatus == 1 ? '<span class="badge badge-success">'+"Active"+'</span>' : data[i].AccountStatus == 2 ? '<span class="badge badge-secondary">'+"In-Active"+'</span>' : data[i].AccountStatus == 3 ? '<span class="badge badge-danger">'+"Deactivated"+'</span>' : data[i].AccountStatus == 0 ? '<span class="badge badge-danger">'+"Deleted"+'</span>' : null);
                 var bir = data[i].bir;
                 var sec = data[i].sec;
                 html +='<tr>'+
