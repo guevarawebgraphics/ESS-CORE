@@ -121,6 +121,7 @@ Route::get('/enrollemployee/getprovince', 'EmployeesEnrollmentController@get_pro
 Route::get('/enrollemployee/encode', 'EmployeesEnrollmentController@encode');
 Route::get('/enrollemployee/upload', 'EmployeesEnrollmentController@upload');
 Route::post('/enrollemployee/encode/post', 'EmployeesEnrollmentController@encode_post');
+Route::get('/enrollemployee/searchemployee', 'EmployeesEnrollmentController@search_existing_employee');
 
 //Employer Content
 Route::get('/employercontent/manage', 'EmployerContentController@manage');

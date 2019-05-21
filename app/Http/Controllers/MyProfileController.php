@@ -81,7 +81,7 @@ class MyProfileController extends Controller
             ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')       
             ->select('employer.id' ,'employer.business_name', 'employer.contact_mobile', 'employer.contact_email', 'employer.address_unit','refprovince.provDesc'
             , 'refcitymun.citymunDesc', 'refbrgy.brgyDesc')
-            ->where('employer.account_id', '=', auth()->user()->id)
+            ->where('employer.id', '=', auth()->user()->employer_id)
             ->get();         
         }
 

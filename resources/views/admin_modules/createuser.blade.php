@@ -100,16 +100,16 @@ $delete = 'disabled';
                 <form method="POST" id="createuser_form">
                     @csrf
                     <div class="form-group row">
-                        <div class="col-md-6 offset-md-4">            
+                        <div class="offset-md-4">            
                             <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="customRadio" name="example"
-                                    value="customEx">
-                                <label class="custom-control-label" for="customRadio">New Account</label>
+                                <input type="radio" class="custom-control-input" id="customRadio" name="rbn_type"
+                                    value="new_profile" checked>
+                                <label class="custom-control-label" for="customRadio">Account for New Profile</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="customRadio2" name="example"
-                                    value="customEx">
-                                <label class="custom-control-label" for="customRadio2">Account for Employer</label>
+                                <input type="radio" class="custom-control-input" id="customRadio2" name="rbn_type"
+                                    value="existing_profile">
+                                <label class="custom-control-label" for="customRadio2">Account for Existing Profile</label>
                             </div>                                             
                         </div>
                     </div>
@@ -137,6 +137,7 @@ $delete = 'disabled';
                             <input type="hidden" name = "hidden_account_id" id = "hidden_account_id" >
                             <select id="cmbEmployer" class="form-control" name="cmbEmployer">
                             </select>
+                            <p class="text-danger" id="error-no-employer" hidden>* Select an Employer</p>
                         </div>
                     </div>
 
@@ -222,7 +223,7 @@ $delete = 'disabled';
                     <input type="hidden" id="hidden_id_password">
 
                     <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('User ID / ESS ID') }}</label>
 
                         <div class="col-md-6">
                             <input id="username" type="text" class="form-control" name="username" required disabled>
@@ -459,6 +460,7 @@ $delete = 'disabled';
             password = $('#password').val();
             repassword = $('#password-confirm').val();
             usertype = $('#cmbUser').val();
+            employer = $("#cmbEmployer").val();
 
             var action = $("#action").val();
             //ADD 
@@ -495,8 +497,16 @@ $delete = 'disabled';
                     $('#error-no-repass').attr("hidden", true);
                 }
 
+                if (employer == "") {
+                    $('#cmbEmployer').addClass("is-invalid");
+                    $('#error-no-employer').removeAttr("hidden");
+                } else {
+                    $('#cmbEmployer').removeClass("is-invalid");
+                    $('#error-no-employer').attr("hidden", true);
+                }
+
                 if (name != "" && username != "" && password != "" && repassword != "" && password ==
-                    repassword && password.length >= 6) {
+                    repassword && password.length >= 6 && employer != "") {
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
