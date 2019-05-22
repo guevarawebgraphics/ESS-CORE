@@ -69,8 +69,9 @@ manage_docs') == 'delete'){
     }
 
     public function index(){
-
-        return view('Template.index');
+        //$Notification = Notifications::all();
+        $employers = DB::table('employer')->select('account_id', 'business_name')->get();
+        return view('Template.index', compact('employers'));
     }
 
     public function get_all_template(){
@@ -85,6 +86,7 @@ manage_docs') == 'delete'){
         $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
+            'employer_id' => 'required',
             'document_code' => 'required',
             'document_description' => 'required',
             'document_file' => 'required|file',
@@ -110,7 +112,7 @@ manage_docs') == 'delete'){
         if($request->all() != null){
             /*Create Template Document*/
             $template = Template::create([
-                'account_id' => 2,
+                'account_id' => $request->input('employer_id'),
                 'document_code' => $request->input('document_code'),
                 'document_description' => $request->input('document_description'),
                 'document_file' => $fileNameToStore_document_file,
@@ -167,7 +169,7 @@ manage_docs') == 'delete'){
             /*Update Template Document*/
             $Template = DB::table('template')->where('id', '=', $id)
                                 ->update(array(
-                                    'account_id' => 2, /*Temporary Account ID*/
+                                    'account_id' => $request->input('employer_id'), /*Temporary Account ID*/
                                     'document_code' => $request->input('document_code'),
                                     'document_description' => $request->input('document_description'),
                                     'document_file' => ($request->hasFile('document_file') ? $fileNameToStore_document_file : $get_user_file[0]->document_file),
@@ -186,6 +188,8 @@ manage_docs') == 'delete'){
         $id = $request->id;
         /*Delete Template*/
         $template = Template::where('id', '=', $id)->delete();
+        // Insert Log
+        $this->insert_log("Delete Template");
         return response()->json($template);
     }
 

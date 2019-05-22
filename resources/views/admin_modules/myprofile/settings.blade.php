@@ -53,7 +53,7 @@ elseif(Session::get('my_profile') == 'delete'){
         <div class="col-md-3">
             <div class="card card-info card-outline">
                 <div class="card-header">
-                    <center><strong>Admin</strong></center>
+                    <center><strong> @if(auth()->user()->user_type_id == 1) Admin @elseif(auth()->user()->user_type_id == 3) Employer @endif</strong></center>
                 </div>
                 <div class="card-body">           
                     <div class="image">
@@ -108,7 +108,33 @@ elseif(Session::get('my_profile') == 'delete'){
                     </div>
                     <button type="button" class="btn btn-primary" id="btnUpdate" {{$edit}}>Update Account</button>                                                                      
                 </div>              
-            </div>           
+            </div>
+            @if(auth()->user()->user_type_id === 3)
+            <!--Expiration-->
+            <div class="card card-info card-outline">
+                <div class="card-header">
+                    <center><strong>Subscription</strong></center>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Enrollment Date</th>
+                                <th>Expiration Date</th>
+                                <th>Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse(auth()->user()->enrollment_date)->format('l jS \\of F Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse(auth()->user()->expiry_date)->format('l jS \\of F Y')  }} </td>
+                                <td>{{ \Carbon\Carbon::parse(auth()->user()->enrollment_date)->diffForHumans(\Carbon\Carbon::parse(auth()->user()->expiry_date), true) }} ({{ \Carbon\Carbon::parse(auth()->user()->enrollment_date)->diffInDays(\Carbon\Carbon::parse(auth()->user()->expiry_date)) .' '. 'Days'  }})</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!--End Expiration-->
+            @endif
         </div>
     </div>    
 </div>
@@ -162,6 +188,8 @@ elseif(Session::get('my_profile') == 'delete'){
             id = $("#hidden_id").val();
             email = $("#txtemail").val();
             mobile = $("#txtmobile").val();
+            toastr.remove()
+            toastr.clear()
 
             if(email == "-" || mobile == "-")
             {

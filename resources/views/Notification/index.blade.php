@@ -54,9 +54,14 @@ elseif(Session::get('system_notifications') == 'delete'){
         <div class="card-body">
             @if(auth()->user()->user_type_id == 1)
             <div class="form-group row">
-                <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search:</label>
-                <div class="col-md-4">
-                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+                {{-- <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search:</label> --}}
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="fa fa-search input-group-text"></span>
+                            </div>
+                            <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <a href="#Add" class="btn btn-primary float-md-right" id="btn_addnotification" data-toggle="modal" data-target="#AddNotificationModal" {{$add}}><i class="fa fa-plus-square"></i> Add System Notification</a>
@@ -236,6 +241,7 @@ $(document).ready(function (){
             "autoWidth": true,
             lengthChange: false,
             responsive: true,
+            fixedColumns: true,
             "order": [[0, "desc"]]
         }); 
         /*Custom Search For DataTable*/
@@ -275,6 +281,8 @@ $(document).ready(function (){
         $('#notification_form')[0].reset();
         //notification_message.setData('');
         CKEDITOR.instances.notification_message.setData('');
+        $('#select2-employer_id-container').attr('title', '').text('--Select Employer--');
+        $('#select2-message_type_id-container').attr('title', '').text('--Select Message Type--');
     });
 
     // Store Notification
@@ -338,9 +346,7 @@ $(document).ready(function (){
                 },
                 success: function (data){
                     $('#notification_form')[0].reset();
-                    if ($.fn.dataTable.isDataTable('#Notification')) {
-                        $("#Notification").DataTable().clear().destroy();
-                    }
+                    $("#Notification").DataTable().destroy();
                     // Modal hide
                     //$('#AddNotificationModal').modal('hide');
                     setTimeout(function (){
@@ -438,42 +444,55 @@ $(document).ready(function (){
     //Delete a Notification
     $('#showdata').on('click', '.notification-delete', function(){
         var id = $(this).attr('data');
-        $('#DeleteNotificationModal').modal('show');
-        $('#DeleteNotificationModal').find('#title_modal').text('Delete Notification');
-        $('#notification_form').attr('hidden', true);
+        // $('#DeleteNotificationModal').modal('show');
+        // $('#DeleteNotificationModal').find('#title_modal').text('Delete Notification');
+        // $('#notification_form').attr('hidden', true);
         toastr.remove()
+        toastr.clear()
+        swal({
+            title: "Do you wanna Delete This Notification",
+            type: "error",
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes",
+            showCancelButton: true,
+            closeOnConfirm: true,
+        },
+
+            function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/Notification/destroy_notification',
+                    data: {
+                        id: id,
+                        '_token': $('input[name=_token]').val(),
+                    },
+                    success: function(data){
+                        $('#notification_form')[0].reset();
+                        $("#Notification").DataTable().destroy();
+                        setTimeout(function (){
+                            $('#DeleteNotificationModal').modal('hide');
+                        }, 400);
+                        // Display a success toast, with a title
+                        toastr.success('Notification Deleted Successfully', 'Success')
+                        setTimeout(function (){
+                            $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
+                        }, 1000);
+                        showAllNotification();
+                        InitDatatable();
+                    },
+                    error: function(data){
+                        toastr.error('Error Deleting Account')
+                    }
+                });
+            }
+        
+        );
         //$('.modal-dialog').removeClass('modal-lg');
         // Prevent Previous handler - unbind()
-        $('#DeleteNotification').unbind().click(function(){
-            $("#spinner_delete").addClass('fa fa-refresh fa-spin');
-            $.ajax({
-                type: 'POST',
-                url: '/Notification/destroy_notification',
-                data: {
-                    id: id,
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data){
-                    $('#notification_form')[0].reset();
-                    if ($.fn.dataTable.isDataTable('#Notification')) {
-                        $("#Notification").DataTable().clear().destroy();
-                    }
-                    setTimeout(function (){
-                          $('#DeleteNotificationModal').modal('hide');
-                    }, 400);
-                    // Display a success toast, with a title
-                    toastr.success('Notification Deleted Successfully', 'Success')
-                    setTimeout(function (){
-                        $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
-                    }, 1000);
-                    showAllNotification();
-                    InitDatatable();
-                  },
-                  error: function(data){
-                    toastr.error('Error Deleting Account')
-                  }
-            });
-        });
+        // $('#DeleteNotification').unbind().click(function(){
+        //     $("#spinner_delete").addClass('fa fa-refresh fa-spin');
+            
+        // });
     });
 
 
