@@ -99,18 +99,20 @@ $delete = 'disabled';
 
                 <form method="POST" id="createuser_form">
                     @csrf
-                    <div class="form-group row">
-                        <div class="offset-md-4">            
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="customRadio" name="rbn_type"
-                                    value="new_profile" checked>
-                                <label class="custom-control-label" for="customRadio">Account for New Profile</label>
+                    <div id="new_or_exist_field">
+                        <div class="form-group row">
+                            <div class="offset-md-4">            
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" id="customRadio" name="rbn_type"
+                                        value="new_profile" checked>
+                                    <label class="custom-control-label" for="customRadio">Account for New Profile</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" id="customRadio2" name="rbn_type"
+                                        value="existing_profile">
+                                    <label class="custom-control-label" for="customRadio2">Account for Existing Profile</label>
+                                </div>                                             
                             </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="customRadio2" name="rbn_type"
-                                    value="existing_profile">
-                                <label class="custom-control-label" for="customRadio2">Account for Existing Profile</label>
-                            </div>                                             
                         </div>
                     </div>
 
@@ -449,6 +451,7 @@ $delete = 'disabled';
             olduserName = $('#txtusername').val();
             //alert(info[0]);
             $("#password_field").attr("hidden", true);
+            $("#new_or_exist_field").attr("hidden", true);
 
         });
 

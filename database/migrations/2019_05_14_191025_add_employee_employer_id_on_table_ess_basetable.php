@@ -15,7 +15,7 @@ class AddEmployeeEmployerIdOnTableEssBasetable extends Migration
     {
         Schema::table('ess_basetable', function (Blueprint $table) {          
             $table->string('employer_id')->after('account_id')->nullable()->default('none');
-            $table->string('employee_no')->after('employer_id')->nullable()->default('none');
+            $table->string('employee_info')->after('employer_id')->nullable()->default('none');
         });
     }
 
