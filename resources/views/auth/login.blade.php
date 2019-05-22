@@ -43,7 +43,7 @@
                             <div class="col-md-6">
                                 <div class="input-group mb-3">
                                     <div class="input-group-append">
-                                        <span class="fa fa-key input-group-text"></span>
+                                        <span class="fa fa-lock input-group-text"></span>
                                     </div>
                                     <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
                                 </div>

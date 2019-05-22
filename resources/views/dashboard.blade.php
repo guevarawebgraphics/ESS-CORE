@@ -40,8 +40,11 @@
           <!-- small box -->
           <div class="small-box" style="background-color:#F39C12">
             <div class="inner">
+              @if(auth()->user()->user_type_id === 1)
               <h3>{{ $employers}}</h3>
-
+              @else
+              <h3>0</h3>
+              @endif
               <p>Registered Employer</p>
             </div>
             <div class="icon">

@@ -1,24 +1,31 @@
-// $(document).ready(function (){
+ $(document).ready(function (){
+    var session_notification = true;
+    var session = localStorage.setItem(session_notification, true);
     showAllAnnouncementToNotification();
 
     $('#announcement').click(function (){
         showAllAnnouncementToNotification();
+        if(session_notification){
+            session_notification = false;
+        }
+        if(session_notification == false){
+            $('#notif').attr('hidden', true);
+            session_notification = false;
+        }
     });
 
     $('#announcementdesc').on('click', '.show_announcement_notification',function (){
         var title = $(this).attr('data-title');
         var description = $(this).attr('data-description');
         swal({
-
                 title: title,
-                text: description,
+                text: jQuery(description).text(), // Strip Tag
                 showCancelButton: true,
             },
-
-
-
         );
+        
     });
+    
     function showAllAnnouncementToNotification(){
         // Show Notification
         $.ajax({
@@ -34,7 +41,12 @@
                 for(i=0; i<data.length; i++){
                     var status = (data[i].announcement_status == 1 ? 'Posted' : data[i].announcement_status == 0 ? 'Pending' : null);
                     const date = new Date(data[i].updated_at);
-                    $('#notif').html(count++);
+                    if(session_notification){
+                        session_notification = false;
+                    }
+                    else {
+                        $('#notif').html(count++);
+                    }
                     html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification"  data-title="'+data[i].announcement_title+'" data-description="'+data[i].announcement_description+'"><!-- Message Start -->'+
                             '<div class="media">'+
                             '<img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="../dist/img/user3-128x128.jpg">'+
@@ -61,4 +73,4 @@
             }
         });
     }
-// });
+ });

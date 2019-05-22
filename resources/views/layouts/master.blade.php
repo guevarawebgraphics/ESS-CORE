@@ -14,7 +14,7 @@
 	<link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet"><!-- select -->
 	<link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
 	<link href="{{ asset('/plugins/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
-	{{-- <link href="{{ asset('plugins//bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}" rel="stylesheet"> --}}
+	<link href="{{ asset('/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css') }}" rel="stylesheet"><!--Responsive DataTable-->
 
 	<!-- REQUIRED SCRIPTS -->
 	<!-- jQuery -->
@@ -36,10 +36,9 @@
 	<script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 	<!-- SELECT 2 -->
 	<script src="{{ asset('/plugins/select2/select2.full.min.js') }}"></script>
-	{{-- <!-- CK Editor -->
-	<script src="{{ asset('/plugins/ckeditor/ckeditor.js') }}"></script>
-	<!-- Bootstrap WYSIHTML5 -->
-	<script src="{{ asset('/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script> --}}
+	<!-- Responsive -->
+	<script src="{{ asset('/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<!--Toastr-->
 	<script src="{{ asset('Toastr/toastr.min.js') }}"></script>
 	{{-- SWEET ALERT --}}
 	<link href="{{ asset('sweetalert/sweetalert.css') }}" rel="stylesheet">

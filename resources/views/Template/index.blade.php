@@ -53,9 +53,14 @@ elseif(Session::get('manage_docs') == 'delete'){
     <!-- /.card-header -->
     <div class="card-body">
         <div class="form-group row">
-            <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i> Search:</label>
-            <div class="col-md-4">
-                <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+            {{-- <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i> Search:</label> --}}
+            <div class="col-md-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                      <span class="fa fa-search input-group-text"></span>
+                    </div>
+                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+                </div>
             </div>
             <div class="col-md-6">
                 <a href="#Add" class="btn btn-primary float-md-right" id="btn_addtemplate" data-toggle="modal" data-target="#AddTemplateModal" {{$add}}><i class="fa fa-plus-square"></i> Create Template</a>
@@ -81,7 +86,7 @@ elseif(Session::get('manage_docs') == 'delete'){
 </div>
 
 <!-- Add System Notification -->
-<div class="modal fade" id="AddTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="AddTemplateModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -111,12 +116,25 @@ elseif(Session::get('manage_docs') == 'delete'){
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="employer" class="col-md-4 text-md-center">Select Employer</label>
+                        <div class="col-md-6">
+                            <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
+                                <option selected value="">--Select Employer</option>
+                                    @foreach($employers as $employer)
+                                        <option value="{{$employer->account_id}}">{{$employer->business_name}}</option>
+                                    @endforeach
+                                </select>
+                                <p class="text-danger" id="error_employer_id"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                             <label for="document_file" class="col-md-4 text-md-center">Upload Document Template:</label>
                             <div class="col-md-6">
                                 
                                     <div class="custom-file">
                                         <input type="file" class="form-control-file" id="document_file" name="document_file">
                                     </div>
+                                    <input type="text" class="form-control disabled" id="document_file_name" name="document_file_name" hidden="true" disabled="true">
                             </div>
                     </div>
                
@@ -155,31 +173,37 @@ elseif(Session::get('manage_docs') == 'delete'){
 
 <script>
 $(document).ready(function (){
+    $('.select2').select2()
     // Show All Data
     showAllTemplate();
-    /*DataTable*/ 
-    var table = $("#DocumentAndTemplate").DataTable({
-          // "searching": false,
-          "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
-          "paging": true,
-          "pageLength": 10000,
-           scrollY: 300,
-          //  scrollX: true,
-          "autoWidth": true,
-          lengthChange: false,
-          responsive: true,
-          "order": [[0, "desc"]]
-    });
-    /*Custom Search For DataTable*/
-    $("#searchbox").on("keyup search input paste cut", function () {
-        table.search(this.value).draw();
-    });
+    initdataTableDocumentAndTemplate();
+    function initdataTableDocumentAndTemplate(){
+        /*DataTable*/ 
+        var table = $("#DocumentAndTemplate").DataTable({
+            // "searching": false,
+            "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+            "paging": true,
+            "pageLength": 10000,
+            scrollY: 300,
+            //  scrollX: true,
+            "autoWidth": true,
+            lengthChange: false,
+            responsive: true,
+            fixedColumns: true,
+            "order": [[0, "desc"]]
+        });
+        /*Custom Search For DataTable*/
+        $("#searchbox").on("keyup search input paste cut", function () {
+            table.search(this.value).draw();
+        });
+    }
 
     $('#btn_addtemplate').click(function (){
         $('#template_form')[0].reset();
         $('#template_form').attr('action', '/Template/store_template');
         $('#AddTemplateModal').find('#title_modal').text('Add Template');
         $('#template_form').removeAttr('hidden');
+        $('#document_file_name').attr('hidden', true);
     });
 
     /*Save Template*/
@@ -216,8 +240,10 @@ $(document).ready(function (){
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data){
+                $('#DocumentAndTemplate').DataTable().destroy();
                 // Show All Data
                 showAllTemplate();
+                initdataTableDocumentAndTemplate();
                 /*Hide Modal*/
                 setTimeout(function (){
                           $('#AddTemplateModal').modal('hide');
@@ -258,6 +284,7 @@ $(document).ready(function (){
         $('#AddTemplateModal').find('#title_modal').text('Edit Template');
         $('#template_form').attr('action', '/Template/update_template/' + id);
         $('#template_form').removeAttr('hidden');
+        $('#document_file_name').removeAttr('hidden');
         toastr.remove();
         $.ajax({
             type: 'ajax',
@@ -266,9 +293,11 @@ $(document).ready(function (){
             data: {id: id},
             dataType: 'json',
             success: function(data){
+                $('#select2-employer_id-container').attr('title', data[0].employer_id).text(data[0].business_name);
                 $('#document_code').val(data[0].document_code);
                 $('#document_description').val(data[0].document_description);
                 $('#document_file').attr('value', data[0].document_file);
+                $('#document_file_name').val(data[0].document_file);
             },
             error: function(){
                 $.each(errors, function (i, errors){
@@ -288,37 +317,55 @@ $(document).ready(function (){
     /*Delete Template*/
     $('#showdata').on('click', '.template-delete', function(){
         var id = $(this).attr('data');
-        $('#DeleteTemplateModal').modal('show');
-        $('#DeleteTemplateModal').find('#title_modal').text('Delete Template');
-        $('#template_form').attr('hidden', true);
+        var documentfile = $(this).attr('documentfile');
+        // $('#DeleteTemplateModal').modal('show');
+        // $('#DeleteTemplateModal').find('#title_modal').text('Delete Template');
+        // $('#template_form').attr('hidden', true);
         //$("#SaveTemplate").prop("type", "button");
         toastr.remove()
+        toastr.clear()
+        swal({
+            title: "Do you wanna Delete This Template?",
+            type: "error",
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes",
+            showCancelButton: true,
+            closeOnConfirm: true,
+        },
+            function (){
+                $.ajax({
+                    type: 'POST',
+                    url: '/Template/destroy_template',
+                    data: {
+                        id: id,
+                        '_token': $('input[name=_token]').val(),
+                        documentfile: documentfile,
+                    },
+                    success: function(data){
+                        setTimeout(function (){
+                            $('#DeleteTemplateModal').modal('hide');
+                        }, 400);
+                        // Display a success toast, with a title
+                        toastr.success('Template Deleted Successfully', 'Success')
+                        setTimeout(function (){
+                            $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
+                        }, 300);
+                        showAllTemplate();
+                    },
+                    error: function(data){
+                        toastr.error('Error Deleting Template')
+                    }
+                });
+            }
+        );
+
         // Prevent Previous handler - unbind()
-        $('#DeleteTemplate').unbind().click(function(){
-            $("#spinner_delete").addClass('fa fa-refresh fa-spin');
-            $.ajax({
-                type: 'POST',
-                url: '/Template/destroy_template',
-                data: {
-                    id: id,
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data){
-                    setTimeout(function (){
-                          $('#DeleteTemplateModal').modal('hide');
-                    }, 400);
-                    // Display a success toast, with a title
-                    toastr.success('Template Deleted Successfully', 'Success')
-                    setTimeout(function (){
-                        $("#spinner_delete").removeClass('fa fa-refresh fa-spin');
-                    }, 300);
-                    showAllTemplate();
-                  },
-                  error: function(data){
-                    toastr.error('Error Deleting Template')
-                  }
-            });
-        });
+        // $('#DeleteTemplate').unbind().click(function(){
+        //     $("#spinner_delete").addClass('fa fa-refresh fa-spin');
+            
+        // });
+
+
     }); 
 
     //Show Data
@@ -341,7 +388,7 @@ $(document).ready(function (){
                                      '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'   <i class="fa fa-download"></i>'+'</a>'+'</td>'+
                                      '<td>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'" data-documentfile="'+data[i].document_file+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }

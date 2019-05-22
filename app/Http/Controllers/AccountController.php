@@ -7,6 +7,7 @@ use App\User;
 use App\ESSBase;
 use App\Logs;
 use App\UserActivation;
+use App\EmployerEnrollmentHistory;
 use Session;
 use DB;
 use Response;
@@ -214,6 +215,15 @@ class AccountController extends Controller
 
                 /*Gett the Id of User*/
                 $Account_id = $user->id;
+
+                /*Create Employer Enrollment History*/
+                $employment_history = EmployerEnrollmentHistory::create([
+                                'account_id' => $Account_id,
+                                'enrollment_date' => $enrollment_date,
+                                'expiry_date' => $expiry_date,
+                                'created_by' => auth()->user()->id,
+                                'updated_by' => auth()->user()->id,
+                ]);
                 
                 /*Create a User In Base Table*/
                 // $insert_ess = new ESSBase;
@@ -443,7 +453,7 @@ class AccountController extends Controller
             'accountname' => 'required|min:3',
             'business_name' => 'required|min:3',
             'user_type' => 'required',
-            'address_unit' => 'required|min:3',
+            'address_unit' => 'required|min:1',
             'address_country' => 'required|min:3',
             'address_town' => 'required|min:3',
             'address_cityprovince' => 'required|min:3',
@@ -537,6 +547,14 @@ class AccountController extends Controller
                                 'hdmf' => $request->input('hdmf'),
                                 'nid' => $request->input('nid'),
                             ));
+        /*Create Employer Enrollment History*/
+        $employment_history = EmployerEnrollmentHistory::create([
+                    'account_id' => $id,
+                    'enrollment_date' => $enrollment_date,
+                    'expiry_date' => $expiry_date,
+                    'created_by' => auth()->user()->id,
+                    'updated_by' => auth()->user()->id,
+        ]);
                             
         DB::table('users')->where('id', '=', $id)
                             ->update(array(
@@ -611,7 +629,10 @@ class AccountController extends Controller
 
     public function get_user_type(Request $request){
         /*Get All Type Name Where Id = 3 => Employer, 8 => Merchant, 9 => Agent*/
-        $query = DB::table('user_type')->select('id', 'type_name')->whereIn('id', array(3, 8, 9))->get();
+        
+        if(auth()->user()->user_type_id === 1) {
+            $query = DB::table('user_type')->select('id', 'type_name')->whereIn('id', array(3, 8, 9))->get();
+        }
         /*Protection for Data View as Json*/
         if($request->ajax()){
             return Response::json($query);

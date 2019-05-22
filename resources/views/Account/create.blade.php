@@ -62,15 +62,27 @@ elseif(Session::get('create_profile') == 'delete'){
                 <div class="form-group row">
                         <label for="business_name" class="control-label col-md-2 text-md-center">Business Name:</label>
                         <div class="col-md-4">
+            
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="business_name" type="text" class="form-control" name="business_name" placeholder="Business Name"   autofocus>
+                            </div>
+                            <p class="text-danger" id="error_business_name"></p>
                             
-                            <input id="business_name" type="text" class="form-control" name="business_name" placeholder="Business Name"   autofocus>
-                                    <p class="text-danger" id="error_business_name"></p>
                         </div>
                         <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_person" type="text" class="form-control" name="contact_person" placeholder="Contact Person"  autofocus>
-                                    <p class="text-danger" id="error_contact_person"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="contact_person" type="text" class="form-control" name="contact_person" placeholder="Contact Person"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_person"></p>
+                            
                         </div>
                 </div>
 
@@ -78,14 +90,26 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="accountname" class="col-md-2 text-md-center">Account Name:</label>
                         <div class="col-md-4">
                             
-                            <input id="accountname" type="text" class="form-control" name="accountname" placeholder="Account Name"  autofocus>
-                                    <p class="text-danger" id="error_accountname"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="accountname" type="text" class="form-control" name="accountname" placeholder="Account Name"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_accountname"></p>
+                            
                         </div>
                         <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_phone" type="text" class="form-control" name="contact_phone" placeholder="Contact Phone"  autofocus>
-                                    <p class="text-danger" id="error_contact_phone"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-phone input-group-text"></span>
+                                </div>
+                                <input id="contact_phone" type="text" class="form-control" name="contact_phone" placeholder="Contact Phone"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_phone"></p>
+                            
                         </div>
                 </div>
 
@@ -93,14 +117,26 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>
                         <div class="col-md-4">
                             
-                            <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit"  autofocus>
-                                    <p class="text-danger" id="error_address_unit"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_address_unit"></p>
+                            
                         </div>
                         <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" placeholder="Contact Mobile"  autofocus>
-                                    <p class="text-danger" id="error_contact_mobile"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-phone input-group-text"></span>
+                                </div>
+                                <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" placeholder="Contact Mobile"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_mobile"></p>
+                            
                         </div>
                 </div>
 
@@ -108,18 +144,30 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="address_country" class="col-md-2 text-md-center">Country:</label>
                         <div class="col-md-4">
                             
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
                                 <select id="address_country" name="address_country" class="form-control">
-                                    <option value="" selected>Choose Country...</option>
-                                    <option>Philippines</option>
+                                        <option value="" selected>Choose Country...</option>
+                                        <option>Philippines</option>
                                 </select>
-                                    <p class="text-danger" id="error_address_country"></p>
+                            </div>
+                            <p class="text-danger" id="error_address_country"></p>
+                                
                         </div>
 
                         <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_email" type="email" class="form-control" name="contact_email" placeholder="Contact Email"  autofocus>
-                                    <p class="text-danger" id="error_contact_email"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-envelope input-group-text"></span>
+                                </div>
+                                <input id="contact_email" type="email" class="form-control" name="contact_email" placeholder="Contact Email"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_email"></p>
+                            
                         </div>
                 </div>
 
@@ -127,17 +175,29 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
                         <div class="col-md-4">
                             
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
                                 <select id="address_cityprovince" name="address_cityprovince" class="form-control">
-                                    <option value="" selected>Choose Province...</option>
+                                        <option value="" selected>Choose Province...</option>
                                 </select>
-                                    <p class="text-danger" id="error_address_cityprovince"></p>
+                            </div>
+                            <p class="text-danger" id="error_address_cityprovince"></p>
+                                
                         </div>
                         
                         <label for="tin" class="col-md-2 text-md-center">Tin: </label>
                         <div class="col-md-4">
                             
-                            <input id="tin" type="text" class="form-control" name="tin" placeholder="Tin" autofocus>
-                                    <p class="text-danger" id="error_tin"></p>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <div class="span fa fa-address-card input-group-text"></div>
+                                </div>
+                                <input id="tin" type="text" class="form-control" name="tin" placeholder="Tin" autofocus>
+                            </div>
+                            <p class="text-danger" id="error_tin"></p>
                         </div>
                 </div>
 
@@ -145,17 +205,27 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="address_town" class="col-md-2 text-md-center">City/Town:</label>
                         <div class="col-md-4">
                             
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
                                 <select id="address_town" name="address_town" class="form-control">
                                     <option value="" selected>Choose CityTown...</option>
                                 </select>
-                                    <p class="text-danger" id="error_address_town"></p>
+                            </div>
+                            <p class="text-danger" id="error_address_town"></p>
                         </div>
                         
                         <label for="sss" class="col-md-2 text-md-center">SSS/GSIS: </label>
                         <div class="col-md-4">
                             
-                            <input id="sss" type="text" class="form-control" name="sss" placeholder="SSS"  autofocus>
-                                    <p class="text-danger" id="error_sss"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="sss" type="text" class="form-control" name="sss" placeholder="SSS"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_sss"></p>
                         </div>
                 </div>
 
@@ -163,17 +233,27 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="address_barangay" class="col-md-2 text-md-center">Barangay:</label>
                         <div class="col-md-4">
 
-                                <select id="address_barangay" name="address_barangay" class="form-control">
-                                    <option value="" selected>Choose Barangay...</option>
-                                </select>
-                                    <p class="text-danger" id="error_address_barangay"></p>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-globe input-group-text"></span>
+                                    </div>
+                                    <select id="address_barangay" name="address_barangay" class="form-control">
+                                            <option value="" selected>Choose Barangay...</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger" id="error_address_barangay"></p>
                         </div>
                         
                         <label for="phic" class="col-md-2 text-md-center">Phic: </label>
                         <div class="col-md-4">
                             
-                            <input id="phic" type="text" class="form-control" name="phic" placeholder="Phic"  autofocus>
-                                    <p class="text-danger" id="error_phic"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="phic" type="text" class="form-control" name="phic" placeholder="Phic"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_phic"></p>
                         </div>
                 </div>
 
@@ -181,15 +261,25 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="address_zipcode" class="col-md-2 text-md-center">ZipCode: </label>
                         <div class="col-md-4">
                             
-                            <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" placeholder="Address Zipcode"  autofocus>
-                                    <p class="text-danger" id="error_address_zipcode"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" placeholder="Address Zipcode"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_address_zipcode"></p>
                         </div>
                         
                         <label for="hdmf" class="col-md-2 text-md-center">HDMF: </label>
                         <div class="col-md-4">
                             
-                            <input id="hdmf" type="text" class="form-control" name="hdmf" placeholder="Hdmf"  autofocus>
-                                    <p class="text-danger" id="error_hdmf"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="hdmf" type="text" class="form-control" name="hdmf" placeholder="Hdmf"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_hdmf"></p>
                         </div>
                 </div>
 
@@ -197,17 +287,27 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="user_type" class="col-md-2 text-md-center">Account Type:</label>
                         <div class="col-md-4">
                             
-                                <select id="user_type" name="user_type" class="form-control">
-                                    <option value="" selected>Choose Account Type...</option>
-                                </select>
-                                    <p class="text-danger" id="error_user_type"></p>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-user input-group-text"></span>
+                                    </div>
+                                    <select id="user_type" name="user_type" class="form-control">
+                                            <option value="" selected>Choose Account Type...</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger" id="error_user_type"></p>
                         </div>
                         
                         <label for="nid" class="col-md-2 text-md-center">NID: </label>
                         <div class="col-md-4">
                             
-                            <input id="nid" type="nid" class="form-control" name="nid" placeholder="nid"  autofocus>
-                                    <p class="text-danger" id="error_nid"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="nid" type="nid" class="form-control" name="nid" placeholder="nid"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_nid"></p>
                         </div>
                 </div>
 
@@ -216,7 +316,12 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                         <div class="col-md-4">
                             
-                            <input id="enrollmentdate" type="date" class="form-control datepicker" name="enrollmentdate" disabled="true"  autofocus>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="enrollmentdate" type="date" class="form-control datepicker" name="enrollmentdate" disabled="true"  autofocus>
+                            </div>
                             @if ($errors->has('enrollmentdate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('enrollmentdate') }}</strong>
@@ -227,32 +332,50 @@ elseif(Session::get('create_profile') == 'delete'){
                         <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
                         <div class="col-md-4">
                             
-                        <input id="expirydate" type="text" class="form-control" name="expirydate" placeholder="MM/DD/YYYY"  autofocus>
-                        <p class="text-danger" id="error_expirydate"></p>
-                            @if ($errors->has('expirydate'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('expirydate') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="expirydate" type="text" class="form-control" name="expirydate" placeholder="MM/DD/YYYY"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_expirydate"></p>
+                                @if ($errors->has('expirydate'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('expirydate') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                 </div>
 
                 <div class="form-group row">
                         <label for="accountstatus" class="col-md-2 text-md-center">Select File SEC/DTI:</label>
                         <div class="col-md-4">
                             
-                                <div class="custom-file">
-                                    <input type="file" class="form-control-file" id="sec" name="sec">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-folder input-group-text"></span>
                                 </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="sec" name="sec" multiple onchange="processSelectedFilesSec(this)">
+                                    <label class="custom-file-label" for="validatedCustomFile" id="sec_filename">Choose file...</label>
+                                </div>
+                            </div>
                                 
                         </div>
                         
                         <label for="accountstatus" class="col-md-2 text-md-center">Select File BIR COR:</label>
                         <div class="col-md-4">
                             
-                                <div class="custom-file">
-                                    <input type="file" class="form-control-file" id="bir" name="bir">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-folder input-group-text"></span>
                                 </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="bir" name="bir" multiple onchange="processSelectedFilesBir(this)">
+                                    <label class="custom-file-label" for="validatedCustomFile" id="bir_filename">Choose file...</label>
+                                </div>
+                            </div>
+                                
                         </div>
                 </div>
 
@@ -260,7 +383,7 @@ elseif(Session::get('create_profile') == 'delete'){
           <!-- /.card-body -->
 
           <div class="card-footer">
-              <button type="button" class="btn btn-default">Back</button>
+              {{-- <button type="button" class="btn btn-default">Back</button> --}}
             <button type="submit" class="btn btn-primary float-right btn-flat" id="submit" {{$add}}>Submit <i  class=""></i></button>
           </div>
         </form>
@@ -274,9 +397,33 @@ elseif(Session::get('create_profile') == 'delete'){
 {{-- </div> --}}
 
 <script type="text/javascript">
+    /*Function to get Filename*/
+    function processSelectedFilesSec(fileInput) {
+        var files = fileInput.files;
+
+        for (var i = 0; i < files.length; i++) {
+                $('#sec_filename').html(files[i].name.substr(0,22));
+        }
+    }
+    /*Function to get Filename*/
+    function processSelectedFilesBir(fileInput) {
+        var files = fileInput.files;
+
+        for (var i = 0; i < files.length; i++) {
+                $('#bir_filename').html(files[i].name.substr(0,22));
+        }
+    }
 $(document).ready(function (){
 
     setExpiryDate();
+    
+    /*Check if the Date is Past*/
+    $("#expirydate").on('change', function (selected) {
+        var now = new Date();
+        if ($( "#expirydate" ).val() < now){
+                $( "#expirydate" ).val('');
+        }
+    });
 
     // Config Restriction for Pass Date
     var date = new Date();
@@ -394,6 +541,7 @@ $(document).ready(function (){
         $('#formOverlay').addClass('overlay');
         $("#spinner").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
+        RemoveErrors();
         toastr.remove();
         var formData = new FormData($(this)[0]);
         $.ajaxSetup({
@@ -821,11 +969,20 @@ $(document).ready(function (){
         }
     });
 
+    /*Function For Spinner*/
     function spinnerTimout(){
         setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                    $('#formOverlay').removeClass('overlay');
+            $("#spinner").removeClass('fa fa-refresh fa-spin');
+            $('#formOverlay').removeClass('overlay');
         }, 250);
+    }
+
+    /*Function to Remove Errors*/
+    function RemoveErrors(){
+        $('.form-control').each(function(i, obc){
+            $('.form-control').removeClass('is-invalid');
+            $('.text-danger').attr('hidden', true);
+        });
     }
 
  
