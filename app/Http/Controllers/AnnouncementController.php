@@ -65,12 +65,21 @@ class AnnouncementController extends Controller
 
 
      public function index(){
-
-        return view('Announcement.index');
+        $employers = DB::table('employer')->select('account_id', 'business_name')->get();
+        // If the user is Admin
+        if(auth()->user()->user_type_id == 1){
+            $notification_message_type = DB::table('notification_message_type')->select('id', 'message_type')->get();
+        }
+        // If The user is Employer
+        if(auth()->user()->user_type_id == 3){
+            $notification_message_type = DB::table('notification_message_type')->select('id', 'message_type')->whereNotIn('account_id', array('1'))->get();
+        }
+        return view('Announcement.index', compact('employers'));
      }
 
      public function get_all_announcement(Request $request){
-        $Announcement = DB::table('announcement')
+         if(auth()->user()->user_type_id === 1){
+            $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.account_id', '=', 'announcement.account_id')
                             ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                             ->select('announcement.id',
@@ -82,7 +91,26 @@ class AnnouncementController extends Controller
                              'user_type.type_name',
                              'user_type.id as user_type_id',
                              '.announcement.created_at')
+                             //->where('announcement.account_id', '=', auth()->user()->id)
                             ->get();
+         }
+         if(auth()->user()->user_type_id === 3){
+            $Announcement = DB::table('announcement')
+                //->join('employer', 'employer.account_id', '=', 'announcement.account_id')
+                ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
+                ->select('announcement.id',
+                'announcement.announcement_title',
+                'announcement.announcement_description',
+                'announcement.announcement_status',
+                'announcement.announcement_type',
+                //'employer.business_name',
+                'user_type.type_name',
+                'user_type.id as user_type_id',
+                '.announcement.created_at')
+                ->where('announcement.account_id', '=', auth()->user()->id)
+                ->get();
+         }
+        
 
         /*Protection for Data View as Json*/
         if($request->ajax()){
@@ -95,7 +123,9 @@ class AnnouncementController extends Controller
      }
 
      public function get_all_announcement_to_notification(Request $request){
-        $Announcement = DB::table('announcement')
+         /*Announcement for Admin*/
+        if(auth()->user()->user_type_id === 1){
+            $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.account_id', '=', 'announcement.account_id')
                             ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                             ->select('announcement.id',
@@ -110,6 +140,27 @@ class AnnouncementController extends Controller
                              'announcement.updated_at')
                              ->orderBy('announcement.created_at','desc')
                             ->get();
+         }
+         /*Announcement For Employer*/
+         if(auth()->user()->user_type_id === 3){
+            $Announcement = DB::table('announcement')
+                            ->join('employer', 'employer.account_id', '=', 'announcement.account_id')
+                            ->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
+                            ->select('announcement.id',
+                             'announcement.announcement_title',
+                             'announcement.announcement_description',
+                             'announcement.announcement_status',
+                             'announcement.announcement_type',
+                             'employer.business_name',
+                             'user_type.type_name',
+                             'user_type.id as user_type_id',
+                             'announcement.created_at',
+                             'announcement.updated_at')
+                             ->where('announcement.employer_id', '=', auth()->user()->id)
+                             ->orderBy('announcement.created_at','desc')
+                            ->get();
+         }
+        
 
         /*Protection for Data View as Json*/
         if($request->ajax()){
@@ -146,21 +197,30 @@ class AnnouncementController extends Controller
      public function store_announcement(Request $request){
          $this->getaccount();
         /*Validate Request*/
-        $this->validate($request, [
-            'announcement_title' => 'required',
-            'announcement_description' => 'required',
-            'announcement_type' => 'required',
-        ]);
+        if(auth()->user()->user_type_id === 1){
+            $this->validate($request, [
+                'announcement_title' => 'required',
+                'announcement_description' => 'required',
+                'announcement_type' => 'required',
+            ]);
+        }
+        if(auth()->user()->user_type_id === 3){
+            $this->validate($request, [
+                'announcement_title' => 'required',
+                'announcement_description' => 'required',
+            ]);
+        }
+        
 
         /*Check if all Request is not null*/
         if($request->all() != null){
             /*Create Announcement*/
             $Announcement = Announcement::create([
-                'account_id' => 2, //Temporary Account Id
+                'account_id' => auth()->user()->id, //Temporary Account Id
                 'announcement_title' => $request->input('announcement_title'),
                 'announcement_description' => $request->input('announcement_description'),
                 'announcement_status' => 0, //0 Means Pending Staus
-                'announcement_type' => $request->input('announcement_type'),
+                'announcement_type' => (auth()->user()->user_type_id === 1) ? $request->input('announcement_type') : 3 ,// 0 is Temporary for Employee
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
 
@@ -186,7 +246,8 @@ class AnnouncementController extends Controller
                              'announcement.announcement_type',
                              'employer.business_name',
                              'user_type.type_name',
-                             'user_type.id as user_type_id')
+                             'user_type.id as user_type_id'
+                             )
                             ->where('announcement.id', $Announcement_id)
                             ->get();
         return json_decode($Announcement);

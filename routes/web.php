@@ -25,8 +25,12 @@ Route::get('/', function () { // root if the user is login
         }
         else
         {
-            $employers = DB::table('employer')->count();
-            return view('dashboard', compact('employers')); 
+            if(auth()->user()->user_type_id === 1){
+                $employers = DB::table('employer')->count();
+                return view('dashboard', compact('employers')); 
+            }
+            return view('dashboard'); 
+            
         }
         
         //return "ASA";          

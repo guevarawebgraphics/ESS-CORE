@@ -16,32 +16,27 @@ class NotificationController extends Controller
     private $delete = '';
     public function getaccount()// call for every function for security of the system
     { 
-        if(Session::get('	
-system_notifications') == 'all'){
+        if(Session::get('system_notifications') == 'all'){
             $this->add = '';
             $this->edit = '';
             $this->delete = '';
         }
-        elseif(Session::get('	
-system_notifications') == 'view'){
+        elseif(Session::get('system_notifications') == 'view'){
             $this->add = 'disabled';
             $this->edit = 'disabled';
             $this->delete = 'disabled';
         }
-        elseif(Session::get('	
-system_notifications') == 'add'){
+        elseif(Session::get('system_notifications') == 'add'){
             $this->add = '';
             $this->edit = 'disabled';
             $this->delete = 'disabled';
         }
-        elseif(Session::get('	
-system_notifications') == 'edit'){
+        elseif(Session::get('system_notifications') == 'edit'){
             $this->add = '';
             $this->edit = '';
             $this->delete = 'disabled';
         }
-        elseif(Session::get('	
-system_notifications') == 'delete'){
+        elseif(Session::get('system_notifications') == 'delete'){
             $this->add = '';
             $this->edit = 'disabled';
             $this->delete = '';
