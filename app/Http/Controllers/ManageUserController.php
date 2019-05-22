@@ -156,7 +156,7 @@ class ManageUserController extends Controller
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
             //$get_employer = DB::connection('mysql')->select("SELECT id FROM employer WHERE account_id = '".auth()->user()->id."' ");
-            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '4' AND (employer_id = '".Session::get("employer_id")."' OR employer_id = 'default')  ");
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '4' AND (employer_id = '".auth()->user()->employer_id."' OR employer_id = 'default')  ");
             if(count($user_type) > 0)
             {
                 foreach($user_type as $user)

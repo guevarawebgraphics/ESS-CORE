@@ -46,40 +46,13 @@
                 {{-- HIDDEN INPUT FIELD FOR EMPLOYEE PERSONAL INFO ID--}}
                 <input type="hidden" id="hidden_personalinfo_id" name="hidden_personalinfo_id">
                 <input type="hidden" id="hidden_essid" name="hidden_essid">
-                {{-- RADIO BUTTON FIELD --}}
-                <div class="form-group row">
-                    <div class="offset-md-4">            
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="customRadio" name="rbn_emp"
-                                value="new_employee" checked>
-                            <label class="custom-control-label" for="customRadio">New Employee</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="customRadio2" name="rbn_emp"
-                                value="existing_employee">
-                            <label class="custom-control-label" for="customRadio2">Employee with ESS ID</label>
-                        </div>                                             
-                    </div>
-                </div>   
-                <br>
-                {{-- SEARCH FIELD --}}              
-                <div class="form-inline">
-                    <div class="col-md-1"></div>      
-                    <div class="col-md-5 essid_field" hidden>               
-                        <div class="form-group row">
-                            <label for="essid_search" class="control-label">ESS ID / User ID</label>&nbsp;&nbsp;
-                            <input id="essid_search" type="text" class="form-control" name="essid_search" placeholder="ESS ID / User ID" autofocus>&nbsp;&nbsp;
-                            <input type="button" class="btn btn-primary" id="btn_search" value="Search">        
-                        </div>                                         
-                    </div>                     
-                </div>
-                <br>
+                
                 {{-- FIRST ROW --}}
                 <div class="form-group row">
                     <div class="col-md-1"></div>      
                     <div class="col-md-5">               
                         <label for="employee_no" class="control-label text-md-center">Employee No. </label>
-                        <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No"   autofocus>
+                        <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No" value="{{$employee[0]->employee_no}}" autofocus>
                         <p class="text-danger" id="error_employee_no"></p>
                     </div>               
                     
@@ -95,13 +68,13 @@
                     <div class="col-md-1"></div>            
                     <div class="col-md-5">
                         <label for="position" class="control-label text-md-center">Position :</label>               
-                        <input id="position" type="text" class="form-control" name="position" placeholder="Position"   autofocus>
+                        <input id="position" type="text" class="form-control" name="position" placeholder="Position" value="{{$employee[0]->position}}" autofocus>
                         <p class="text-danger" id="error_position"></p>
                     </div>                 
                     
                     <div class="col-md-5">
                         <label for="department" class="control-label text-md-center">Department :</label>
-                        <input id="department" type="text" class="form-control" name="department" placeholder="Department"   autofocus>
+                        <input id="department" type="text" class="form-control" name="department" placeholder="Department" value="{{$employee[0]->department}}" autofocus>
                         <p class="text-danger" id="error_department"></p>
                     </div>
                     <div class="col-md-1"></div>  
@@ -111,13 +84,13 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="lastname" class="control-label text-md-center">Last Name :</label>               
-                        <input id="lastname" type="text" class="form-control" name="lastname" placeholder="Last Name"   autofocus>
+                        <input id="lastname" type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{$employee[0]->lastname}}" autofocus>
                         <p class="text-danger" id="error_lastname"></p>
                     </div>
 
                     <div class="col-md-5">
                         <label for="mobile_no" class="control-label text-md-center">Mobile No. :</label>
-                        <input id="mobile_no" type="text" maxlength="11" class="form-control" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)"  autofocus>
+                        <input id="mobile_no" type="text" maxlength="11" class="form-control" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)" value="{{$employee[0]->mobile_no}}" autofocus>
                         <p class="text-danger" id="error_mobile_no"></p>
                     </div>
                     <div class="col-md-1"></div>
@@ -127,13 +100,13 @@
                     <div class="col-md-1"></div> 
                     <div class="col-md-5">
                         <label for="firstname" class="control-label text-md-center">First Name :</label>               
-                        <input id="firstname" type="text" class="form-control" name="firstname" placeholder="First Name"   autofocus>
+                        <input id="firstname" type="text" class="form-control" name="firstname" placeholder="First Name" value="{{$employee[0]->firstname}}" autofocus>
                         <p class="text-danger" id="error_firstname"></p>
                     </div>
                                        
                     <div class="col-md-5">
                         <label for="email_add" class="control-label text-md-center">Email :</label>
-                        <input id="email_add" type="email" class="form-control" name="email_add" placeholder="Email"   autofocus>
+                        <input id="email_add" type="email" class="form-control" name="email_add" placeholder="Email" value="{{$employee[0]->email_add}}" autofocus>
                         <p class="text-danger" id="error_email_add"></p>
                     </div>
                     <div class="col-md-1"></div>
@@ -143,13 +116,13 @@
                     <div class="col-md-1"></div>                    
                     <div class="col-md-5">
                         <label for="middlename" class="control-label text-md-center">Middle Name :</label>               
-                        <input id="middlename" type="text" class="form-control" name="middlename" placeholder="Middle Name"   autofocus>
+                        <input id="middlename" type="text" class="form-control" name="middlename" placeholder="Middle Name" value="{{$employee[0]->middlename}}" autofocus>
                         <p class="text-danger" id="error_middlename"></p>
                     </div>
                   
                     <div class="col-md-5">
                         <label for="enrollment_date" class="control-label text-md-center">Enrollment Date :</label>
-                        <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date"   autofocus>
+                        <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date" value="{{$employee[0]->enrollment_date}}" autofocus>
                         <p class="text-danger" id="error_enrollment_date"></p>
                     </div>
                     <div class="col-md-1"></div>
@@ -159,13 +132,14 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="TIN" class="control-label text-md-center">TIN :</label>               
-                        <input id="TIN" type="text" class="form-control" name="tin" placeholder="TIN"   autofocus>
+                        <input id="TIN" type="text" class="form-control" name="tin" placeholder="TIN" value="{{$employee[0]->TIN}}" autofocus>
                         <p class="text-danger" id="error_TIN"></p>
                     </div>
                                      
                     <div class="col-md-5">
                         <label for="employment_status" class="control-label text-md-center">Employment Status :</label>
                         <select class="form-control" id="employment_status" name="employment_status">
+                            <option value="{{$employee[0]->employment_status}}">{{$employee[0]->employment_status}}</option> --}}                           
                             <option value="">Select Options</option>
                             <option value="Contractual">Contractual</option>
                             <option value="Probationary">Probationary</option>
@@ -181,13 +155,13 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-5">               
                         <label for="SSSGSIS" class="control-label text-md-center">SSS/GSIS :</label>
-                        <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS"   autofocus>
+                        <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS" value="{{$employee[0]->SSSGSIS}}" autofocus>
                         <p class="text-danger" id="error_SSSGSIS"></p>
                     </div>
                    
                     <div class="col-md-5">
                         <label for="birthdate" class="control-label text-md-center">Birthdate :</label>
-                        <input id="birthdate" type="date" class="form-control" name="birthdate" placeholder="Birthdate"   autofocus>
+                        <input id="birthdate" type="date" class="form-control" name="birthdate" placeholder="Birthdate" value="{{$employee[0]->birthdate}}" autofocus>
                         <p class="text-danger" id="error_birthdate"></p>
                     </div>
                     <div class="col-md-1"></div>
@@ -197,13 +171,14 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="PHIC" class="control-label text-md-center">PHIC :</label>               
-                        <input id="PHIC" type="text" class="form-control" name="phic" placeholder="PHIC" autofocus>
+                        <input id="PHIC" type="text" class="form-control" name="phic" placeholder="PHIC" value="{{$employee[0]->PHIC}}" autofocus>
                         <p class="text-danger" id="error_PHIC"></p>
                     </div>
            
                     <div class="col-md-5">
                         <label for="gender" class="control-label text-md-center">Gender :</label>
                         <select class="form-control" id="gender" name="gender">
+                            <option value="{{$employee[0]->gender}}">{{$employee[0]->gender}}</option>
                             <option value="">Select Options</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>                               
@@ -217,13 +192,14 @@
                     <div class="col-md-1"></div>                    
                     <div class="col-md-5">
                         <label for="HDMF" class="control-label text-md-center">HDMF :</label>               
-                        <input id="HDMF" type="text" class="form-control" name="hdmf" placeholder="HDMF" autofocus>
+                        <input id="HDMF" type="text" class="form-control" name="hdmf" placeholder="HDMF" value="{{$employee[0]->HDMF}}" autofocus>
                         <p class="text-danger" id="error_HDMF"></p>
                     </div>
               
                     <div class="col-md-5">
                         <label for="civil_status" class="control-label text-md-center">Civil Status :</label>
-                        <select class="form-control" id="civil_status" name="civil_status">
+                        <select class="form-control" id="civil_status" name="civil_status">                              
+                            <option value="{{$employee[0]->civil_status}}">{{$employee[0]->civil_status}}</option>
                             <option value="">Select Options</option>
                             <option value="Single">Single</option>
                             <option value="Married">Married</option>
@@ -238,13 +214,14 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="nid" class="control-label text-md-center">NID :</label>               
-                        <input id="nid" type="text" class="form-control" name="nid" placeholder="NID" autofocus>
+                        <input id="nid" type="text" class="form-control" name="nid" placeholder="NID" value="{{$employee[0]->NID}}" autofocus>
                         <p class="text-danger" id="error_nid"></p>
                     </div>
                 
                     <div class="col-md-5">
                         <label for="payroll_schedule" class="control-label text-md-center">Payroll Schedule :</label>
                         <select class="form-control" id="payroll_schedule" name="payroll_schedule">
+                            <option value="{{$employee[0]->payroll_schedule}}">{{$employee[0]->payroll_schedule}}</option>
                             <option value="">Select Options</option>
                             <option value="Week">Weekly</option>
                             <option value="Month">Monthly</option>
@@ -260,6 +237,7 @@
                     <div class="col-md-5">
                         <label for="payroll_bank" class="control-label text-md-center">Payroll Bank :</label>
                         <select class="form-control" id="payroll_bank" name="payroll_bank">
+                                <option value="{{$employee[0]->payroll_bank}}">{{$employee[0]->payroll_bank}}</option>
                             <option value="">Select Options</option>
                             <option value="BDO">BANCO DE ORO</option>                                                              
                         </select>
@@ -268,7 +246,7 @@
            
                     <div class="col-md-5">
                         <label for="account_no" class="control-label text-md-center">Account No. :</label>               
-                        <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" autofocus>
+                        <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" value="{{$employee[0]->account_no}}" autofocus>
                         <p class="text-danger" id="error_account_no"></p>
                     </div>
                     <div class="col-md-1"></div>                   
@@ -282,6 +260,7 @@
                     <div class="col-md-5">  
                         <label for="country" class="text-md-center">Country:</label>                
                         <select id="country" name="country" class="form-control">
+                            <option value="{{$employee[0]->country}}" selected>{{$employee[0]->country}}</option>
                             <option value="">Choose Country</option>
                             <option value="Phillipines">Philippines</option>
                         </select>
@@ -290,7 +269,7 @@
                    
                     <div class="col-md-5">
                         <label for="address_unit" class="text-md-center">Unit:</label>                      
-                        <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit"  autofocus>
+                        <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit" value={{$employee[0]->address_unit}}  autofocus>
                                 <p class="text-danger" id="error_address_unit"></p>
                     </div>
                     <div class="col-md-1"></div>
@@ -301,7 +280,8 @@
                     <div class="col-md-5">
                         <label for="province" class="text-md-center">Province:</label>
                         <select id="province" name="province" class="form-control">
-                            <option value="" selected>Choose Province</option>
+                            <option value="{{$employee[0]->provCode}}" selected>{{$employee[0]->provDesc}}</option>
+                            {{-- <option value="">Choose Province</option>                            --}}
                         </select>
                             <p class="text-danger" id="error_province"></p>
                     </div>
@@ -309,7 +289,8 @@
                     <div class="col-md-5">
                         <label for="citytown" class="text-md-center">City/Town:</label>
                         <select id="citytown" name="citytown" class="form-control">
-                            <option value="" selected>Choose City/Town</option>
+                            <option value="{{$employee[0]->citymunCode}}" selected>{{$employee[0]->citymunDesc}}</option>
+                            {{-- <option value="">Choose City/Town</option> --}}
                         </select>
                             <p class="text-danger" id="error_citytown"></p>
                     </div>
@@ -323,14 +304,15 @@
                     <div class="col-md-5">
                         <label for="barangay" class="text-md-center">Barangay:</label>
                         <select id="barangay" name="barangay" class="form-control">
-                            <option value="" selected>Choose Barangay</option>
+                            <option value="{{$employee[0]->id}}" selected>{{$employee[0]->brgyDesc}}</option>
+                            {{-- <option value="" >Choose Barangay</option> --}}
                         </select>
                             <p class="text-danger" id="error_barangay"></p>
                     </div>
                                         
                     <div class="col-md-5">
                         <label for="zipcode" class="text-md-center">Zipcode:</label>                      
-                        <input id="zipcode" type="text" class="form-control" name="zipcode" placeholder="Address Zipcode"  autofocus>
+                        <input id="zipcode" type="text" class="form-control" name="zipcode" placeholder="Address Zipcode" value="{{$employee[0]->zipcode}}" autofocus>
                                 <p class="text-danger" id="error_zipcode"></p>
                     </div>
                     <div class="col-md-1"></div>
