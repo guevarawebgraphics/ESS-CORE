@@ -17,14 +17,24 @@
                         <label for="business_name" class="control-label col-md-2 text-md-center">Business Name:</label>
                         <div class="col-md-4">
                             
-                            <input id="business_name" type="text" class="form-control" name="business_name" value="{{ $Account[0]->business_name }}"  autofocus>
-                                        <p class="text-danger" id="error_business_name"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="business_name" type="text" class="form-control" name="business_name" value="{{ $Account[0]->business_name }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_business_name"></p>
                         </div>
                         <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_person" type="text" class="form-control" name="contact_person" value="{{ $Account[0]->contact_person }}"  autofocus>
-                                        <p class="text-danger" id="error_contact_person"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="contact_person" type="text" class="form-control" name="contact_person" value="{{ $Account[0]->contact_person }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_person"></p>
                         </div>
                 </div>
 
@@ -32,14 +42,24 @@
                         <label for="accountname" class="col-md-2 text-md-center">Account Name:</label>
                         <div class="col-md-4">
                             
-                            <input id="accountname" type="text" class="form-control" name="accountname" value="{{ $Account[0]->accountname }}"  autofocus>
-                                        <p class="text-danger" id="error_accountname"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="accountname" type="text" class="form-control" name="accountname" value="{{ $Account[0]->accountname }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_accountname"></p>
                         </div>
                         <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_phone" type="text" class="form-control" name="contact_phone" value="{{ $Account[0]->contact_phone }}"  autofocus>
-                                        <p class="text-danger" id="error_contact_phone"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-phone input-group-text"></span>
+                                </div>
+                                <input id="contact_phone" type="text" class="form-control" name="contact_phone" value="{{ $Account[0]->contact_phone }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_phone"></p>
                         </div>
                 </div>
 
@@ -47,53 +67,84 @@
                         <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>
                         <div class="col-md-4">
                             
-                            <input id="address_unit" type="text" class="form-control" name="address_unit" value="{{ $Account[0]->address_unit }}"  autofocus>
-                                        <p class="text-danger" id="error_address_unit"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="address_unit" type="text" class="form-control" name="address_unit" value="{{ $Account[0]->address_unit }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_address_unit"></p>
                         </div>
                         <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" value="{{ $Account[0]->contact_mobile }}"  autofocus>
-                                        <p class="text-danger" id="error_contact_mobile"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-phone input-group-text"></span>
+                                </div>
+                                <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" value="{{ $Account[0]->contact_mobile }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_mobile"></p>
                         </div>
                 </div>
 
                 <div class="form-group row">
                         <label for="address_country" class="col-md-2 text-md-center">Country:</label>
                         <div class="col-md-4">
-                            
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
                                 <select id="address_country" name="address_country" class="form-control">
                                     {{-- <option value="" selected>Choose Country...</option> --}}
                                     <option>Philippines</option>
                                 </select>
-                                        <p class="text-danger" id="error_address_country"></p>
+                            </div>
+                            <p class="text-danger" id="error_address_country"></p>
                         </div>
 
                         <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
                         <div class="col-md-4">
                             
-                            <input id="contact_email" type="contact_email" class="form-control" name="contact_email" value="{{ $Account[0]->contact_email }}"  autofocus>
-                                        <p class="text-danger" id="error_contact_email"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-envelope input-group-text"></span>
+                                </div>
+                                <input id="contact_email" type="contact_email" class="form-control" name="contact_email" value="{{ $Account[0]->contact_email }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_email"></p>
                         </div>
                 </div>
 
                 <div class="form-group row">
                         <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
                         <div class="col-md-4">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
                                 {{-- <input type="text" id="provCode" value="{{ $Account->address_cityprovince}}" hidden> --}}
                                 <select id="address_cityprovince" name="address_cityprovince" class="form-control">
-                                    {{-- <option value="" selected>Choose Province...</option> --}}
-                                    <option value="{{ $Account[0]->provCode}}" selected>{{ $Account[0]->provDesc}}</option>
-                                    {{-- <option id="province">Province</option> --}}
+                                        {{-- <option value="" selected>Choose Province...</option> --}}
+                                        <option value="{{ $Account[0]->provCode}}" selected>{{ $Account[0]->provDesc}}</option>
+                                        {{-- <option id="province">Province</option> --}}
                                 </select>
-                                        <p class="text-danger" id="error_address_cityprovince"></p>
+                            </div>
+                            <p class="text-danger" id="error_address_cityprovince"></p>
                         </div>
                         
                         <label for="tin" class="col-md-2 text-md-center">Tin: </label>
                         <div class="col-md-4">
                             
-                            <input id="tin" type="text" class="form-control" name="tin" value="{{ $Account[0]->tin }}"  autofocus>
-                                        <p class="text-danger" id="error_tin"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="tin" type="text" class="form-control" name="tin" value="{{ $Account[0]->tin }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_tin"></p>
                         </div>
                 </div>
 
@@ -101,19 +152,29 @@
                         <label for="address_town" class="col-md-2 text-md-center">City/Town:</label>
                         <div class="col-md-4">
                             
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
                                 <select id="address_town" name="address_town" class="form-control{{ $errors->has('address_town') ? ' is-invalid' : '' }}">
-                                    {{-- <option value="" selected>Choose CityTown...</option> --}}
-                                    <option value="{{ $Account[0]->citymunCode}}" selected>{{ $Account[0]->citymunDesc}}</option>
-                                    {{-- <option>CityTown</option> --}}
+                                        {{-- <option value="" selected>Choose CityTown...</option> --}}
+                                        <option value="{{ $Account[0]->citymunCode}}" selected>{{ $Account[0]->citymunDesc}}</option>
+                                        {{-- <option>CityTown</option> --}}
                                 </select>
-                                        <p class="text-danger" id="error_address_town"></p>
+                            </div>
+                             <p class="text-danger" id="error_address_town"></p>
                         </div>
                         
                         <label for="sss" class="col-md-2 text-md-center">SSS/GSIS: </label>
                         <div class="col-md-4">
                             
-                            <input id="sss" type="text" class="form-control" name="sss" value="{{ $Account[0]->sss }}"  autofocus>
-                                        <p class="text-danger" id="error_sss"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="sss" type="text" class="form-control" name="sss" value="{{ $Account[0]->sss }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_sss"></p>
                         </div>
                 </div>
 
@@ -121,19 +182,29 @@
                         <label for="address_barangay" class="col-md-2 text-md-center">Barangay:</label>
                         <div class="col-md-4">
                             
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
                                 <select id="address_barangay" name="address_barangay" class="form-control">
-                                    {{-- <option value="" selected>Choose Barangay...</option> --}}
-                                    <option value="{{ $Account[0]->refbrgy_id}}">{{ $Account[0]->brgyDesc}}</option>
-                                    {{-- <option>Barangay</option> --}}
+                                        {{-- <option value="" selected>Choose Barangay...</option> --}}
+                                        <option value="{{ $Account[0]->refbrgy_id}}">{{ $Account[0]->brgyDesc}}</option>
+                                        {{-- <option>Barangay</option> --}}
                                 </select>
-                                        <p class="text-danger" id="error_address_barangay"></p>
+                            </div>
+                            <p class="text-danger" id="error_address_barangay"></p>
                         </div>
                         
                         <label for="phic" class="col-md-2 text-md-center">Phic: </label>
                         <div class="col-md-4">
                             
-                            <input id="phic" type="text" class="form-control" name="phic" value="{{ $Account[0]->phic }}"  autofocus>
-                                        <p class="text-danger" id="error_phic"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="phic" type="text" class="form-control" name="phic" value="{{ $Account[0]->phic }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_phic"></p>
                         </div>
                 </div>
 
@@ -141,15 +212,25 @@
                         <label for="address_zipcode" class="col-md-2 text-md-center">ZipCode: </label>
                         <div class="col-md-4">
                             
-                            <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" value="{{ $Account[0]->address_zipcode }}"  autofocus>
-                                        <p class="text-danger" id="error_address_zipcode"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" value="{{ $Account[0]->address_zipcode }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_address_zipcode"></p>
                         </div>
                         
                         <label for="hdmf" class="col-md-2 text-md-center">HDMF: </label>
                         <div class="col-md-4">
                             
-                            <input id="hdmf" type="text" class="form-control" name="hdmf" value="{{ $Account[0]->hdmf }}"  autofocus>
-                                        <p class="text-danger" id="error_hdmf"></p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="hdmf" type="text" class="form-control" name="hdmf" value="{{ $Account[0]->hdmf }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_hdmf"></p>
 
                         </div>
                 </div>
@@ -158,19 +239,29 @@
                         <label for="user_type" class="col-md-2 text-md-center">Account Type:</label>
                         <div class="col-md-4">
                             
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
                                 <select id="user_type" name="user_type" class="form-control">
-                                    <option value="" selected>Choose Account Type...</option>
-                                    <option value="{{ $Account[0]->user_type_id }}" selected>{{ $Account[0]->type_name }}</option>
-                                    {{-- <option>accounttype</option> --}}
+                                        <option value="" selected>Choose Account Type...</option>
+                                        <option value="{{ $Account[0]->user_type_id }}" selected>{{ $Account[0]->type_name }}</option>
+                                        {{-- <option>accounttype</option> --}}
                                 </select>
-                                        <p class="text-danger" id="error_user_type"></p>
+                            </div>
+                            <p class="text-danger" id="error_user_type"></p>
                         </div>
                         
                         <label for="nid" class="col-md-2 text-md-center">NID: </label>
                         <div class="col-md-4">
-                            
-                            <input id="nid" type="nid" class="form-control" name="nid" value="{{ $Account[0]->nid }}"  autofocus>
-                                        <p class="text-danger" id="error_nid"></p>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="nid" type="nid" class="form-control" name="nid" value="{{ $Account[0]->nid }}"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_nid"></p>
                         </div>
                 </div>
 
@@ -178,7 +269,12 @@
                     <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                     <div class="col-md-4">
                         
-                    <input id="enrollmentdate" type="text" class="form-control" name="enrollmentdate" value="{{ \Carbon\Carbon::parse($Account[0]->enrollment_date)->format('m/d/Y')}}" placeholder="MM/DD/YYYY" disabled="true"  autofocus>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="fa fa-calendar input-group-text"></span>
+                            </div>
+                            <input id="enrollmentdate" type="text" class="form-control" name="enrollmentdate" value="{{ \Carbon\Carbon::parse($Account[0]->enrollment_date)->format('m/d/Y')}}" placeholder="MM/DD/YYYY" disabled="true"  autofocus>
+                        </div>
                         @if ($errors->has('enrollmentdate'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('enrollmentdate') }}</strong>
@@ -189,7 +285,12 @@
                     <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
                     <div class="col-md-4">
                         
-                    <input id="expirydate" type="text" class="form-control" name="expirydate" value="{{ \Carbon\Carbon::parse($Account[0]->expiry_date)->format('m/d/Y') }}" placeholder="MM/DD/YYYY"   autofocus>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="fa fa-calendar input-group-text"></span>
+                            </div>
+                            <input id="expirydate" type="text" class="form-control" name="expirydate" value="{{ \Carbon\Carbon::parse($Account[0]->expiry_date)->format('m/d/Y') }}" placeholder="MM/DD/YYYY"   autofocus>
+                        </div>
                         @if ($errors->has('expirydate'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('expirydate') }}</strong>
@@ -202,20 +303,40 @@
                 <label for="accountstatus" class="col-md-2 text-md-center">Select File SEC/DTI:</label>
                 <div class="col-md-4">
                     
-                        <div class="custom-file">
+                        {{-- <div class="custom-file">
                             <input type="file" class="form-control-file" id="sec" name="sec">
                         </div>
-                        <input type="text" class="form-control-file" value="{{ $Account[0]->sec }}" disabled="true" id="secval" name="secval">
+                        <input type="text" class="form-control" value="" disabled="true" id="secval" name="secval"> --}}
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="fa fa-folder input-group-text"></span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="sec" name="sec" multiple onchange="processSelectedFilesSec(this)">
+                                <label class="custom-file-label" for="validatedCustomFile" id="sec_filename">{{ $Account[0]->sec }}</label>
+                            </div>
+                        </div>
                         
                 </div>
                 
                 <label for="accountstatus" class="col-md-2 text-md-center">Select File BIR COR:</label>
                 <div class="col-md-4">
                     
-                        <div class="custom-file">
+                        {{-- <div class="custom-file">
                             <input type="file" class="form-control-file" id="bir" name="bir">
                         </div>
-                        <input type="text" class="form-control-file" value="{{ $Account[0]->bir }}" disabled="true" id="birval" name="birval">
+                        <input type="text" class="form-control" value="" disabled="true" id="birval" name="birval"> --}}
+
+                        <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-folder input-group-text"></span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="bir" name="bir" multiple onchange="processSelectedFilesBir(this)">
+                                    <label class="custom-file-label" for="validatedCustomFile" id="bir_filename">{{ $Account[0]->bir }}</label>
+                                </div>
+                            </div>
                 </div>
         </div>
                 
@@ -225,22 +346,50 @@
 
           <div class="card-footer">
               <button type="button" class="btn btn-default">Back</button>
-            <button type="submit" class="btn btn-primary float-right">Submit <i id="spinner" class=""></i></button>
+            <button type="submit" class="btn btn-primary float-right">Submit <i  class=""></i></button>
           </div>
         </form>
+        <!-- Loading (remove the following to stop the loading)-->
+        <div class="" id="formOverlay">
+            <i class="" id="spinner"></i>
+        </div>
+        <!-- end loading -->
       </div>
       <!-- /.card -->
 {{-- </div> --}}
 
 <script type="text/javascript">
+    /*Function to get Filename*/
+    function processSelectedFilesSec(fileInput) {
+        var files = fileInput.files;
+
+        for (var i = 0; i < files.length; i++) {
+                $('#sec_filename').html(files[i].name.substr(0,22));
+        }
+    }
+    /*Function to get Filename*/
+    function processSelectedFilesBir(fileInput) {
+        var files = fileInput.files;
+
+        for (var i = 0; i < files.length; i++) {
+                $('#bir_filename').html(files[i].name.substr(0,22));
+        }
+    }
 $(document).ready(function (){
+    /*Check if the Date is Past*/
+    $("#expirydate").on('change', function (selected) {
+        var now = new Date();
+        if ($( "#expirydate" ).val() < now){
+                $( "#expirydate" ).val('');
+        }
+    });
     // Config Restriction for Pass Date
     var date = new Date();
     date.setDate(date.getDate());
     $('#enrollmentdate').datepicker();
     $('#expirydate').datepicker({
-        // autoclose: true,
-        // startDate: date
+        autoclose: true,
+        startDate: date
     });
 
     /*Get Province*/
@@ -341,8 +490,10 @@ $(document).ready(function (){
     /*Update Account*/
     $('#AccountForm').submit(function (e){
         e.preventDefault();
+        $('#formOverlay').addClass('overlay');
         $("#spinner").addClass('fa fa-refresh fa-spin');
         toastr.remove();
+        RemoveErrors();
         var formData = new FormData($(this)[0]);
         var EmployerId = $('#EmployerId').val();
         $.ajaxSetup({
@@ -464,24 +615,26 @@ $(document).ready(function (){
             $('#nid').addClass('is-invalid');
             spinnerTimout();
         }
-        if($('#expirydate').val() == ""){
-            $('#error_expirydate').html('Expiry Date is Required');
-            $('#error_expirydate').attr('hidden', false);
-            $('#expirydate').addClass('is-invalid');
-            spinnerTimout();
-        }
-        else if ($('#expirydate').val() == 0 || $('#expirydate').val() < 0) {
-            $('#error_expirydate').html('Expiry Date is Invalid');
-            $('#error_expirydate').attr('hidden', false);
-            $('#expirydate').addClass('is-invalid');
-            spinnerTimout();
-        }
-        else if(isNaN($('#expirydate').val())){
-            $('#error_expirydate').html('Expiry Date must be Number');
-            $('#error_expirydate').attr('hidden', false);
-            $('#expirydate').addClass('is-invalid');
-            spinnerTimout();
-        }
+        // if($('#expirydate').val() == ""){
+        //     $('#error_expirydate').html('Expiry Date is Required');
+        //     $('#error_expirydate').attr('hidden', false);
+        //     $('#expirydate').addClass('is-invalid');
+        //     spinnerTimout();
+        // }
+        // else if ($('#expirydate').val() == 0 || $('#expirydate').val() < 0) {
+        //     $('#error_expirydate').html('Expiry Date is Invalid');
+        //     $('#error_expirydate').attr('hidden', false);
+        //     $('#expirydate').addClass('is-invalid');
+        //     spinnerTimout();
+        // }
+        // else if(isNaN($('#expirydate').val())){
+        //     $('#error_expirydate').html('Expiry Date must be Number');
+        //     $('#error_expirydate').attr('hidden', false);
+        //     $('#expirydate').addClass('is-invalid');
+        //     spinnerTimout();
+        // }
+
+       
 
         if($('#business_name').val() != "" &&
          $('#contact_person').val() != "" &&
@@ -521,7 +674,8 @@ $(document).ready(function (){
                     //Redirect
                     setTimeout(function (){
                         $("#spinner").removeClass('fa fa-refresh fa-spin');
-                    }, 3000);
+                        $('#formOverlay').removeClass('overlay');
+                    }, 500);
                     //Remove Errors
                     $('.form-control').each(function(i, obj){
                         $('.form-control').removeClass('is-invalid');
@@ -532,6 +686,7 @@ $(document).ready(function (){
                     console.log("Error");
                     setTimeout(function (){
                         $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        $('#formOverlay').removeClass('overlay');
                     }, 250);
                     // Display an error toast, with a title
                     toastr.error('Error. Please Complete The Fields', 'Error!')
@@ -643,10 +798,20 @@ $(document).ready(function (){
         
     });
 
+    /*Function For Spinner*/
     function spinnerTimout(){
         setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+            $("#spinner").removeClass('fa fa-refresh fa-spin');
+            $('#formOverlay').removeClass('overlay');
         }, 250);
+    }
+
+    /*Function to Remove Errors*/
+    function RemoveErrors(){
+        $('.form-control').each(function(i, obc){
+            $('.form-control').removeClass('is-invalid');
+            $('.text-danger').attr('hidden', true);
+        });
     }
 
 

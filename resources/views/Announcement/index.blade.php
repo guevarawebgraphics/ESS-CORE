@@ -53,9 +53,14 @@ elseif(Session::get('send_announcement') == 'delete'){
     <!-- /.card-header -->
     <div class="card-body">
         <div class="form-group row">
-            <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i> Search:</label>
-            <div class="col-md-4">
-                <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+            {{-- <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i> Search:</label> --}}
+            <div class="col-md-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                      <span class="fa fa-search input-group-text"></span>
+                    </div>
+                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+              </div>
             </div>
             <div class="col-md-6">
                 <a href="#Add" class="btn btn-primary float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square" {{$add}}></i> Create Announcement</a>
@@ -66,7 +71,9 @@ elseif(Session::get('send_announcement') == 'delete'){
             <thead>
                 <tr>
                     {{-- <th>ID</th> --}}
+                    @if(auth()->user()->user_type_id === 1)
                     <th>Employer</th>
+                    @endif
                     <th>Announcement Title</th>
                     <th>Announcement Description</th>
                     <th>Announcement Status</th>
@@ -106,22 +113,40 @@ elseif(Session::get('send_announcement') == 'delete'){
                 </div>
                 <div class="form-group row">
                 <label for="announcement_description" class="control-label col-md-4 text-md-center">Announcement Description:</label>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         
                         <textarea id="announcement_description" type="text" class="form-control" name="announcement_description" placeholder="Announcement Description" autofocus></textarea>
                                 <p class="text-danger" id="error_annoucement_description"></p>
                     </div>
                 </div>
+                @if(auth()->user()->user_type_id == 1)
                 <div class="form-group row">
-                        <label for="announcement_type" class="col-md-4 text-md-center">Announcement Type:</label>
-                        <div class="col-md-6">
-                            
-                                <select id="announcement_type" name="announcement_type" class="form-control">
-                                    <option value="" selected>Choose Announcement Type...</option>
-                                </select>
-                                    <p class="text-danger" id="error_announcement_type"></p>
-                        </div>
+                    <label for="announcement_type" class="col-md-4 text-md-center">Announcement Type:</label>
+                    <div class="col-md-6">
+                        
+                            <select id="announcement_type" name="announcement_type" class="form-control">
+                                <option value="" selected>Choose Announcement Type...</option>
+                            </select>
+                            {{-- <input class="form-control" type="text" id="announcement_type" name="announcement_type" placeholder="Announcement Type">
+                                <p class="text-danger" id="error_announcement_type"></p> --}}
+                    </div>
                 </div>
+                
+                    <div class="form-group row">
+                            <label for="employer_id" class="control-label col-md-4 text-md-center">Select Employer:</label>
+
+                                <div class="col-md-8">
+                                    <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
+                                        <option selected value="">--Select Employer</option>
+                                        @foreach($employers as $employer)
+                                            <option value="{{$employer->account_id}}">{{$employer->business_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="text-danger" id="error_employer_id"></p>
+                                </div>
+                    </div>
+                    @endif
+                
             </form>
         </div>
         <div class="modal-footer">
@@ -178,6 +203,8 @@ elseif(Session::get('send_announcement') == 'delete'){
 
 <script>
 $(document).ready(function (){
+    CKEDITOR.replace( 'announcement_description' );
+    $('.select2').select2()
     //Get Scripts
     $.getScript( "js/scripts.js" )
         .done(function( script, textStatus ) {
@@ -188,23 +215,27 @@ $(document).ready(function (){
     });
     // Show All Data
     showAllAnnouncement();
-    /*DataTable*/ 
-    var table = $("#AnnouncementTable").DataTable({
-          // "searching": false,
-          "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
-          "paging": true,
-          "pageLength": 10000,
-           scrollY: 300,
-          //  scrollX: true,
-          "autoWidth": true,
-          lengthChange: false,
-          responsive: true,
-          "order": [[0, "desc"]]
-    });
-    /*Custom Search For DataTable*/
-    $("#searchbox").on("keyup search input paste cut", function () {
-        table.search(this.value).draw();
-    });
+    initDataTableAnnouncement();
+    function initDataTableAnnouncement(){
+        /*DataTable*/ 
+        var table = $("#AnnouncementTable").DataTable({
+            // "searching": false,
+            "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
+            "paging": true,
+            "pageLength": 10000,
+            scrollY: 300,
+            //  scrollX: true,
+            "autoWidth": true,
+            lengthChange: false,
+            responsive: true,
+            fixedColumns: true,
+            "order": [[0, "desc"]]
+        });
+        /*Custom Search For DataTable*/
+        $("#searchbox").on("keyup search input paste cut", function () {
+            table.search(this.value).draw();
+        });
+    }
 
     // Get User Type
     $.ajax({
@@ -217,7 +248,7 @@ $(document).ready(function (){
             });
         },
         error: function (response) {
-            console.log("Error cannot be");
+            //console.log("Error cannot be");
         }
     });
 
@@ -227,12 +258,14 @@ $(document).ready(function (){
         $('#annoucement_form').attr('action', '/Announcement/store_announcement');
         $('#AddAnnouncementModal').find('#title_modal').text('Add Announcement');
         $('#annoucement_form').removeAttr('hidden');
+        CKEDITOR.instances.announcement_description.setData('');
+        $('#select2-employer_id-container').attr('title', '').text('--Select Employer--');
     });
 
     /*Save Announcement*/
     $('#SaveAnnoucement').click(function (e){
         var url = $('#annoucement_form').attr('action');
-        var data = $('#annoucement_form').serialize();
+        //var data = $('#annoucement_form').serialize();
         $("#spinner").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
         toastr.remove();
@@ -246,30 +279,36 @@ $(document).ready(function (){
             $('#error_announcement_title').html('Annoucement Title is Required');
             spinnerTimout();
         }
-        if($('#announcement_description').val() == ""){
+        if(CKEDITOR.instances.announcement_description.getData() == ""){
             $('#announcement_description').addClass('is-invalid');
             $('#error_annoucement_description').html('Annoucement Description is Required');
             spinnerTimout();
         }
-        if($('#announcement_type').val() == ""){
-            $('#announcement_type').addClass('is-invalid');
-            $('#error_announcement_type').html('Annoucement Type is Required');
-            spinnerTimout();
-        }
+        // if($('#announcement_type').val() == ""){
+        //     $('#announcement_type').addClass('is-invalid');
+        //     $('#error_announcement_type').html('Annoucement Type is Required');
+        //     spinnerTimout();
+        // }
         if($('#announcement_title').val() != "" &&
-           $('#announcement_description').val() != "" &&
-           $('#announcement_type').val() != "") {
+            CKEDITOR.instances.announcement_description.getData()  != "") {
                     $.ajax({
                     type: 'ajax',
                     url: url,
                     method: 'POST',
                     dataType: 'json',
                     async: false,
-                    data: data,
+                    data: {
+                        _token:     '{{ csrf_token() }}',
+                        announcement_title: $('#announcement_title').val(),
+                        announcement_description: CKEDITOR.instances.announcement_description.getData(),
+                        announcement_type: $('#announcement_type').val(),
+                    },
                     success: function(data){
                         $('#annoucement_form')[0].reset();
+                        $('#AnnouncementTable').DataTable().destroy();
                         // Show All Data
                         showAllAnnouncement();
+                        initDataTableAnnouncement();
                         // Modal hide
                         //$('#AddNotificationModal').modal('hide');
                         setTimeout(function (){
@@ -332,6 +371,9 @@ $(document).ready(function (){
                 $('#announcement_title').val(data[0].announcement_title);
                 $('#announcement_description').val(data[0].announcement_description);
                 $('#announcement_type option[value="'+data[0].announcement_type+'"]').prop('selected', true);
+                CKEDITOR.instances.announcement_description.setData(data[0].announcement_description);
+                $('#select2-employer_id-container').attr('title', data[0].employer_id).text(data[0].business_name);
+                //$('#announcement_type').val(data[0].announcement_type);
             },
             error: function(){
                 console.log("Error");
@@ -360,8 +402,10 @@ $(document).ready(function (){
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data){
+                    $('#AnnouncementTable').DataTable().destroy();
                     showAllAnnouncement();
                     showAllAnnouncementToNotification();
+                    initDataTableAnnouncement();
                     // Modal hide
                     //$('#AddNotificationModal').modal('hide');
                     setTimeout(function (){
@@ -456,7 +500,7 @@ $(document).ready(function (){
                     var posted = (data[i].announcement_status == 1 ? "disabled": "");
                         html +='<tr>'+
                                     // '<td>'+data[i].id+'</td>'+
-                                     '<td>'+data[i].business_name+'</td>'+
+                                     '@if(auth()->user()->user_type_id === 1)<td>'+data[i].business_name+'</td>@endif'+
                                      '<td>'+data[i].announcement_title+'</td>'+
                                      '<td>'+data[i].announcement_description+'</td>'+
                                      '<td>'+AnnouncementStatus+'</td>' +
@@ -483,6 +527,73 @@ $(document).ready(function (){
         setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
         }, 250);
+    }
+
+
+    /*
+        Extended Excript for Get All Announcement To Notification
+    */
+    showAllAnnouncementToNotification();
+
+    $('#announcement').click(function (){
+        showAllAnnouncementToNotification();
+    });
+
+    $('#announcementdesc').on('click', '.show_announcement_notification',function (){
+        var title = $(this).attr('data-title');
+        var description = $(this).attr('data-description');
+        swal({
+
+                title: title,
+                text: jQuery(description).text(), // Strip Tag
+                showCancelButton: true,
+            },
+
+
+
+        );
+    });
+    function showAllAnnouncementToNotification(){
+        // Show Notification
+        $.ajax({
+            type: 'ajax',
+            method: 'get',
+            url: '/Announcement/get_all_announcement_to_notification',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                var html = '';
+                var i;
+                var count = 1;
+                for(i=0; i<data.length; i++){
+                    var status = (data[i].announcement_status == 1 ? 'Posted' : data[i].announcement_status == 0 ? 'Pending' : null);
+                    const date = new Date(data[i].updated_at);
+                    $('#notif').html(count++);
+                    html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification"  data-title="'+data[i].announcement_title+'" data-description="'+data[i].announcement_description+'"><!-- Message Start -->'+
+                            '<div class="media">'+
+                            '<img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="../dist/img/user3-128x128.jpg">'+
+                            '<div class="media-body">'+
+                            '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger"><i class="fa fa-star"></i></span></h3>'+
+                            '<p class="text-sm">'+data[i].announcement_description+'</p>'+
+                            '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+'</p>'+
+                            '</div>'+
+                            '</div><!-- Message End --></a>'+
+                            '<div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->';
+                }
+                if(status == 'Posted'){
+                    $('#announcementdesc').html(html);
+                    
+                }
+                else if(status == 'Pending'){
+                    $('#announcementdesc').html('No Announcement Found');
+                }
+                
+                //console.log("success");
+            },
+            error: function (response) {
+                
+            }
+        });
     }
 });
 </script>

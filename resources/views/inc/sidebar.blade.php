@@ -434,7 +434,7 @@
 							<p>Create Notifications</p></a>
 						</li> --}}
 						<li class="nav-item">
-							<a class="nav-link {{$manage_notif}}" href="/#"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$create_notif}}" href="/Notification"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Notifications</p></a>
 						</li>
 					</ul>
@@ -454,7 +454,7 @@
 							<p>Create Announcements</p></a>
 						</li> --}}
 						<li class="nav-item">
-							<a class="nav-link {{$manage_sendannounce}}" href="/#"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$create_sendannounce}}" href="/Announcement"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Announcements</p></a>
 						</li>
 					</ul>
@@ -474,8 +474,8 @@
 							<p>Create</p></a>
 						</li> --}}
 						<li class="nav-item">
-							<a class="nav-link {{$manage_managedocs}}" href="#"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Manage</p></a>
+							<a class="nav-link {{$create_managedocs}}" href="/Template"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Manage Template</p></a>
 						</li>
 					</ul>
 				</li>	
