@@ -167,8 +167,13 @@ class RegisterController extends Controller
         //     )); 
         // }
         //echo $data['cmbEmployer'];
+        
+        //echo $data['rbn_type'];
 
-        DB::table('users')->where('id', '=', $data['hidden_account_id'])
+        if($data['rbn_type'] == "new_profile")
+        {
+            //echo $data['rbn_type'];
+            DB::table('users')->where('id', '=', $data['hidden_account_id'])
             ->update(array(
                 'name' => $data['name'],
                 //'user_type_id' => $data['cmbUser_type'],
@@ -179,17 +184,42 @@ class RegisterController extends Controller
                 'AccountStatus' => 1,
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
-        ));
+            ));
 
-        //Inserting into ESS BASE TABLE
-        $insert_ess = new ESSBase;
-        $insert_ess->account_id = $data['hidden_account_id'];
-        $insert_ess->employer_id = $data['cmbEmployer'];
-        $insert_ess->ess_id = $data['username'];
-        $insert_ess->user_type_id = $data['cmbUser_type'];            
-        $insert_ess->created_by = auth()->user()->id;
-        $insert_ess->updated_by = auth()->user()->id;
-        $insert_ess->save();
+            //Inserting into ESS BASE TABLE
+            $insert_ess = new ESSBase;
+            $insert_ess->account_id = $data['hidden_account_id'];
+            $insert_ess->employer_id = $data['cmbEmployer'];
+            $insert_ess->ess_id = $data['username'];
+            $insert_ess->user_type_id = $data['cmbUser_type'];            
+            $insert_ess->created_by = auth()->user()->id;
+            $insert_ess->updated_by = auth()->user()->id;
+            $insert_ess->save();
+        }
+        else if($data['rbn_type'] == "existing_profile")
+        {
+            //echo $data['rbn_type'];
+            $user = User::create([
+                'name' => $data['name'],
+                'user_type_id' => $data['cmbUser_type'],
+                'username' => $data['username'],       
+                'user_type_for' => $user_type_for,
+                'employer_id' => $data['cmbEmployer'],     
+                'password' => Hash::make($data['password']),
+                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id
+            ]);
+
+            //Inserting into ESS BASE TABLE
+            $insert_ess = new ESSBase;
+            $insert_ess->account_id = $data['hidden_account_id'];
+            $insert_ess->employer_id = $data['cmbEmployer'];
+            $insert_ess->ess_id = $data['username'];
+            $insert_ess->user_type_id = $data['cmbUser_type'];            
+            $insert_ess->created_by = auth()->user()->id;
+            $insert_ess->updated_by = auth()->user()->id;
+            $insert_ess->save();
+        }
 
         $this->insert_log("Created '". $data['username'] ."' User Account");
             
