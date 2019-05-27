@@ -57,18 +57,18 @@ $delete = 'disabled';
         </div>
 
         <div class="card-body">
-            <div class="pull-right">
-                <button type="button" class="btn btn-primary" id="btnCreateUser" {{$add}}><i
-                        class="fa fa-plus-square"></i> Create User</button>
-            </div>
-            <br>
-            <br>
-
             <div class="form-group row">
-                <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label>
-                <div class="col-md-4">
-                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"
-                        autofocus>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="fa fa-search input-group-text"></span>
+                        </div>
+                        <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search" autofocus>
+                    </div>
+                    {{-- <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label> --}}
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary float-md-right" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User</button>
                 </div>
             </div>
 
@@ -99,7 +99,7 @@ $delete = 'disabled';
 
                 <form method="POST" id="createuser_form">
                     @csrf
-                    <div id="new_or_exist_field">
+                    {{-- <div id="new_or_exist_field">
                         <div class="form-group row">
                             <div class="offset-md-4">            
                                 <div class="custom-control custom-radio custom-control-inline">
@@ -114,42 +114,52 @@ $delete = 'disabled';
                                 </div>                                             
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group row">
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                         <input type="hidden" id="hidden_id">
                         <input type="hidden" id="action" value="add">
                         <div class="col-md-6">
-                            <input id="name" type="text"
-                                class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name"
-                                value="{{ old('name') }}" required autofocus>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                            </div>
                             <p class="text-danger" id="error-no-name" hidden>* Field is Required</p>
-                            @if ($errors->has('name'))
+                            {{-- @if ($errors->has('name'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('name') }}</strong>
                             </span>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
-
+                    @if(auth()->user()->user_type_id == 1 && 3)
                     <div class="form-group row">
                         <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
                         <div class="col-md-6">
-                            <input type="hidden" name = "hidden_account_id" id = "hidden_account_id" >
-                            <select id="cmbEmployer" class="form-control" name="cmbEmployer">
-                            </select>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input type="hidden" name = "hidden_account_id" id = "hidden_account_id" >
+                                <select id="cmbEmployer" class="form-control" name="cmbEmployer"></select>
+                            </div>
                             <p class="text-danger" id="error-no-employer" hidden>* Select an Employer</p>
                         </div>
                     </div>
-
+                    @endif
                     <div class="form-group row">
                         <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('User ID / ESS ID') }}</label>
 
                         <div class="col-md-6">
-                            <input id="txtusername" type="text"
-                                class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username"
-                                value="{{ old('email') }}" required>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="txtusername" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('email') }}" required>
+                            </div>
                             <p class="text-danger" id="error-taken" hidden>* Username already taken</p>
                             <p class="text-danger" id="error-no-username" hidden>* Field is Required</p>
                             @if ($errors->has('email'))
@@ -163,8 +173,12 @@ $delete = 'disabled';
                     <div class="form-group row">
                         <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type</label>
                         <div class="col-md-6">
-                            <select id="cmbUser" class="form-control" name="cmbUser_type">
-                            </select>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select id="cmbUser" class="form-control" name="cmbUser_type"></select>
+                            </div>
                         </div>
                     </div>
 
@@ -174,11 +188,13 @@ $delete = 'disabled';
                                 class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password"
-                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                    name="password" required>
-                                <p class="text-danger" id="error-no-pass" hidden>* Field is Required | Password must be
-                                    6 characters</p>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-lock input-group-text"></span>
+                                    </div>
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                </div>
+                                <p class="text-danger" id="error-no-pass" hidden>* Field is Required | Password must be 6 characters</p>
                                 @if ($errors->has('password'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('password') }}</strong>
@@ -192,10 +208,13 @@ $delete = 'disabled';
                                 class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control"
-                                    name="password_confirmation" required>
-                                <p class="text-danger" id="error-no-repass" hidden>* Field is Required | Must be same as
-                                    Password</p>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-lock input-group-text"></span>
+                                    </div>
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                </div>
+                                <p class="text-danger" id="error-no-repass" hidden>* Field is Required | Must be same as Password</p>
                             </div>
                         </div>
                     </div>
@@ -237,12 +256,13 @@ $delete = 'disabled';
                             class="col-md-4 col-form-label text-md-right">{{ __('New Password') }}</label>
 
                         <div class="col-md-6">
-                            <input id="newpassword" type="password"
-                                class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"
-                                required>
-                            <p class="text-danger" id="error-no-pass-reset" hidden>* Field is Required | Password must
-                                be 6
-                                characters</p>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-lock input-group-text"></span>
+                                </div>
+                                <input id="newpassword" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            </div>
+                            <p class="text-danger" id="error-no-pass-reset" hidden>* Field is Required | Password must be 6 characters</p>
                             @if ($errors->has('password'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('password') }}</strong>
@@ -256,11 +276,13 @@ $delete = 'disabled';
                             class="col-md-4 col-form-label text-md-right">{{ __('Confirm New Password') }}</label>
 
                         <div class="col-md-6">
-                            <input id="newpassword-confirm" type="password" class="form-control"
-                                name="password_confirmation" required>
-                            <p class="text-danger" id="error-no-repass-reset" hidden>* Field is Required | Must be same
-                                as
-                                Password</p>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-lock input-group-text"></span>
+                                </div>
+                                <input id="newpassword-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                            <p class="text-danger" id="error-no-repass-reset" hidden>* Field is Required | Must be same as Password</p>
                         </div>
                     </div>
                 </form>
@@ -272,6 +294,34 @@ $delete = 'disabled';
         </div>
     </div>
 </div>
+<!-- Modal For Change Status -->
+<div class="modal fade" id="csModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" >Change Status</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="account_id" hidden>
+          <select class="form-control col-md-4" name="AccountStatus" id="AccountStatus">
+            <option value="" selected>Changed Status</option>
+            <option value="1">Active</option>
+            <option value="2">In-Active</option>
+            <option value="3">Deactivated</option>
+          </select>
+          <p class="text-danger" id="error_cs" hidden>Please Choose Option</p>
+          <label id="CS-id"></label>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
     $(document).ready(function () {
@@ -657,6 +707,70 @@ $delete = 'disabled';
             );
         });
 
+        $(document).on('click', '#change_status', function(){
+            $('#csModal').modal('show');
+            var id = $(this).attr("data-id");
+            $('#account_id').val(id);
+            toastr.remove()
+            // console.log(id);
+        });
+         //Change Status
+         $(document).on('click', '#ChangeStatusConfirm', function (){
+          $("#spinner").addClass('fa fa-refresh fa-spin');
+          let Account_id = $('#account_id').val();
+          let AccountStatus = $('#AccountStatus').val();
+          toastr.remove()
+          $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+          });
+            if (AccountStatus == ""){
+              $('#AccountStatus').addClass('is-invalid');
+              $('#error_cs').removeAttr('hidden');
+              toastr.error('Error. Please Choose a Option', 'Error!')
+                setTimeout(function (){
+                        $("#spinner").removeClass('fa fa-refresh fa-spin');
+                  }, 250);
+            }
+            else {
+              $.ajax({
+                    url: "/manageuser/UpdateAccountStatus/" + Account_id,
+                    method: 'PATCH',
+                    async: false,
+                    dataType: 'json',
+                    data: {
+                      AccountStatus: $('#AccountStatus').val(),
+                      _token:     '{{ csrf_token() }}'
+                    },
+                    success: function (data, response){
+                      refreshUserTable();
+                      //Set the dropdown to the default selected
+                      $('#AccountStatus option[value=""]').prop('selected', true);
+                      //console.log('Success');
+                      // Display a success toast, with a title
+                      toastr.success('Account Updated Successfully', 'Success')
+                      setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+                        // Hide Modal
+                        setTimeout(function (){
+                          $('#csModal').modal('hide');
+                        }, 550);
+                    },
+                    error: function (data, e){
+                      if(data.status == 500){
+                        //console.log('Error');
+                        toastr.error('Error. Please Choose a Option', 'Error!')
+                        setTimeout(function (){
+                                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                          }, 250);
+                      }
+                    }
+                });
+            }
+        });
+
         //OPEN MODAL RESET PASSWORD
         $(document).on("click", "#reset_password", function () {
             $("#resetPasswordModal").modal();           
@@ -692,9 +806,13 @@ $delete = 'disabled';
                 $('#error-no-repass-reset').attr("hidden", true);
             }
 
-            if (password != "" && con_newpassword != "" && password.length > 6 && password ==
-                con_newpassword)
-                swal({
+            if (password != "" && con_newpassword != "" && password.length > 6 && password == con_newpassword){
+                if(password.length < 5){
+                    $('#newpassword').removeClass("is-invalid");
+                    $('#error-no-pass-reset').attr("hidden", true);
+                }
+                else {
+                    swal({
                         title: "Reset Password?",
                         //text: "Your will not be able to recover this imaginary file!",
                         type: "warning",
@@ -722,6 +840,8 @@ $delete = 'disabled';
                         });
                     }
                 );
+                }
+            }
         });
 
     });

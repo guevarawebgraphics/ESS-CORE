@@ -7,7 +7,7 @@
 	<div class="sidebar">
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-			<div class="image"><img alt="User Image" class="img-circle elevation-2" src="/storage/pic.jpg"></div>
+			<div class="image" id="profile_picture"><img alt="User Image" class="img-circle elevation-2" src="/storage/pic.jpg"></div>
 			<div class="info">
 				<a class="d-block">{{ Auth::user()->name }}</a>
 			</div>
@@ -488,3 +488,41 @@
 		</nav><!-- /.sidebar-menu -->
 	</div><!-- /.sidebar -->
 </aside><!-- Content Wrapper. Contains page content -->
+
+<!-- Modal For Upload Profile Picture-->
+<div class="modal fade" id="upload_profile_picture" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Upload</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  <form id="upload_image" runat="server">
+			  <div class="col-md-4 offset-md-4 mb-3">
+					<img class="img-thumbnail" id="image_preview" src="/storage/pic.jpg" alt="your image" />
+			  </div>
+			<div class="col-md-12">
+                            
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="fa fa-folder input-group-text"></span>
+					</div>
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="imgInp" multiple onchange="processSelectedFilesProfileImage(this)">
+						<label class="custom-file-label" for="validatedCustomFile" id="profile_image_filename">Choose file...</label>
+					</div>
+				</div>
+					
+			</div>
+		  </form>
+		</div>
+		<div class="modal-footer">
+		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+		  <button type="button" class="btn btn-primary" id="Upload"><span><i class="fa fa-upload"></i></span> Upload</button>
+		</div>
+	  </div>
+	</div>
+  </div>
