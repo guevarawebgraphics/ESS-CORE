@@ -6,28 +6,26 @@
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<meta content="ie=edge" http-equiv="x-ua-compatible"><!-- Font Awesome Icons -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
+	<!-- Styles -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet"><!--Custome Style-->
 	<link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet"><!-- IonIcons -->
 	<link href="{{ asset('http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}" rel="stylesheet"><!-- Theme style -->
 	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
-	<link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet">
-	<link href="{{ asset('Toastr/toastr.min.css') }}" rel="stylesheet">
+	{{-- <link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet"> --}}
+	<link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet"> <!--Font Poppins-->
+	<link href="{{ asset('Toastr/toastr.min.css') }}" rel="stylesheet"> <!--Toastr-->
 	<link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet"><!-- select -->
-	<link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
-	<link href="{{ asset('/plugins/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+	<link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet"><!--DatePicker-->
+	<link href="{{ asset('/plugins/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet"><!--DataTable-->
 	<link href="{{ asset('/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css') }}" rel="stylesheet"><!--Responsive DataTable-->
 
 	<!-- REQUIRED SCRIPTS -->
 	<!-- jQuery -->
-	<script src="{{ asset('plugins/jquery/jquery.min.js') }}">
-	</script> <!-- Bootstrap -->
-	<script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}">
-	</script> <!-- AdminLTE -->
-	<script src="{{ asset('dist/js/adminlte.js') }}">
-	</script> <!-- OPTIONAL SCRIPTS -->
-	<script src="{{ asset('dist/js/demo.js') }}">
-	</script> 
-	<script src="{{ asset('dist/js/pages/dashboard3.js') }}">
-	</script>
+	<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script> <!-- Bootstrap -->
+	<script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> <!-- AdminLTE -->
+	<script src="{{ asset('dist/js/adminlte.js') }}"></script> <!-- OPTIONAL SCRIPTS -->
+	<script src="{{ asset('dist/js/demo.js') }}"></script> 
+	<script src="{{ asset('dist/js/pages/dashboard3.js') }}"></script>
 	<!-- DataTables -->
 	<script src="{{ asset('/plugins/datatables/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('/plugins/datatables/dataTables.bootstrap4.js') }}"></script>
@@ -53,22 +51,6 @@
 	<script src="{{ asset('js/scripts.js') }}"></script>
 	@endif
     
-	<style>
-		table td{
-			font-size: 85%;
-			text-align: center;			
-		}
-
-		table th{
-			text-align: center;
-			font-size: 95%;
-		}
-
-		li a p{
-			font-size: 90%;
-		}
-
-	</style>
 </head>
 <body class="hold-transition sidebar-mini">
 	<div class="wrapper">
@@ -90,6 +72,8 @@
 			</div>
 		</div>			
 	</div>
+	{{-- Custome Sript --}}
+	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
     @include('inc/footer')
 
 	

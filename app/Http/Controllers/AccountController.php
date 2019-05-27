@@ -81,7 +81,15 @@ class AccountController extends Controller
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
                         ->join('users', 'employer.account_id', '=', 'users.id')
-                        ->select('employer.id', 'employer.business_name', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name', 'users.AccountStatus', 'employer.account_id')
+                        ->select('employer.id',
+                         'employer.business_name',
+                         'employer.accountname',
+                         'employer.contact_email',
+                         'employer.sec',
+                         'employer.bir',
+                         'user_type.type_name',
+                         'users.AccountStatus',
+                         'employer.account_id')
                         ->get();
         return view('Account.index', compact('Account'));
     }
@@ -89,8 +97,16 @@ class AccountController extends Controller
     public function get_all_account(Request $request){
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
-                        ->join('users', 'employer.account_id', '=', 'users.id')
-                        ->select('employer.id', 'employer.business_name', 'employer.accountname', 'employer.contact_email', 'employer.sec', 'employer.bir', 'user_type.type_name', 'users.AccountStatus', 'employer.account_id')
+                        //->join('users', 'employer.account_id', '=', 'users.id')
+                        ->select('employer.id',
+                        'employer.business_name',
+                        'employer.accountname',
+                        'employer.contact_email',
+                        'employer.sec',
+                        'employer.bir',
+                        'user_type.type_name',
+                        //'employer.AccountStatus',
+                        'employer.account_id')
                         ->get();
                         
         if($request->ajax()){
@@ -154,8 +170,8 @@ class AccountController extends Controller
             $extension_sec = $request->file('sec')->getClientOriginalExtension();
             $extension_bir = $request->file('bir')->getClientOriginalExtension();
             // Filename to store
-            $fileNameToStore_sec= $filename_sec.'_'.time().'.'.$extension_sec;
-            $fileNameToStore_bir= $filename_bir.'_'.time().'.'.$extension_bir;
+            $fileNameToStore_sec= $request->input('business_name').'_'.time().'_'.'SEC'.'.'.$extension_sec;
+            $fileNameToStore_bir= $request->input('business_name').'_'.time().'_'.'BIR'.'.'.$extension_bir;
             // Upload Image
             $path_sec = $request->file('sec')->storeAs('public/Documents/sec', $fileNameToStore_sec);
             $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
@@ -200,30 +216,30 @@ class AccountController extends Controller
                 'nid',
             ])){
                 /*Create User*/
-                $user = User::create([
-                    'user_type_id' => $request->input('user_type'),
-                    'user_type_for' => 3,
-                    'employer_id' => "none", //Temporary
-                    'name' => $request->input('accountname'),
-                    'username' => $request->input('accountname'), //Temporary Username
-                    'password' => Hash::make($password),
-                    'enrollment_date' => $enrollment_date,
-                    'expiry_date' => $expiry_date,//14,
-                    'created_by' => auth()->user()->id,
-                    'updated_by' => auth()->user()->id,
-                ]);
+                // $user = User::create([
+                //     'user_type_id' => $request->input('user_type'),
+                //     'user_type_for' => 3,
+                //     'employer_id' => "none", //Temporary
+                //     'name' => $request->input('accountname'),
+                //     'username' => $request->input('accountname'), //Temporary Username
+                //     'password' => Hash::make($password),
+                //     'enrollment_date' => $enrollment_date,
+                //     'expiry_date' => $expiry_date,//14,
+                //     'created_by' => auth()->user()->id,
+                //     'updated_by' => auth()->user()->id,
+                // ]);
 
                 /*Gett the Id of User*/
-                $Account_id = $user->id;
+                //$Account_id = $user->id;
 
                 /*Create Employer Enrollment History*/
-                $employment_history = EmployerEnrollmentHistory::create([
-                                'account_id' => $Account_id,
-                                'enrollment_date' => $enrollment_date,
-                                'expiry_date' => $expiry_date,
-                                'created_by' => auth()->user()->id,
-                                'updated_by' => auth()->user()->id,
-                ]);
+                // $employment_history = EmployerEnrollmentHistory::create([
+                //                 'account_id' => $Account_id,
+                //                 'enrollment_date' => $enrollment_date,
+                //                 'expiry_date' => $expiry_date,
+                //                 'created_by' => auth()->user()->id,
+                //                 'updated_by' => auth()->user()->id,
+                // ]);
                 
                 /*Create a User In Base Table*/
                 // $insert_ess = new ESSBase;
@@ -255,7 +271,7 @@ class AccountController extends Controller
                     /*Create Account Employer*/
                     $employer = Account::create([
                         // Array Fields Here
-                        'account_id' => $Account_id,
+                        //'account_id' => $Account_id,
                         'business_name' => $request->input('business_name'),
                         'accountname' => $request->input('accountname'),
                         'user_type' => $request->input('user_type'),
@@ -275,7 +291,9 @@ class AccountController extends Controller
                         'hdmf' => $request->input('hdmf'),
                         'nid' => $request->input('nid'),
                         'sec' => $fileNameToStore_sec,
-                        'bir' => $fileNameToStore_bir
+                        'bir' => $fileNameToStore_bir,
+                        'enrollment_date' => $enrollment_date,
+                        'expiry_date' => $expiry_date
                     ]);
 
                     $employer_id = $employer->id;
@@ -289,7 +307,7 @@ class AccountController extends Controller
                     /*Create Account Employer*/
                     $employer = Account::create([
                         // Array Fields Here
-                        'account_id' => $Account_id,
+                        //'account_id' => $Account_id,
                         'business_name' => $request->input('business_name'),
                         'accountname' => $request->input('accountname'),
                         'user_type' => $request->input('user_type'),
@@ -323,7 +341,7 @@ class AccountController extends Controller
                     /*Create Account Employer*/
                     $employer = Account::create([
                         // Array Fields Here
-                        'account_id' => $Account_id,
+                        //'account_id' => $Account_id,
                         'business_name' => $request->input('business_name'),
                         'accountname' => $request->input('accountname'),
                         'user_type' => $request->input('user_type'),
@@ -399,7 +417,7 @@ class AccountController extends Controller
             abort(404);
         }
         else {
-           if(!Account::where('account_id', '=', $id)->count() > 0){
+           if(Account::where('account_id', '=', $id)->count() > 0){
                 abort(404);
            }
            else {
@@ -408,7 +426,7 @@ class AccountController extends Controller
                         ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
                         ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
                         ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')    
-                        ->join('users', 'employer.account_id', '=', 'users.id')
+                        ->join('users', 'employer.id', '=', 'users.employer_id')
                         ->select('employer.id', 'employer.business_name',
                          'employer.accountname',
                           'employer.address_unit',
@@ -437,7 +455,7 @@ class AccountController extends Controller
                           'refbrgy.id as refbrgy_id',
                           'users.enrollment_date',
                           'users.expiry_date')
-                        ->where('employer.account_id', $id)
+                        ->where('employer.id', $id)
                         ->get();
             return view('Account.edit', compact('Account'));
            }
@@ -575,7 +593,7 @@ class AccountController extends Controller
         $this->getaccount();
         $Account_id = $request->id;
         /*Delete User From Users*/
-        $user = User::where('id','=',$Account_id)->delete();
+        //$user = User::where('id','=',$Account_id)->delete();
         /*Delete User From Employer*/
         $employer = Account::where('account_id','=', $Account_id)->delete();
         /*Delete User From ESS Base Table*/
@@ -661,9 +679,20 @@ class AccountController extends Controller
     public function UpdateAccountStatus(Request $request, $id){
         $this->getaccount();
         /*Update Account Employer*/
-        $user = User::findOrFail($id);
-        $user->AccountStatus = $request->input('AccountStatus');
-        $user->save();
+        // $user = User::findOrFail($id);
+        // $user->AccountStatus = $request->input('AccountStatus');
+        // $user->save();
+
+        /*Update Account Employer*/
+        DB::table('users')->where('id', '=', $id)
+                ->update(array(
+                    'AccountStatus' => $request->input('AccountStatus')
+        ));
+        /*Update Account Users*/
+        // DB::table('employer')->where('id', '=', $id)
+        //         ->update(array(
+        //             'AccountStatus' => $request->input('AccountStatus')
+        // ));
 
         if ($id == null && $request->input('AccountStatus') == null){
             $msg = 'Error';

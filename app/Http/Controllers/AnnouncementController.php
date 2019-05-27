@@ -217,6 +217,7 @@ class AnnouncementController extends Controller
             /*Create Announcement*/
             $Announcement = Announcement::create([
                 'account_id' => auth()->user()->id, //Temporary Account Id
+                'employer_id' => auth()->user()->id,
                 'announcement_title' => $request->input('announcement_title'),
                 'announcement_description' => $request->input('announcement_description'),
                 'announcement_status' => 0, //0 Means Pending Staus

@@ -10,6 +10,7 @@ use App\Logs;
 use App\Account;
 use Session;
 use DB;
+use Response;
 use Keygen;
 use LasseRafn\Initials\Initials;
 
@@ -71,12 +72,12 @@ class ManageUserController extends Controller
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
         if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND a.employer_id != 'none' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' ");
             return view('admin_modules.createuser')->with('users', $users);
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
             return view('admin_modules.createuser')->with('users', $users);
         }
         //Wala pang cms dito pero dapat may cms
@@ -109,12 +110,12 @@ class ManageUserController extends Controller
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
         if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND a.employer_id != 'none'");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.created_by != 'default' AND a.employer_id != 'none'");
             return view('admin_modules.table.tableuser')->with('users', $users);
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.created_by != 'default' AND (a.user_type_for = '3' OR a.user_type_for = '4') AND a.employer_id = '".auth()->user()->employer_id."' ");
             return view('admin_modules.table.tableuser')->with('users', $users);
         }        
         //Wala pang cms dito pero dapat may cms
@@ -383,5 +384,27 @@ class ManageUserController extends Controller
 
         $essId = Keygen::length(6)->numeric()->generate();
         return $initial . $essId;
+    }
+
+    // Update Account Status
+    public function UpdateAccountStatus(Request $request, $id){
+
+        /*Update Account Employer*/
+        DB::table('users')->where('id', '=', $id)
+                ->update(array(
+                    'AccountStatus' => $request->input('AccountStatus')
+        ));
+
+        if ($id == null && $request->input('AccountStatus') == null){
+            $msg = 'Error';
+        }
+        else {
+            $msg = 'Success';
+        }
+
+        $this->insert_log("Updated Account");
+
+
+        return Response::json($msg);
     }
 }

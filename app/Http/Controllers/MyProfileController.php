@@ -75,65 +75,144 @@ class MyProfileController extends Controller
         if(auth()->user()->user_type_id == "3" || auth()->user()->user_type_id == "8" || auth()->user()->user_type_id == "9")
         {
             $Account = DB::table('employer')
-            ->join('users', 'employer.account_id', '=', 'users.id')
-            ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')  
-            ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
-            ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')       
-            ->select('employer.id' ,'employer.business_name', 'employer.contact_mobile', 'employer.contact_email', 'employer.address_unit','refprovince.provDesc'
-            , 'refcitymun.citymunDesc', 'refbrgy.brgyDesc')
-            ->where('employer.id', '=', auth()->user()->employer_id)
-            ->get();         
+                    ->join('users', 'employer.id', '=', 'users.employer_id')
+                    ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')  
+                    ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
+                    ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')       
+                    ->select('employer.id',
+                    'employer.business_name',
+                    'employer.contact_mobile',
+                    'employer.contact_email',
+                    'employer.address_unit',
+                    'refprovince.provDesc'
+                    , 'refcitymun.citymunDesc', 'refbrgy.brgyDesc')
+                    ->where('employer.id', '=', auth()->user()->employer_id)
+                    ->get();
+            $Account_info = DB::table('user_type')
+                    ->join('users', 'user_type.id', '=', 'users.user_type_id')
+                    ->select('user_type.type_name')
+                    ->where('users.id', '=', auth()->user()->id)
+                    ->get();
+                
+                if(!empty($Account_info))
+                {
+                    $info = $Account_info[0]->type_name;
+                }
+                else
+                {
+                    $info = "";
+                }
+
+                if(!empty($Account))
+                {
+                    $id = $Account[0]->id;
+                    $shortname = $Account[0]->business_name;
+                    $contact = $Account[0]->contact_mobile;
+                    $email = $Account[0]->contact_email;
+                    $unit = $Account[0]->address_unit;
+                    $prov = $Account[0]->provDesc;
+                    $mun = $Account[0]->citymunDesc;
+                    $brgy = $Account[0]->brgyDesc;
+                }
+                else
+                {
+                    $id = "";
+                    $shortname = "";
+                    $contact = "";
+                    $email = "";
+                    $unit = "";
+                    $prov ="";
+                    $mun = "";
+                    $brgy = "";            
+                }
+
+                $data = array(
+                    'type_name'=>$info,           
+                    'id'=>$id,
+                    'shortname'=>$shortname,
+                    'contact'=>$contact,
+                    'email'=>$email,
+                    'unit'=>$unit,
+                    'prov'=>$prov,
+                    'mun'=>$mun,
+                    'brgy'=>$brgy
+                );         
         }
 
-        $Account_info = DB::table('user_type')
-            ->join('users', 'user_type.id', '=', 'users.user_type_id')
-            ->select('user_type.type_name')
-            ->where('users.id', '=', auth()->user()->id)
-            ->get();
         
-        if(!empty($Account_info))
-        {
-            $info = $Account_info[0]->type_name;
-        }
-        else
-        {
-            $info = "";
-        }
 
-        if(!empty($Account))
-        {
-            $id = $Account[0]->id;
-            $shortname = $Account[0]->business_name;
-            $contact = $Account[0]->contact_mobile;
-            $email = $Account[0]->contact_email;
-            $unit = $Account[0]->address_unit;
-            $prov = $Account[0]->provDesc;
-            $mun = $Account[0]->citymunDesc;
-            $brgy = $Account[0]->brgyDesc;
-        }
-        else
-        {
-            $id = "";
-            $shortname = "";
-            $contact = "";
-            $email = "";
-            $unit = "";
-            $prov ="";
-            $mun = "";
-            $brgy = "";            
-        }
 
-        $data = array(
-            'type_name'=>$info,           
-            'id'=>$id,
-            'shortname'=>$shortname,
-            'contact'=>$contact,
-            'email'=>$email,
-            'unit'=>$unit,
-            'prov'=>$prov,
-            'mun'=>$mun,
-            'brgy'=>$brgy
-        );
+        if(auth()->user()->user_type_id == "4")
+        {
+            $Account = DB::table('employee')
+                    ->join('users', 'employee.id', '=', 'users.employee_no')
+                    ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+                    ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')  
+                    ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
+                    ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')      
+                    ->select('employee.id',
+                            'employee_personal_information.mobile_no',
+                            'employee_personal_information.email_add',
+                            'employee_personal_information.address_unit',
+                            // 'employee_personal_information.citytown',
+                            // 'employee_personal_information.province',
+                            // 'employee_personal_information.barangay',
+                            'refprovince.provDesc',
+                            'refcitymun.citymunDesc',
+                            'refbrgy.brgyDesc')
+                    ->where('users.employee_no', '=', auth()->user()->employee_no)
+                    ->get();
+                    
+            $Account_info = DB::table('user_type')
+                    ->join('users', 'user_type.id', '=', 'users.user_type_id')
+                    ->select('user_type.type_name')
+                    ->where('users.id', '=', auth()->user()->id)
+                    ->get();
+                
+                if(!empty($Account_info))
+                {
+                    $info = $Account_info[0]->type_name;
+                }
+                else
+                {
+                    $info = "";
+                }
+
+                if(!empty($Account))
+                {
+                    $id = $Account[0]->id;
+                    //$shortname = $Account[0]->business_name;
+                    $contact = $Account[0]->mobile_no;
+                    $email = $Account[0]->email_add;
+                    $unit = $Account[0]->address_unit;
+                    $prov = $Account[0]->provDesc;
+                    $mun = $Account[0]->citymunDesc;
+                    $brgy = $Account[0]->brgyDesc;
+                }
+                else
+                {
+                    $id = "";
+                    $shortname = "";
+                    $contact = "";
+                    $email = "";
+                    $unit = "";
+                    $prov ="";
+                    $mun = "";
+                    $brgy = "";            
+                }
+
+                $data = array(
+                    'type_name'=>$info,           
+                    'id'=>$id,
+                    //'shortname'=>$shortname,
+                    'contact'=>$contact,
+                    'email'=>$email,
+                    'unit'=>$unit,
+                    'prov'=>$prov,
+                    'mun'=>$mun,
+                    'brgy'=>$brgy
+                );
+        }
 
         echo json_encode($data);
     }

@@ -17,26 +17,7 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-    <div class="card">
-            @php
-            /*
-            $message_to = "09127784095";
-            if( preg_match('/^(09|\+639)\d{9}$/', $message_to))
-            {
-                echo preg_replace('/^09/', '+639', $message_to);
-            }
-            echo "<br>";
-            //echo date("Y-m-d H:i");
-            // $date_now = new DateTime();
-            // $date_now = $date_now->format('Y-m-d h:i:s');
-
-            //$date_now = date("Y-m-d h:i:s");
-            $date_unitl = date("Y-m-d H:i:s", strtotime('+5 minutes'));
-            echo $date_unitl;
-            echo "<br>";
-            */
-            @endphp
-        {{-- <a href="{{ url('/employee/activation') }}">ASA</a> --}}
+    <div class="card card-outline card-info">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>
@@ -48,7 +29,7 @@
                 <input type="hidden" id="hidden_essid" name="hidden_essid">
                 
                 {{-- FIRST ROW --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>      
                     <div class="col-md-5">               
                         <label for="employee_no" class="control-label text-md-center">Employee No. </label>
@@ -57,14 +38,26 @@
                     </div>               
                     
                     <div class="col-md-5">
-                        {{-- <label for="employer_id" class="control-label text-md-center">Employer ID :</label>
+                        <label for="employer_id" class="control-label text-md-center">Employer ID :</label>
                         <input id="employer_id" type="text" class="form-control" name="employer_id" placeholder="Employer Id" value="{{Session::get("employer_id")}}" autofocus>
-                        <p class="text-danger" id="error_employer_id"></p> --}}
+                        <p class="text-danger" id="error_employer_id"></p>
                     </div>
                     <div class="col-md-1"></div>  
+                </div> --}}
+                <div class="form-group row">
+                        <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No" value="{{$employee[0]->employee_no}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_employee_no"></p>
+                        </div>
                 </div>
                 {{-- SECOND ROW --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>            
                     <div class="col-md-5">
                         <label for="position" class="control-label text-md-center">Position :</label>               
@@ -78,9 +71,32 @@
                         <p class="text-danger" id="error_department"></p>
                     </div>
                     <div class="col-md-1"></div>  
+                </div> --}}
+                
+                <div class="form-group row">
+                        <label for="position" class="col-md-2 text-md-center">Position :</label>    
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="position" type="text" class="form-control" name="position" placeholder="Position" value="{{$employee[0]->position}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_position"></p>
+                        </div>
+                        <label for="department" class="col-md-2 text-md-center">Department :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="department" type="text" class="form-control" name="department" placeholder="Department" value="{{$employee[0]->department}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_department"></p>
+                        </div>
                 </div>
                 {{-- THIRD ROW --}}
-                <div class="form-group row">                   
+                {{-- <div class="form-group row">                   
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="lastname" class="control-label text-md-center">Last Name :</label>               
@@ -94,9 +110,31 @@
                         <p class="text-danger" id="error_mobile_no"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+                <div class="form-group row">
+                        <label for="lastname" class="col-md-2 text-md-center">Last Name :</label>     
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="lastname" type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{$employee[0]->lastname}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_lastname"></p>
+                        </div>
+                        <label for="mobile_no" class="col-md-2 text-md-center">Mobile No. :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-phone input-group-text"></span>
+                                </div>
+                                <input id="mobile_no" type="text" maxlength="11" class="form-control" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)" value="{{$employee[0]->mobile_no}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_mobile_no"></p>
+                        </div>
                 </div>
                 {{-- FOURTH ROW --}}
-                <div class="form-group row">                  
+                {{-- <div class="form-group row">                  
                     <div class="col-md-1"></div> 
                     <div class="col-md-5">
                         <label for="firstname" class="control-label text-md-center">First Name :</label>               
@@ -110,9 +148,31 @@
                         <p class="text-danger" id="error_email_add"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+                <div class="form-group row">
+                        <label for="firstname" class="col-md-2 text-md-center">First Name :</label>        
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="firstname" type="text" class="form-control" name="firstname" placeholder="First Name" value="{{$employee[0]->firstname}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_firstname"></p>
+                        </div>
+                        <label for="email_add" class="col-md-2 text-md-center">Email :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-envelope input-group-text"></span>
+                                </div>
+                                <input id="email_add" type="email" class="form-control" name="email_add" placeholder="Email" value="{{$employee[0]->email_add}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_email_add"></p>
+                        </div>
                 </div>
                 {{-- FIFTH ROW --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>                    
                     <div class="col-md-5">
                         <label for="middlename" class="control-label text-md-center">Middle Name :</label>               
@@ -126,9 +186,32 @@
                         <p class="text-danger" id="error_enrollment_date"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+
+                <div class="form-group row">
+                        <label for="middlename" class="col-md-2 text-md-center">Middle Name :</label>            
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="middlename" type="text" class="form-control" name="middlename" placeholder="Middle Name" value="{{$employee[0]->middlename}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_middlename"></p>
+                        </div>
+                        <label for="enrollment_date" class="col-md-2 text-md-center">Enrollment Date :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date" value="{{$employee[0]->enrollment_date}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_enrollment_date"></p>
+                        </div>
                 </div>
                 {{-- SIXTH ROW --}}
-                <div class="form-group row">                 
+                {{-- <div class="form-group row">                 
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="TIN" class="control-label text-md-center">TIN :</label>               
@@ -139,7 +222,7 @@
                     <div class="col-md-5">
                         <label for="employment_status" class="control-label text-md-center">Employment Status :</label>
                         <select class="form-control" id="employment_status" name="employment_status">
-                            <option value="{{$employee[0]->employment_status}}">{{$employee[0]->employment_status}}</option> --}}                           
+                            <option value="{{$employee[0]->employment_status}}">{{$employee[0]->employment_status}}</option>                           
                             <option value="">Select Options</option>
                             <option value="Contractual">Contractual</option>
                             <option value="Probationary">Probationary</option>
@@ -149,9 +232,38 @@
                         <p class="text-danger" id="error_employment_status"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+                <div class="form-group row">
+                        <label for="TIN" class="col-md-2 text-md-center">TIN :</label>            
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="TIN" type="text" class="form-control" name="tin" placeholder="TIN" value="{{$employee[0]->TIN}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_TIN"></p>
+                        </div>
+                        <label for="employment_status" class="col-md-2 text-md-center">Employment Status :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="employment_status" name="employment_status">
+                                        <option value="{{$employee[0]->employment_status}}">{{$employee[0]->employment_status}}</option> --}}                           
+                                        <option value="">Select Options</option>
+                                        <option value="Contractual">Contractual</option>
+                                        <option value="Probationary">Probationary</option>
+                                        <option value="Permanent">Permanent</option>
+                                        <option value="Regular">Regular</option>
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_employment_status"></p>
+                        </div>
                 </div>
                 {{-- SEVENTH ROW --}}
-                <div class="form-group row">                 
+                {{-- <div class="form-group row">                 
                     <div class="col-md-1"></div>
                     <div class="col-md-5">               
                         <label for="SSSGSIS" class="control-label text-md-center">SSS/GSIS :</label>
@@ -165,9 +277,31 @@
                         <p class="text-danger" id="error_birthdate"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+                <div class="form-group row">
+                        <label for="SSSGSIS" class="col-md-2 text-md-center">SSS/GSIS :</label>       
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS" value="{{$employee[0]->SSSGSIS}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_SSSGSIS"></p>
+                        </div>
+                        <label for="birthdate" class="col-md-2 text-md-center">Birthdate :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS" value="{{$employee[0]->SSSGSIS}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_birthdate"></p>
+                        </div>
                 </div>
                 {{-- EIGHT ROW --}}
-                <div class="form-group row">                   
+                {{-- <div class="form-group row">                   
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="PHIC" class="control-label text-md-center">PHIC :</label>               
@@ -186,9 +320,37 @@
                         <p class="text-danger" id="error_gender"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+
+                <div class="form-group row">
+                        <label for="PHIC" class="col-md-2 text-md-center">PHIC :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="PHIC" type="text" class="form-control" name="phic" placeholder="PHIC" value="{{$employee[0]->PHIC}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_PHIC"></p>
+                        </div>
+                        <label for="gender" class="col-md-2 text-md-center">Gender :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="gender" name="gender">
+                                        <option value="{{$employee[0]->gender}}">{{$employee[0]->gender}}</option>
+                                        <option value="">Select Options</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>                               
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_gender"></p>
+                        </div>
                 </div>
                 {{-- NINTH ROW --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>                    
                     <div class="col-md-5">
                         <label for="HDMF" class="control-label text-md-center">HDMF :</label>               
@@ -208,9 +370,38 @@
                         <p class="text-danger" id="error_civil_status"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+
+                <div class="form-group row">
+                        <label for="HDMF" class="col-md-2 text-md-center">HDMF :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="HDMF" type="text" class="form-control" name="hdmf" placeholder="HDMF" value="{{$employee[0]->HDMF}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_HDMF"></p>
+                        </div>
+                        <label for="civil_status" class="col-md-2 text-md-center">Civil Status :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="civil_status" name="civil_status">                              
+                                        <option value="{{$employee[0]->civil_status}}">{{$employee[0]->civil_status}}</option>
+                                        <option value="">Select Options</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widow">Widow</option>                                            
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_civil_status"></p>
+                        </div>
                 </div>
                 {{-- TENTH ROW --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="nid" class="control-label text-md-center">NID :</label>               
@@ -230,9 +421,38 @@
                         <p class="text-danger" id="error_payroll_schedule"></p>
                     </div>
                     <div class="col-md-1"></div>
+                </div> --}}
+
+                <div class="form-group row">
+                        <label for="nid" class="col-md-2 text-md-center">NID :</label>  
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="nid" type="text" class="form-control" name="nid" placeholder="NID" value="{{$employee[0]->NID}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_payroll_schedule"></p>
+                        </div>
+                        <label for="payroll_schedule" class="col-md-2 text-md-center">Payroll Schedule :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="payroll_schedule" name="payroll_schedule">
+                                        <option value="{{$employee[0]->payroll_schedule}}">{{$employee[0]->payroll_schedule}}</option>
+                                        <option value="">Select Options</option>
+                                        <option value="Week">Weekly</option>
+                                        <option value="Month">Monthly</option>
+                                        <option value="2Month">2x Monthly</option>                                            
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_civil_status"></p>
+                        </div>
                 </div>
                 {{-- ELEVENTH ROW --}}
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>
                     <div class="col-md-5">
                         <label for="payroll_bank" class="control-label text-md-center">Payroll Bank :</label>
@@ -250,12 +470,39 @@
                         <p class="text-danger" id="error_account_no"></p>
                     </div>
                     <div class="col-md-1"></div>                   
+                </div> --}}
+
+                <div class="form-group row">
+                        <label for="payroll_bank" class="col-md-2 text-md-center">Payroll Bank :</label> 
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="payroll_bank" name="payroll_bank">
+                                        <option value="{{$employee[0]->payroll_bank}}">{{$employee[0]->payroll_bank}}</option>
+                                    <option value="">Select Options</option>
+                                    <option value="BDO">BANCO DE ORO</option>                                                              
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_payroll_bank"></p>
+                        </div>
+                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" value="{{$employee[0]->account_no}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_account_no"></p>
+                        </div>
                 </div>
 
                 <hr>
                 <label class="control-label text-md-center">Present Address</label>
 
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>                  
                     <div class="col-md-5">  
                         <label for="country" class="text-md-center">Country:</label>                
@@ -273,15 +520,42 @@
                                 <p class="text-danger" id="error_address_unit"></p>
                     </div>
                     <div class="col-md-1"></div>
-                </div>
+                </div> --}}
 
                 <div class="form-group row">
+                        <label for="country" class="col-md-2 text-md-center">Country:</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
+                                <select id="country" name="country" class="form-control">
+                                        <option value="{{$employee[0]->country}}" selected>{{$employee[0]->country}}</option>
+                                        <option value="">Choose Country</option>
+                                        <option value="Phillipines">Philippines</option>
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_country"></p>
+                        </div>
+                        <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
+                                <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit" value={{$employee[0]->address_unit}}  autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_address_unit"></p>
+                        </div>
+                </div>
+
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>                  
                     <div class="col-md-5">
                         <label for="province" class="text-md-center">Province:</label>
                         <select id="province" name="province" class="form-control">
                             <option value="{{$employee[0]->provCode}}" selected>{{$employee[0]->provDesc}}</option>
-                            {{-- <option value="">Choose Province</option>                            --}}
+                            <option value="">Choose Province</option>
                         </select>
                             <p class="text-danger" id="error_province"></p>
                     </div>
@@ -290,22 +564,50 @@
                         <label for="citytown" class="text-md-center">City/Town:</label>
                         <select id="citytown" name="citytown" class="form-control">
                             <option value="{{$employee[0]->citymunCode}}" selected>{{$employee[0]->citymunDesc}}</option>
-                            {{-- <option value="">Choose City/Town</option> --}}
+                            <option value="">Choose City/Town</option>
                         </select>
                             <p class="text-danger" id="error_citytown"></p>
                     </div>
                                      
                     
                     <div class="col-md-1"></div>
-                </div>
+                </div> --}}
 
                 <div class="form-group row">
+                        <label for="province" class="col-md-2 text-md-center">Province:</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
+                                <select id="province" name="province" class="form-control">
+                                        <option value="{{$employee[0]->provCode}}" selected>{{$employee[0]->provDesc}}</option>
+                                        {{-- <option value="">Choose Province</option>                            --}}
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_province"></p>
+                        </div>
+                        <label for="citytown" class="col-md-2 text-md-center">City/Town:</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
+                                <select id="citytown" name="citytown" class="form-control">
+                                        <option value="{{$employee[0]->citymunCode}}" selected>{{$employee[0]->citymunDesc}}</option>
+                                        {{-- <option value="">Choose City/Town</option> --}}
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_citytown"></p>
+                        </div>
+                </div>
+
+                {{-- <div class="form-group row">
                     <div class="col-md-1"></div>                                   
                     <div class="col-md-5">
                         <label for="barangay" class="text-md-center">Barangay:</label>
                         <select id="barangay" name="barangay" class="form-control">
                             <option value="{{$employee[0]->id}}" selected>{{$employee[0]->brgyDesc}}</option>
-                            {{-- <option value="" >Choose Barangay</option> --}}
                         </select>
                             <p class="text-danger" id="error_barangay"></p>
                     </div>
@@ -316,9 +618,38 @@
                                 <p class="text-danger" id="error_zipcode"></p>
                     </div>
                     <div class="col-md-1"></div>
-                </div>          
+                </div> --}}
+                
+                <div class="form-group row">
+                        <label for="barangay" class="col-md-2 text-md-center">Barangay:</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
+                                <select id="barangay" name="barangay" class="form-control">
+                                        <option value="{{$employee[0]->id}}" selected>{{$employee[0]->brgyDesc}}</option>
+                                        {{-- <option value="" >Choose Barangay</option> --}}
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_barangay"></p>
+                        </div>
+                        <label for="zipcode" class="col-md-2 text-md-center">Zipcode:</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-globe input-group-text"></span>
+                                </div>
+                                <input id="zipcode" type="text" class="form-control" name="zipcode" placeholder="Address Zipcode" value="{{$employee[0]->zipcode}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_zipcode"></p>
+                        </div>
+                </div>
             </div>           
         </form>
+        <div class="" id="formOverlay">
+                <i class="" id="spinner"></i>
+        </div>
         <div class="card-footer">
             <button type="button" class="btn btn-default">Back</button>
             <button type="submit" class="btn btn-primary float-right" id="submit">Submit <i id="spinner" class=""></i></button>
@@ -419,7 +750,8 @@ $(document).ready(function(){
 
     //submit
     $(document).on("click", "#submit", function(){
-        
+        $('#formOverlay').addClass('overlay');
+        $("#spinner").addClass('fa fa-refresh fa-spin');
         //$("#employer_id").removeAttr("disabled");
 
         error = 0;
@@ -457,6 +789,7 @@ $(document).ready(function(){
             $("#employee_no").addClass('is-invalid');
             $("#error_employee_no").html("Employee No is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -470,6 +803,7 @@ $(document).ready(function(){
             $("#position").addClass('is-invalid');
             $("#error_position").html("Employee Position is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -483,6 +817,7 @@ $(document).ready(function(){
             $("#department").addClass('is-invalid');
             $("#error_department").html("Employee department is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -496,6 +831,7 @@ $(document).ready(function(){
             $("#lastname").addClass('is-invalid');
             $("#error_lastname").html("Employee Last Name is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -509,6 +845,7 @@ $(document).ready(function(){
             $("#mobile_no").addClass('is-invalid');
             $("#error_mobile_no").html("Employee Mobile No. is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -522,6 +859,7 @@ $(document).ready(function(){
             $("#firstname").addClass('is-invalid');
             $("#error_firstname").html("Employee First Name is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -535,6 +873,7 @@ $(document).ready(function(){
             $("#email_add").addClass('is-invalid');
             $("#error_email_add").html("Employee Email Address is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -548,6 +887,7 @@ $(document).ready(function(){
             $("#middlename").addClass('is-invalid');
             $("#error_middlename").html("Employee Middle Name is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -561,6 +901,7 @@ $(document).ready(function(){
             $("#enrollment_date").addClass('is-invalid');
             $("#error_enrollment_date").html("Employee Enrollment Date is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -574,6 +915,7 @@ $(document).ready(function(){
             $("#TIN").addClass('is-invalid');
             $("#error_TIN").html("Employee TIN No. is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -587,6 +929,7 @@ $(document).ready(function(){
             $("#employment_status").addClass('is-invalid');
             $("#error_employment_status").html("Employee Status is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -600,6 +943,7 @@ $(document).ready(function(){
             $("#SSSGSIS").addClass('is-invalid');
             $("#error_SSSGSIS").html("Employee SSS/GSIS No. is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -613,6 +957,7 @@ $(document).ready(function(){
             $("#birthdate").addClass('is-invalid');
             $("#error_birthdate").html("Employee Birthdate is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -626,6 +971,7 @@ $(document).ready(function(){
             $("#PHIC").addClass('is-invalid');
             $("#error_PHIC").html("Employee Philhealth No. is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -639,6 +985,7 @@ $(document).ready(function(){
             $("#gender").addClass('is-invalid');
             $("#error_gender").html("Employee Gender is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -652,6 +999,7 @@ $(document).ready(function(){
             $("#HDMF").addClass('is-invalid');
             $("#error_HDMF").html("Employee HDMF No. is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -665,6 +1013,7 @@ $(document).ready(function(){
             $("#civil_status").addClass('is-invalid');
             $("#error_civil_status").html("Employee Civil Status is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -678,6 +1027,7 @@ $(document).ready(function(){
             $("#nid").addClass('is-invalid');
             $("#error_nid").html("Employee nid No. is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -691,6 +1041,7 @@ $(document).ready(function(){
             $("#payroll_schedule").addClass('is-invalid');
             $("#error_payroll_schedule").html("Employee Payroll Schedule is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -704,6 +1055,7 @@ $(document).ready(function(){
             $("#payroll_bank").addClass('is-invalid');
             $("#error_payroll_bank").html("Employee Payroll Bank is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -717,6 +1069,7 @@ $(document).ready(function(){
             $("#account_no").addClass('is-invalid');
             $("#error_account_no").html("Employee Account No. is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -730,6 +1083,7 @@ $(document).ready(function(){
             $("#country").addClass('is-invalid');
             $("#error_country").html("Employee Country is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -743,6 +1097,7 @@ $(document).ready(function(){
             $("#address_unit").addClass('is-invalid');
             $("#error_address_unit").html("Employee Address Unit is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -756,6 +1111,7 @@ $(document).ready(function(){
             $("#province").addClass('is-invalid');
             $("#error_province").html("Employee Province is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -769,6 +1125,7 @@ $(document).ready(function(){
             $("#citytown").addClass('is-invalid');
             $("#error_citytown").html("Employee Address Town is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -782,6 +1139,7 @@ $(document).ready(function(){
             $("#barangay").addClass('is-invalid');
             $("#error_barangay").html("Employee Address Barangay is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -795,6 +1153,7 @@ $(document).ready(function(){
             $("#zipcode").addClass('is-invalid');
             $("#error_zipcode").html("Employee Zipcode is Required");
             error++;
+            spinnerTimout();
         }
         else
         {
@@ -817,6 +1176,7 @@ $(document).ready(function(){
                     $('#EmployeeForm')[0].reset();
                 },
                 error: function (data, status) {
+                    spinnerTimout();
                     console.log("RIG");
                     toastr.error('Employee Enrolled Failed', 'Error')
                     if(data.status === 422) {
@@ -968,7 +1328,15 @@ $(document).ready(function(){
         else
         {
             console.log("Error");
-        }       
+        }
+        
+        /*Function For Spinner*/
+        function spinnerTimout(){
+            setTimeout(function (){
+                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                $('#formOverlay').removeClass('overlay');
+            }, 250);
+        } 
     });
 
     //SEARCH EMPLOYEE

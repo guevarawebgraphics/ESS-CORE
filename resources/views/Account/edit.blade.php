@@ -314,7 +314,7 @@
                             </div>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="sec" name="sec" multiple onchange="processSelectedFilesSec(this)">
-                                <label class="custom-file-label" for="validatedCustomFile" id="sec_filename">{{ $Account[0]->sec }}</label>
+                                <label class="custom-file-label" for="validatedCustomFile" id="sec_filename">{{ substr($Account[0]->sec, 0, 10) }}</label>
                             </div>
                         </div>
                         
@@ -334,7 +334,7 @@
                                 </div>
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="bir" name="bir" multiple onchange="processSelectedFilesBir(this)">
-                                    <label class="custom-file-label" for="validatedCustomFile" id="bir_filename">{{ $Account[0]->bir }}</label>
+                                    <label class="custom-file-label" for="validatedCustomFile" id="bir_filename">{{ substr($Account[0]->bir, 0, 10) }}</label>
                                 </div>
                             </div>
                 </div>
@@ -345,7 +345,7 @@
           <!-- /.card-body -->
 
           <div class="card-footer">
-              <button type="button" class="btn btn-default">Back</button>
+              {{-- <button type="button" class="btn btn-default">Back</button> --}}
             <button type="submit" class="btn btn-primary float-right">Submit <i  class=""></i></button>
           </div>
         </form>

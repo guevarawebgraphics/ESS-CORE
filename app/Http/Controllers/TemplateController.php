@@ -77,7 +77,11 @@ manage_docs') == 'delete'){
     public function get_all_template(){
         $Template = DB::table('template')
                             ->join('employer', 'employer.account_id', '=', 'template.account_id')
-                            ->select('template.id', 'template.document_code', 'template.document_description', 'template.document_file', 'employer.business_name')
+                            ->select('template.id',
+                            'template.document_code',
+                            'template.document_description',
+                            'template.document_file',
+                            'employer.business_name')
                             ->get();
         return json_encode($Template);
     }
@@ -130,7 +134,11 @@ manage_docs') == 'delete'){
         $Template_id = $request->id;
         $Template = DB::table('template')
                         ->join('employer', 'employer.account_id', '=', 'template.account_id')
-                        ->select('template.id', 'template.document_code', 'template.document_description', 'template.document_file', 'employer.business_name')
+                        ->select('template.id',
+                        'template.document_code',
+                        'template.document_description',
+                        'template.document_file',
+                        'employer.business_name')
                         ->where('template.id', $Template_id)
                         ->get();
         return json_encode($Template);

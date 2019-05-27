@@ -111,6 +111,8 @@ elseif(Session::get('my_profile') == 'delete'){
         //update settings
         var counter = 0;
         $(document).on("click", "#btnUpdate", function(){
+            toastr.remove()
+            toastr.clear()
             counter = 0;
             if(curPass_valid == "1")
             {

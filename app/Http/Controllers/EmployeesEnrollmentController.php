@@ -16,11 +16,13 @@ use Mail;
 use Keygen;
 use Uppercase;
 use DateTime;
+use Carbon\Carbon;
 use App\User;
+use App\UserActivation;
 use App\EmployeeEnrollment;
 use App\ESSBase;
 use App\Logs;
-use App\OTP;
+// use App\OTP;
 use App\EmployerEmployee;
 use App\EmployeePersonalInfo;
 
@@ -78,24 +80,39 @@ class EmployeesEnrollmentController extends Controller
     //show the index page
     public function index()
     {
-        $employee_info = DB::connection('mysql')->select("SELECT a.id, a.employee_no, a.department, a.position, 
-            b.firstname, b.middlename, b.lastname 
-            FROM employee AS a 
-            LEFT JOIN employee_personal_information AS b 
-            ON a.employee_info = b.id 
-            WHERE a.employer_id = '".auth()->user()->employer_id."' ");
+        // $employee_info = DB::connection('mysql')->select("SELECT a.id, a.employee_no, a.department, a.position, 
+        //     b.firstname, b.middlename, b.lastname 
+        //     FROM employee AS a 
+        //     LEFT JOIN employee_personal_information AS b 
+        //     ON a.employee_info = b.id 
+        //     WHERE a.employer_id = '".auth()->user()->employer_id."' ");
+
+        $employee_info = DB::table('employer_and_employee')
+                            ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
+                            ->join('users', 'employee.id', '=', 'users.employee_id')
+                            ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+                            ->where('employee.employer_id', '=', auth()->user()->employer_id)
+                            ->get();
+
 
         return view('employer_modules.employees_enrollment.index')->with('employee_info', $employee_info);
     }
     //refresh table employee
     public function refresh_table_employee()
     {
-        $employee_info = DB::connection('mysql')->select("SELECT a.id, a.employee_no, a.department, a.position, 
-            b.firstname, b.middlename, b.lastname 
-            FROM employee AS a 
-            LEFT JOIN employee_personal_information AS b 
-            ON a.employee_info = b.id 
-            WHERE a.employer_id = '".auth()->user()->employer_id."' ");
+        // $employee_info = DB::connection('mysql')->select("SELECT a.id, a.employee_no, a.department, a.position, 
+        //     b.firstname, b.middlename, b.lastname 
+        //     FROM employee AS a 
+        //     LEFT JOIN employee_personal_information AS b 
+        //     ON a.employee_info = b.id 
+        //     WHERE a.employer_id = '".auth()->user()->employer_id."' ");
+
+        $employee_info = DB::table('employer_and_employee')
+                            ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
+                            ->join('users', 'employee.id', '=', 'users.employee_id')
+                            ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+                            ->where('employee.employer_id', '=', auth()->user()->employer_id)
+                            ->get();
 
         return view('employer_modules.employees_enrollment.table.encodetable')->with('employee_info', $employee_info);
     }
@@ -117,7 +134,11 @@ class EmployeesEnrollmentController extends Controller
         $data = array();
         $employee_info = '';
         
-        $search_ess_employee = DB::connection("mysql")->select("SELECT * FROM ess_basetable WHERE ess_id = '$ess_id' ");
+        //  $search_ess_employee = DB::connection("mysql")->select("SELECT * FROM ess_basetable WHERE ess_id = '$ess_id' ");
+
+        $search_ess_employee = DB::table('ess_basetable')
+                                    ->where('ess_id', '=', $ess_id)
+                                    ->get();
         
         if(!empty($search_ess_employee)){
 
@@ -127,10 +148,40 @@ class EmployeesEnrollmentController extends Controller
             // ->get();
 
             $employee_info = DB::table('employee_personal_information')
-            ->select('id','lastname', 'firstname', 'middlename', 'TIN', 'SSSGSIS', 'PHIC', 'HDMF', 'NID', 'mobile_no',
-            'email_add', 'birthdate', 'gender', 'civil_status', 'country', 'address_unit', 'citytown', 'barangay', 'province', 'zipcode')
-            ->where('id', '=', $search_ess_employee[0]->employee_info)
-            ->get();
+                            ->join('employee', 'employee_personal_information.id', '=', 'employee.employee_info')
+                            // ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
+                            // ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
+                            // ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
+                            ->select('employee.employee_no',
+                                    'employee.enrollment_date',
+                                    'employee.department',
+                                    'employee.employment_status',
+                                    'employee.payroll_schedule',
+                                    'employee.payroll_bank',
+                                    'employee.account_no',
+                                    'employee.position',
+                                    'employee_personal_information.id',
+                                    'employee_personal_information.lastname',
+                                    'employee_personal_information.firstname',
+                                    'employee_personal_information.middlename',
+                                    'employee_personal_information.TIN',
+                                    'employee_personal_information.SSSGSIS',
+                                    'employee_personal_information.PHIC',
+                                    'employee_personal_information.HDMF',
+                                    'employee_personal_information.NID',
+                                    'employee_personal_information.mobile_no',
+                                    'employee_personal_information.email_add',
+                                    'employee_personal_information.birthdate',
+                                    'employee_personal_information.gender',
+                                    'employee_personal_information.civil_status',
+                                    'employee_personal_information.country',
+                                    'employee_personal_information.address_unit',
+                                    'employee_personal_information.citytown',
+                                    'employee_personal_information.barangay',
+                                    'employee_personal_information.province',
+                                    'employee_personal_information.zipcode',)
+                            ->where('employee_personal_information.id', '=', $search_ess_employee[0]->employee_info)
+                            ->get();
 
             $ess_id = DB::table('ess_basetable')
             ->select('ess_id')
@@ -165,6 +216,15 @@ class EmployeesEnrollmentController extends Controller
             $barangay = $employee_info[0]->barangay;
             $province = $employee_info[0]->province;
             $zipcode = $employee_info[0]->zipcode;
+            $employee_no = $employee_info[0]->employee_no;
+            $enrollment_date = $employee_info[0]->enrollment_date;
+            $department = $employee_info[0]->department;
+            $employment_status = $employee_info[0]->employment_status;
+            $payroll_schedule = $employee_info[0]->payroll_schedule;
+            $payroll_bank = $employee_info[0]->payroll_bank;
+            $account_no = $employee_info[0]->account_no;
+            $position = $employee_info[0]->position;
+
         }
         else
         {
@@ -187,12 +247,20 @@ class EmployeesEnrollmentController extends Controller
             'birthdate' => $birthdate,
             'gender' => $gender,
             'civil_status' => $civil_status,
-            'country' => $country
-            // 'address_unit' => $address_unit,
-            // 'citytown' => $citytown,
-            // 'barangay' => $barangay,
-            // 'province' => $province,
-            // 'zipcode' => $zipcode
+            'country' => $country,
+            'address_unit' => $address_unit,
+            'citytown' => $citytown,
+            'barangay' => $barangay,
+            'province' => $province,
+            'zipcode' => $zipcode,
+            'employee_no' => $employee_no,
+            'enrollment_date' => $enrollment_date,
+            'department' => $department,
+            'employment_status' => $employment_status,
+            'payroll_schedule' => $payroll_schedule,
+            'payroll_bank' => $payroll_bank,
+            'account_no' => $account_no,
+            'position' => $position,
         );
 
         echo json_encode($data);
@@ -206,12 +274,17 @@ class EmployeesEnrollmentController extends Controller
         $this->getaccount();
 
         $password = Keygen::alphanum(10)->generate();
-        $OTP = Keygen::length(6)->numeric()->generate();
+        $UserActivation = Keygen::length(6)->numeric()->generate();
         $useractivation_id = $this->generateUserActivationId();
+
+        $birthdate = Carbon::parse($request->birthdate)->format('Y-m-d');
+        $enrollment_date = Carbon::parse($request->enrollment_date)->format('Y-m-d');
 
         //Generated ESS ID
         $initial = (new Initials)->length(3)->generate($request->input('lastname') . ' ' . $request->input('firstname') . ' ' . $request->input('middlename'));    
         $employee_ess_id = $initial . $this->generateESSID();
+
+        $fullname = $request->input('last_name') . ", " . $request->input('first_name') . ", " . $request->input('middle_name');
 
         /// NEW FUNCTION
 
@@ -267,7 +340,7 @@ class EmployeesEnrollmentController extends Controller
                     'SSSGSIS' => $request->input('sssgsis'), 
                     'PHIC' => $request->input('phic'), 
                     'HDMF' => $request->input('hdmf'), 
-                    'birthdate' => $request->input('birthdate'), 
+                    'birthdate' => $birthdate, 
                     'NID' => $request->input('nid'), 
                     'gender' => $request->input('gender'),         
                     'civil_status' => $request->input('civil_status'),           
@@ -291,7 +364,7 @@ class EmployeesEnrollmentController extends Controller
                     'employer_id' => auth()->user()->employer_id,
                     'position' => $request->input('position'),
                     'department' => $request->input('department'),             
-                    'enrollment_date' => $request->input('enrollment_date'),           
+                    'enrollment_date' => $enrollment_date,           
                     'employment_status' => $request->input('employment_status'),                          
                     'payroll_schedule' => $request->input('payroll_schedule'),
                     'payroll_bank' => $request->input('payroll_bank'), 
@@ -305,6 +378,7 @@ class EmployeesEnrollmentController extends Controller
 
                 //insert into ess base table
                 $insert_ess = new ESSBase;
+                $insert_ess->account_id = $employee_id;
                 $insert_ess->ess_id = $employee_ess_id;
                 $insert_ess->employee_info = $personal_info_id;
                 $insert_ess->user_type_id = 4;            
@@ -312,18 +386,19 @@ class EmployeesEnrollmentController extends Controller
                 $insert_ess->updated_by = auth()->user()->id;
                 $insert_ess->save();
                 
-                $fullname = $request->input('last_name') . ", " . $request->input('first_name') . " " . $request->input('middle_name');
+                
 
                 //insert into table user
                 $user = User::create([
                     'user_type_id' => 4,
                     'user_type_for' => 7,
                     'employer_id' => auth()->user()->employer_id,//Session::get("employer_id"),//$request->input('employer_id'),
-                    'employee_no' => $employee_id,
-                    'name' => $fullname,
+                    'employee_id' => $employee_id,
+                    'name' => $request->input('last_name') . ", " . $request->input('first_name') . ", " . $request->input('middle_name'),
                     'username' => $employee_ess_id,
                     'password' => Hash::make($password),
-                    'enrollment_date' => $request->input('enrollment_date'),
+                    'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
+                    'enrollment_date' => $enrollment_date,
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,
                 ]);
@@ -331,6 +406,7 @@ class EmployeesEnrollmentController extends Controller
                 //insert into employer to employee table           
                 $insert_employee = new EmployerEmployee;
                 $insert_employee->ess_id = $employee_ess_id;
+                $insert_employee->employee_id = $employee_id;
                 $insert_employee->employer_id = auth()->user()->employer_id;//Session::get("employer_id");
                 $insert_employee->employee_no = $employee_id;
                 $insert_employee->save();
@@ -352,23 +428,49 @@ class EmployeesEnrollmentController extends Controller
                     'user_activation_id' => $useractivation_id
                 );
 
-                //Sending Email
-                Mail::send('Email.employee_email', $data, function($message) use ($employee_personal_info){
-                    $message->to($employee_personal_info->email_add)
-                            ->subject("ESS Employee Successfully Registered ");
-                    $message->from('esssample@gmail.com', "ESS Employee Registration");
-                });
+                // //Sending Email
+                // Mail::send('Email.employee_email', $data, function($message) use ($employee_personal_info){
+                //     $message->to($employee_personal_info->email_add)
+                //             ->subject("ESS Employee Successfully Registered ");
+                //     $message->from('esssample@gmail.com', "ESS Employee Registration");
+                // });
 
-                $this->sendSms($request->input('mobile_no'), $OTP, $get_employer_name[0]->business_name, $request->input('firstname'));
+                /*Email Template*/
+            $mail_template = DB::table('notification')
+                            ->where('employer_id', auth()->user()->id)
+                            ->where('notification_type', 1)
+                            ->select('notification_message')
+                            ->first();
+
+
+            $activation_link = "http://127.0.0.1:8000/Account/Activation/".$useractivation_id;
+
+
+            // Replace All The String in the Notification Message
+            $search = ["name", "username", "mobile", "url", "password"];
+            $replace = [$request->input('first_name'), $employee_ess_id, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
+            $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+                             
+
+            /*Send Mail */
+            $data = array('username' => $user->name, "password" => $password, "template" => $template_result);
+
+            Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
+                $message->to($employee_personal_info->email_add)
+                        ->subject("ESS Successfully Registered ");
+                $message->from('esssample@gmail.com', "ESS");
+            });
+
+                // $this->sendSms($request->input('mobile_no'), $OTP, $get_employer_name[0]->business_name, $request->input('firstname'));
 
                 //$date = new DateTime();
                 $date_unitl = date("Y-m-d H:i:s", strtotime('+5 minutes'));
 
-                $otp = OTP::create([
-                    'account_id' => 1,
-                    'activation_code' => $OTP,
+                $UserActivation = UserActivation::create([
+                    'account_id' => $user->id,
+                    'activation_code' => $UserActivation,
                     'user_activation_id' => $useractivation_id,
-                    'expiration_date' => 5,//this means 5 minutes or according to sir meo
+                    'expiration_date' => Carbon::now()->addCentury(), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id
                 ]);
@@ -400,7 +502,7 @@ class EmployeesEnrollmentController extends Controller
                 'employer_id' => Session::get("employer_id"),
                 'position' => $request->input('position'),
                 'department' => $request->input('department'),             
-                'enrollment_date' => $request->input('enrollment_date'),           
+                'enrollment_date' => $enrollment_date,           
                 'employment_status' => $request->input('employment_status'),                          
                 'payroll_schedule' => $request->input('payroll_schedule'),
                 'payroll_bank' => $request->input('payroll_bank'), 
@@ -418,93 +520,7 @@ class EmployeesEnrollmentController extends Controller
             $insert_employee->employee_no = $employee_id;
             $insert_employee->save();           
         }
-            ////// OLD FUNCTION
-
-            // //Create User
-            // $user = User::create([
-            //     'user_type_id' => 4,
-            //     'user_type_for' => 7,
-            //     'employer_id' => Session::get("employer_id"),//$request->input('employer_id'),
-            //     'employee_no' => $request->input('employee_no'),
-            //     'name' => $request->input('last_name') . ", " . $request->input('first_name') . " " . $request->input('middle_name'),
-            //     'username' => $request->input('employee_no'),
-            //     'password' => Hash::make($password),
-            //     'enrollment_date' => $request->input('enrollment_date'),
-            //     'created_by' => auth()->user()->id,
-            //     'updated_by' => auth()->user()->id,
-            // ]);
-
-            // //Gett the Id of User
-            // $Account_id = $user->id;
-                      
-            // //Insert on Employee Table
-            // $employee = EmployeeEnrollment::create([
-            //     'account_id' => 1, //$Account_id,
-            //     'employee_no' => $request->input('employee_no'),
-            //     'employer_id' => Session::get("employer_id"), //$request->input('employer_id'),
-            //     'position' => $request->input('position'),
-            //     'department' => $request->input('department'),
-            //     'lastname' => $request->input('lastname'),
-            //     'firstname' => $request->input('firstname'),
-            //     'middlename' => $request->input('middlename'),
-            //     'mobile_no' => $request->input('mobile_no'),      
-            //     'email_add' => $request->input('email_add'),
-            //     'enrollment_date' => $request->input('enrollment_date'),           
-            //     'employment_status' => $request->input('employment_status'), 
-            //     'TIN' => $request->input('tin'), 
-            //     'SSSGSIS' => $request->input('sssgsis'), 
-            //     'PHIC' => $request->input('phic'), 
-            //     'HDMF' => $request->input('hdmf'), 
-            //     'birthdate' => $request->input('birthdate'), 
-            //     'NID' => $request->input('nid'), 
-            //     'gender' => $request->input('gender'),         
-            //     'civil_status' => $request->input('civil_status'),           
-            //     'payroll_schedule' => $request->input('payroll_schedule'),
-            //     'payroll_bank' => $request->input('payroll_bank'), 
-            //     'account_no' => $request->input('account_no'), 
-            //     'country' => $request->input('country'), 
-            //     'address_unit' => $request->input('address_unit'), 
-            //     'province' => $request->input('province'), 
-            //     'citytown' => $request->input('citytown'), 
-            //     'barangay' => $request->input('barangay'), 
-            //     'zipcode' => $request->input('zipcode'),
-            //     'created_by' => auth()->user()->id,
-            //     'updated_by' => auth()->user()->id         
-            // ]);
-            
-            // //get the employee id of the latest
-            // $employee_id = $employee->id;         
-            
-            // //Check if there is existing ESS ID on ESS BASE TABLE
-            // $check_ess_id = DB::connection("mysql")->select("SELECT * FROM ess_basetable WHERE ess_id = '".$request->input('essid_search')."' ");
-            // if(!empty($check_ess_id))
-            // {
-            //     //Insert into employer employee table
-            //     $insert_employee = new EmployerEmployee;
-            //     $insert_employee->ess_id = $employee_ess_id;
-            //     $insert_employee->employer_id = Session::get("employer_id");
-            //     $insert_employee->employee_no = $employee_id;
-            //     $insert_employee->save();
-            // }
-            // else
-            // {  
-            //     //Create a User In Base Table
-            //     $insert_ess = new ESSBase;
-            //     $insert_ess->account_id = $Account_id;
-            //     $insert_ess->ess_id = $employee_ess_id;
-            //     $insert_ess->employee_no = $employee_id;
-            //     $insert_ess->user_type_id = 4;            
-            //     $insert_ess->created_by = auth()->user()->id;
-            //     $insert_ess->updated_by = auth()->user()->id;
-            //     $insert_ess->save();
-    
-            //     //Insert into employer employee table
-            //     $insert_employee = new EmployerEmployee;
-            //     $insert_employee->ess_id = $employee_ess_id;
-            //     $insert_employee->employer_id = Session::get("employer_id");
-            //     $insert_employee->employee_no = $employee_id;
-            //     $insert_employee->save();               
-            // }          
+       
     }
 
     //send sms
@@ -553,18 +569,25 @@ class EmployeesEnrollmentController extends Controller
         }
         else if($id != "")
         {
-            $employee = DB::connection('mysql')
-                ->select("SELECT a.*, b.*, c.*, d.*, e.*
-                    FROM employee AS a 
-                    LEFT JOIN employee_personal_information AS b 
-                    ON a.employee_info = b.id 
-                    LEFT JOIN refbrgy AS c
-                    ON b.barangay = c.id
-                    LEFT JOIN refcitymun AS d
-                    ON b.citytown = d.citymunCode
-                    LEFT JOIN refprovince AS e
-                    ON b.province = e.provCode
-                    WHERE a.id = '$id' ");
+            // $employee = DB::connection('mysql')
+            //     ->select("SELECT a.*, b.*, c.*, d.*, e.*
+            //         FROM employee AS a 
+            //         LEFT JOIN employee_personal_information AS b 
+            //         ON a.employee_info = b.id 
+            //         LEFT JOIN refbrgy AS c
+            //         ON b.barangay = c.id
+            //         LEFT JOIN refcitymun AS d
+            //         ON b.citytown = d.citymunCode
+            //         LEFT JOIN refprovince AS e
+            //         ON b.province = e.provCode
+            //         WHERE a.id = '$id' ");
+            $employee = DB::table('employee')
+                            ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+                            ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
+                            ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
+                            ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
+                            ->where('employee.id', '=', $id)
+                            ->get();
 
             return view('employer_modules.employees_enrollment.editencode')->with('employee', $employee);
         }
@@ -644,4 +667,26 @@ class EmployeesEnrollmentController extends Controller
 
         return $user_activation_id;
     }
+
+        // Update Account Status
+        public function UpdateAccountStatus(Request $request, $id){
+
+            /*Update Account Employer*/
+            DB::table('users')->where('employee_id', '=', $id)
+                    ->update(array(
+                        'AccountStatus' => $request->input('AccountStatus')
+            ));
+    
+            if ($id == null && $request->input('AccountStatus') == null){
+                $msg = 'Error';
+            }
+            else {
+                $msg = 'Success';
+            }
+    
+            $this->insert_log("Updated Account");
+    
+    
+            return Response::json($msg);
+        }
 }

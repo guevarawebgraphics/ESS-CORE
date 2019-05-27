@@ -1,32 +1,46 @@
 <table class="table table-bordered table-striped" id="employee_table">
-    <thead>
-        <tr>
-            <th scope="col">Employee No</th>
-            <th scope="col">Employee Name</th>
-            <th scope="col">Department</th>
-            <th scope="col">Position</th>
-            <th scope="col">Status</th>
-            <th scope="col" colspan="2">Action</th>                 
-        </tr>
-    </thead>
-    <tbody>
-        @if(count($employee_info) > 0)
-            @foreach($employee_info as $info)
+        <thead>
             <tr>
-                <td>{{$info->employee_no}}</td>
-                <td>{{ucfirst($info->lastname) . ", " . ucfirst($info->firstname) . " " . ucfirst($info->middlename)}}</td>
-                <td>{{ucfirst($info->department)}}</td>
-                <td>{{ucfirst($info->position)}}</td>
-                <td><span class="badge badge-success">Active</span></td>
-                <td>
-                    <a href="/enrollemployee/edit/{{$info->id}}" class="btn btn-sm btn-primary" id="btn_editemployee">Edit Employee</a>
-                </td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-info" id="btn_changestatus">Change Status</a>                    
-                </td>
+                <th>Employee No</th>
+                <th>Employee Name</th>
+                <th>Department</th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>Change Status</th>
+                <th>Action</th>                 
             </tr>
-            @endforeach
-        @else
-        @endif
-    </tbody>
-</table>       
+        </thead>
+        <tbody>
+            @if(count($employee_info) > 0)
+                @foreach($employee_info as $info)
+                <tr>
+                    <td>{{$info->employee_no}}</td>
+                    <td>{{ucfirst($info->lastname) . ", " . ucfirst($info->firstname) . " " . ucfirst($info->middlename)}}</td>
+                    <td>{{ucfirst($info->department)}}</td>
+                    <td>{{ucfirst($info->position)}}</td>
+                    <td>
+                        @if($info->AccountStatus == 1)
+                            <span class="badge badge-success">Active</span>
+                        @endif
+                        @if($info->AccountStatus == 2)
+                            <span class="badge badge-secondary">In-Active</span>
+                        @endif
+                        @if($info->AccountStatus == 3)
+                            <span class="badge badge-danger">Deactivated</span>
+                        @endif
+                        @if($info->AccountStatus == 0)
+                            <span class="badge badge-danger">Deleted</span>
+                        @endif
+                    </td>
+                    <td>
+                        <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->employee_id}}">Change Status</button>
+                    </td>
+                    <td>
+                        <a href="/enrollemployee/edit/{{$info->id}}" class="btn btn-sm btn-primary" id="btn_editemployee">Edit Employee</a>
+                    </td>
+                </tr>
+                @endforeach
+            @else
+            @endif
+        </tbody>
+    </table>       

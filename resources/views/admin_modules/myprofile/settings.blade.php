@@ -101,7 +101,7 @@ elseif(Session::get('my_profile') == 'delete'){
                         </div>
                     </div>  
                     <div class="form-group row">
-                        <label for="txtemail" class="col-form-label col-md-2">Email @if(auth()->user()->email_verified_at != "")<span data-toggle="tooltip" data-placement="right" title="Verified"><i class="fa fa-check-circle"></i></span>@endif</label>
+                        <label for="txtemail" class="col-form-label col-md-2">Email @if(auth()->user()->email_verified_at != "")<span data-toggle="tooltip" data-placement="right" title="Verified"><i class="fa fa-check-circle text-primary"></i></span>@endif</label>
                         <div class="col-md-6">
                             <div id="email"></div>                                   
                         </div>
@@ -150,10 +150,16 @@ elseif(Session::get('my_profile') == 'delete'){
             dataType: "JSON",
             success:function(data)
             {
-                $("#acc_info").html('<p>' + data.type_name + '</p>');
+                if(data.type_name == null){
+                    $("#acc_info").html('<p>'+"ESS Admin"+'</p>');
+                }
+                else {
+                    $("#acc_info").html('<p>' + data.type_name + '</p>');
+                }
+                
                 $("#hidden_id").val(data.id);
 
-                if(data.unit == "" && data.unit == "" && data.brgy == "" && data.mun == "" && data.prov == "")
+                if(data.unit == null && data.unit == null && data.brgy == null && data.mun == null && data.prov == null)
                 {
                     $("#location").html('<p class="card-text" style="text-transform:uppercase">-</p>');
                 }
@@ -162,7 +168,7 @@ elseif(Session::get('my_profile') == 'delete'){
                     $("#location").html('<p class="card-text" style="text-transform:uppercase">'+ data.unit + " " + data.brgy + " " + data.mun + " " + data.prov +'</p>');
                 }
                 
-                if(data.email == "")
+                if(data.email == null)
                 {
                     $("#email").html('<input type="text" id="txtemail" class="form-control" name="email" value="-" disabled>');
                 }
@@ -171,7 +177,7 @@ elseif(Session::get('my_profile') == 'delete'){
                     $("#email").html('<input type="text" id="txtemail" class="form-control" name="email" value="'+ data.email +'" >');
                 }
 
-                if(data.contact == "")
+                if(data.contact == null)
                 {
                     $("#mobile").html('<input type="text" id="txtmobile" class="form-control" name="mobile" value="-" disabled>');
                 }

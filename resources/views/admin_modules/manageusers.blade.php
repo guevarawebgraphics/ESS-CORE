@@ -57,15 +57,18 @@ elseif(Session::get('manage_users') == 'delete'){
         </div>
         
         <div class="card-body">
-            <div class="pull-right">
-                <button type="button" class="btn btn-primary" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User Type</button>
-            </div>
-            <br>
-            <br>
             <div class="form-group row">
-                <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label>
-                <div class="col-md-4">          
-                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
+                <div class="col-md-6">    
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="fa fa-search input-group-text"></span>
+                        </div>
+                        <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
+                    </div>
+                </div>
+                {{-- <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label> --}}
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary float-md-right" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User Type</button>
                 </div>
             </div>
 
@@ -132,11 +135,16 @@ elseif(Session::get('manage_users') == 'delete'){
                         <div class="form-group row" id="user_type_for_field">
                             <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type for</label>
                             <div class="col-md-6">
-                                <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">                                   
-                                    <option value="2">ESS Admin</option>
-                                    <option value="4">Employer</option>   
-                                    <option value="6">CMS</option>                                                        
-                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-user input-group-text"></span>
+                                    </div>
+                                    <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">                                   
+                                            <option value="2">ESS Admin</option>
+                                            <option value="4">Employer</option>   
+                                            <option value="6">CMS</option>                                                        
+                                    </select>
+                                </div>
                             </div>                   
                         </div>
 
@@ -151,9 +159,14 @@ elseif(Session::get('manage_users') == 'delete'){
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">User Type Name</label>
                             <div id="typename"  class="col-md-6">
-                                <input type="hidden" id="hidden_id_usertype">
-                                <input type="hidden" id="action" value="add">
-                                <input id="name" type="text" class="form-control" name="type_name" value="">                                  
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-user input-group-text"></span>
+                                    </div>
+                                    <input type="hidden" id="hidden_id_usertype">
+                                    <input type="hidden" id="action" value="add">
+                                    <input id="name" type="text" class="form-control" name="type_name" value="">      
+                                </div>             
                                 <p class="text-danger" id="error-no-type" hidden>* Field is Required</p>             
                             </div>
                         </div>

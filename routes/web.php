@@ -38,7 +38,10 @@ Route::get('/', function () { // root if the user is login
 });
 
 Auth::routes();
-
+/*Guard route*/
+Route::get('logout', function(){
+    return abort(404);
+});
 //Route::get('/home', 'HomeController@index')->name('home');
 
 //Manage Users
@@ -58,6 +61,7 @@ Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->na
 Route::get('/manageuser/checkusername', 'Auth\\RegisterController@checkusername')->name('checkusername');
 Route::post('/manageuser/create/reset_password', 'Auth\\RegisterController@reset_password')->name('resetpassword');
 Route::get('/manageuser/generate', 'ManageUserController@ESSIDGenerate');
+Route::patch('/manageuser/UpdateAccountStatus/{id}', 'ManageUserController@UpdateAccountStatus');
 
 //My Profile
 Route::get('/myprofile/settings', 'MyProfileController@settings');
@@ -127,6 +131,8 @@ Route::get('/enrollemployee/upload', 'EmployeesEnrollmentController@upload');
 Route::post('/enrollemployee/encode/post', 'EmployeesEnrollmentController@encode_post');
 Route::get('/enrollemployee/searchemployee', 'EmployeesEnrollmentController@search_existing_employee');
 Route::get('/enrollemployee/edit/{id}', 'EmployeesEnrollmentController@edit_encode');
+Route::get('/enrollemployee/refresh_table_employee', 'EmployeesEnrollmentController@refresh_table_employee');
+Route::patch('/enrollemployee/UpdateAccountStatus/{id}', 'EmployeesEnrollmentController@UpdateAccountStatus');
 
 //Employer Content
 Route::get('/employercontent/manage', 'EmployerContentController@manage');

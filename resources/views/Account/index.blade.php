@@ -85,10 +85,10 @@ elseif(Session::get('create_profile') == 'delete'){
           <th>AccountName</th>
           <th>Account Type</th>
           <th>Email</th>
-          <th>Account Status</th>
+          {{-- <th>Account Status</th> --}}
           <th>Document Sec</th>
           <th>Document Bir</th>
-          <th>Change Status</th>
+          {{-- <th>Change Status</th> --}}
           <th>Action</th>
         </tr>
         </thead>
@@ -129,10 +129,10 @@ elseif(Session::get('create_profile') == 'delete'){
                 <th>AccountName</th>
                 <th>Account Type</th>
                 <th>Email</th>
-                <th>Account Status</th>
+                {{-- <th>Account Status</th> --}}
                 <th>Document Sec</th>
                 <th>Document Bir</th>
-                <th>Change Status</th>
+                {{-- <th>Change Status</th> --}}
                 <th>Action</th>
             </tr>
         </tfoot>
@@ -337,19 +337,19 @@ elseif(Session::get('create_profile') == 'delete'){
                         '<td>'+data[i].accountname+'</td>'+
                         '<td>'+data[i].type_name+'</td>'+
                         '<td>'+data[i].contact_email+'</td>'+
-                        '<td>'+AccountStatus+'</td>'+
-                        '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(sec.length > 10 ? sec.substring(0, 10)+'<i class="fa fa-download"></i>' : data[i].sec) +'</a>' + '</td>'+
-                        '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(bir.length > 10 ? bir.substring(0, 10)+'<i class="fa fa-download"></i>' : data[i].bir) +'</a>' + '</td>'+
-                        '<td>' + '<a href="#ChangeStatus" class="CS btn-sm btn btn-info '+(data[i].AccountStatus == 0 ? 'disabled' : "") +'" data-toggle="modal" data-target="#csModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'" {{$edit}}><i class="fa fa-info"></i> Change Status</a>' +'</td>'+
-                        '<td>' + '<a href="/Account/edit/'+data[i].account_id+'" class="btn btn-sm btn-secondary" {{$edit}}><i class="fa fa-edit"></i> Edit</a> ' +
-                          '<a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].account_id+'" data-business_name="'+data[i].business_name+'" {{$delete}}><i class="fa fa-trash"></i> Delete</a>' +
+                        //'<td>'+AccountStatus+'</td>'+
+                        '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(sec.length > 10 ? sec.substring(0, 10)+'<div class="float-right"><i class="fa fa-download"></i></div>' : data[i].sec) +'</a>' + '</td>'+
+                        '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(bir.length > 10 ? bir.substring(0, 10)+'<div class="float-right"><i class="fa fa-download"></i></div>' : data[i].bir) +'</a>' + '</td>'+
+                        // '<td>' + '<a href="#ChangeStatus" class="CS btn-sm btn btn-info '+(data[i].AccountStatus == 0 ? 'disabled' : "") +'" data-toggle="modal" data-target="#csModal" data-id="'+data[i].id+'" data-business_name="'+data[i].business_name+'" {{$edit}}><i class="fa fa-info"></i> Change Status</a>' +'</td>'+
+                        '<td>' + '<a href="/Account/edit/'+data[i].id+'" class="btn btn-sm btn-secondary" {{$edit}}><i class="fa fa-edit"></i> Edit</a> ' +
+                          '<a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].id+'" data-business_name="'+data[i].business_name+'" {{$delete}}><i class="fa fa-trash"></i> Delete</a>' +
                          '</td>'+
                         '</tr>';
 
               }
-              if(AccountStatus != null){
+              // if(AccountStatus != null){
                 $('#showdata').html(html);
-              }
+              // }
             },
             error: function(){
               console.log('Could not get data from database');
