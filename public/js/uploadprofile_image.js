@@ -15,7 +15,7 @@
 $(document).ready(function (){
     $('#profile_picture').click(function (){
         console.log("Test");
-        $('#upload_profile_picture').modal('show')
+        $('#upload_profile_picture').modal('show');
     });
 
    

@@ -70,13 +70,13 @@ manage_docs') == 'delete'){
 
     public function index(){
         //$Notification = Notifications::all();
-        $employers = DB::table('employer')->select('account_id', 'business_name')->get();
+        $employers = DB::table('employer')->select('id', 'business_name')->get();
         return view('Template.index', compact('employers'));
     }
 
     public function get_all_template(){
         $Template = DB::table('template')
-                            ->join('employer', 'employer.account_id', '=', 'template.account_id')
+                            ->join('employer', 'employer.id', '=', 'template.account_id')
                             ->select('template.id',
                             'template.document_code',
                             'template.document_description',

@@ -15,6 +15,7 @@
     });
 
     $('#announcementdesc').on('click', '.show_announcement_notification',function (){
+        var announcement_id = $(this).attr('data-id');
         var title = $(this).attr('data-title');
         var description = $(this).attr('data-description');
         swal({
@@ -23,8 +24,37 @@
                 showCancelButton: true,
             },
         );
+        $.ajax({
+            type: 'POST',
+            url: '/Announcement/update_notification_show',
+            data: {
+                notification_id: announcement_id,
+                '_token': $('input[name=_token]').val(),
+            },
+            success: function(){
+                // console.log('Success');
+            },
+            error: function(){
+                // console.log("Err");
+            }
+        });
+        get_show_announcement_notification_toggle();
         
     });
+
+
+    /*Announcement Notification Toggle*/
+    function get_show_announcement_notification_toggle(){
+        $.ajax({
+            type: 'GET',
+            url: '/Announcement/get_notification_show',
+            async: false,
+            dataType: 'json',
+            success: function (data){
+                console.log(data);
+            }
+        })
+    }
     
     function showAllAnnouncementToNotification(){
         // Show Notification
@@ -38,16 +68,17 @@
                 var html = '';
                 var i;
                 var count = 1;
+                var check_my_notification = get_show_announcement_notification_toggle();
                 for(i=0; i<data.length; i++){
                     var status = (data[i].announcement_status == 1 ? 'Posted' : data[i].announcement_status == 0 ? 'Pending' : null);
                     const date = new Date(data[i].updated_at);
-                    if(session_notification){
+                    if(check_my_notification == 1){
                         session_notification = false;
                     }
-                    else {
+                    if(check_my_notification == 0){
                         $('#notif').html(count++);
                     }
-                    html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification"  data-title="'+data[i].announcement_title+'" data-description="'+data[i].announcement_description+'"><!-- Message Start -->'+
+                    html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+data[i].announcement_description+'"><!-- Message Start -->'+
                             '<div class="media">'+
                             '<img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="../dist/img/user3-128x128.jpg">'+
                             '<div class="media-body">'+
@@ -73,4 +104,8 @@
             }
         });
     }
+
+    // function toggle_notification(){
+    //     $.
+    // }
  });

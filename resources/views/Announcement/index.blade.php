@@ -90,7 +90,7 @@ elseif(Session::get('send_announcement') == 'delete'){
 </div>
 
 <!-- Add Announcement -->
-<div class="modal fade" id="AddAnnouncementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="AddAnnouncementModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -139,7 +139,7 @@ elseif(Session::get('send_announcement') == 'delete'){
                                     <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
                                         <option selected value="">--Select Employer</option>
                                         @foreach($employers as $employer)
-                                            <option value="{{$employer->account_id}}">{{$employer->business_name}}</option>
+                                            <option value="{{$employer->id}}">{{$employer->business_name}}</option>
                                         @endforeach
                                     </select>
                                     <p class="text-danger" id="error_employer_id"></p>
@@ -206,13 +206,13 @@ $(document).ready(function (){
     CKEDITOR.replace( 'announcement_description' );
     $('.select2').select2()
     //Get Scripts
-    $.getScript( "js/scripts.js" )
-        .done(function( script, textStatus ) {
-            //console.log( textStatus );
-        })
-        .fail(function( jqxhr, settings, exception ) {
-            //console.log("Error")
-    });
+    // $.getScript( "js/scripts.js" )
+    //     .done(function( script, textStatus ) {
+    //         //console.log( textStatus );
+    //     })
+    //     .fail(function( jqxhr, settings, exception ) {
+    //         //console.log("Error")
+    // });
     // Show All Data
     showAllAnnouncement();
     initDataTableAnnouncement();
@@ -299,6 +299,7 @@ $(document).ready(function (){
                     async: false,
                     data: {
                         _token:     '{{ csrf_token() }}',
+                        employer_id: $('#employer_id').val(),
                         announcement_title: $('#announcement_title').val(),
                         announcement_description: CKEDITOR.instances.announcement_description.getData(),
                         announcement_type: $('#announcement_type').val(),
@@ -533,26 +534,26 @@ $(document).ready(function (){
     /*
         Extended Excript for Get All Announcement To Notification
     */
-    showAllAnnouncementToNotification();
+    // showAllAnnouncementToNotification();
 
-    $('#announcement').click(function (){
-        showAllAnnouncementToNotification();
-    });
+    // $('#announcement').click(function (){
+    //     showAllAnnouncementToNotification();
+    // });
 
-    $('#announcementdesc').on('click', '.show_announcement_notification',function (){
-        var title = $(this).attr('data-title');
-        var description = $(this).attr('data-description');
-        swal({
+    // $('#announcementdesc').on('click', '.show_announcement_notification',function (){
+    //     var title = $(this).attr('data-title');
+    //     var description = $(this).attr('data-description');
+    //     swal({
 
-                title: title,
-                text: jQuery(description).text(), // Strip Tag
-                showCancelButton: true,
-            },
+    //             title: title,
+    //             text: jQuery(description).text(), // Strip Tag
+    //             showCancelButton: true,
+    //         },
 
 
 
-        );
-    });
+    //     );
+    // });
     function showAllAnnouncementToNotification(){
         // Show Notification
         $.ajax({

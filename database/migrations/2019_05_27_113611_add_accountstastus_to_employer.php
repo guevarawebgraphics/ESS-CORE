@@ -13,9 +13,9 @@ class AddAccountstastusToEmployer extends Migration
      */
     public function up()
     {
-        Schema::table('employer', function (Blueprint $table) {
-            $table->integer('AccountStatus')->unsinged()->default('1')->after('expiry_date');
-        });
+        // Schema::table('employer', function (Blueprint $table) {
+        //     $table->integer('AccountStatus')->unsinged()->default('1')->after('expiry_date');
+        // });
     }
 
     /**
@@ -25,8 +25,8 @@ class AddAccountstastusToEmployer extends Migration
      */
     public function down()
     {
-        Schema::table('employer', function (Blueprint $table) {
-            $table->dropColumn('AccountStatus')->unsinged()->default('1')->after('expiry_date');
-        });
+        // Schema::table('employer', function (Blueprint $table) {
+        //     $table->dropColumn('AccountStatus')->unsinged()->default('1')->after('expiry_date');
+        // });
     }
 }

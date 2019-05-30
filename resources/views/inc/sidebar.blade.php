@@ -521,7 +521,7 @@
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="button" class="btn btn-primary" id="Upload"><span><i class="fa fa-upload"></i></span> Upload</button>
+		  <button type="button" class="btn btn-primary" id="#Upload"><span><i class="fa fa-upload"></i></span> Upload</button>
 		</div>
 	  </div>
 	</div>
