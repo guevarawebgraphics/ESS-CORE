@@ -11,22 +11,20 @@
     
     <div class="row justify-content-center">       
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-header text-center text-white" style="background-color: #3c8dbc">{{ __('Login') }}</div>
+            <div class="card card-primary">
+                <div class="card-header text-center text-white">{{ __('Login') }}</div>
                 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-
+                        <label for="username" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Username') }}</label>
                         <div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
-
-                            <div class="col-md-6">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-append">
-                                            <span class="fa fa-user input-group-text"></span>
-                                        </div>
+                            <div class="col-md-8 offset-md-2">
+                                <div class="input-group">
                                     <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username" required autofocus>
+                                    <div class="input-group-append">
+                                        <span class="fa fa-user input-group-text"></span>
+                                    </div>
                                 </div>
                                 
                                 @if ($errors->has('username'))
@@ -36,16 +34,14 @@
                                 @endif
                             </div>
                         </div>
-
+                        <label for="password" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Password') }}</label>
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <div class="input-group mb-3">
+                            <div class="col-md-8 offset-md-2">
+                                <div class="input-group">
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
                                     <div class="input-group-append">
                                         <span class="fa fa-lock input-group-text"></span>
                                     </div>
-                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
                                 </div>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
@@ -97,7 +93,7 @@
                                 @endif                               
                             </div> --}}
 
-                            <div class="col-md-6 offset-md-4">
+                            <div class="col-md-8 offset-md-2">
                                 <button type="submit" class="btn btn-primary btn-block btn-flat">
                                         <i class="fa fa-sign-in-alt"></i>
                                     {{ __('Login') }}

@@ -121,7 +121,7 @@ elseif(Session::get('manage_docs') == 'delete'){
                             <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
                                 <option selected value="">--Select Employer</option>
                                     @foreach($employers as $employer)
-                                        <option value="{{$employer->account_id}}">{{$employer->business_name}}</option>
+                                        <option value="{{$employer->id}}">{{$employer->business_name}}</option>
                                     @endforeach
                                 </select>
                                 <p class="text-danger" id="error_employer_id"></p>
@@ -385,7 +385,7 @@ $(document).ready(function (){
                                      '<td>'+data[i].business_name+'</td>'+
                                      '<td>'+data[i].document_code+'</td>'+
                                      '<td>'+data[i].document_description+'</td>'+
-                                     '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'   <i class="fa fa-download"></i>'+'</a>'+'</td>'+
+                                     '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'<div class="float-right"><i class="fa fa-download"></i></div>'+'</a>'+'</td>'+
                                      '<td>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'" data-documentfile="'+data[i].document_file+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+

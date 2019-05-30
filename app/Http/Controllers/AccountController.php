@@ -149,7 +149,7 @@ class AccountController extends Controller
             'address_zipcode' => 'required|min:3',
             'contact_person' => 'required|min:3',
             'contact_phone' => 'required|numeric|unique:employer',
-            'contact_mobile' => 'required|numeric|unique:employer',
+            'contact_mobile' => 'required|numeric|regex:/(09)[0-9]{9}/|unique:employer',
             'contact_email' => 'required|unique:employer|email',
             'sss' => 'required|unique:employer|min:3',
             'tin' => 'required|unique:employer|min:3',
@@ -413,11 +413,11 @@ class AccountController extends Controller
 
     public function edit($id){
         
-        if(!Account::where('account_id', '!=', $id)){
+        if(!Account::where('id', '!=', $id)){
             abort(404);
         }
         else {
-           if(Account::where('account_id', '=', $id)->count() > 0){
+           if(!Account::where('id', '=', $id)->count() > 0){
                 abort(404);
            }
            else {
@@ -426,7 +426,7 @@ class AccountController extends Controller
                         ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
                         ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
                         ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')    
-                        ->join('users', 'employer.id', '=', 'users.employer_id')
+                        //->join('users', 'employer.id', '=', 'users.employer_id')
                         ->select('employer.id', 'employer.business_name',
                          'employer.accountname',
                           'employer.address_unit',
@@ -443,9 +443,11 @@ class AccountController extends Controller
                           'employer.hdmf',
                           'employer.nid',
                           'employer.sec', 'employer.bir', 
+                          'employer.enrollment_date',
+                          'employer.expiry_date',
                           'user_type.type_name', 
                           'user_type.id as user_type_id',
-                          'users.AccountStatus', 
+                          //'users.AccountStatus', 
                           'employer.account_id',
                           'refprovince.provDesc',
                           'refprovince.provCode',
@@ -453,8 +455,9 @@ class AccountController extends Controller
                           'refcitymun.citymunCode',
                           'refbrgy.brgyDesc',
                           'refbrgy.id as refbrgy_id',
-                          'users.enrollment_date',
-                          'users.expiry_date')
+                          //'users.enrollment_date',
+                          //'users.expiry_date'
+                          )
                         ->where('employer.id', $id)
                         ->get();
             return view('Account.edit', compact('Account'));
@@ -468,8 +471,8 @@ class AccountController extends Controller
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
-            'accountname' => 'required|min:3',
-            'business_name' => 'required|min:3',
+            'accountname' => 'required|min:3|unique:employer,accountname,'.$id,
+            'business_name' => 'required|min:3|unique:employer,business_name,'.$id,
             'user_type' => 'required',
             'address_unit' => 'required|min:1',
             'address_country' => 'required|min:3',
@@ -478,14 +481,14 @@ class AccountController extends Controller
             'address_barangay' => 'required|min:3',
             'address_zipcode' => 'required|min:3',
             'contact_person' => 'required|min:3',
-            'contact_phone' => 'required|numeric',
-            'contact_mobile' => 'required|numeric',
-            'contact_email' => 'required|email',
-            'sss' => 'required|min:3',
-            'tin' => 'required|min:3',
-            'phic' => 'required|min:3',
-            'hdmf' => 'required|min:3',
-            'nid' => 'required|min:3',
+            'contact_phone' => 'required|numeric|unique:employer,contact_phone,'.$id,
+            'contact_mobile' => 'required|numeric|regex:/(09)[0-9]{9}/|unique:employer,contact_mobile,'.$id,
+            'contact_email' => 'required|email|unique:employer,contact_email,'.$id,
+            'sss' => 'required|min:3|unique:employer,sss,'.$id,
+            'tin' => 'required|min:3|unique:employer,tin,'.$id,
+            'phic' => 'required|min:3|unique:employer,phic,'.$id,
+            'hdmf' => 'required|min:3|unique:employer,hdmf,'.$id,
+            'nid' => 'required|min:3|unique:employer,nid,'.$id,
         ]);
 
         $enrollment_date = Carbon::parse($request->enrollmentdate)->format('Y-m-d');
@@ -510,7 +513,7 @@ class AccountController extends Controller
             $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
 
             /*Update Account Employer*/
-            DB::table('employer')->where('account_id', '=', $id)
+            DB::table('employer')->where('id', '=', $id)
                                 ->update(array(
                                     'business_name' => $request->input('business_name'),
                                     'accountname' => $request->input('accountname'),
@@ -544,7 +547,7 @@ class AccountController extends Controller
         }
 
         /*Update Account Employer*/
-        DB::table('employer')->where('account_id', '=', $id)
+        DB::table('employer')->where('id', '=', $id)
                             ->update(array(
                                 'business_name' => $request->input('business_name'),
                                 'accountname' => $request->input('accountname'),
@@ -595,14 +598,14 @@ class AccountController extends Controller
         /*Delete User From Users*/
         //$user = User::where('id','=',$Account_id)->delete();
         /*Delete User From Employer*/
-        $employer = Account::where('account_id','=', $Account_id)->delete();
+        $employer = Account::where('id','=', $Account_id)->delete();
         /*Delete User From ESS Base Table*/
-        $base = ESSBase::where('account_id','=',$Account_id)->delete();
+        //$base = ESSBase::where('account_id','=',$Account_id)->delete();
 
         return response()->json(array(
-            $user,
+            //$user,
             $employer,
-            $base
+            //$base
         ));
 
     }

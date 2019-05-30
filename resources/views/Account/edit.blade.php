@@ -12,7 +12,7 @@
             @method('PATCH') 
             {{ csrf_field() }}
           <div class="card-body">
-          <input type="hidden" id="EmployerId" value="{{ $Account[0]->account_id }}">
+          <input type="hidden" id="EmployerId" value="{{ $Account[0]->id }}">
                 <div class="form-group row">
                         <label for="business_name" class="control-label col-md-2 text-md-center">Business Name:</label>
                         <div class="col-md-4">

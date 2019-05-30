@@ -78,7 +78,7 @@ class NotificationController extends Controller
         // If the user is Admin
         if(auth()->user()->user_type_id == 1){
             $Notification = DB::table('notification')
-                            ->join('employer', 'employer.account_id', '=', 'notification.employer_id')
+                            ->join('employer', 'employer.id', '=', 'notification.employer_id')
                             ->join('notification_message_type', 'notification_message_type.id', '=', 'notification.message_type_id')
                             ->select('notification.id', 'notification.notification_title',
                             'notification.notification_message',
@@ -90,7 +90,7 @@ class NotificationController extends Controller
         // If The user is Employer
         if(auth()->user()->user_type_id == 3){
             $Notification = DB::table('notification')
-                            ->join('employer', 'employer.account_id', '=', 'notification.employer_id')
+                            ->join('employer', 'employer.id', '=', 'notification.employer_id')
                             ->join('notification_message_type', 'notification_message_type.id', '=', 'notification.message_type_id')
                             ->select('notification.id',
                             'notification.notification_title',
