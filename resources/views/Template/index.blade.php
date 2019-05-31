@@ -204,6 +204,7 @@ $(document).ready(function (){
         $('#AddTemplateModal').find('#title_modal').text('Add Template');
         $('#template_form').removeAttr('hidden');
         $('#document_file_name').attr('hidden', true);
+        $('#employer_id').attr('disabled', false);
     });
 
     /*Save Template*/
@@ -285,6 +286,7 @@ $(document).ready(function (){
         $('#template_form').attr('action', '/Template/update_template/' + id);
         $('#template_form').removeAttr('hidden');
         $('#document_file_name').removeAttr('hidden');
+        $('#employer_id').attr('disabled', true);
         toastr.remove();
         $.ajax({
             type: 'ajax',

@@ -205,7 +205,8 @@
                                 <div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
                                 </div>
-                                <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date" value="{{$employee[0]->enrollment_date}}" autofocus>
+                                <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY" value="{{ \Carbon\Carbon::parse($employee[0]->enrollment_date)->format('m/d/Y')}}"   autofocus>
+                                {{-- <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date" value="{{$employee[0]->enrollment_date}}" autofocus> --}}
                             </div>
                             <p class="text-danger text-md-center" id="error_enrollment_date"></p>
                         </div>
@@ -670,6 +671,13 @@ function checknumber(e)
 //document.getElementById("employer_id").disabled = true;
 
 $(document).ready(function(){
+    // Config Restriction for Pass Date
+    var date = new Date();
+    date.setDate(date.getDate());
+    $('#enrollment_date').datepicker({
+        autoclose: true,
+        startDate: date
+    });
     /*Get Province*/
     $.ajax({
 			method: 'get',
@@ -1174,6 +1182,7 @@ $(document).ready(function(){
                 success: function (data) {
                     toastr.success('Employee Enrolled Successfully', 'Success')
                     $('#EmployeeForm')[0].reset();
+                    spinnerTimout();
                 },
                 error: function (data, status) {
                     spinnerTimout();

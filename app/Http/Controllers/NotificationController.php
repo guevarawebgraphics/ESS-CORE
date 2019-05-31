@@ -62,7 +62,7 @@ class NotificationController extends Controller
 
     public function index(){
         //$Notification = Notifications::all();
-        $employers = DB::table('employer')->select('account_id', 'business_name')->get();
+        $employers = DB::table('employer')->select('id', 'business_name')->get();
         // If the user is Admin
         if(auth()->user()->user_type_id == 1){
             $notification_message_type = DB::table('notification_message_type')->select('id', 'message_type')->get();
@@ -153,7 +153,7 @@ class NotificationController extends Controller
     {
         $Notification_id = $request->id;
         $Notification = DB::table('notification')
-                            ->join('employer', 'employer.account_id', '=', 'notification.employer_id')
+                            ->join('employer', 'employer.id', '=', 'notification.employer_id')
                             ->join('notification_message_type', 'notification_message_type.id', '=', 'notification.message_type_id')
                             ->select('notification.id',
                             'notification.employer_id',

@@ -293,13 +293,13 @@
 					<a class="nav-link {{$employee_enrollment_tree}}" href="#"><i class="nav-icon fa fa-user"></i>
 					<p>Employees Enrollment <i class="right fa fa-angle-left"></i></p></a>
 					<ul class="nav nav-treeview">
-						<li class="nav-item">
+						{{-- <li class="nav-item">
 							<a class="nav-link {{$upload_employee_enrollment}}" href="/enrollemployee/upload"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Upload Employee</p></a>                                   
-						</li>
+						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Encode Employee</p></a>
+							<p>Manage Employee</p></a>
 						</li>						
 					</ul>
 				</li>
