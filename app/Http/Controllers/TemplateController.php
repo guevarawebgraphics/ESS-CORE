@@ -133,7 +133,7 @@ manage_docs') == 'delete'){
     public function edit_template(Request $request){
         $Template_id = $request->id;
         $Template = DB::table('template')
-                        ->join('employer', 'employer.account_id', '=', 'template.account_id')
+                        ->join('employer', 'employer.id', '=', 'template.account_id')
                         ->select('template.id',
                         'template.document_code',
                         'template.document_description',
@@ -177,7 +177,7 @@ manage_docs') == 'delete'){
             /*Update Template Document*/
             $Template = DB::table('template')->where('id', '=', $id)
                                 ->update(array(
-                                    'account_id' => $request->input('employer_id'), /*Temporary Account ID*/
+                                    //'account_id' => $request->input('employer_id'), /*Temporary Account ID*/ Remove comment in the next update
                                     'document_code' => $request->input('document_code'),
                                     'document_description' => $request->input('document_description'),
                                     'document_file' => ($request->hasFile('document_file') ? $fileNameToStore_document_file : $get_user_file[0]->document_file),

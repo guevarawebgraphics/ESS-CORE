@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ESSBase extends Model
 {
+    protected $guarded = [];
     protected $table = "ess_basetable";
 
      // Primary Key

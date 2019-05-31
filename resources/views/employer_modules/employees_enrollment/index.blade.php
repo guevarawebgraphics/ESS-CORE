@@ -34,7 +34,8 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <a href="/enrollemployee/encode" class="btn btn-primary float-md-right" id="btnCreateEmployee"><i class="fa fa-plus-square" ></i> Encode Employee</a>
+                    <a href="/enrollemployee/encode" class="btn btn-primary float-md-right mr-4" id="btnCreateEmployee"><i class="fa fa-plus-square" ></i> Encode Employee</a>
+                    <a href="#upload" class="btn btn-secondary float-md-right mr-4" id="btnUploadEmployee"><i class="fa fa-upload" ></i> Upload Employee</a>
                 </div>
             </div>
 
@@ -76,7 +77,7 @@
                                 <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->employee_id}}">Change Status</button>
                             </td>
                             <td>
-                                <a href="/enrollemployee/edit/{{$info->id}}" class="btn btn-sm btn-primary" id="btn_editemployee">Edit Employee</a>
+                                <a href="/enrollemployee/edit/{{$info->id}}" class="btn btn-sm btn-primary" id="btn_editemployee"><i class="fa fa-edit"></i>Edit Employee</a>
                             </td>
                         </tr>
                         @endforeach
@@ -117,6 +118,43 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal For Upload Employee -->
+<div class="modal fade" id="UploadEmployees" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" >Upload Employees</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form id="upload_employees_form">
+                    {{ csrf_field() }}
+                <div class="col-md-12">
+                                
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="fa fa-folder input-group-text"></span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="imgInp" name="file" multiple onchange="processSelectedFilesProfileImage(this)">
+                            <label class="custom-file-label" for="validatedCustomFile" id="profile_image_filename">Choose file...</label>
+                        </div>
+                    </div>
+		
+			</div>
+		 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
+            </div>
+        </form>
+          </div>
+        </div>
+      </div>
 <script type="text/javascript">
     $(document).ready(function () {
          initDataTable();
@@ -220,6 +258,40 @@
                     }
                 });
             }
+        });
+
+        $('#btnUploadEmployee').click(function(){
+            toastr.clear()
+            toastr.remove()
+            $('#UploadEmployees').modal('show');
+        });
+
+        $('#upload_employees_form').submit(function (e){
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ url('/enrollemployee/upload_employees') }}",
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (){
+                    refreshUserTable();
+                    $('#UploadEmployees').modal('hide');
+                    toastr.success('Account Employees Created Successfully', 'Success')
+                    console.log("Success");
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+
         });
     });
 </script>

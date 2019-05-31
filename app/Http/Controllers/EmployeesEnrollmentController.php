@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
 use Twilio\Jwt\ClientToken;
 use LasseRafn\Initials\Initials;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Session;
 use DB;
@@ -25,6 +26,7 @@ use App\Logs;
 // use App\OTP;
 use App\EmployerEmployee;
 use App\EmployeePersonalInfo;
+use App\Imports\EmployeesImport;
 
 class EmployeesEnrollmentController extends Controller
 {
@@ -435,7 +437,7 @@ class EmployeesEnrollmentController extends Controller
                 //     $message->from('esssample@gmail.com', "ESS Employee Registration");
                 // });
 
-                /*Email Template*/
+            /*Email Template*/
             $mail_template = DB::table('notification')
                             ->where('employer_id', auth()->user()->id)
                             ->where('notification_type', 1)
@@ -499,7 +501,7 @@ class EmployeesEnrollmentController extends Controller
              $employee = EmployeeEnrollment::create([              
                 'employee_info' => $request->input('hidden_personalinfo_id'),
                 'employee_no' => $request->input('employee_no'),
-                'employer_id' => Session::get("employer_id"),
+                'employer_id' => auth()->user()->employer_id,
                 'position' => $request->input('position'),
                 'department' => $request->input('department'),             
                 'enrollment_date' => $enrollment_date,           
@@ -517,8 +519,19 @@ class EmployeesEnrollmentController extends Controller
             $insert_employee = new EmployerEmployee;
             $insert_employee->ess_id = $request->input('hidden_essid');
             $insert_employee->employer_id = auth()->user()->employer_id;//Session::get("employer_id");
+            $insert_employee->employee_id = $employee_id;
             $insert_employee->employee_no = $employee_id;
             $insert_employee->save();           
+
+            //insert into ess base table
+            $insert_ess = new ESSBase;
+            $insert_ess->account_id = $employee_id;
+            $insert_ess->ess_id = $employee_ess_id;
+            $insert_ess->employee_info = $request->input('hidden_personalinfo_id');
+            $insert_ess->user_type_id = 4;            
+            $insert_ess->created_by = auth()->user()->id;
+            $insert_ess->updated_by = auth()->user()->id;
+            $insert_ess->save();
         }
        
     }
@@ -581,12 +594,57 @@ class EmployeesEnrollmentController extends Controller
             //         LEFT JOIN refprovince AS e
             //         ON b.province = e.provCode
             //         WHERE a.id = '$id' ");
-            $employee = DB::table('employee')
+            // $employee = DB::table('employee')
+            //                 ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+            //                 ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
+            //                 ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
+            //                 ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
+            //                 ->where('employee.id', '=', $id)
+            //                 ->get();
+            $employee = DB::table('employer_and_employee')
+                            ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
+                            ->join('users', 'employee.id', '=', 'users.employee_id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
                             ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
                             ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
                             ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
-                            ->where('employee.id', '=', $id)
+                            ->select(
+                                'employee_personal_information.lastname',
+                                'employee_personal_information.firstname',
+                                'employee_personal_information.middlename',
+                                'employee_personal_information.TIN',
+                                'employee_personal_information.SSSGSIS',
+                                'employee_personal_information.PHIC',
+                                'employee_personal_information.HDMF',
+                                'employee_personal_information.NID',
+                                'employee_personal_information.mobile_no',
+                                'employee_personal_information.email_add',
+                                'employee_personal_information.birthdate',
+                                'employee_personal_information.gender',
+                                'employee_personal_information.civil_status',
+                                'employee_personal_information.country',
+                                'employee_personal_information.address_unit',
+                                'employee_personal_information.citytown',
+                                'employee_personal_information.barangay',
+                                'employee_personal_information.province',
+                                'employee_personal_information.zipcode',
+                                'employee.employee_no',
+                                'employee.position',
+                                'employee.payroll_bank',
+                                'employee.department',
+                                'employee.enrollment_date',
+                                'employee.employment_status',
+                                'employee.payroll_schedule',
+                                'employee.account_no',
+                                'users.*',
+                                'refprovince.provDesc',
+                                'refprovince.provCode',
+                                'refcitymun.citymunDesc',
+                                'refcitymun.citymunCode',
+                                'refbrgy.brgyDesc',
+                                'refbrgy.id as refbrgy_id',
+                            )
+                            ->where('employee.employee_info', '=', $id)
                             ->get();
 
             return view('employer_modules.employees_enrollment.editencode')->with('employee', $employee);
@@ -668,25 +726,45 @@ class EmployeesEnrollmentController extends Controller
         return $user_activation_id;
     }
 
-        // Update Account Status
-        public function UpdateAccountStatus(Request $request, $id){
+    // Update Account Status
+    public function UpdateAccountStatus(Request $request, $id){
 
-            /*Update Account Employer*/
-            DB::table('users')->where('employee_id', '=', $id)
-                    ->update(array(
-                        'AccountStatus' => $request->input('AccountStatus')
-            ));
+        /*Update Account Employer*/
+        DB::table('users')->where('employee_id', '=', $id)
+                ->update(array(
+                    'AccountStatus' => $request->input('AccountStatus')
+        ));
     
-            if ($id == null && $request->input('AccountStatus') == null){
-                $msg = 'Error';
-            }
-            else {
-                $msg = 'Success';
-            }
-    
-            $this->insert_log("Updated Account");
-    
-    
-            return Response::json($msg);
+        if ($id == null && $request->input('AccountStatus') == null){
+            $msg = 'Error';
         }
+        else {
+            $msg = 'Success';
+        }
+    
+        $this->insert_log("Updated Account");
+    
+    
+        return Response::json($msg);
+    }
+
+    /*Upload Employees*/
+    public function upload_employees(Request $request){
+        $this->validate($request, [
+            'file'  => 'required|mimes:xls,xlsx'
+        ]);
+      
+        $path = $request->file('file')->getRealPath();
+
+        $import = Excel::import(new EmployeesImport, $path);
+
+        // foreach($import->failures() as $failure) {
+        //     $failure->row();
+        //     $failure->attribute();
+        //     $failure->errors();
+        //     $failure->values();
+        // }
+
+        return Response::json();
+    }
 }
