@@ -145,7 +145,7 @@ elseif(Session::get('system_notifications') == 'delete'){
                                     <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
                                         <option selected value="">--Select Employer</option>
                                         @foreach($employers as $employer)
-                                            <option value="{{$employer->account_id}}">{{$employer->business_name}}</option>
+                                            <option value="{{$employer->id}}">{{$employer->business_name}}</option>
                                         @endforeach
                                     </select>
                                     <p class="text-danger" id="error_employer_id"></p>

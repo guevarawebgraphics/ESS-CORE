@@ -135,6 +135,7 @@ Route::get('/enrollemployee/searchemployee', 'EmployeesEnrollmentController@sear
 Route::get('/enrollemployee/edit/{id}', 'EmployeesEnrollmentController@edit_encode');
 Route::get('/enrollemployee/refresh_table_employee', 'EmployeesEnrollmentController@refresh_table_employee');
 Route::patch('/enrollemployee/UpdateAccountStatus/{id}', 'EmployeesEnrollmentController@UpdateAccountStatus');
+Route::post('/enrollemployee/upload_employees', 'EmployeesEnrollmentController@upload_employees');
 
 //Employer Content
 Route::get('/employercontent/manage', 'EmployerContentController@manage');
