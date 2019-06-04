@@ -21,9 +21,12 @@
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>
-        <form method="POST" id="EmployeeForm">
-        @csrf
+        <form id="EmployeeForm">
+            @method('PATCH') 
+            @csrf
             <div class="card-body">
+            <input type="hidden" id="employee_info_id" name="employee_info_id" value="{{ $employee[0]->employee_info_id }}">
+            <input type="hidden" id="employee_id" name="employee_id" value="{{ $employee[0]->employee_id }}">
                 {{-- HIDDEN INPUT FIELD FOR EMPLOYEE PERSONAL INFO ID--}}
                 <input type="hidden" id="hidden_personalinfo_id" name="hidden_personalinfo_id">
                 <input type="hidden" id="hidden_essid" name="hidden_essid">
@@ -296,7 +299,7 @@
                                 <div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
                                 </div>
-                                <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS" value="{{$employee[0]->SSSGSIS}}" autofocus>
+                                <input id="birthdate" type="text" class="form-control datepicker" name="birthdate" value="{{$employee[0]->birthdate}}" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_birthdate"></p>
                         </div>
@@ -629,7 +632,7 @@
                                     <span class="fa fa-globe input-group-text"></span>
                                 </div>
                                 <select id="barangay" name="barangay" class="form-control">
-                                        <option value="{{$employee[0]->id}}" selected>{{$employee[0]->brgyDesc}}</option>
+                                        <option value="{{$employee[0]->refbrgy_id}}" selected>{{$employee[0]->brgyDesc}}</option>
                                         {{-- <option value="" >Choose Barangay</option> --}}
                                 </select>
                             </div>
@@ -652,7 +655,7 @@
                 <i class="" id="spinner"></i>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default">Back</button>
+            {{-- <button type="button" class="btn btn-default">Back</button> --}}
             <button type="submit" class="btn btn-primary float-right" id="submit">Submit <i id="spinner" class=""></i></button>
         </div>              
     </div>      
@@ -675,6 +678,10 @@ $(document).ready(function(){
     var date = new Date();
     date.setDate(date.getDate());
     $('#enrollment_date').datepicker({
+        autoclose: true,
+        startDate: date
+    });
+    $('#birthdate').datepicker({
         autoclose: true,
         startDate: date
     });
@@ -760,6 +767,8 @@ $(document).ready(function(){
     $(document).on("click", "#submit", function(){
         $('#formOverlay').addClass('overlay');
         $("#spinner").addClass('fa fa-refresh fa-spin');
+        var employee_id = $('#employee_id').val();
+        var employee_info_id = $('#employee_info_id').val();
         //$("#employer_id").removeAttr("disabled");
 
         error = 0;
@@ -1177,12 +1186,15 @@ $(document).ready(function(){
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 method: 'POST',
-                url: '/enrollemployee/encode/post',
+                url: '/enrollemployee/update_employee/' + employee_id,
+                async: false,
+                dataType: 'json',
                 data: $("#EmployeeForm").serialize(),
                 success: function (data) {
-                    toastr.success('Employee Enrolled Successfully', 'Success')
+                    toastr.success('Employee Enrolled Updated', 'Success')
                     $('#EmployeeForm')[0].reset();
                     spinnerTimout();
+                    
                 },
                 error: function (data, status) {
                     spinnerTimout();

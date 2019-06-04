@@ -91,9 +91,41 @@ class EmployeesEnrollmentController extends Controller
 
         $employee_info = DB::table('employer_and_employee')
                             ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
-                            ->join('users', 'employee.id', '=', 'users.employee_id')
+                            //->join('users', 'employee.id', '=', 'users.employee_id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
-                            ->where('employee.employer_id', '=', auth()->user()->employer_id)
+                            //->where('employee.employer_id', '=', auth()->user()->employer_id)
+                            ->select('employer_and_employee.id as eneid',
+                                    'employee.id as emp_id',
+                                    'employee.employee_no',
+                                    'employee.enrollment_date',
+                                    'employee.department',
+                                    'employee.employment_status',
+                                    'employee.payroll_schedule',
+                                    'employee.payroll_bank',
+                                    'employee.account_no',
+                                    'employee.AccountStatus as AccountStatus',
+                                    'employee.position',
+                                    'employee_personal_information.id',
+                                    'employee_personal_information.lastname',
+                                    'employee_personal_information.firstname',
+                                    'employee_personal_information.middlename',
+                                    'employee_personal_information.TIN',
+                                    'employee_personal_information.SSSGSIS',
+                                    'employee_personal_information.PHIC',
+                                    'employee_personal_information.HDMF',
+                                    'employee_personal_information.NID',
+                                    'employee_personal_information.mobile_no',
+                                    'employee_personal_information.email_add',
+                                    'employee_personal_information.birthdate',
+                                    'employee_personal_information.gender',
+                                    'employee_personal_information.civil_status',
+                                    'employee_personal_information.country',
+                                    'employee_personal_information.address_unit',
+                                    'employee_personal_information.citytown',
+                                    'employee_personal_information.barangay',
+                                    'employee_personal_information.province',
+                                    'employee_personal_information.zipcode',)
+                            ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->get();
 
 
@@ -109,11 +141,49 @@ class EmployeesEnrollmentController extends Controller
         //     ON a.employee_info = b.id 
         //     WHERE a.employer_id = '".auth()->user()->employer_id."' ");
 
+        // $employee_info = DB::table('employer_and_employee')
+        //                     ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
+        //                     ->join('users', 'employee.id', '=', 'users.employee_id')
+        //                     ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+        //                     ->where('employee.employer_id', '=', auth()->user()->employer_id)
+        //                     ->get();
         $employee_info = DB::table('employer_and_employee')
                             ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
-                            ->join('users', 'employee.id', '=', 'users.employee_id')
+                            //->join('users', 'employee.id', '=', 'users.employee_id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
-                            ->where('employee.employer_id', '=', auth()->user()->employer_id)
+                            //->where('employee.employer_id', '=', auth()->user()->employer_id)
+                            ->select('employer_and_employee.id as eneid',
+                                    'employee.id as emp_id',
+                                    'employee.employee_no',
+                                    'employee.enrollment_date',
+                                    'employee.department',
+                                    'employee.employment_status',
+                                    'employee.payroll_schedule',
+                                    'employee.payroll_bank',
+                                    'employee.account_no',
+                                    'employee.AccountStatus as AccountStatus',
+                                    'employee.position',
+                                    'employee_personal_information.id',
+                                    'employee_personal_information.lastname',
+                                    'employee_personal_information.firstname',
+                                    'employee_personal_information.middlename',
+                                    'employee_personal_information.TIN',
+                                    'employee_personal_information.SSSGSIS',
+                                    'employee_personal_information.PHIC',
+                                    'employee_personal_information.HDMF',
+                                    'employee_personal_information.NID',
+                                    'employee_personal_information.mobile_no',
+                                    'employee_personal_information.email_add',
+                                    'employee_personal_information.birthdate',
+                                    'employee_personal_information.gender',
+                                    'employee_personal_information.civil_status',
+                                    'employee_personal_information.country',
+                                    'employee_personal_information.address_unit',
+                                    'employee_personal_information.citytown',
+                                    'employee_personal_information.barangay',
+                                    'employee_personal_information.province',
+                                    'employee_personal_information.zipcode',)
+                            ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->get();
 
         return view('employer_modules.employees_enrollment.table.encodetable')->with('employee_info', $employee_info);
@@ -536,6 +606,104 @@ class EmployeesEnrollmentController extends Controller
        
     }
 
+    /**
+     * @ Update Employee
+     * */
+
+     public function update_employee(Request $request, $id)
+     {
+        /**
+         * @ Validation All Request
+         * */
+        $customMessages = [
+            'required' => 'The :attribute field is required.',
+            'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
+        ];
+        $this->validate($request, [
+            'employee_no' => 'required|min:5|unique:employee,employee_no,'.$request->input('employee_id'),
+            'position' => 'required|min:2',
+            'department' => 'required|min:2',
+            'lastname' => 'required|min:1',
+            'firstname' => 'required|min:1',
+            'middlename' => 'required|min:1',
+            'mobile_no' => 'required|numeric|min:11|unique:employee_personal_information,mobile_no,'.$request->input('employee_info_id'),     
+            'email_add' => 'required|email|unique:employee_personal_information,email_add,'.$request->input('employee_info_id'),         
+            'enrollment_date' => 'required',          
+            'employment_status' => 'required',
+            'tin' => 'required|unique:employee_personal_information,tin,'.$request->input('employee_info_id'),     
+            'sssgsis' => 'required|unique:employee_personal_information,sssgsis,'.$request->input('employee_info_id'),   
+            'phic' => 'required|unique:employee_personal_information,phic,'.$request->input('employee_info_id'),   
+            'hdmf' => 'required|unique:employee_personal_information,hdmf,'.$request->input('employee_info_id'),   
+            'birthdate' => 'required',
+            'nid' => 'required|unique:employee_personal_information,nid,'.$request->input('employee_info_id'),
+            'gender' => 'required',        
+            'civil_status' => 'required',          
+            'payroll_schedule' => 'required',
+            'payroll_bank' => 'required',
+            'account_no' => 'required|numeric|min:3',
+            'country' => 'required',
+            'address_unit' => 'required',
+            'province' => 'required',
+            'citytown' => 'required',
+            'barangay' => 'required',
+            'zipcode' => 'required|min:3|numeric',
+        ], $customMessages);
+
+
+
+        $birthdate = Carbon::parse($request->birthdate)->format('Y-m-d');
+        $enrollment_date = Carbon::parse($request->enrollment_date)->format('Y-m-d');
+
+        /**
+         * @ Update Employee Personal Information
+         * */
+        DB::table('employee_personal_information')
+                ->where('id', '=', $request->input('employee_info_id'))
+                        ->update(array(
+                            'lastname' => $request->input('lastname'),
+                            'firstname' => $request->input('firstname'),
+                            'middlename' => $request->input('middlename'),
+                            'mobile_no' => $request->input('mobile_no'),      
+                            'email_add' => $request->input('email_add'),
+                            'TIN' => $request->input('tin'), 
+                            'SSSGSIS' => $request->input('sssgsis'), 
+                            'PHIC' => $request->input('phic'), 
+                            'HDMF' => $request->input('hdmf'), 
+                            'birthdate' => $birthdate, 
+                            'NID' => $request->input('nid'), 
+                            'gender' => $request->input('gender'),         
+                            'civil_status' => $request->input('civil_status'),           
+                            'country' => $request->input('country'), 
+                            'address_unit' => $request->input('address_unit'), 
+                            'province' => $request->input('province'), 
+                            'citytown' => $request->input('citytown'), 
+                            'barangay' => $request->input('barangay'), 
+                            'zipcode' => $request->input('zipcode'),
+                            'updated_by' => auth()->user()->id 
+                        ));
+
+        /**
+         * @ Update Employee
+         * */
+        DB::table('employee')
+            ->where('id', '=', $request->input('employee_id'))
+            ->update(array(
+                'position' => $request->input('position'),
+                'department' => $request->input('department'),             
+                'enrollment_date' => $enrollment_date,           
+                'employment_status' => $request->input('employment_status'),                          
+                'payroll_schedule' => $request->input('payroll_schedule'),
+                'payroll_bank' => $request->input('payroll_bank'), 
+                'account_no' => $request->input('account_no'), 
+                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id 
+            ));
+       
+
+        $this->insert_log("Updated Employee Information ");
+        return Response::json();
+     }
+
     //send sms
     public function sendSms($message_to, $otp, $employer_name, $firstname)
     {
@@ -603,12 +771,13 @@ class EmployeesEnrollmentController extends Controller
             //                 ->get();
             $employee = DB::table('employer_and_employee')
                             ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
-                            ->join('users', 'employee.id', '=', 'users.employee_id')
+                            //->join('users', 'employee.id', '=', 'users.employee_id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
                             ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
                             ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
                             ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
-                            ->select(
+                            ->select('employer_and_employee.id as eneid',
+                                'employee_personal_information.id as employee_info_id',
                                 'employee_personal_information.lastname',
                                 'employee_personal_information.firstname',
                                 'employee_personal_information.middlename',
@@ -628,6 +797,7 @@ class EmployeesEnrollmentController extends Controller
                                 'employee_personal_information.barangay',
                                 'employee_personal_information.province',
                                 'employee_personal_information.zipcode',
+                                'employee.id as employee_id',
                                 'employee.employee_no',
                                 'employee.position',
                                 'employee.payroll_bank',
@@ -636,7 +806,7 @@ class EmployeesEnrollmentController extends Controller
                                 'employee.employment_status',
                                 'employee.payroll_schedule',
                                 'employee.account_no',
-                                'users.*',
+                                //'users.*',
                                 'refprovince.provDesc',
                                 'refprovince.provCode',
                                 'refcitymun.citymunDesc',
@@ -644,7 +814,7 @@ class EmployeesEnrollmentController extends Controller
                                 'refbrgy.brgyDesc',
                                 'refbrgy.id as refbrgy_id',
                             )
-                            ->where('employee.employee_info', '=', $id)
+                            ->where('employer_and_employee.id', '=', $id)
                             ->get();
 
             return view('employer_modules.employees_enrollment.editencode')->with('employee', $employee);
@@ -734,6 +904,14 @@ class EmployeesEnrollmentController extends Controller
                 ->update(array(
                     'AccountStatus' => $request->input('AccountStatus')
         ));
+
+        /**
+         * @ Update Employee Account Status on Employee Table
+         * */
+        DB::table('employee')->where('id', '=', $id)
+                ->update(array(
+                    'AccountStatus' => $request->input('AccountStatus')
+                ));
     
         if ($id == null && $request->input('AccountStatus') == null){
             $msg = 'Error';

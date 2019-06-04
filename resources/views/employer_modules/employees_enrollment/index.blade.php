@@ -74,10 +74,10 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->employee_id}}">Change Status</button>
+                                <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->emp_id}}">Change Status</button>
                             </td>
                             <td>
-                                <a href="/enrollemployee/edit/{{$info->id}}" class="btn btn-sm btn-primary" id="btn_editemployee"><i class="fa fa-edit"></i>Edit Employee</a>
+                                <a href="/enrollemployee/edit/{{$info->eneid}}" class="btn btn-sm btn-primary" id="btn_editemployee"><i class="fa fa-edit"></i>Edit Employee</a>
                             </td>
                         </tr>
                         @endforeach
@@ -130,10 +130,15 @@
               </button>
             </div>
             <div class="modal-body">
+            <div class="col-md-12">
+                <ul id="ttttt" style="list-style-type: none;">
+                    {{-- <li><label class="text-danger" id="error_fields" hidden="true"></label></li> --}}
+                </ul>
+            </div>
             <form id="upload_employees_form">
-                    {{ csrf_field() }}
+                @csrf
                 <div class="col-md-12">
-                                
+
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="fa fa-folder input-group-text"></span>
@@ -266,6 +271,13 @@
             $('#UploadEmployees').modal('show');
         });
 
+        /*
+        *@ On Close Modal
+        */
+        $('#UploadEmployees').on('hidden.bs.modal', function (e) {
+            $('#ttttt').remove();
+        });
+
         $('#upload_employees_form').submit(function (e){
             e.preventDefault();
             var formData = new FormData($(this)[0]);
@@ -287,8 +299,29 @@
                     toastr.success('Account Employees Created Successfully', 'Success')
                     console.log("Success");
                 },
-                error: function(data){
-                    console.log(data);
+                error: function(data, status){
+                    // /console.log(data);
+                    if(data.status === 422) {
+                        //console.log("422");
+                        var errors = $.parseJSON(data.responseText);
+                        //console.log(errors.errors);
+                        $.each(errors, function (i, errors) {
+                            //onsole.log(errors.error);
+                            var ssssq = Object.values(errors);
+                            //console.log(ssssq.splice(26, 0));
+                            /**/
+                            var sparseKeys = Object.keys(errors);
+                            //console.log(sparseKeys);
+                            for (let [key, value] of Object.entries(errors)) {
+                                //if(errors){
+                                    //$('#error_fields').html(errors);
+                                    //$('#error_fields').attr('hidden', false);
+                                    $('#ttttt').html('<li><label class="text-danger" id="error_fields">'+value+'</label></li>');
+                               // }
+                                console.log(`${key}: ${value}`);
+                            }
+                        });
+                    }
                 }
             });
 

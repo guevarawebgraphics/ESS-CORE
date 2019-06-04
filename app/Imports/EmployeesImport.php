@@ -22,44 +22,20 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 
-class EmployeesImport implements ToCollection, WithHeadingRow
+class EmployeesImport implements ToModel, WithValidation, WithHeadingRow
 {
     use Importable, SkipsFailures;
     /**
     * @param Collection $collection
     */
-    public function collection(Collection $collection)  
+    public function model(array $row)  
     {
-        /** 
-         * @
-        * Validate Values
-        **/
-        Validator::make($collection->toArray(), [
-            //'lastname' => 'required',
-            '*.lastname' => 'required|unique:employee_personal_information',
-            '*.firstname' => 'required|unique:employee_personal_information',
-            '*.middlename' => 'required|unique:employee_personal_information',
-            '*.tin' => 'required|unique:employee_personal_information',
-            '*.sssgsis' => 'required|unique:employee_personal_information',
-            '*.phic' => 'required|unique:employee_personal_information',
-            '*.hdmf' => 'required|unique:employee_personal_information',
-            '*.nid' => 'required|unique:employee_personal_information',
-            // '*.mobile_no' => 'required|unique:employee_personal_information',
-            // '*.email_add' => 'required|unique:employee_personal_information',
-            // '*.birthdate' => 'required',
-            // '*.gender' => 'required',
-            // '*.civil_status' => 'required',
-            // '*.country' => 'required',
-            // '*.address_unit' => 'required',
-            // '*.city_town' => 'required',
-
-        ])->validate();
 
         /**
          * @
          *  Create Employee Personal Information
          * */
-        foreach ($collection as $row){
+        //foreach ($collection as $row){
             $password = Keygen::alphanum(10)->generate();
             /**
              * @//Generated ESS ID
@@ -67,6 +43,10 @@ class EmployeesImport implements ToCollection, WithHeadingRow
             $initial = (new Initials)->length(3)->generate($row['lastname'] . ' ' . $row['firstname'] . ' ' . $row['middlename']);    
             $employee_ess_id = $initial . $this->generateESSID();
 
+            /**
+             * @ Create a Employee Personal Information
+             * @ The Test Inputs are Temporary
+             * */
             $Employee_personal_info = EmployeePersonalInfo::create([
                         'lastname'  => $row['lastname'],
                         'firstname' => $row['firstname'],
@@ -157,7 +137,7 @@ class EmployeesImport implements ToCollection, WithHeadingRow
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
             ]);
-        }
+        //}
     }
     /*Generate Key*/
     protected function generateESSKey(){
@@ -179,16 +159,78 @@ class EmployeesImport implements ToCollection, WithHeadingRow
         return $ess_id;
     }
 
-    // /**
-    //  * @return array
-    //  */
-    // public function rules(): array
-    // {
-    //     return [
-    //         'lastname' => 'required',
-    //         '*.lastname' => 'required',
-    //         'name' => 'required|string|unique:users',
-    //         '*.name' => 'required|string|unique:users',
-    //     ];
-    // }
+    /**
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'lastname' => 'required|unique:employee_personal_information',
+            '*.lastname' => 'required|unique:employee_personal_information',
+
+            'firstname' => 'required|string|unique:employee_personal_information',
+            '*.firstname' => 'required|string|unique:employee_personal_information',
+
+            'middlename' => 'required|string|unique:employee_personal_information',
+            '*.middlename' => 'required|string|unique:employee_personal_information',
+
+            'tin' => 'required|string|unique:employee_personal_information',
+            '*.tin' => 'required|unique:employee_personal_information',
+
+            'sssgsis' => 'required|unique:employee_personal_information',
+            '*.sssgsis' => 'required|unique:employee_personal_information',
+
+            'phic' => 'required|unique:employee_personal_information',
+            '*.phic' => 'required|unique:employee_personal_information',
+
+            'hdmf' => 'required|unique:employee_personal_information',
+            '*.hdmf' => 'required|unique:employee_personal_information',
+
+            'nid' => 'required|unique:employee_personal_information',
+            '*.nid' => 'required|unique:employee_personal_information',
+            
+            'mobile_no' => 'required|unique:employee_personal_information',
+            '*.mobile_no' => 'required|unique:employee_personal_information',
+            
+            'email_add' => 'required|unique:employee_personal_information',
+            '*.email_add' => 'required|unique:employee_personal_information',
+
+            'birthdate' => 'required|before:'.\Carbon\Carbon::now()->subYears(21)->format('Y-m-d'),
+            '*.birthdate' => 'required|before:'.\Carbon\Carbon::now()->subYears(21)->format('Y-m-d'),
+
+            // 'gender' => 'required',
+            // '*.gender' => 'required',
+
+            // 'civil_status' => 'required',
+            // '*.civil_status' => 'required',
+
+            // 'country' => 'required',
+            // '*.country' => 'required',
+
+            // 'address_unit' => 'required',
+            // '*.address_unit' => 'required',
+
+            // 'city_town' => 'required',
+            // '*.city_town' => 'required',
+
+            // 'barangay' => 'required',
+            // '*.barangay' => 'required',
+            
+            // 'province' => 'required',
+            // '*.province' => 'required',
+
+            // 'zipcode' => 'required',
+            // '*.zipcode' => 'required',
+        ];
+    }
+
+    /**
+     * Validation rules custome Message
+     * */
+    public function messages()
+    {
+        return [
+            'required' => 'The :attribute field is required.'
+        ];
+    }
 }
