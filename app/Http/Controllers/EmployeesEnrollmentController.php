@@ -943,6 +943,8 @@ class EmployeesEnrollmentController extends Controller
         //     $failure->values();
         // }
 
-        return Response::json();
+        $failures = $import->failures();
+
+        return Response::json($failures);
     }
 }

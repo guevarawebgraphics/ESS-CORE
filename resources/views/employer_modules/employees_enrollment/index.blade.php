@@ -304,8 +304,20 @@
                     if(data.status === 422) {
                         //console.log("422");
                         var errors = $.parseJSON(data.responseText);
-                        //console.log(errors.errors);
+                        console.log(errors);
                         $.each(errors, function (i, errors) {
+                           /**
+                            * @ Temporary Fix
+                            **/
+                            for (i = 0; i < errors.length; i++){
+                                if(errors[i]){
+                                    //$('#ttttt').html('<li><label class="text-danger" id="error_fields">'+errors[i]+'</label></li></br>');
+                                    $('#ttttt').html('<li><label class="text-danger" id="error_fields"> * Please Double Check Your Upload File</label></li></br>')
+                                }
+                            }
+                            // for (let test of errors) {
+                            //     console.log(test);
+                            // }
                             //onsole.log(errors.error);
                             var ssssq = Object.values(errors);
                             //console.log(ssssq.splice(26, 0));
@@ -316,9 +328,9 @@
                                 //if(errors){
                                     //$('#error_fields').html(errors);
                                     //$('#error_fields').attr('hidden', false);
-                                    $('#ttttt').html('<li><label class="text-danger" id="error_fields">'+value+'</label></li>');
+                                    //$('#ttttt').html('<li><label class="text-danger" id="error_fields">'+value+'</label></li></br>');
                                // }
-                                console.log(`${key}: ${value}`);
+                                //console.log(`${key}: ${value}`);
                             }
                         });
                     }

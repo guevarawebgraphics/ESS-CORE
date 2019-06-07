@@ -21,12 +21,15 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class EmployeesImport implements ToModel, WithValidation, WithHeadingRow
+class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts
 {
     use Importable, SkipsFailures;
     /**
-    * @param Collection $collection
+      * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function model(array $row)  
     {
@@ -227,10 +230,93 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow
     /**
      * Validation rules custome Message
      * */
-    public function messages()
+    // public function messages()
+    // {
+    //     return [
+    //         'required' => 'The :attribute field is required.'
+    //     ];
+    // }
+
+    /**
+     * @ Custom Validation For Attributes
+     * 
+     * @return array
+     */
+    public function customValidationAttributes()
     {
         return [
-            'required' => 'The :attribute field is required.'
+            'lastname' => 'Last Name',
+            'firstname' => 'First Name',
+            'middlename' => 'Middle Name',
+            'tin' => 'Tin',
+            'sssgsis' => 'SSS/GSIS',
+            'phic' => 'Phic',
+            'hdmf' => 'Hdmf',
+            'nid' => 'Nid',
+            'mobile_no' => 'Mobile Number',
+            'email_add' => 'Email Address',
+            'birthdate' => 'Birth Date',
+            'gender' => 'Gender',
+            'civil_status' => 'Civil Status',
+            'country' => 'Country',
+            'address_unit' => 'Address Unit',
+            'city_town' => 'City Town',
+            'barangay' => 'Barangay',
+            'province' => 'Province',
+            'zipcode' => 'Zipcode',
         ];
+    }
+
+
+    /**
+     * @ Custom Validation Message
+     * 
+     * @return array
+     */
+    public function customValidationMessages()
+    {
+        return [
+            'lastname' => 'Custom message for :attribute.',
+            'firstname' => 'Custom message for :attribute.',
+            'middlename' => 'Custom message for :attribute.',
+            'tin' => 'Custom message for :attribute.',
+            'sssgsis' => 'Custom message for :attribute.',
+            'phic' => 'Custom message for :attribute.',
+            'hdmf' => 'Custom message for :attribute.',
+            'nid' => 'Custom message for :attribute.',
+            'mobile_no' => 'Custom message for :attribute.',
+            'email_add' => 'Custom message for :attribute.',
+            'birthdate' => 'Custom message for :attribute.',
+            'gender' => 'Custom message for :attribute.',
+            'civil_status' => 'Custom message for :attribute.',
+            'country' => 'Custom message for :attribute.',
+            'address_unit' => 'Custom message for :attribute.',
+            'city_town' => 'Custom message for :attribute.',
+            'barangay' => 'Custom message for :attribute.',
+            'province' => 'Custom message for :attribute.',
+            'zipcode' => 'Custom message for :attribute.',
+        ];
+    }
+    /**
+     * @param Failure[] $failures
+     */
+    public function onFailure(Failure ...$failures)
+    {
+        $this->failures = array_merge($this->failures, $failures);
+        // Handle the failures how you'd like.
+    }
+
+    public function failures()
+    {
+        return $this->failures;
+    }
+
+
+    /**
+     * @ Batch Insert
+     * */
+    public function batchSize(): int
+    {
+        return 1000;
     }
 }
