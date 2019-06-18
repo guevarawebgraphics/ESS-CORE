@@ -131,6 +131,9 @@
             </div>
             <div class="modal-body">
             <div class="col-md-12">
+                @foreach($Employees_upload_template as $employees_template)
+                    <a href="/storage/Documents/templates/{{$employees_template->document_file}}" download>{{$employees_template->document_code}}<div class="float-left mr-3"><i class="fa fa-download"></i></div></a>
+                @endforeach
                 <ul id="ttttt" style="list-style-type: none;">
                     {{-- <li><label class="text-danger" id="error_fields" hidden="true"></label></li> --}}
                 </ul>
@@ -154,7 +157,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
+                <button type="submit" class="btn btn-primary" id="btn_upload">Upload <i id="spinner_upload" class=""></button>
             </div>
         </form>
           </div>
@@ -278,7 +281,11 @@
             $('#ttttt').remove();
         });
 
+        // $('#btn_upload').click(function(){
+        //     $("#spinner_upload").addClass('fa fa-refresh fa-spin');
+        // });
         $('#upload_employees_form').submit(function (e){
+            $("#spinner_upload").addClass('fa fa-refresh fa-spin');
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajaxSetup({
@@ -298,13 +305,19 @@
                     $('#UploadEmployees').modal('hide');
                     toastr.success('Account Employees Created Successfully', 'Success')
                     console.log("Success");
+                    setTimeout(function (){
+                            $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
+                        }, 300);
                 },
                 error: function(data, status){
+                    setTimeout(function (){
+                            $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
                     // /console.log(data);
                     if(data.status === 422) {
                         //console.log("422");
                         var errors = $.parseJSON(data.responseText);
-                        console.log(errors);
+                        //console.log(errors);
                         $.each(errors, function (i, errors) {
                            /**
                             * @ Temporary Fix

@@ -127,9 +127,17 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.zipcode',)
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->get();
+        /**
+         * @ Employees Upload Template
+         * */
+        $Employees_upload_template = DB::table('template')
+                                        ->where('id', '=', 25)
+                                        ->select(
+                                            'document_code',
+                                            'document_file')
+                                        ->get();
 
-
-        return view('employer_modules.employees_enrollment.index')->with('employee_info', $employee_info);
+        return view('employer_modules.employees_enrollment.index', compact('employee_info', 'Employees_upload_template'));
     }
     //refresh table employee
     public function refresh_table_employee()

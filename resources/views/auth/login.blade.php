@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-                        <label for="username" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Username') }}</label>
+                        {{-- <label for="username" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Username') }}</label> --}}
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <div class="input-group">
@@ -34,7 +34,7 @@
                                 @endif
                             </div>
                         </div>
-                        <label for="password" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Password') }}</label>
+                        {{-- <label for="password" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Password') }}</label> --}}
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <div class="input-group">

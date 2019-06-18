@@ -47,6 +47,9 @@
 	{{-- <script src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script> --}}
 	{{-- CKEDITOR 4 --}}
 	<script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
+	<script src="{{ asset('/ckeditor/adapters/jquery.js') }}"></script>
+	<script src="{{ asset('/ckeditor/ckfinder/ckfinder.js') }}"></script>
+	{{-- <script src="{{ asset('/ckeditor/ckfinder/core/connector/php/connector') }}"></script> --}}
 	@if(Auth::check())
 	<script src="{{ asset('js/scripts.js') }}"></script>
 	@endif
