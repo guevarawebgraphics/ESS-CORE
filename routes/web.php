@@ -134,6 +134,7 @@ Route::post('/enrollemployee/encode/post', 'EmployeesEnrollmentController@encode
 Route::get('/enrollemployee/searchemployee', 'EmployeesEnrollmentController@search_existing_employee');
 Route::get('/enrollemployee/edit/{id}', 'EmployeesEnrollmentController@edit_encode');
 Route::get('/enrollemployee/refresh_table_employee', 'EmployeesEnrollmentController@refresh_table_employee');
+Route::patch('/enrollemployee/update_employee/{id}', 'EmployeesEnrollmentController@update_employee');
 Route::patch('/enrollemployee/UpdateAccountStatus/{id}', 'EmployeesEnrollmentController@UpdateAccountStatus');
 Route::post('/enrollemployee/upload_employees', 'EmployeesEnrollmentController@upload_employees');
 
@@ -181,4 +182,10 @@ Route::get('/error', function () { // for no access
 
 Route::get('/email', function() {
     return view('Email.employee_email');
+});
+
+
+
+Route::get('/Testsocket', function() {
+    return view('Testsocket');
 });

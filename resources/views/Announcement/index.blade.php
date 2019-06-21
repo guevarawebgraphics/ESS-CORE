@@ -57,7 +57,7 @@ elseif(Session::get('send_announcement') == 'delete'){
             <div class="col-md-6">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                      <span class="fa fa-search input-group-text"></span>
+                      <span class="fa fa-search input-group-text" style="background-color: #fff;"></span>
                     </div>
                     <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
               </div>
@@ -75,9 +75,9 @@ elseif(Session::get('send_announcement') == 'delete'){
                     <th>Employer</th>
                     @endif
                     <th>Announcement Title</th>
-                    <th>Announcement Description</th>
+                    {{-- <th>Announcement Description</th> --}}
                     <th>Announcement Status</th>
-                    <th>Announcement Type</th>
+                    {{-- <th>Announcement Type</th> --}}
                     <th>Send Announcement</th>
                     <th>Action</th>
                 </tr>
@@ -121,23 +121,28 @@ elseif(Session::get('send_announcement') == 'delete'){
                 </div>
                 @if(auth()->user()->user_type_id == 1)
                 <div class="form-group row">
-                    <label for="announcement_type" class="col-md-4 text-md-center">Announcement Type:</label>
+                    {{-- <label for="announcement_type" class="col-md-4 text-md-center">Announcement Type:</label>
                     <div class="col-md-6">
                         
                             <select id="announcement_type" name="announcement_type" class="form-control">
                                 <option value="" selected>Choose Announcement Type...</option>
                             </select>
-                            {{-- <input class="form-control" type="text" id="announcement_type" name="announcement_type" placeholder="Announcement Type">
-                                <p class="text-danger" id="error_announcement_type"></p> --}}
-                    </div>
+                            <input class="form-control" type="text" id="announcement_type" name="announcement_type" placeholder="Announcement Type">
+                                <p class="text-danger" id="error_announcement_type"></p>
+                    </div> --}}
                 </div>
                 
                     <div class="form-group row">
                             <label for="employer_id" class="control-label col-md-4 text-md-center">Select Employer:</label>
 
                                 <div class="col-md-8">
-                                    <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
+                                    {{-- <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
                                         <option selected value="">--Select Employer</option>
+                                        @foreach($employers as $employer)
+                                            <option value="{{$employer->id}}">{{$employer->business_name}}</option>
+                                        @endforeach
+                                    </select> --}}
+                                    <select class="form-control select2" multiple="multiple" data-placeholder="Select a Employers" style="width: 100%;" name="employer_id[]" id="employer_id">
                                         @foreach($employers as $employer)
                                             <option value="{{$employer->id}}">{{$employer->business_name}}</option>
                                         @endforeach
@@ -203,7 +208,13 @@ elseif(Session::get('send_announcement') == 'delete'){
 
 <script>
 $(document).ready(function (){
-    CKEDITOR.replace( 'announcement_description' );
+    // CKEDITOR.replace( 'announcement_description', {
+    //     filebrowserBrowseUrl: '/browser/browse.php',
+    //     filebrowserUploadUrl: '../../public/Documents/announcement_image/'
+    // });
+    var editor = CKEDITOR.replace( 'announcement_description' );
+    CKFinder.setupCKEditor( editor );
+    //CKFinder.config( { connectorPath: '/ckeditor/ckfinder/core/connector/php/connector.php' } );
     $('.select2').select2()
     //Get Scripts
     // $.getScript( "js/scripts.js" )
@@ -223,7 +234,7 @@ $(document).ready(function (){
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10000,
-            scrollY: 300,
+            scrollY: 500,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -265,6 +276,10 @@ $(document).ready(function (){
     /*Save Announcement*/
     $('#SaveAnnoucement').click(function (e){
         var url = $('#annoucement_form').attr('action');
+        var employer_selected = [];
+        $('#employer_id :selected').each(function() {
+            employer_selected.push($(this).val());
+        });
         //var data = $('#annoucement_form').serialize();
         $("#spinner").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
@@ -299,10 +314,10 @@ $(document).ready(function (){
                     async: false,
                     data: {
                         _token:     '{{ csrf_token() }}',
-                        employer_id: $('#employer_id').val(),
+                        employer_id: ({{ auth()->user()->user_type_id }} === 1 ? employer_selected : null),
                         announcement_title: $('#announcement_title').val(),
                         announcement_description: CKEDITOR.instances.announcement_description.getData(),
-                        announcement_type: $('#announcement_type').val(),
+                        // announcement_type: $('#announcement_type').val(),
                     },
                     success: function(data){
                         $('#annoucement_form')[0].reset();
@@ -322,6 +337,7 @@ $(document).ready(function (){
                         }, 1500);
                     },
                     error: function(data, status){
+                        //console.log(employer_selected);
                         toastr.error('Error. Please Complete the fields', 'Error!')
                         setTimeout(function (){
                             $("#spinner").removeClass('fa fa-refresh fa-spin');
@@ -337,10 +353,10 @@ $(document).ready(function (){
                                 $('#announcement_description').addClass('is-invalid');
                                 $('#error_annoucement_description').html('Annoucement Description is Required');
                             }
-                            if(errors.announcement_type){
-                                $('#announcement_type').addClass('is-invalid');
-                                $('#error_announcement_type').html('Annoucement Type is Required');
-                            }
+                            // if(errors.announcement_type){
+                            //     $('#announcement_type').addClass('is-invalid');
+                            //     $('#error_announcement_type').html('Annoucement Type is Required');
+                            // }
                         });
                     }
                 });
@@ -371,7 +387,7 @@ $(document).ready(function (){
             success: function(data){
                 $('#announcement_title').val(data[0].announcement_title);
                 $('#announcement_description').val(data[0].announcement_description);
-                $('#announcement_type option[value="'+data[0].announcement_type+'"]').prop('selected', true);
+               // $('#announcement_type option[value="'+data[0].announcement_type+'"]').prop('selected', true);
                 CKEDITOR.instances.announcement_description.setData(data[0].announcement_description);
                 $('#select2-employer_id-container').attr('title', data[0].employer_id).text(data[0].business_name);
                 //$('#announcement_type').val(data[0].announcement_type);
@@ -386,7 +402,7 @@ $(document).ready(function (){
     /*Post Announcement*/
     $('#showdata').on('click', '.announcement-post', function(){
         var id = $(this).attr('data');
-        var announcement_type = $(this).attr('data-announcementtype');
+        //var announcement_type = $(this).attr('data-announcementtype');
         $('#PostModal').modal('show');
         $('#PostModal').find('#title_modal').text('Post Announcement');
         // console.log(id);
@@ -399,7 +415,7 @@ $(document).ready(function (){
                 url: '/Announcement/update_announcement_status',
                 data: {
                     id: id,
-                    announcement_type: announcement_type,
+                    //announcement_type: announcement_type,
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data){
@@ -503,10 +519,10 @@ $(document).ready(function (){
                                     // '<td>'+data[i].id+'</td>'+
                                      '@if(auth()->user()->user_type_id === 1)<td>'+data[i].business_name+'</td>@endif'+
                                      '<td>'+data[i].announcement_title+'</td>'+
-                                     '<td>'+data[i].announcement_description+'</td>'+
+                                    //  '<td>'+data[i].announcement_description+'</td>'+
                                      '<td>'+AnnouncementStatus+'</td>' +
-                                     '<td>'+data[i].type_name+'</td>'+
-                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'" data-announcementtype="'+data[i].announcement_type+'" {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
+                                     //'<td>'+data[i].type_name+'</td>'+
+                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'"  {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
                                      '<td>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-secondary announcement-edit '+posted+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-danger annoucement-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+

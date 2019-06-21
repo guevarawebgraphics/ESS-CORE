@@ -61,7 +61,7 @@ elseif(Session::get('manage_users') == 'delete'){
                 <div class="col-md-6">    
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="fa fa-search input-group-text"></span>
+                            <span class="fa fa-search input-group-text" style="background-color: #fff;"></span>
                         </div>
                         <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search"  autofocus>
                     </div>
@@ -199,7 +199,7 @@ elseif(Session::get('manage_users') == 'delete'){
             "paging": true,
             "pageLength": 10000,
             "ordering": false,
-            scrollY: 300,
+            scrollY: 500,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -230,7 +230,7 @@ elseif(Session::get('manage_users') == 'delete'){
                         "paging": true,
                         "pageLength": 10000,
                         "ordering": false,
-                        scrollY: 300,
+                        scrollY: 500,
                         //  scrollX: true,
                         "autoWidth": true,
                         lengthChange: false,

@@ -21,45 +21,24 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class EmployeesImport implements ToCollection, WithHeadingRow
+class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts
 {
     use Importable, SkipsFailures;
     /**
-    * @param Collection $collection
+      * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function collection(Collection $collection)  
+    public function model(array $row)  
     {
-        /** 
-         * @
-        * Validate Values
-        **/
-        Validator::make($collection->toArray(), [
-            //'lastname' => 'required',
-            '*.lastname' => 'required|unique:employee_personal_information',
-            '*.firstname' => 'required|unique:employee_personal_information',
-            '*.middlename' => 'required|unique:employee_personal_information',
-            '*.tin' => 'required|unique:employee_personal_information',
-            '*.sssgsis' => 'required|unique:employee_personal_information',
-            '*.phic' => 'required|unique:employee_personal_information',
-            '*.hdmf' => 'required|unique:employee_personal_information',
-            '*.nid' => 'required|unique:employee_personal_information',
-            // '*.mobile_no' => 'required|unique:employee_personal_information',
-            // '*.email_add' => 'required|unique:employee_personal_information',
-            // '*.birthdate' => 'required',
-            // '*.gender' => 'required',
-            // '*.civil_status' => 'required',
-            // '*.country' => 'required',
-            // '*.address_unit' => 'required',
-            // '*.city_town' => 'required',
-
-        ])->validate();
 
         /**
          * @
          *  Create Employee Personal Information
          * */
-        foreach ($collection as $row){
+        //foreach ($collection as $row){
             $password = Keygen::alphanum(10)->generate();
             /**
              * @//Generated ESS ID
@@ -67,6 +46,10 @@ class EmployeesImport implements ToCollection, WithHeadingRow
             $initial = (new Initials)->length(3)->generate($row['lastname'] . ' ' . $row['firstname'] . ' ' . $row['middlename']);    
             $employee_ess_id = $initial . $this->generateESSID();
 
+            /**
+             * @ Create a Employee Personal Information
+             * @ The Test Inputs are Temporary
+             * */
             $Employee_personal_info = EmployeePersonalInfo::create([
                         'lastname'  => $row['lastname'],
                         'firstname' => $row['firstname'],
@@ -157,7 +140,7 @@ class EmployeesImport implements ToCollection, WithHeadingRow
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
             ]);
-        }
+        //}
     }
     /*Generate Key*/
     protected function generateESSKey(){
@@ -179,16 +162,161 @@ class EmployeesImport implements ToCollection, WithHeadingRow
         return $ess_id;
     }
 
-    // /**
-    //  * @return array
-    //  */
-    // public function rules(): array
+    /**
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'lastname' => 'required|unique:employee_personal_information',
+            '*.lastname' => 'required|unique:employee_personal_information',
+
+            'firstname' => 'required|string|unique:employee_personal_information',
+            '*.firstname' => 'required|string|unique:employee_personal_information',
+
+            'middlename' => 'required|string|unique:employee_personal_information',
+            '*.middlename' => 'required|string|unique:employee_personal_information',
+
+            'tin' => 'required|string|unique:employee_personal_information',
+            '*.tin' => 'required|unique:employee_personal_information',
+
+            'sssgsis' => 'required|unique:employee_personal_information',
+            '*.sssgsis' => 'required|unique:employee_personal_information',
+
+            'phic' => 'required|unique:employee_personal_information',
+            '*.phic' => 'required|unique:employee_personal_information',
+
+            'hdmf' => 'required|unique:employee_personal_information',
+            '*.hdmf' => 'required|unique:employee_personal_information',
+
+            'nid' => 'required|unique:employee_personal_information',
+            '*.nid' => 'required|unique:employee_personal_information',
+            
+            'mobile_no' => 'required|unique:employee_personal_information',
+            '*.mobile_no' => 'required|unique:employee_personal_information',
+            
+            'email_add' => 'required|unique:employee_personal_information',
+            '*.email_add' => 'required|unique:employee_personal_information',
+
+            'birthdate' => 'required|before:'.\Carbon\Carbon::now()->subYears(21)->format('Y-m-d'),
+            '*.birthdate' => 'required|before:'.\Carbon\Carbon::now()->subYears(21)->format('Y-m-d'),
+
+            // 'gender' => 'required',
+            // '*.gender' => 'required',
+
+            // 'civil_status' => 'required',
+            // '*.civil_status' => 'required',
+
+            // 'country' => 'required',
+            // '*.country' => 'required',
+
+            // 'address_unit' => 'required',
+            // '*.address_unit' => 'required',
+
+            // 'city_town' => 'required',
+            // '*.city_town' => 'required',
+
+            // 'barangay' => 'required',
+            // '*.barangay' => 'required',
+            
+            // 'province' => 'required',
+            // '*.province' => 'required',
+
+            // 'zipcode' => 'required',
+            // '*.zipcode' => 'required',
+        ];
+    }
+
+    /**
+     * Validation rules custome Message
+     * */
+    // public function messages()
     // {
     //     return [
-    //         'lastname' => 'required',
-    //         '*.lastname' => 'required',
-    //         'name' => 'required|string|unique:users',
-    //         '*.name' => 'required|string|unique:users',
+    //         'required' => 'The :attribute field is required.'
     //     ];
     // }
+
+    /**
+     * @ Custom Validation For Attributes
+     * 
+     * @return array
+     */
+    public function customValidationAttributes()
+    {
+        return [
+            'lastname' => 'Last Name',
+            'firstname' => 'First Name',
+            'middlename' => 'Middle Name',
+            'tin' => 'Tin',
+            'sssgsis' => 'SSS/GSIS',
+            'phic' => 'Phic',
+            'hdmf' => 'Hdmf',
+            'nid' => 'Nid',
+            'mobile_no' => 'Mobile Number',
+            'email_add' => 'Email Address',
+            'birthdate' => 'Birth Date',
+            'gender' => 'Gender',
+            'civil_status' => 'Civil Status',
+            'country' => 'Country',
+            'address_unit' => 'Address Unit',
+            'city_town' => 'City Town',
+            'barangay' => 'Barangay',
+            'province' => 'Province',
+            'zipcode' => 'Zipcode',
+        ];
+    }
+
+
+    /**
+     * @ Custom Validation Message
+     * 
+     * @return array
+     */
+    public function customValidationMessages()
+    {
+        return [
+            'lastname' => 'Custom message for :attribute.',
+            'firstname' => 'Custom message for :attribute.',
+            'middlename' => 'Custom message for :attribute.',
+            'tin' => 'Custom message for :attribute.',
+            'sssgsis' => 'Custom message for :attribute.',
+            'phic' => 'Custom message for :attribute.',
+            'hdmf' => 'Custom message for :attribute.',
+            'nid' => 'Custom message for :attribute.',
+            'mobile_no' => 'Custom message for :attribute.',
+            'email_add' => 'Custom message for :attribute.',
+            'birthdate' => 'Custom message for :attribute.',
+            'gender' => 'Custom message for :attribute.',
+            'civil_status' => 'Custom message for :attribute.',
+            'country' => 'Custom message for :attribute.',
+            'address_unit' => 'Custom message for :attribute.',
+            'city_town' => 'Custom message for :attribute.',
+            'barangay' => 'Custom message for :attribute.',
+            'province' => 'Custom message for :attribute.',
+            'zipcode' => 'Custom message for :attribute.',
+        ];
+    }
+    /**
+     * @param Failure[] $failures
+     */
+    public function onFailure(Failure ...$failures)
+    {
+        $this->failures = array_merge($this->failures, $failures);
+        // Handle the failures how you'd like.
+    }
+
+    public function failures()
+    {
+        return $this->failures;
+    }
+
+
+    /**
+     * @ Batch Insert
+     * */
+    public function batchSize(): int
+    {
+        return 1000;
+    }
 }

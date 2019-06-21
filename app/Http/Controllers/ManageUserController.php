@@ -70,10 +70,22 @@ class ManageUserController extends Controller
     {
         $users = "";
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
-        if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
+        if(auth()->user()->user_type_for == 1)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 ");
             return view('admin_modules.createuser')->with('users', $users);
+        }
+        else if (auth()->user()->user_type_for == 2)
+        {
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 AND a.employer_id = '".auth()->user()->employer_id."' ");
+            // $users = DB::table('users')
+            //             ->join('user_type', 'users.user_type_id', '=', 'user_type.id')
+            //             ->where('users.created_by', '!=', 'default')
+            //             ->where('users.employer_id', '!=', 'none')
+            //             ->where('users.user_type_id', '!=', 1)
+            //             ->where('users.employer_id', '=', auth()->user()->employer_id)
+            //             ->get();
+            return view('admin_modules.createuser', compact('users'));
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
         {
@@ -108,9 +120,14 @@ class ManageUserController extends Controller
         // return view ('admin_modules.table.tableuser')->with('users', $users);
         $users = "";
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
-        if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
+        if(auth()->user()->user_type_for == 1)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.created_by != 'default' AND a.employer_id != 'none'");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 ");
+            return view('admin_modules.table.tableuser')->with('users', $users);
+        }
+        else if (auth()->user()->user_type_for == 2)
+        {
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 AND a.employer_id = '".auth()->user()->employer_id."' ");
             return view('admin_modules.table.tableuser')->with('users', $users);
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
