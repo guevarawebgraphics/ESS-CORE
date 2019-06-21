@@ -183,3 +183,9 @@ Route::get('/error', function () { // for no access
 Route::get('/email', function() {
     return view('Email.employee_email');
 });
+
+
+
+Route::get('/Testsocket', function() {
+    return view('Testsocket');
+});

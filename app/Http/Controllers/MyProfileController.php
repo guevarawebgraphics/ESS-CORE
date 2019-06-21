@@ -145,7 +145,7 @@ class MyProfileController extends Controller
         if(auth()->user()->user_type_id == "4")
         {
             $Account = DB::table('employee')
-                    ->join('users', 'employee.id', '=', 'users.employee_no')
+                    ->join('users', 'employee.id', '=', 'users.employee_id')
                     ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
                     ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')  
                     ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
@@ -160,7 +160,7 @@ class MyProfileController extends Controller
                             'refprovince.provDesc',
                             'refcitymun.citymunDesc',
                             'refbrgy.brgyDesc')
-                    ->where('users.employee_no', '=', auth()->user()->employee_no)
+                    ->where('users.employee_id', '=', auth()->user()->employee_id)
                     ->get();
                     
             $Account_info = DB::table('user_type')

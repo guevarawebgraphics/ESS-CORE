@@ -61,14 +61,14 @@ $delete = 'disabled';
                 <div class="col-md-6">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="fa fa-search input-group-text"></span>
+                            <span class="fa fa-search input-group-text" style="background-color: #fff;"></span>
                         </div>
                         <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search" autofocus>
                     </div>
                     {{-- <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label> --}}
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary float-md-right" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User</button>
+                    <button type="button" class="btn btn-primary float-md-right" id="btnCreateUser" {{$add}}><i class="icon ion-md-person-add"></i></i> Create User</button>
                 </div>
             </div>
 
@@ -135,7 +135,7 @@ $delete = 'disabled';
                             @endif --}}
                         </div>
                     </div>
-                    @if(auth()->user()->user_type_id == 1 && 3)
+                    @if(auth()->user()->user_type_id == 1)
                     <div class="form-group row">
                         <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
                         <div class="col-md-6">
@@ -333,7 +333,7 @@ $delete = 'disabled';
             "paging": true,
             "ordering": false,
             "pageLength": 10000,
-            scrollY: 300,
+            scrollY: 500,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -420,7 +420,7 @@ $delete = 'disabled';
                         "paging": true,
                         "pageLength": 10000,
                         "ordering": false,
-                        scrollY: 300,
+                        scrollY: 500,
                         //  scrollX: true,
                         "autoWidth": true,
                         lengthChange: false,

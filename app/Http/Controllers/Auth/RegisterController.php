@@ -203,7 +203,7 @@ class RegisterController extends Controller
             //echo $data['rbn_type'];
             
             $employer_get = DB::table('employer')
-                            ->where('id', '=', (auth()->user()->user_type_id === 3) ? auth()->user()->employer_id : $data['cmbEmployer'])
+                            ->where('id', '=', (auth()->user()->user_type_id == 3) ? auth()->user()->employer_id : $data['cmbEmployer'])
                             ->select('enrollment_date', 'expiry_date')
                             ->first();
 
@@ -214,8 +214,8 @@ class RegisterController extends Controller
                 'user_type_for' => $user_type_for,
                 'employer_id' => (auth()->user()->user_type_id == 3) ? auth()->user()->employer_id : $data['cmbEmployer'],     
                 'password' => Hash::make($data['password']),
-                'enrollment_date' => $employer_get->enrollment_date,
-                'expiry_date' => $employer_get->expiry_date,//14,
+                'enrollment_date' => (auth()->user()->user_type_id === 3) ? auth()->user()->enrollment_date: $employer_get->enrollment_date,
+                'expiry_date' => (auth()->user()->user_type_id === 3) ? auth()->user()->expiry_date : $employer_get->expiry_date,//14,
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id
             ]);

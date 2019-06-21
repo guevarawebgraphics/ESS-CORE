@@ -57,7 +57,7 @@ elseif(Session::get('send_announcement') == 'delete'){
             <div class="col-md-6">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                      <span class="fa fa-search input-group-text"></span>
+                      <span class="fa fa-search input-group-text" style="background-color: #fff;"></span>
                     </div>
                     <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
               </div>
@@ -234,7 +234,7 @@ $(document).ready(function (){
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10000,
-            scrollY: 300,
+            scrollY: 500,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,

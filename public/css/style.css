@@ -1,4 +1,4 @@
-/* Custome Style */
+/* Custom Style */
 
 /* Custome Style For Table */
 table td{
@@ -16,4 +16,15 @@ li a p{
 }
 .text-md-center{
     margin-top: 5px;
+}
+html {
+    background-color: #eaeaea;
+}
+
+.wrapper {
+    background-color: #eaeaea;
+}
+
+footer {
+    background-color: #eaeaea;
 }

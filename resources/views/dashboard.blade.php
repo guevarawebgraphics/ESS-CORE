@@ -15,7 +15,8 @@
               <p>Uncollected Credits</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              {{-- <i class="ion ion-bag"></i> --}}
+              <i class="icon ion-md-cash"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -30,7 +31,8 @@
               <p>Total E-Wallet Balances</p>
             </div>
             <div class="icon">
-              <i class="ion ion-cash"></i>
+              {{-- <i class="ion ion-cash"></i> --}}
+              <i class="icon ion-md-cash"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -48,7 +50,8 @@
               <p>Registered Employer</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              {{-- <i class="ion ion-person-add"></i> --}}
+              <i class="icon ion-md-person"></i>
             </div>
             <a href="/Account" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -63,7 +66,8 @@
               <p>Merchant Account</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-stalker"></i>
+              {{-- <i class="ion ion-person-stalker"></i> --}}
+              <i class="icon ion-md-people"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>

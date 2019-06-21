@@ -65,7 +65,7 @@ elseif(Session::get('create_profile') == 'delete'){
           <div class="col-md-6">
               <div class="input-group">
                   <div class="input-group-prepend">
-                      <span class="fa fa-search input-group-text"></span>
+                      <span class="fa fa-search input-group-text" style="background-color: #fff;"></span>
                     </div>
                   <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
               </div>
