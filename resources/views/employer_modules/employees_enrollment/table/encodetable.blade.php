@@ -33,7 +33,7 @@
                         @endif
                     </td>
                     <td>
-                        <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->employee_id}}">Change Status</button>
+                        <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->emp_id}}">Change Status</button>
                     </td>
                     <td>
                         <a href="/enrollemployee/edit/{{$info->id}}" class="btn btn-sm btn-primary" id="btn_editemployee">Edit Employee</a>

@@ -444,6 +444,7 @@
 				<!-- END -->
 
 				<!--SEND ANNOUNCEMENTS  -->
+				@if(auth()->user()->user_type_id != 4)
 				@if(Session::get("send_announcement") != "none")
 				<li class="nav-item has-treeview {{$sendannounce}}">
 					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-bullhorn"></i>
@@ -460,6 +461,7 @@
 					</ul>
 				</li>	
 				@else								
+				@endif
 				@endif	
 				<!-- END -->
 

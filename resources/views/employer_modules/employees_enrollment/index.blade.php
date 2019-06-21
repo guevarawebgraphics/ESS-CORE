@@ -74,10 +74,10 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->employee_id}}">Change Status</button>
+                                <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->emp_id}}">Change Status</button>
                             </td>
                             <td>
-                                <a href="/enrollemployee/edit/{{$info->id}}" class="btn btn-sm btn-primary" id="btn_editemployee"><i class="fa fa-edit"></i>Edit Employee</a>
+                                <a href="/enrollemployee/edit/{{$info->eneid}}" class="btn btn-sm btn-primary" id="btn_editemployee"><i class="fa fa-edit"></i>Edit Employee</a>
                             </td>
                         </tr>
                         @endforeach
@@ -130,10 +130,18 @@
               </button>
             </div>
             <div class="modal-body">
+            <div class="col-md-12">
+                @foreach($Employees_upload_template as $employees_template)
+                    <a href="/storage/Documents/templates/{{$employees_template->document_file}}" download>{{$employees_template->document_code}}<div class="float-left mr-3"><i class="fa fa-download"></i></div></a>
+                @endforeach
+                <ul id="ttttt" style="list-style-type: none;">
+                    {{-- <li><label class="text-danger" id="error_fields" hidden="true"></label></li> --}}
+                </ul>
+            </div>
             <form id="upload_employees_form">
-                    {{ csrf_field() }}
+                @csrf
                 <div class="col-md-12">
-                                
+
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="fa fa-folder input-group-text"></span>
@@ -149,7 +157,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
+                <button type="submit" class="btn btn-primary" id="btn_upload">Upload <i id="spinner_upload" class=""></button>
             </div>
         </form>
           </div>
@@ -266,7 +274,18 @@
             $('#UploadEmployees').modal('show');
         });
 
+        /*
+        *@ On Close Modal
+        */
+        $('#UploadEmployees').on('hidden.bs.modal', function (e) {
+            $('#ttttt').remove();
+        });
+
+        // $('#btn_upload').click(function(){
+        //     $("#spinner_upload").addClass('fa fa-refresh fa-spin');
+        // });
         $('#upload_employees_form').submit(function (e){
+            $("#spinner_upload").addClass('fa fa-refresh fa-spin');
             e.preventDefault();
             var formData = new FormData($(this)[0]);
             $.ajaxSetup({
@@ -286,9 +305,48 @@
                     $('#UploadEmployees').modal('hide');
                     toastr.success('Account Employees Created Successfully', 'Success')
                     console.log("Success");
+                    setTimeout(function (){
+                            $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
+                        }, 300);
                 },
-                error: function(data){
-                    console.log(data);
+                error: function(data, status){
+                    setTimeout(function (){
+                            $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+                    // /console.log(data);
+                    if(data.status === 422) {
+                        //console.log("422");
+                        var errors = $.parseJSON(data.responseText);
+                        //console.log(errors);
+                        $.each(errors, function (i, errors) {
+                           /**
+                            * @ Temporary Fix
+                            **/
+                            for (i = 0; i < errors.length; i++){
+                                if(errors[i]){
+                                    //$('#ttttt').html('<li><label class="text-danger" id="error_fields">'+errors[i]+'</label></li></br>');
+                                    $('#ttttt').html('<li><label class="text-danger" id="error_fields"> * Please Double Check Your Upload File</label></li></br>')
+                                }
+                            }
+                            // for (let test of errors) {
+                            //     console.log(test);
+                            // }
+                            //onsole.log(errors.error);
+                            var ssssq = Object.values(errors);
+                            //console.log(ssssq.splice(26, 0));
+                            /**/
+                            var sparseKeys = Object.keys(errors);
+                            //console.log(sparseKeys);
+                            for (let [key, value] of Object.entries(errors)) {
+                                //if(errors){
+                                    //$('#error_fields').html(errors);
+                                    //$('#error_fields').attr('hidden', false);
+                                    //$('#ttttt').html('<li><label class="text-danger" id="error_fields">'+value+'</label></li></br>');
+                               // }
+                                //console.log(`${key}: ${value}`);
+                            }
+                        });
+                    }
                 }
             });
 

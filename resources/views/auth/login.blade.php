@@ -11,20 +11,20 @@
     
     <div class="row justify-content-center">       
         <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-header text-center text-white">{{ __('Login') }}</div>
+            <div class="card card-outline card-primary shadow p-3 mb-5 bg-white rounded">
+                <div class="card-header text-center text-black"><!--{{ __('Login') }}--> ESS Login</div>
                 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-                        <label for="username" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Username') }}</label>
+                        {{-- <label for="username" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Username') }}</label> --}}
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <div class="input-group">
-                                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username" required autofocus>
                                     <div class="input-group-append">
-                                        <span class="fa fa-user input-group-text"></span>
+                                        <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
                                     </div>
+                                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username" required autofocus>
                                 </div>
                                 
                                 @if ($errors->has('username'))
@@ -34,14 +34,14 @@
                                 @endif
                             </div>
                         </div>
-                        <label for="password" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Password') }}</label>
+                        {{-- <label for="password" class="col-md-3 offset-md-1 col-form-label text-md-right">{{ __('Password') }}</label> --}}
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <div class="input-group">
-                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
                                     <div class="input-group-append">
-                                        <span class="fa fa-lock input-group-text"></span>
+                                        <span class="fa fa-lock input-group-text" style="background-color: #fff;"></span>
                                     </div>
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
                                 </div>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
@@ -95,8 +95,9 @@
 
                             <div class="col-md-8 offset-md-2">
                                 <button type="submit" class="btn btn-primary btn-block btn-flat">
-                                        <i class="fa fa-sign-in-alt"></i>
                                     {{ __('Login') }}
+                                    {{-- <ion-icon name="log-in"></ion-icon> --}}
+                                    <i class="icon ion-md-log-in"></i>
                                 </button>                                
                             </div>              
                         </div>
