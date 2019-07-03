@@ -13,8 +13,21 @@
     }
 }
 $(document).ready(function (){
+    get_profile_picture();
     $('#profile_picture').click(function (){
-        console.log("Test");
+      $.ajax({
+        type: 'GET',
+        url: '/ProfilePicture/get_profile_picture',
+        async: false,
+        dataType: 'json',
+        success: function(data){
+          //console.log(data);
+          $('#image_preview').attr('src', '/storage/profile_picture/' + data);
+        },
+        error: function(data){
+
+        }
+      });
         $('#upload_profile_picture').modal('show');
     });
 
@@ -37,9 +50,63 @@ $(document).ready(function (){
         readURL(this);
       });
 
-      $('#Upload').click(function (){
-        console.log("Test1");
-        $('#formOverlay').addClass('overlay');
-        $("#spinner").addClass('fa fa-refresh fa-spin');
+      // $('#Upload').click(function (){
+      //   console.log("Test1");
+      //   $('#formOverlay').addClass('overlay');
+      //   $("#spinner").addClass('fa fa-refresh fa-spin');
+      // });
+
+      $('#upload_image').submit(function (e){
+        e.preventDefault();
+        toastr.remove()
+        var formData = new FormData($(this)[0]);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+          }
+        });
+
+        $.ajax({
+            url: '/ProfilePicture/UploadPicture',
+            method: 'POST',
+            async: false,
+			      dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function(data){
+              console.log("UPLOADED");
+            },
+            error: function(data){
+              console.log("ERROR");
+            }
+            
+        });
       });
+
+      /**
+       * @ Get Profile Picture
+       * */
+      function get_profile_picture(){
+        $.ajax({
+          type: 'GET',
+          url: '/ProfilePicture/get_profile_picture',
+          async: false,
+          dataType: 'json',
+          success: function(data){
+            //console.log(data);
+            $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
+          },
+          error: function(data){
+
+          }
+        });
+      }
 });

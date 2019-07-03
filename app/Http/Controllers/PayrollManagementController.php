@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Execel\Facades\Execel;
+
+use DB;
+use Response;
+use Carbon\Carbon;
 use Session;
 
 class PayrollManagementController extends Controller

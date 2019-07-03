@@ -61,7 +61,7 @@ class AccountController extends Controller
     // Security Authentication
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'UserActivation']);
+        $this->middleware('auth', ['except' => array('UserActivation', 'ActivationPage', 'ActivateUser')]);
         $this->middleware(function($request, $next){
             if(Session::get("create_profile") == "none")
             {
@@ -495,22 +495,17 @@ class AccountController extends Controller
         $expiry_date = Carbon::parse($request->expirydate)->format('Y-m-d');
 
         // Handle File Upload
-         if($request->hasFile('sec') && $request->hasFile('bir')){
+         if($request->hasFile('sec')){
             // Get filename with the extension
             $filenameWithExt_sec = $request->file('sec')->getClientOriginalName();
-            $filenameWithExt_bir = $request->file('bir')->getClientOriginalName();
             // Get just filename
             $filename_sec = pathinfo($filenameWithExt_sec, PATHINFO_FILENAME);
-            $filename_bir = pathinfo($filenameWithExt_bir, PATHINFO_FILENAME);
             // Get just ext
             $extension_sec = $request->file('sec')->getClientOriginalExtension();
-            $extension_bir = $request->file('bir')->getClientOriginalExtension();
             // Filename to store
             $fileNameToStore_sec= $filename_sec.'_'.time().'.'.$extension_sec;
-            $fileNameToStore_bir= $filename_bir.'_'.time().'.'.$extension_bir;
             // Upload Image
             $path_sec = $request->file('sec')->storeAs('public/Documents/sec', $fileNameToStore_sec);
-            $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
 
             /*Update Account Employer*/
             DB::table('employer')->where('id', '=', $id)
@@ -533,8 +528,7 @@ class AccountController extends Controller
                                     'phic' => $request->input('phic'),
                                     'hdmf' => $request->input('hdmf'),
                                     'nid' => $request->input('nid'),
-                                    'sec' => $fileNameToStore_sec,
-                                    'bir' => $fileNameToStore_bir
+                                    'sec' => $fileNameToStore_sec
             ));
 
             
@@ -544,6 +538,50 @@ class AccountController extends Controller
                                     'enrollment_date' => $enrollment_date,
                                     'expiry_date' => $expiry_date,
                                 ));
+        }
+        elseif($request->hasFile('bir')) {
+             // Get filename with the extension
+             $filenameWithExt_bir = $request->file('bir')->getClientOriginalName();
+             // Get just filename
+             $filename_bir = pathinfo($filenameWithExt_bir, PATHINFO_FILENAME);
+             // Get just ext
+             $extension_bir = $request->file('bir')->getClientOriginalExtension();
+             // Filename to store
+             $fileNameToStore_bir= $filename_bir.'_'.time().'.'.$extension_bir;
+             // Upload Image
+             $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
+ 
+             /*Update Account Employer*/
+             DB::table('employer')->where('id', '=', $id)
+                                 ->update(array(
+                                     'business_name' => $request->input('business_name'),
+                                     'accountname' => $request->input('accountname'),
+                                     'user_type' => $request->input('user_type'),
+                                     'address_unit' => $request->input('address_unit'),
+                                     'address_country' => $request->input('address_country'),
+                                     'address_town' => $request->input('address_town'),
+                                     'address_cityprovince' => $request->input('address_cityprovince'),
+                                     'address_barangay' => $request->input('address_barangay'),
+                                     'address_zipcode' => $request->input('address_zipcode'),
+                                     'contact_person' => $request->input('contact_person'),
+                                     'contact_phone' => $request->input('contact_phone'),   
+                                     'contact_mobile' => $request->input('contact_mobile'),
+                                     'contact_email' => $request->input('contact_email'),
+                                     'tin' =>$request->input('tin'),
+                                     'sss' => $request->input('sss'),
+                                     'phic' => $request->input('phic'),
+                                     'hdmf' => $request->input('hdmf'),
+                                     'nid' => $request->input('nid'),
+                                     'bir' => $fileNameToStore_bir
+             ));
+ 
+             
+ 
+             DB::table('users')->where('id', '=', $id)
+                                 ->update(array(
+                                     'enrollment_date' => $enrollment_date,
+                                     'expiry_date' => $expiry_date,
+                                 ));
         }
 
         /*Update Account Employer*/
@@ -762,6 +800,109 @@ class AccountController extends Controller
 
         return $user_activation_code;
     }
+
+    /**
+     * Activate User Via code
+     * */
+    public function ActivationPage(Request $request)
+    {
+
+        return view('Account.activationpage');
+    }
+
+    /**
+     * @ Activate User Via Code
+     * */
+    public function ActivateUser(Request $request){
+        
+        /**
+         *  Custom Validaiton Messages
+         * */
+        $messages = [
+            'exists'    => 'The :attribute is invalid.',
+        ];
+
+        /**
+         *  Validate Request
+         * */
+        $this->validate($request, [
+            'username' => 'required|min:6|exists:users',
+            'activation_code' => 'required|min:6|exists:user_activation,activation_code'
+        ], $messages);
+
+        /** 
+         * Get Username ID Or User ID 
+         * 
+         */
+        $get_user_id = User::where('username', '=', $request->input('username'))->pluck('id');
+
+        /**
+         *  Get Activation Code
+         * */
+        $get_activation_code = UserActivation::where('activation_code', '=', $request->input('activation_code'))->pluck('account_id');
+        
+
+        /**
+         * @ Check if the User Id is not Null
+         * */
+
+         if(!empty($get_user_id))
+         {
+            /**
+             * @ Check if the Username ID and Activation Code Account Id is Match
+             * */
+            if($get_user_id == $get_activation_code)
+            {
+               
+                /**
+                 * @ Check if the Code is Expired
+                 * */
+                $get_activation_code_expiration_date = UserActivation::where('activation_code', '=', $request->input('activation_code'))->first();
+                $get_user_expiration_date = User::where('username', '=', $request->input('username'))->first();
+                if(Carbon::parse($get_activation_code_expiration_date->expiration_date)->isPast())
+                {
+                    return back()->with('error', 'Code Expired');
+                }
+                else
+                {
+
+                     /**
+                     * @ Check if the User is Already Activated
+                     * */
+                    if($get_user_expiration_date->email_verified_at != null)
+                    {
+                        return back()->with('error', 'Account Already Activated');
+                    }
+                    else
+                    {
+                        /**
+                         * @ Activation User Account
+                         * */
+                    $activate_user = DB::table('users')
+                                        ->where('id', '=', $get_user_id)
+                                        ->update(array(
+                                        'email_verified_at' => Carbon::now(),
+                                    ));
+                        return redirect('login')->with('success', 'Account Successfully Activated You can now Log in');
+                    }
+                    
+                }
+
+                 
+            }
+            /**
+             *  Check if the User id is not match and Activation Code
+             * */
+            elseif($get_user_id != $get_activation_code) {
+                return back()->with('error', 'Activation Code is Invalid');
+            }
+         }
+
+
+        //return back();
+
+    }
+
     /*Activate User*/ 
     protected function UserActivation(Request $request, $id){
         $account_id = UserActivation::where('user_activation_id', '=', $id)->pluck('account_id');
@@ -828,7 +969,7 @@ class AccountController extends Controller
            
         }
         
-
-        
     }
+
+    
 }
