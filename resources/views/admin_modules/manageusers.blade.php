@@ -148,6 +148,7 @@ elseif(Session::get('manage_users') == 'delete'){
                             </div>                   
                         </div>
 
+                        @if(auth()->user()->user_type_id == 1)
                         <div class="form-group row" id="employer_field" hidden>
                             <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
                             <div class="col-md-6">
@@ -155,6 +156,7 @@ elseif(Session::get('manage_users') == 'delete'){
                                 </select>
                             </div>                   
                         </div>
+                        @endif
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">User Type Name</label>

@@ -18,18 +18,45 @@ Route::get('/', function () { // root if the user is login
     }
     else
     {   
-        if(auth()->user()->ischange == 1)
-        {
-            //Route::get('/myprofile/settings', 'MyProfileController@settings');
-            return view('admin_modules.myprofile.changepassword');
-        }
-        else
-        {
-            if(auth()->user()->user_type_id === 1){
-                $employers = DB::table('employer')->count();
-                return view('dashboard', compact('employers')); 
+            if(auth()->user()->ischange == 1)
+            {
+                //Route::get('/myprofile/settings', 'MyProfileController@settings');
+                return view('admin_modules.myprofile.changepassword');
             }
-            return view('dashboard'); 
+            else
+            {
+                if(auth()->user()->ischange == 1)
+            {
+                //Route::get('/myprofile/settings', 'MyProfileController@settings');
+                return view('admin_modules.myprofile.changepassword');
+            }
+            else
+            {
+                if(auth()->user()->user_type_id === 1){
+                    $employers = DB::table('employer')->count();
+                    return view('dashboard', compact('employers')); 
+                }
+                $content_status ="1"; // content_status 
+                $content = DB::table('employercontent')   //for showing employer's content
+                                ->orderBy('created_at')
+                                ->where('account_id','=',auth()->user()->employer_id)
+                                ->where('content_status','=',$content_status)
+                                ->get(); 
+                                
+                // count number of content posted
+                $count = DB::table('employercontent')
+                                ->where('account_id','=',auth()->user()
+                                ->employer_id)
+                                ->count();  
+
+                // count number of employees
+                $count_employee = DB::table('employee')
+                                ->where('employer_id','=',auth()->user()->employer_id)
+                                ->count();
+    
+                    return view('dashboard', compact('content','count','count_employee')); 
+            
+            }
             
         }
         
@@ -88,6 +115,8 @@ Route::patch('/Account/UpdateAccountStatus/{id}', 'AccountController@UpdateAccou
 Route::post('/Account', 'AccountController@store')->name('Account');
 Route::get('/Account/get_all_employer', 'AccountController@get_all_employer')->name('Account');
 Route::get('/Account/Activation/{id}', 'AccountController@UserActivation');
+Route::get('/Account/Activation', 'AccountController@ActivationPage');
+Route::post('/Account/ActivateUser', 'AccountController@ActivateUser');
 Route::get('/Account/edit', function(){
     abort(404);
 });
@@ -152,6 +181,10 @@ Route::post('/employercontent/post_content', 'EmployerContentController@post_con
 Route::get('/payrollmanagement/upload', 'PayrollManagementController@upload');
 Route::get('/payrollmanagement/view', 'PayrollManagementController@view');
 
+
+/**Upload Profile Picture */
+Route::post('/ProfilePicture/UploadPicture', 'ProfilePictureController@UploadPicture');
+Route::get('/ProfilePicture/get_profile_picture', 'ProfilePictureController@get_profile_picture');
 
 
 //Cash Advance
