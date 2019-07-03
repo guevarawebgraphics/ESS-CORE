@@ -414,7 +414,7 @@
 							<p>Create Content</p></a>
 						</li> --}}
 						<li class="nav-item">
-							<a class="nav-link {{$manage_employercontent}}" href="/#"><i class="fa fa-circle-o nav-icon"></i>
+							<a class="nav-link {{$manage_employercontent}}" href="/employercontent/manage"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Content</p></a>
 						</li>
 					</ul>
