@@ -252,7 +252,7 @@ class ManageUserController extends Controller
 
         $this->validate($request, [
             'type_name' => 'required',
-            'cmb_Employe' => 'required',
+            'cmb_Employe' => 'sometimes|required', // Required if the Request is Present
         ]);
 
         if($request->all() != null)
@@ -264,6 +264,10 @@ class ManageUserController extends Controller
             if($employer_id != "")
             {
                 $insert_query->employer_id = $employer_id;
+            }
+            if(auth()->user()->user_type_id == 3)
+            {
+                $insert_query->employer_id = auth()->user()->user_type_for;
             }
             $insert_query->deleted = 0;
             //$insert_query->account_id = auth()->user()->id;

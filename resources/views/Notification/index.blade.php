@@ -121,7 +121,7 @@ elseif(Session::get('system_notifications') == 'delete'){
                         </div>
                     </div>
                     <div class="form-group">
-                    <label for="notification_message" class="control-label col-md-4 text-md-center">Notification Message:</label>
+                    {{-- <label for="notification_message" class="control-label col-md-4 text-md-center">Notification Message:</label> --}}
                         <div class="col-md-12">
                             
                             <textarea id="notification_message" class="form-control" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>

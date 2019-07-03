@@ -770,6 +770,7 @@ $(document).ready(function(){
         var employee_id = $('#employee_id').val();
         var employee_info_id = $('#employee_info_id').val();
         //$("#employer_id").removeAttr("disabled");
+        toastr.remove()
 
         error = 0;
         employee_no = $("#employee_no").val();

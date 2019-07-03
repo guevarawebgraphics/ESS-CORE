@@ -7,7 +7,8 @@
 	<div class="sidebar">
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-			<div class="image" id="profile_picture"><img alt="User Image" class="img-circle elevation-2" src="/storage/pic.jpg"></div>
+			{{-- <div class="image" id="profile_picture"><img alt="User Image" class="img-circle elevation-2" src="/storage/pic.jpg"></div> --}}
+		<div class="image" id="profile_picture"><img alt="User Image" id="user_profile_picture" class="img-circle elevation-2 " style="height: 33px; width: 33px;"></div>
 			<div class="info">
 				<a class="d-block">{{ Auth::user()->name }}</a>
 			</div>
@@ -503,8 +504,9 @@
 		</div>
 		<div class="modal-body">
 		  <form id="upload_image" runat="server">
+			  @csrf
 			  <div class="col-md-4 offset-md-4 mb-3">
-					<img class="img-thumbnail" id="image_preview" src="/storage/pic.jpg" alt="your image" />
+					<img class="img-thumbnail" id="image_preview" alt="your image" />
 			  </div>
 			<div class="col-md-12">
                             
@@ -513,18 +515,19 @@
 						<span class="fa fa-folder input-group-text"></span>
 					</div>
 					<div class="custom-file">
-						<input type="file" class="custom-file-input" id="imgInp" multiple onchange="processSelectedFilesProfileImage(this)">
+						<input type="file" class="custom-file-input" id="profile_picture" name="profile_picture" multiple onchange="processSelectedFilesProfileImage(this)">
 						<label class="custom-file-label" for="validatedCustomFile" id="profile_image_filename">Choose file...</label>
 					</div>
 				</div>
 					
 			</div>
-		  </form>
+		  
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="button" class="btn btn-primary" id="#Upload"><span><i class="fa fa-upload"></i></span> Upload</button>
+		  <button type="submit" class="btn btn-primary" id="Upload"><span><i class="fa fa-upload"></i></span> Upload</button>
 		</div>
+		</form>
 	  </div>
 	</div>
   </div>
