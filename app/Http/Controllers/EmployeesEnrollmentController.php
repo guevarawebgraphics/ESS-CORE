@@ -219,6 +219,13 @@ class EmployeesEnrollmentController extends Controller
         $search_ess_employee = DB::table('ess_basetable')
                                     ->where('ess_id', '=', $ess_id)
                                     ->get();
+        /**
+         * @ Get Username
+         * */
+        $get_user_profile_picture = DB::table('users')
+                                    ->join('user_picture', 'users.id', '=', 'user_picture.user_id')
+                                    ->where('username', '=', $ess_id)
+                                    ->get();
         
         if(!empty($search_ess_employee)){
 
@@ -229,9 +236,9 @@ class EmployeesEnrollmentController extends Controller
 
             $employee_info = DB::table('employee_personal_information')
                             ->join('employee', 'employee_personal_information.id', '=', 'employee.employee_info')
-                            // ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
-                            // ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
-                            // ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
+                            ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
+                            ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
+                            ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
                             ->select('employee.employee_no',
                                     'employee.enrollment_date',
                                     'employee.department',
@@ -259,7 +266,10 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.citytown',
                                     'employee_personal_information.barangay',
                                     'employee_personal_information.province',
-                                    'employee_personal_information.zipcode',)
+                                    'employee_personal_information.zipcode',
+                                    'refprovince.provDesc',
+                                    'refbrgy.brgyDesc',
+                                    'refcitymun.citymunDesc')
                             ->where('employee_personal_information.id', '=', $search_ess_employee[0]->employee_info)
                             ->get();
 
@@ -304,6 +314,10 @@ class EmployeesEnrollmentController extends Controller
             $payroll_bank = $employee_info[0]->payroll_bank;
             $account_no = $employee_info[0]->account_no;
             $position = $employee_info[0]->position;
+            $provDesc = $employee_info[0]->provDesc;
+            $brgyDesc = $employee_info[0]->brgyDesc;
+            $citymunDesc = $employee_info[0]->citymunDesc;
+            $get_user_profile_picture = $get_user_profile_picture[0]->profile_picture;
 
         }
         else
@@ -341,6 +355,10 @@ class EmployeesEnrollmentController extends Controller
             'payroll_bank' => $payroll_bank,
             'account_no' => $account_no,
             'position' => $position,
+            'provDesc' => $provDesc,
+            'brgyDesc' => $brgyDesc,
+            'citymunDesc' => $citymunDesc,
+            'profifle_picture' => $get_user_profile_picture
         );
 
         echo json_encode($data);
@@ -474,7 +492,7 @@ class EmployeesEnrollmentController extends Controller
                     'user_type_for' => 7,
                     'employer_id' => auth()->user()->employer_id,//Session::get("employer_id"),//$request->input('employer_id'),
                     'employee_id' => $employee_id,
-                    'name' => $request->input('last_name') . ", " . $request->input('first_name') . ", " . $request->input('middle_name'),
+                    'name' => $request->input('lastname') . ", " . $request->input('firstname') . ", " . $request->input('middlename'),
                     'username' => $employee_ess_id,
                     'password' => Hash::make($password),
                     'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
@@ -517,7 +535,8 @@ class EmployeesEnrollmentController extends Controller
 
             /*Email Template*/
             $mail_template = DB::table('notification')
-                            ->where('employer_id', auth()->user()->id)
+                            //->where('employer_id', auth()->user()->id)
+                            ->where('id', '31')
                             ->where('notification_type', 1)
                             ->select('notification_message')
                             ->first();
@@ -528,12 +547,12 @@ class EmployeesEnrollmentController extends Controller
 
             // Replace All The String in the Notification Message
             $search = ["name", "username", "mobile", "url", "password"];
-            $replace = [$request->input('first_name'), $employee_ess_id, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
+            $replace = [$employee_ess_id, $employee_ess_id, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
             $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                              
 
             /*Send Mail */
-            $data = array('username' => $user->name, "password" => $password, "template" => $template_result);
+            $data = array('username' => $employee_ess_id, "password" => $password, "template" => $template_result);
 
             Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
                 $message->to($employee_personal_info->email_add)
@@ -575,7 +594,23 @@ class EmployeesEnrollmentController extends Controller
                 'account_no' => 'required|numeric|min:3',
             ], $customMessages);
 
-             //insert into employee table
+            /**
+             * Check if the Employee is Currently Employed to the current employer
+             * 
+             * */
+            $find_employee = DB::table('employee')->where('employee_info', '=', $request->input('hidden_personalinfo_id'))->first();
+            $current_employer = DB::table('employer_employee')->where('employee_no', '=', $find_employee);
+            /**
+             * Check if the current employer variable is true
+             * it will fall to the success function in javascript
+             * */
+            if($current_employer) {
+                return Response::json('error');
+            }
+            else {
+                // return Response::json('LOL');
+
+                  //insert into employee table
              $employee = EmployeeEnrollment::create([              
                 'employee_info' => $request->input('hidden_personalinfo_id'),
                 'employee_no' => $request->input('employee_no'),
@@ -610,6 +645,9 @@ class EmployeesEnrollmentController extends Controller
             $insert_ess->created_by = auth()->user()->id;
             $insert_ess->updated_by = auth()->user()->id;
             $insert_ess->save();
+            }
+
+            
         }
        
     }
@@ -908,10 +946,10 @@ class EmployeesEnrollmentController extends Controller
     public function UpdateAccountStatus(Request $request, $id){
 
         /*Update Account Employer*/
-        DB::table('users')->where('employee_id', '=', $id)
-                ->update(array(
-                    'AccountStatus' => $request->input('AccountStatus')
-        ));
+        // DB::table('users')->where('employee_id', '=', $id)
+        //         ->update(array(
+        //             'AccountStatus' => $request->input('AccountStatus')
+        // ));
 
         /**
          * @ Update Employee Account Status on Employee Table
@@ -951,8 +989,8 @@ class EmployeesEnrollmentController extends Controller
         //     $failure->values();
         // }
 
-        $failures = $import->failures();
+        //$failures = $import->failures();
 
-        return Response::json($failures);
+        return Response::json();
     }
 }

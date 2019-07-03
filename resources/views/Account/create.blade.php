@@ -854,6 +854,9 @@ $(document).ready(function (){
                     $('.form-control').removeClass('is-invalid');
                     $('.text-danger').attr('hidden', true);
                 });
+                //Clear The Filename textbox
+                $('#sec_filename').text('');
+                $('#bir_filename').text('');
             },
             error: function(data, status){
                 //console.log("Error");

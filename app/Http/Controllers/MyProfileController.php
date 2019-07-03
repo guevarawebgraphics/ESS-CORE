@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Account;
+use App\EmployeePersonalInfo;
 use App\User;
 use App\Logs;
 use Session;
@@ -64,7 +65,16 @@ class MyProfileController extends Controller
     //show view settings
     public function settings()
     {          
-        return view('admin_modules.myprofile.settings');
+        $get_all_employers = DB::table('employer_and_employee')
+                                ->join('employer', 'employer_and_employee.employer_id', '=', 'employer.id')
+                                ->join('employee', 'employer_and_employee.employee_id', '=', 'employee.id')
+                                ->select('employer.business_name',
+                                         'employee.enrollment_date',
+                                         'employer_and_employee.status')
+                                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+                                ->get();
+
+        return view('admin_modules.myprofile.settings', compact('get_all_employers'));
     }
     //show information on settings
     public function settings_info()
@@ -84,8 +94,16 @@ class MyProfileController extends Controller
                     'employer.contact_mobile',
                     'employer.contact_email',
                     'employer.address_unit',
-                    'refprovince.provDesc'
-                    , 'refcitymun.citymunDesc', 'refbrgy.brgyDesc')
+                    'employer.tin',
+                    'employer.sss',
+                    'employer.phic',
+                    'employer.hdmf',
+                    'employer.nid',
+                    'employer.sec',
+                    'employer.bir',
+                    'refprovince.provDesc',
+                    'refcitymun.citymunDesc',
+                    'refbrgy.brgyDesc')
                     ->where('employer.id', '=', auth()->user()->employer_id)
                     ->get();
             $Account_info = DB::table('user_type')
@@ -113,6 +131,13 @@ class MyProfileController extends Controller
                     $prov = $Account[0]->provDesc;
                     $mun = $Account[0]->citymunDesc;
                     $brgy = $Account[0]->brgyDesc;
+                    $tin = $Account[0]->tin;
+                    $sss = $Account[0]->sss;
+                    $phic = $Account[0]->phic;
+                    $hdmf = $Account[0]->hdmf;
+                    $nid = $Account[0]->nid;
+                    $sec = $Account[0]->sec;
+                    $bir = $Account[0]->bir;
                 }
                 else
                 {
@@ -123,7 +148,14 @@ class MyProfileController extends Controller
                     $unit = "";
                     $prov ="";
                     $mun = "";
-                    $brgy = "";            
+                    $brgy = "";
+                    $tin = "";      
+                    $sss = "";      
+                    $phic = "";
+                    $hdmf = "";
+                    $nid = "";
+                    $sec = "";
+                    $bir = "";
                 }
 
                 $data = array(
@@ -135,7 +167,14 @@ class MyProfileController extends Controller
                     'unit'=>$unit,
                     'prov'=>$prov,
                     'mun'=>$mun,
-                    'brgy'=>$brgy
+                    'brgy'=>$brgy,
+                    'tin'=>$tin,
+                    'sss'=>$sss,
+                    'phic'=>$phic,
+                    'hdmf'=>$hdmf,
+                    'nid'=>$nid,
+                    'sec'=>$sec,
+                    'bir'=>$bir
                 );         
         }
 
@@ -157,6 +196,11 @@ class MyProfileController extends Controller
                             // 'employee_personal_information.citytown',
                             // 'employee_personal_information.province',
                             // 'employee_personal_information.barangay',
+                            'employee_personal_information.TIN',
+                            'employee_personal_information.SSSGSIS',
+                            'employee_personal_information.PHIC',
+                            'employee_personal_information.HDMF',
+                            'employee_personal_information.NID',
                             'refprovince.provDesc',
                             'refcitymun.citymunDesc',
                             'refbrgy.brgyDesc')
@@ -188,6 +232,11 @@ class MyProfileController extends Controller
                     $prov = $Account[0]->provDesc;
                     $mun = $Account[0]->citymunDesc;
                     $brgy = $Account[0]->brgyDesc;
+                    $tin = $Account[0]->TIN;
+                    $sss = $Account[0]->SSSGSIS;
+                    $phic = $Account[0]->PHIC;
+                    $hdmf = $Account[0]->HDMF;
+                    $nid = $Account[0]->NID;
                 }
                 else
                 {
@@ -198,7 +247,12 @@ class MyProfileController extends Controller
                     $unit = "";
                     $prov ="";
                     $mun = "";
-                    $brgy = "";            
+                    $brgy = "";       
+                    $tin = "";
+                    $sss = "";
+                    $phic = "";
+                    $hdmf = "";
+                    $nid = "";     
                 }
 
                 $data = array(
@@ -210,7 +264,12 @@ class MyProfileController extends Controller
                     'unit'=>$unit,
                     'prov'=>$prov,
                     'mun'=>$mun,
-                    'brgy'=>$brgy
+                    'brgy'=>$brgy,
+                    'tin'=>$tin,
+                    'sss'=>$sss,
+                    'phic'=>$phic,
+                    'hdmf'=>$hdmf,
+                    'nid'=>$nid
                 );
         }
 
@@ -230,11 +289,36 @@ class MyProfileController extends Controller
         }
         else
         {
-            $update_query = Account::find($id_to_update);
+            /**
+             * Execute if Employer
+             * */
+            if(auth()->user()->user_type_id == 3){
+                $update_query = Account::find($id_to_update);
+                $update_query->contact_mobile = $contact;
+                $update_query->contact_email = $email;     
+                $update_query->update();
+            }
+            /**
+             * Execute if Employee
+             * */
+            elseif(auth()->user()->user_type_id == 4){
+                $get_employee_id = DB::table('employee')->where('id', '=', $id_to_update)->select('employee_info')->first();
+                // $update_query = EmployeePersonalInfo::find($get_employee_id);
 
-            $update_query->contact_mobile = $contact;
-            $update_query->contact_email = $email;     
-            $update_query->save();
+                $activate_user = DB::table('employee_personal_information')
+                        ->where('id', '=', $get_employee_id->employee_info)
+                        ->update(array(
+                    'mobile_no' => $contact,
+                    'email_add' => $email,
+                ));
+
+                // $update_query->mobile_no = $contact;
+                // $update_query->email_add = $email;     
+                // $update_query->update();
+            }
+            
+
+            
         }
         
         $this->insert_log("Updated My Settings");

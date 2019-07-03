@@ -55,11 +55,11 @@
                 </div> --}}
                 <div class="form-group row essid_field" hidden>
                         <label for="essid_search" class="col-md-2 text-md-center">ESS ID / User ID</label>
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                                 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="fa fa-user input-group-text"></span>
+                                    <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
                                 </div>
                                 <input id="essid_search" type="text" class="form-control" name="essid_search" placeholder="ESS ID / User ID" autofocus>&nbsp;&nbsp;
                                 <input type="button" class="btn btn-primary" id="btn_search" value="Search">
@@ -81,13 +81,13 @@
                         {{-- </div> --}}
                 </div>
                 {{-- FIRST ROW --}}
-                <div class="form-group row">
+                <div class="form-group row iform" id="iform_employee_no">
                         <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
                         <div class="col-md-4">
                                 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="fa fa-user input-group-text"></span>
+                                    <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
                                 </div>
                                 <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No"   autofocus>
                             </div>
@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-md-1"></div>  
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="position" class="col-md-2 text-md-center">Position :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -148,7 +148,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="lastname" class="col-md-2 text-md-center">Last Name :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -186,7 +186,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="firstname" class="col-md-2 text-md-center">First Name :</label>  
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -224,7 +224,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="middlename" class="col-md-2 text-md-center">Middle Name :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -268,7 +268,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="TIN" class="col-md-2 text-md-center">TIN :</label>     
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -312,7 +312,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="SSSGSIS" class="col-md-2 text-md-center">SSS/GSIS :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -354,7 +354,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="PHIC" class="col-md-2 text-md-center">PHIC :</label> 
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -401,7 +401,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="HDMF" class="col-md-2 text-md-center">HDMF :</label> 
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -449,7 +449,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="nid" class="col-md-2 text-md-center">NID :</label> 
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -495,7 +495,7 @@
                     </div>
                     <div class="col-md-1"></div>                   
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="payroll_bank" class="col-md-2 text-md-center">Payroll Bank :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -542,8 +542,8 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <label class="control-label text-md-center">Present Address</label>
-                <div class="form-group row">
+                <label class="control-label text-md-center iform">Present Address</label>
+                <div class="form-group row iform">
                         <label class="col-md-2 text-md-center">Country:</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -591,7 +591,7 @@
                     <div class="col-md-1"></div>
                 </div> --}}
 
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="province" class="col-md-2 text-md-center">Province:</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -635,7 +635,7 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div> --}}
-                <div class="form-group row">
+                <div class="form-group row iform">
                         <label for="barangay" class="col-md-2 text-md-center">Barangay:</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -659,8 +659,138 @@
                             <p class="text-danger text-md-center" id="error_zipcode"></p>
                         </div>
                 </div>          
-            </div>           
+            </div>     
+                 
         </form>
+
+
+        {{-- Employee Profile --}}
+        <div class="col-md-8 offset-md-2" id="employee_profile" hidden>
+                <!-- Widget: user widget style 1 -->
+                <div class="card card-widget widget-user shadow rounded">
+                  <!-- Add the bg color to the header using any of the bg-* classes -->
+                  <div class="widget-user-header bg-info-active text-white" style="background: url('../dist/img/photo1.png') center center;">
+                    <h3 class="widget-user-username" id="employee_name"></h3>
+                    <h5 class="widget-user-desc" id="employee_position"></h5>
+                  </div>
+                  <div class="widget-user-image">
+                    <img class="img-circle elevation-2" id="employee_profile_picture" alt="User Avatar" style="height: 90px; width: 90px;">
+                  </div>
+                  <div class="card-footer">
+                    <label>Employees Information</label>
+                      <div class="container">
+                          <div class="row">
+                            <div class="col-md-6">
+                                <div class="emp_info">
+                                    Employee No
+                                    <p id="employee_employeeno"></p>
+                                </div>
+                                <div class="emp_info">
+                                    Department
+                                    <p id="employee_department"></p>
+                                </div>
+                                <div class="emp_info">
+                                        Email
+                                        <p id="employee_email"></p>
+                                </div>
+                                <div class="emp_info">
+                                        Mobile No
+                                        <p id="employee_mobileno"></p>
+                                </div>
+                                <div class="emp_info">
+                                        Account No
+                                        <p id="employee_accountno"></p>
+                                </div>
+                                <div class="emp_info">
+                                        Enrollment Date
+                                    <p id="employee_enrollmentdate"></p>
+                                </div>
+                                
+                                
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <div class="emp_info">
+                                    Address
+                                    <p id="employee_address">#</p>
+                                </div>
+                                <div class="emp_info">
+                                    Birthdate
+                                    <p id="employee_birthdate">#</p>
+                                </div>
+                                <div class="emp_info">
+                                    Gender
+                                    <p id="employee_gender">#</p>
+                                </div>
+                                <div class="emp_info">
+                                    Civil Status
+                                    <p id="employee_civilstatus">#</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Goverment Numbers</label>
+                                <div class="emp_info">
+                                    TIN
+                                    <p id="employee_tin"></p>
+                                </div>
+                                <div class="emp_info">
+                                    SSSGSIS
+                                    <p id="employee_sssgsis"></p>
+                                </div>
+                                <div class="emp_info">
+                                    PHIC
+                                    <p id="employee_phic"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="emp_info" style="margin-top: 30.5px;">
+                                    HDMF
+                                    <p id="employee_hdmf"></p>
+                                </div>
+                                <div class="emp_info">
+                                    NID
+                                    <p id="employee_nid"></p>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    {{-- <div class="row">
+                      <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                          <h5 class="description-header">3,200</h5>
+                          <span class="description-text">SALES</span>
+                        </div>
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                          <h5 class="description-header">13,000</h5>
+                          <span class="description-text">FOLLOWERS</span>
+                        </div>
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-4">
+                        <div class="description-block">
+                          <h5 class="description-header">35</h5>
+                          <span class="description-text">PRODUCTS</span>
+                        </div>
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
+                    </div>
+                    <!-- /.row --> --}}
+                  </div>
+                </div>
+                <!-- /.widget-user -->
+              </div>
+              <!-- /.col --> 
+
+              
         <div class="" id="formOverlay">
             <i class="" id="spinner"></i>
         </div>
@@ -694,7 +824,7 @@ $(document).ready(function(){
     });
     $('#birthdate').datepicker({
         autoclose: true,
-        startDate: date
+        //startDate: date
     });
     /*Get Province*/
     $.ajax({
@@ -767,13 +897,16 @@ $(document).ready(function(){
         {
             // console.log("labas textbox");
             $(".essid_field").removeAttr("hidden");
+            $('.iform').attr('hidden', true);
         }
         else if(shift == "new_employee")
         {
             //Reset The form
             $('#EmployeeForm')[0].reset();
             // console.log("wala textbox");
-            $(".essid_field").attr("hidden", true)
+            $(".essid_field").attr("hidden", true);
+            $('.iform').removeAttr('hidden', true);
+            $('#employee_profile').attr('hidden', true)
         }
     });
     
@@ -1203,9 +1336,17 @@ $(document).ready(function(){
                 url: '/enrollemployee/encode/post',
                 data: $("#EmployeeForm").serialize(),
                 success: function (data) {
-                    spinnerTimout(3000);
-                    toastr.success('Employee Enrolled Successfully', 'Success')
-                    $('#EmployeeForm')[0].reset();
+                    /*
+                    * Check if the response is error
+                    */
+                    if(data == 'error') {
+                        toastr.info('This Employee is your Employee Cannot Be LOL', 'Information')
+                    }
+                    else {
+                        spinnerTimout(3000);
+                        toastr.success('Employee Enrolled Successfully', 'Success')
+                        $('#EmployeeForm')[0].reset();
+                    }
                 },
                 error: function (data, status) {
                     spinnerTimout(250);
@@ -1381,6 +1522,26 @@ $(document).ready(function(){
             data: {essid: ess_id},
             dataType: 'JSON',
             success: function (data) {
+                $('#employee_profile').removeAttr('hidden');
+                $('#iform_employee_no').removeAttr('hidden');
+                console.log(data.provDesc + ' '+  data.brgyDesc + ' ' + data.citymunDesc);
+                $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname);
+                $('#employee_position').html(data.position);
+                $('#employee_address').html(data.address_unit + ' ' + data.provDesc + ' ' + data.citymunDesc + ' ' + data.brgyDesc);
+                $('#employee_employeeno').html(data.employee_no);
+                $('#employee_department').html(data.department);
+                $('#employee_email').html(data.email_add);
+                $('#employee_mobileno').html(data.mobile_no);
+                $('#employee_accountno').html(data.account_no);
+                $('#employee_birthdate').html(data.birthdate);
+                $('#employee_gender').html(data.gender);
+                $('#employee_civilstatus').html(data.civil_status);
+                $('#employee_tin').html(data.TIN);
+                $('#employee_sssgsis').html(data.SSSGSIS);
+                $('#employee_phic').html(data.PHIC);
+                $('#employee_hdmf').html(data.HDMF);
+                $('#employee_nid').html(data.NID);
+
                 $("#lastname").val(data.lastname);
                 $("#firstname").val(data.firstname);
                 $("#middlename").val(data.middlename);
@@ -1410,11 +1571,17 @@ $(document).ready(function(){
                 $('#payroll_bank').val(data.payroll_bank);
                 $('#account_no').val(data.account_no);
                 $('#position').val(data.position);
+                $('#employee_profile_picture').attr('src', '/storage/profile_picture/' + data.profifle_picture);
                 
 
                 $('#citytown option[value="'+data.citytown+'"]').prop('selected', true);
                 $('#barangay option[value="'+data.barangay+'"]').prop('selected', true);
                 $('#province option[value="'+data.province+'"]').prop('selected', true);
+            },
+            error: function(data) {
+                toastr.remove()
+                console.log("No employee Found")
+                toastr.info('No Employee Found')
             }
         });
     });

@@ -53,12 +53,12 @@ elseif(Session::get('my_profile') == 'delete'){
         <div class="col-md-3">
             <div class="card card-info card-outline">
                 <div class="card-header">
-                    <center><strong> @if(auth()->user()->user_type_id == 1) Admin @elseif(auth()->user()->user_type_id == 3) Employer @endif</strong></center>
+                    <center><strong> @if(auth()->user()->user_type_id == 1) Admin @elseif(auth()->user()->user_type_id == 3) Employer @elseif(auth()->user()->user_type_id == 4) Employee @endif</strong></center>
                 </div>
                 <div class="card-body">           
                     <div class="image">
                         <center>
-                            <img alt="User Image" class="profile-user-img img-responsive img-circle elevation-2" src="../storage/pic.jpg">
+                            <img alt="User Image" class="profile-user-img img-responsive img-circle elevation-2" id="settings_profile_picture" style="height: 100px; width: 99px;">
                         </center>
                     </div>                                    
                 </div>
@@ -79,6 +79,51 @@ elseif(Session::get('my_profile') == 'delete'){
                     <p class="card-text">-</p>     
                 </div>
             </div>
+            @if(auth()->user()->user_type_id != 1)
+            <div class="card card-info card-outline">
+                <div class="card-header">
+                    <center><strong>Goverment Numbers</strong></center>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card-title"><strong></strong></div>
+                            <h6 class="card-title"><strong>TIN</strong></h6>
+                            <div id="tin"></div>
+                            <br>
+                            <h6 class="card-title"><strong>SSS</strong></h6>
+                            <div id="sss"></div>
+                            <br>
+                            <h6 class="card-title"><strong>PHIC</strong></h6>
+                            <div id="phic"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="card-title"><strong>HDMF</strong></h6>
+                            <div id="hdmf"></div>
+                            <br>
+                            <h6 class="card-title"><strong>NID</strong></h6>
+                            <div id="nid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            <!--Documents-->
+            @if(auth()->user()->user_type_id === 3)
+            <div class="card card-info card-outline">
+                <div class="card-header">
+                    <center><strong>Documents</strong></center>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title"><strong>SEC</strong></h6>
+                    <div id="sec"></div>
+                    <br>
+                    <h6 class="card-title"><strong>BIR</strong></h6>
+                    <div id="bir"></div>
+                </div>
+            </div>
+            @endif
+            <!--End Documents -->
         </div>
         <div class="col-md-9">
             <div class="card card-info card-outline">
@@ -135,12 +180,47 @@ elseif(Session::get('my_profile') == 'delete'){
                 </div>
             </div><!--End Expiration-->
             @endif
+            @if(auth()->user()->user_type_id === 4)
+            <!--Settings Employer-->
+            <div class="card card-info card-outline">
+                <div class="card-header">
+                    <center><strong>Current Employers</strong></center>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Employer</th>
+                                <th>Enrollment Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($get_all_employers as $employers)
+                            <tr>
+                                <td>{{ $employers->business_name }}</td>
+                                <td>{{ \Carbon\Carbon::parse($employers->enrollment_date)->format('l jS \\of F Y') }}</td>
+                                <td>@if( $employers->status  == 1) <span class="badge badge-success">Active</span> @endif
+                                     @if( $employers->status  == 2) <span class="badge badge-secondary">In-Active</span> @endif
+                                     @if( $employers->status  == 3) <span class="badge badge-danger">Deactivated</span> @endif
+                                     @if( $employers->status  == 0) <span class="badge badge-dark">Deleted</span> @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+            <!--End Settings Employer-->
+            
         </div>
     </div>    
 </div>
 
 <script type="text/javascript">
     $(document).ready(function(){
+        get_profile_picture();
         //Get the informations to show
         $.ajax({
             headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -185,6 +265,71 @@ elseif(Session::get('my_profile') == 'delete'){
                 {
                     $("#mobile").html('<input type="text" id="txtmobile" class="form-control" name="mobile" value="'+ data.contact +'" >');
                 }
+
+                if(data.tin == null)
+                {
+                    $("#tin").html('<p class="card-text" style="text-transform:uppercase">-</p>');
+                }
+                else
+                {
+                    $("#tin").html('<p class="card-text" style="text-transform:uppercase">'+ data.tin +'</p>');
+                }
+
+                if(data.sss == null)
+                {
+                    $("#sss").html('<p class="card-text" style="text-transform:uppercase">-</p>');
+                }
+                else
+                {
+                    $("#sss").html('<p class="card-text" style="text-transform:uppercase">'+ data.sss +'</p>');
+                }
+
+                if(data.phic == null)
+                {
+                    $("#phic").html('<p class="card-text" style="text-transform:uppercase">-</p>');
+                }
+                else
+                {
+                    $("#phic").html('<p class="card-text" style="text-transform:uppercase">'+ data.phic +'</p>');
+                }
+
+                if(data.hdmf == null)
+                {
+                    $("#hdmf").html('<p class="card-text" style="text-transform:uppercase">-</p>');
+                }
+                else
+                {
+                    $("#hdmf").html('<p class="card-text" style="text-transform:uppercase">'+ data.hdmf +'</p>');
+                }
+
+                if(data.nid == null)
+                {
+                    $("#nid").html('<p class="card-text" style="text-transform:uppercase">-</p>');
+                }
+                else
+                {
+                    $("#nid").html('<p class="card-text" style="text-transform:uppercase">'+ data.nid +'</p>');
+                }
+
+                if(data.sec == null)
+                {
+                    $("#sec").html('<p class="card-text" style="text-transform:uppercase">-</p>');
+                }
+                else
+                {
+                    var sec = data.sec;
+                    $("#sec").html('<a href="/storage/Documents/sec/'+data.sec+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(sec.length > 10 ? sec.substring(0, 10)+'<div class="float-right"><i class="fa fa-download"></i></div>' : data.sec) +'</a>');
+                }
+
+                if(data.bir == null)
+                {
+                    $("#bir").html('<p class="card-text" style="text-transform:uppercase">-</p>');
+                }
+                else
+                {
+                    var bir = data.bir;
+                    $("#bir").html('<a href="/storage/Documents/bir/'+data.bir+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(bir.length > 10 ? bir.substring(0, 10)+'<div class="float-right"><i class="fa fa-download"></i></div>' : data.bir) +'</a>');
+                }
                 
             }
         });
@@ -228,6 +373,26 @@ elseif(Session::get('my_profile') == 'delete'){
                 );                
             }                   
         });
+
+
+        /**
+       * @ Get Profile Picture
+       * */
+      function get_profile_picture(){
+        $.ajax({
+          type: 'GET',
+          url: '/ProfilePicture/get_profile_picture',
+          async: false,
+          dataType: 'json',
+          success: function(data){
+            //console.log(data);
+            $('#settings_profile_picture').attr('src', '/storage/profile_picture/' + data);
+          },
+          error: function(data){
+
+          }
+        });
+      }
 
     });
 </script>
