@@ -17,23 +17,28 @@
 @endsection
 
 @section('content')
-<div class="container-fluid">
-    <div class="card">
+<div class="container-fluid" >
+    <div class="card card-info card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-bullhorn"></i> Employer Content</h3>
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i> Search:</label>
-                <div class="col-md-4">
-                    <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+              
+                <div class="col-md-6">
+                        <div class="input-group show">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-search input-group-text" style="background-color: #fff;"></span>
+                                  </div>
+                                  <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search">
+                        </div>
                 </div>
                 <div class="col-md-6">
                     <a href="#Add" class="btn btn-primary float-md-right " id="btn_createcontent" data-toggle="modal" data-target="#AddContentModal"><i class="fa fa-plus-square"></i> Create Employer Content</a>
                 </div>
             </div>
     
-            <div id="table_employercontent">
+            <div id="table_employercontent" style="position: relative; overflow: auto; height: 500px; width: 100%;">
                 @include("employer_modules.employer_content.tablemanage")    
             </div>                                                              
         </div>              
@@ -57,27 +62,25 @@
                 <input type="hidden" id="action" value="">
                 <input type="hidden" id="hidden_id" name="hidden_id" value="">
                 <div class="form-group row">
-                <label for="content_title" class="control-label col-md-4 text-md-center">Content Title:</label>
-                    <div class="col-md-6">
-                        
-                        <input id="content_title" type="text" class="form-control" name="content_title" placeholder="Content Title"   autofocus>
-                                <p class="text-danger" id="error_content_title"></p>
-                    </div>
+                    <label for="content_title" class="control-label col-md-4 text-md-center">Content Title:</label>     
+                        <div class="col-md-6">    
+                            <input id="content_title" type="text" class="form-control" name="content_title" placeholder="Content Title"   autofocus>
+                            <p class="text-danger" id="error_content_title"></p>
+                        </div>        
                 </div>
                 <div class="form-group row">
-                <label for="content_description" class="control-label col-md-4 text-md-center">Content Description:</label>
-                    <div class="col-md-6">
-                        
-                        <textarea id="content_description" type="text" class="form-control" name="content_description" placeholder="Content Description" autofocus></textarea>
+                    <label for="content_description" class="control-label col-md-4 text-md-center">Content Description:</label>
+                        <div class="col-md-12">
+                                <textarea type="text" id="content_description" class="form-control" name="content_description" placeholder="Content Description" autofocus></textarea>
                                 <p class="text-danger" id="error_content_description"></p>
-                    </div>
+                        </div>
                 </div>
             </form>
+        
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="SaveContent">Save</button>
-        </div>
+            <button type="button" class="btn btn-primary" id="SaveContent">Save <i  style="margin-left:-15px;color:white;" id="spinner" class=""> </button> 
     
         </div>
     </div>
@@ -87,6 +90,7 @@
     $(document).ready(function(){
 
         //function for refreshing table
+        refreshTable();
         function refreshTable()
         {
             $.ajax({
@@ -109,11 +113,14 @@
                         lengthChange: false,
                         responsive: true,
                         "order": [[0, "desc"]]
-                    });                    
+                    }); 
+                    $("#searchbox").on("keyup search input paste cut", function () {
+                        table.search(this.value).draw();
+                    });               
                 }
-            });
-        }
+            }); 
 
+        }
         var table = $("#EmployerContentTable").DataTable({
           // "searching": false,
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
@@ -127,36 +134,43 @@
           responsive: true,
           "order": [[0, "desc"]]
         });
-        /*Custom Search For DataTable*/
-        $("#searchbox").on("keyup search input paste cut", function () {
-            table.search(this.value).draw();
-        });
+     
+        
 
-        //Save content
-        $(document).on("click", "#SaveContent", function(){
+     
+
+        //Save content 
+        var editortwo = CKEDITOR.replace('content_description');
+        CKFinder.setupCKEditor( editortwo );
+        $(document).on("click", "#SaveContent", function(){ 
             action_to_do = $("#action").val();
+         
             //alert(action_to_do);
             //console.log("asa");
+            $("#spinner").addClass('fa fa-refresh fa-spin');
             content_title = $("#content_title").val();
-            content_desc = $("#content_description").val();
+          //  content_desc = $("#content_description").val();
 
             if(content_title == "")
             {
                 toastr.error('Error. Please Complete the fields', 'Error!')
                 $('#content_title').addClass('is-invalid');
-                $('#error_content_title').html('Content Title is Required');
+                $('#error_content_title').html('Content Title is Required'); 
+                spinnerTimout();
             }
             else
             {
                 $('#content_title').removeClass('is-invalid');
-                $('#error_content_title').html('');
+                $('#error_content_title').html(''); 
+                spinnerTimout();
             }
 
-            if(content_desc == "")
+            if(CKEDITOR.instances.content_description.getData()  == "")
             {
                 toastr.error('Error. Please Complete the fields', 'Error!')
                 $('#content_description').addClass('is-invalid');
                 $('#error_content_description').html('Content Description is Required');
+                spinnerTimout();
             }
             else
             {
@@ -164,20 +178,30 @@
                 $('#error_content_description').html('');
             }
             
-            if(content_title != "" && content_desc != "")
+            if(content_title != "" && CKEDITOR.instances.content_description.getData()  != "")
             {
                 if(action_to_do == "add")
-                {
+                { 
+                    $('#spinner').addClass('fa fa-refresh fa-spin');
                     $.ajax({
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         url: "{{ route('createemployercontent') }}",
                         method: "POST",
-                        data:$("#content_form").serialize(),             
+                        data: {
+                        _token:     '{{ csrf_token() }}',
+                        content_title: $('#content_title').val(),
+                        content_description: CKEDITOR.instances.content_description.getData(),
+                        // announcement_type: $('#announcement_type').val(),
+                        },           
                         success:function(data)
                         {                          
                             toastr.success('Content Created Successfully', 'Success')
                             $('#AddContentModal').modal('hide');
-                            refreshTable();                                                    
+                            refreshTable();
+                            setTimeout(function (){
+                                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            }, 300);    
+
                         },
                         error:function(data, status)
                         {
@@ -193,6 +217,9 @@
                                     $('#content_description').addClass('is-invalid');
                                     $('#error_content_description').html('Content Description is Required');
                                 }
+                                setTimeout(function (){
+                                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+                                }, 250);
                                 
                             });
                         }
@@ -200,15 +227,25 @@
                 }
                 else if(action_to_do == "edit")
                 {
+                  
                     $.ajax({
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         url: "{{ route('updateemployercontent') }}",
                         method: "POST",
-                        data:$("#content_form").serialize(),             
+                        data: {
+                        _token:     '{{ csrf_token() }}',
+                        hidden_id: $('#hidden_id').val(),
+                        content_title: $('#content_title').val(),
+                        content_description: CKEDITOR.instances.content_description.getData(),
+                        // announcement_type: $('#announcement_type').val(),
+                        },              
                         success:function(data)
                         {                          
                             toastr.success('Content Updated Successfully', 'Success')
                             $('#AddContentModal').modal('hide');
+                            setTimeout(function (){
+                                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            }, 300);    
                             refreshTable();                                                                  
                         },
                         error:function(data, status)
@@ -242,7 +279,8 @@
             $("#content_description").val("");
             $('#SaveContent').html('Save Content');
             $("#action").val("add");
-            $("#hidden_id").val(""); 
+            $("#hidden_id").val("");  
+            
         });
 
         //Show edit
@@ -266,7 +304,12 @@
                 {    
                     $("#hidden_id").val(data[0].id);                    
                     $("#content_title").val(data[0].content_title); 
-                    $("#content_description").val(data[0].content_description);                                                           
+                    $("#content_description").val(data[0].content_description);   
+                    CKEDITOR.instances.content_description.setData(data[0].content_description);    
+                    refreshTable();     
+                    setTimeout(function (){
+                                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                                }, 300);                                                   
                 }
             });
         });
@@ -326,13 +369,22 @@
                         success:function(data)
                         {    
                             refreshTable();                                 
-                            toastr.success('Content Posted Successfully', 'Success')                                                                      
+                            toastr.success('Content Posted Successfully', 'Success')     
+                            setTimeout(function (){
+                                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            }, 300);                                                                      
                         }
                     });
                 }
             );         
         });
 
-    });     
+    });      
+    //spinner
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+        }, 250);
+    }
 </script>
 @endsection
