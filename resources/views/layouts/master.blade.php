@@ -57,7 +57,8 @@
 	<link href="{{ asset('Ionicons/ionicons.min.css') }}" rel="stylesheet">
 	<!--Scripts-->
 	@if(Auth::check())
-	<script src="{{ asset('js/scripts.js') }}"></script>
+	<script src="{{ asset('js/scripts.js') }}"></script> 
+	<script src="{{ asset('js/scripts-j.js') }}"></script>
 	@endif
     
 </head>
@@ -75,7 +76,8 @@
 				</div>
 			</div>			
         @endguest				
-			<div class="content">
+			<div class="content"> 
+				
                 <!-- RENDERING PAGES -->
 				@yield('content')
 			</div>
@@ -87,7 +89,7 @@
 	<!--Upload Image-->
 	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
     @include('inc/footer')
-
+	
 	
 </body>
 </html>
