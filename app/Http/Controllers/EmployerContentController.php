@@ -87,7 +87,7 @@ class EmployerContentController extends Controller
         if($request->all() != null){
             /*Create Content*/
             $Content = EmployerContent::create([
-                'account_id' => 2, //Temporary Account Id
+                'account_id' => auth()->user()->employer_id, //Employer_ID
                 'content_title' => $request->input('content_title'),
                 'content_description' => $request->input('content_description'),
                 'content_status' => 0, //0 Means Pending Staus
@@ -126,7 +126,7 @@ class EmployerContentController extends Controller
             /*Update Content*/
             $update_content = DB::table('employercontent')->where('id', '=', $request->input('hidden_id'))
                                 ->update(array(
-                                    'account_id' => 2, // Temporary
+                                    'account_id' =>  auth()->user()->employer_id, // Employer ID
                                     'content_title' => $request->input('content_title'),
                                     'content_description' => $request->input('content_description'),
                                     'content_status' => 0, //0 Means Pending Staus
@@ -172,4 +172,7 @@ class EmployerContentController extends Controller
         $inserlog->log_event = $event;
         $inserlog->save();
     }
+
+
+
 }
