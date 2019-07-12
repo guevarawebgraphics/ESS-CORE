@@ -13,7 +13,7 @@
     }
 }
 $(document).ready(function (){
-    get_profile_picture();
+    
     $('#profile_picture').click(function (){
       $.ajax({
         type: 'GET',
@@ -91,22 +91,5 @@ $(document).ready(function (){
         });
       });
 
-      /**
-       * @ Get Profile Picture
-       * */
-      function get_profile_picture(){
-        $.ajax({
-          type: 'GET',
-          url: '/ProfilePicture/get_profile_picture',
-          async: false,
-          dataType: 'json',
-          success: function(data){
-            //console.log(data);
-            $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
-          },
-          error: function(data){
-
-          }
-        });
-      }
+      
 });

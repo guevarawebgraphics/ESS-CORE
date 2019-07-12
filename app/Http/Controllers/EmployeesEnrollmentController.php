@@ -32,7 +32,8 @@ class EmployeesEnrollmentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');      
+        $this->middleware('auth');   
+        $this->middleware('revalidate'); // Revalidate back history Security For Back Button  
         $this->middleware(function($request, $next){
             if(Session::get("employee_enrollment") == "none")
             {
@@ -226,6 +227,13 @@ class EmployeesEnrollmentController extends Controller
                                     ->join('user_picture', 'users.id', '=', 'user_picture.user_id')
                                     ->where('username', '=', $ess_id)
                                     ->get();
+        /**
+         * @ Check User Picture
+         *  */
+        $check_user_picture = DB::table('user_picture')
+                                    ->join('users', 'user_picture.user_id', '=', 'users.id')
+                                    ->where('users.username', '=', $ess_id)
+                                    ->count() > 0;
         
         if(!empty($search_ess_employee)){
 
@@ -317,7 +325,11 @@ class EmployeesEnrollmentController extends Controller
             $provDesc = $employee_info[0]->provDesc;
             $brgyDesc = $employee_info[0]->brgyDesc;
             $citymunDesc = $employee_info[0]->citymunDesc;
-            $get_user_profile_picture = $get_user_profile_picture[0]->profile_picture;
+            if($check_user_picture)
+            {
+                $get_user_profile_picture = $get_user_profile_picture[0]->profile_picture;
+            }
+            
 
         }
         else
@@ -358,7 +370,7 @@ class EmployeesEnrollmentController extends Controller
             'provDesc' => $provDesc,
             'brgyDesc' => $brgyDesc,
             'citymunDesc' => $citymunDesc,
-            'profifle_picture' => $get_user_profile_picture
+            'profifle_picture' => ($check_user_picture) ? $get_user_profile_picture : null
         );
 
         echo json_encode($data);
@@ -599,12 +611,16 @@ class EmployeesEnrollmentController extends Controller
              * 
              * */
             $find_employee = DB::table('employee')->where('employee_info', '=', $request->input('hidden_personalinfo_id'))->first();
-            $current_employer = DB::table('employer_employee')->where('employee_no', '=', $find_employee);
+            $current_employer = DB::table('employer_employee')->where('employee_no', '=', $find_employee->employee_no);
+            $check_employement = DB::table('employer_and_employee')
+                                    ->where('ess_id', '=', $request->input('hidden_essid'))
+                                    ->where('employer_id', '=', auth()->user()->employer_id)
+                                    ->count() > 0;
             /**
              * Check if the current employer variable is true
              * it will fall to the success function in javascript
              * */
-            if($current_employer) {
+            if($check_employement) {
                 return Response::json('error');
             }
             else {

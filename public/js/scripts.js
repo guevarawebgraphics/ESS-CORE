@@ -120,7 +120,35 @@
             }
         })
     }
-    
+
+    get_profile_picture();
+      /**
+       * @ Get Profile Picture
+       * */
+      function get_profile_picture(){
+        $.ajax({
+          type: 'GET',
+          url: '/ProfilePicture/get_profile_picture',
+          async: false,
+          dataType: 'json',
+          success: function(data){
+            $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
+               if (data=="essfemale.png" || data=="essmale.png") 
+                 {
+                     $('#data_to_do').val("add");
+                 }
+                 else
+                 {
+                     $('#data_to_do').val("update");
+                 }
+            
+           },
+          error: function(data){
+
+          }
+        });
+      }
+
     function showAllAnnouncementToNotification(){
         // Show Notification
         $.ajax({
