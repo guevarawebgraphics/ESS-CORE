@@ -48,7 +48,11 @@
               @elseif(auth()->user()->user_type_id===3)  {{-- Employer --}}
               <h3>{{$count_employee}}</h3>               {{--  Variable for counting employee --}}
               <p>Registered Employee</p> 
-              @endif
+              @elseif(auth()->user()->user_type_id===4) 
+              <h3>{{$count_my_employeer}}</h3>             
+              <p>Registered Employer</p> 
+              @endif 
+      
             </div>
             <div class="icon">
               {{-- <i class="ion ion-person-add"></i> --}}
@@ -97,10 +101,10 @@
                           
                             <i class="icon fa fa-calendar-o"> </i> 
                           {{$contents->content_title}}
-                            <button type="button" class="close" aria-label="Close">
+                            {{--<button type="button" class="close" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>  
-                          
+                            --}}
                             &#x6c;<span id="date_created_body"> {{ \Carbon\Carbon::parse($contents->created_at)->format('d/m/Y')}} </span>
                         </div>
                         <div class="card-body">
@@ -149,7 +153,7 @@
             <img class="d-block w-100" src="https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png" alt="{{$contents->content_title}}"> 
             <div class="carousel-caption d-none d-md-block">
                 <h5>{{$contents->content_title}}</h5>
-                <p>{{$contents->content_description}}</p>
+                <p>{{strip_tags($contents->content_description)}}</p>
               </div>
             </div> 
             @endforeach
