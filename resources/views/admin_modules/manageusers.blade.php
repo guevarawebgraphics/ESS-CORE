@@ -193,7 +193,6 @@ elseif(Session::get('manage_users') == 'delete'){
 <script>
     $(document).ready(function(){
 
-        
         /*DataTable*/ 
         var table = $("#usertype_table").DataTable({
             // "searching": false,

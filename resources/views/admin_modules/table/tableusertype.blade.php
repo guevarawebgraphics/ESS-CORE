@@ -40,28 +40,28 @@ elseif(Session::get('manage_users') == 'delete'){
     </thead>
     <tbody>
         @if(count($user_type) > 0)
-            @foreach($user_type as $user)
+            @foreach($user_type as $user_types)
             <tr>
-                <td>{{$user->type_name}}</td>
-                <td>{{$user->type_description}}</td>
-                @if($user->created_by == "default")
+                <td>{{$user_types->type_name}}</td>
+                <td>{{$user_types->type_description}}</td>
+                @if($user_types->created_by == "default")
                     <td>                      
-                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user->id}}" disabled><i class="fa fa-info"></i> Manage Access</button>                            
+                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user_types->id}}" disabled><i class="fa fa-info"></i> Manage Access</button>                            
                     </td>
                 @else
                     <td>                      
-                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user->id}}||{{$user->type_name}}" {{$edit}}><i class="fa fa-info"></i> Manage Access</button>               
+                        <button type="button" class="btn btn-sm btn-primary" id="manage" data-add="{{$user_types->id}}||{{$user_types->type_name}}" {{$edit}}><i class="fa fa-info"></i> Manage Access</button>               
                     </td>
                 @endif
-                @if($user->created_by == "default")
+                @if($user_types->created_by == "default")
                     <td>
-                        <button class="btn btn-sm btn-secondary" id="edit_usertype" data-add="{{$user->id}}]]{{$user->type_name}}]]{{$user->type_description}}" disabled><i class="fa fa-edit"></i> Edit</button>
-                        <button class="btn btn-sm btn-danger" id="delete_usertype" data-add="{{$user->id}}]]{{$user->type_name}}" disabled><i class="fa fa-trash"></i> Delete</button>                       
+                        <button class="btn btn-sm btn-secondary" id="edit_usertype" data-add="{{$user_types->id}}]]{{$user_types->type_name}}]]{{$user_types->type_description}}" disabled><i class="fa fa-edit"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" id="delete_usertype" data-add="{{$user_types->id}}]]{{$user_types->type_name}}" disabled><i class="fa fa-trash"></i> Delete</button>                       
                     </td>
                 @else
                     <td>
-                        <button class="btn btn-sm btn-secondary" id="edit_usertype" data-add="{{$user->id}}]]{{$user->type_name}}]]{{$user->type_description}}" {{$edit}}><i class="fa fa-edit"></i>Edit</button>
-                        <button class="btn btn-sm btn-danger" id="delete_usertype" data-add="{{$user->id}}]]{{$user->type_name}}" {{$delete}}><i class="fa fa-trash"></i> Delete</button>                       
+                        <button class="btn btn-sm btn-secondary" id="edit_usertype" data-add="{{$user_types->id}}]]{{$user_types->type_name}}]]{{$user_types->type_description}}" {{$edit}}><i class="fa fa-edit"></i>Edit</button>
+                        <button class="btn btn-sm btn-danger" id="delete_usertype" data-add="{{$user_types->id}}]]{{$user_types->type_name}}" {{$delete}}><i class="fa fa-trash"></i> Delete</button>                       
                     </td>
                 @endif
             </tr>    

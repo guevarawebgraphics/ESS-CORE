@@ -293,7 +293,7 @@ class MyProfileController extends Controller
             /**
              * Execute if Employer
              * */
-            if(auth()->user()->user_type_id == 3){
+            if(auth()->user()->user_type_id == 3){  
                 $update_query = Account::find($id_to_update);
                 $update_query->contact_mobile = $contact;
                 $update_query->contact_email = $email;     
@@ -303,6 +303,12 @@ class MyProfileController extends Controller
              * Execute if Employee
              * */
             elseif(auth()->user()->user_type_id == 4){
+
+                $request->validate([
+                    'email' => 'required|email',
+                    'contact' => 'required',
+                ]);
+
                 $get_employee_id = DB::table('employee')->where('id', '=', $id_to_update)->select('employee_info')->first();
                 // $update_query = EmployeePersonalInfo::find($get_employee_id);
 

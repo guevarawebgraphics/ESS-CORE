@@ -27,4 +27,27 @@ html {
 
 footer {
     background-color: #eaeaea;
+} 
+/* Media Query for Add System Notification */
+@media screen and (max-width: 1380px)
+{
+        #AddNotificationModal{
+            max-width:100% !important;
+            height: auto !important;
+        }
+        .modalbody {
+            overflow-y:auto;
+            height:600px !important;
+
+        }
+} 
+@media screen and (max-width: 900px)
+{
+        .modalbody {
+            overflow-y:auto !important;
+            height:auto !important;
+        } 
+        #AddNotificationModal{
+            overflow:auto !important;    
+        }
 }

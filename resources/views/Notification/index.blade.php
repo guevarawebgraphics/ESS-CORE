@@ -51,7 +51,7 @@ elseif(Session::get('system_notifications') == 'delete'){
             <h3 class="card-title"><i class="fa fa-bell"></i> System Notification</h3>
         </div>
         <!-- /.card-header -->
-        <div class="card-body">
+        <div class="card-body" >
             @if(auth()->user()->user_type_id == 1)
             <div class="form-group row">
                 {{-- <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search:</label> --}}
@@ -100,16 +100,16 @@ elseif(Session::get('system_notifications') == 'delete'){
 
 
     <!-- Add System Notification -->
-<div class="modal fade" id="AddNotificationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:hidden;">
+    <div class="modal fade" id="AddNotificationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:hidden;">
         <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
+          <div class="modal-content modalcontent">
             <div class="modal-header">
               <h5 class="modal-title" id="title_modal"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modalbody">
                 <form id="notification_form">
                     @csrf
                     <div class="form-group row">
