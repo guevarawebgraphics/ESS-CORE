@@ -151,7 +151,7 @@ elseif(Session::get('my_profile') == 'delete'){
                             <div id="email"></div>                                   
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" id="btnUpdate" {{$edit}}>Update Account</button>                                                                      
+                <button type="button" class="btn btn-primary" id="btnUpdate" {{$edit}}>Update Account</button>                                                                      
                 </div>              
             </div>
             @if(auth()->user()->user_type_id === 3)
@@ -338,41 +338,49 @@ elseif(Session::get('my_profile') == 'delete'){
         $(document).on("click", "#btnUpdate", function(){
             id = $("#hidden_id").val();
             email = $("#txtemail").val();
-            mobile = $("#txtmobile").val();
+            mobile = $("#txtmobile").val(); 
+            var emailvalid = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             toastr.remove()
-            toastr.clear()
-
-            if(email == "-" || mobile == "-")
-            {
-                toastr.error('Failed to Update', 'Failed')
-            }
-            else
-            {
-                swal({
-                    title: "Update this account?",
-                    //text: "Your will not be able to recover this imaginary file!",
-                    type: "warning",             
-                    confirmButtonClass: "btn-info",
-                    confirmButtonText: "Yes",
-                    showCancelButton: true,
-                    closeOnConfirm: true,
-                    },
-                    function()
-                    {                   
-                        $.ajax({
-                            headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            url: "{{ route('settingsupdate_post') }}",
-                            method: "POST",
-                            data:{id: id, email: email, contact: mobile},               
-                            success:function(data)
-                            {
-                                toastr.success('Account Updated Successfully', 'Success')
-                            }                  
-                        });  
+            toastr.clear() 
+                    if(email == "-" || mobile == "-")
+                    {
+                        toastr.error('Failed to Update', 'Failed')
                     }
-                );                
-            }                   
-        });
+                    else if(email=="" || mobile == "")
+                    {
+                        toastr.error('Failed to Update', 'Failed')
+                    }
+                    else if(!emailvalid.test(email))
+                    {
+                        toastr.error('Please enter valid email address', 'Failed')
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Update this account?",
+                            //text: "Your will not be able to recover this imaginary file!",
+                            type: "warning",             
+                            confirmButtonClass: "btn-info",
+                            confirmButtonText: "Yes",
+                            showCancelButton: true,
+                            closeOnConfirm: true,
+                            },
+                            function()
+                            {                   
+                                $.ajax({
+                                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                    url: "{{ route('settingsupdate_post') }}",
+                                    method: "POST",
+                                    data:{id: id, email: email, contact: mobile},               
+                                    success:function(data)
+                                    {
+                                        toastr.success('Account Updated Successfully', 'Success')
+                                    }                  
+                                });  
+                            }
+                        );                
+                    }                   
+             });
 
 
         /**

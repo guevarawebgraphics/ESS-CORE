@@ -9,8 +9,8 @@
         else {
             $('#profile_image_filename').html(files[i].name);
         }
-            
-    }
+        $("#Upload").attr('data-image',files[i].name.toLowerCase());
+    } 
 }
 $(document).ready(function (){
     
@@ -54,42 +54,134 @@ $(document).ready(function (){
       //   console.log("Test1");
       //   $('#formOverlay').addClass('overlay');
       //   $("#spinner").addClass('fa fa-refresh fa-spin');
-      // });
+      // }); 
+      
+            $('#upload_image').submit(function (e){ 
+                toastr.remove()
+                profile_to_do = $('#data_to_do').val(); 
+                value_image = $("#Upload").attr('data-image');
+                extension_checker = value_image.substr( (value_image.lastIndexOf('.') +1));
+                if(value_image === "empty")
+                {
+                 
+                  toastr.error('Please select an image', 'Failed')
+                  return false;
+                } 
+                if(extension_checker == "jpg" || extension_checker == "jpeg" || extension_checker == "png")
+                {
+                        if(profile_to_do === "add")
+                        {
+                          e.preventDefault();
+                          toastr.remove()
+                          var formData = new FormData($(this)[0]);
+                          $.ajaxSetup({
+                              headers: {
+                                  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                              }
+                          });
+                          $.ajaxSetup({
+                            headers: {
+                              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            }
+                          });
+                      
+                                      $.ajax({
+                                          url: '/ProfilePicture/UploadPicture',
+                                          method: 'POST',
+                                          async: false,
+                                          dataType: 'json',
+                                          data: formData,
+                                          cache: false,
+                                          contentType: false,
+                                          enctype: 'multipart/form-data',
+                                          processData: false,
+                                          success: function(data){
+                                            toastr.success('Picture Uploaded Successfully', 'Success') 
+                                            get_profile_picture()  
+                                            get_profile_picture_settings()
+                                            console.log("UPLOADED");
+                                            $('#upload_profile_picture').modal('hide');
+                                            
+                                          },
+                                          error: function(data){
+                                            console.log("ERROR");
+                                          }
+                                          
+                                      });
+                                  
+                          }
+                  else
+                          {
+                          e.preventDefault();
+                          toastr.remove()
+                          var formData = new FormData($(this)[0]);
+                          $.ajaxSetup({
+                              headers: {
+                                  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                              }
+                          });
+                          $.ajaxSetup({
+                            headers: {
+                              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            }
+                          });
 
-      $('#upload_image').submit(function (e){
-        e.preventDefault();
-        toastr.remove()
-        var formData = new FormData($(this)[0]);
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        });
-        $.ajaxSetup({
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          }
-        });
+                          $.ajax({
+                              url: '/ProfilePicture/UpdatePicture',
+                              method: 'POST',
+                              async: false,
+                              dataType: 'json',
+                              data: formData,
+                              cache: false,
+                              contentType: false,
+                              enctype: 'multipart/form-data',
+                              processData: false,
+                              success: function(data){
+                                toastr.success('Picture Updated Successfully', 'Success') 
+                               
+                                console.log("UPLOADED");
+                                $('#upload_profile_picture').modal('hide');
+                                get_profile_picture()  
+                                get_profile_picture_settings()
+                                
+                              },
+                              error: function(data){
+                                console.log("ERROR");
+                              }
+                              
+                          });
 
-        $.ajax({
-            url: '/ProfilePicture/UploadPicture',
-            method: 'POST',
+                          }
+                }
+                else {
+
+                  toastr.error('Please upload JPG or PNG file', 'Failed')
+                  return false;
+
+                    } 
+             
+            });
+  
+      
+      
+        function get_profile_picture_settings(){
+          $.ajax({
+            type: 'GET',
+            url: '/ProfilePicture/get_profile_picture',
             async: false,
-			      dataType: 'json',
-            data: formData,
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
+            dataType: 'json',
             success: function(data){
-              console.log("UPLOADED");
+              //console.log(data);
+              $('#settings_profile_picture').attr('src', '/storage/profile_picture/' + data);
             },
             error: function(data){
-              console.log("ERROR");
+  
             }
-            
-        });
-      });
+
 
       
+
+          });
+        }
+
 });
