@@ -1,15 +1,27 @@
 <?php
 
 namespace App\Imports;
-
+/**
+ * @ Insert Laravel Packages Here
+ * */
+use DB;
 use Mail;
 use Keygen;
 use Carbon\Carbon;
+
+/**
+ *  @ Insert Models Here
+ * */
 use App\User;
 use App\ESSBase;
 use App\EmployerEmployee;
 use App\EmployeeEnrollment;
 use App\EmployeePersonalInfo;
+use App\UserActivation;
+
+/**
+ * Maat Website Packages
+ *  */
 use LasseRafn\Initials\Initials;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -40,6 +52,8 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
          * */
         //foreach ($collection as $row){
             $password = Keygen::alphanum(10)->generate();
+            $UserActivation = Keygen::length(6)->numeric()->generate();
+            $useractivation_id = $this->generateUserActivationId();
             /**
              * @//Generated ESS ID
              * */
@@ -141,6 +155,45 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
                 'updated_by' => auth()->user()->id,
             ]);
         //}
+
+         /*Email Template*/
+         $mail_template = DB::table('notification')
+                //->where('employer_id', auth()->user()->id)
+                ->where('id', '31')
+                ->where('notification_type', 1)
+                ->select('notification_message')
+                ->first();
+
+
+        $activation_link = "http://127.0.0.1:8000/Account/Activation/".$useractivation_id;
+
+
+        // Replace All The String in the Notification Message
+        $search = ["name", "username", "mobile", "url", "password"];
+        $replace = [$employee_ess_id, $employee_ess_id, $row['mobile_no'], "<a href=".$activation_link.">Click Here</a>", $password];                
+        $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+                
+        $email = $row['email_add'];
+        /*Send Mail */
+        $data = array('username' => $employee_ess_id, "password" => $password, "template" => $template_result);
+
+        Mail::send('Email.mail', $data, function($message) use($mail_template, $email){
+            $message->to($email)
+                ->subject("ESS Successfully Registered ");
+            $message->from('esssample@gmail.com', "ESS");
+        });
+
+        //$date = new DateTime();
+        $date_unitl = date("Y-m-d H:i:s", strtotime('+5 minutes'));
+
+        $UserActivation = UserActivation::create([
+            'account_id' => $user->id,
+            'activation_code' => $UserActivation,
+            'user_activation_id' => $useractivation_id,
+            'expiration_date' => Carbon::now()->addCentury(), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
+            'created_by' => auth()->user()->id,
+            'updated_by' => auth()->user()->id
+        ]);
     }
     /*Generate Key*/
     protected function generateESSKey(){
@@ -318,5 +371,12 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
     public function batchSize(): int
     {
         return 1000;
+    }
+
+    /*This unique Activation ID will serves as mask to the users id*/
+    protected function generateUserActivationId() {
+        $user_activation_id = Keygen::length(11)->alphanum()->generate();
+
+        return $user_activation_id;
     }
 }

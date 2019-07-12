@@ -54,7 +54,11 @@ Route::get('/', function () { // root if the user is login
                                 ->where('employer_id','=',auth()->user()->employer_id)
                                 ->count();
     
-                    return view('dashboard', compact('content','count','count_employee')); 
+                $count_my_employeer = DB::table('employer_and_employee')
+                                ->where('employee_id','=',auth()->user()->employee_id)
+                                ->count();
+    
+                return view('dashboard', compact('content','count','count_employee','count_my_employeer'));
             
             }
             
@@ -66,7 +70,7 @@ Route::get('/', function () { // root if the user is login
 
 Auth::routes();
 /*Guard route*/
-Route::get('logout', function(){
+Route::get('/logout', function(){
     return abort(404);
 });
 //Route::get('/home', 'HomeController@index')->name('home');
@@ -153,7 +157,7 @@ Route::get('/Announcement/get_notification_show', 'AnnouncementController@get_no
 ////// EMPLOYER
 
 //Employees Enrollment
-Route::get('/enrollemployee', 'EmployeesEnrollmentController@index');
+Route::get('/enrollemployee', 'EmployeesEnrollmentController@index')->name('enrollemployee');
 Route::get('/enrollemployee/getcity/{provCode}', 'EmployeesEnrollmentController@get_citytown');
 Route::get('/enrollemployee/getbarangay/{citymunCode}', 'EmployeesEnrollmentController@get_barangay');
 Route::get('/enrollemployee/getprovince', 'EmployeesEnrollmentController@get_province');
@@ -180,11 +184,16 @@ Route::post('/employercontent/post_content', 'EmployerContentController@post_con
 //Payroll Management
 Route::get('/payrollmanagement/upload', 'PayrollManagementController@upload');
 Route::get('/payrollmanagement/view', 'PayrollManagementController@view');
+Route::get('/payrollmanagement/get_payroll_register', 'PayrollManagementController@get_payroll_register');
+Route::post('/payrollmanagement/upload_payregister', 'PayrollManagementController@upload_payregister');
+Route::post('/payrollmanagement/post_payroll_register', 'PayrollManagementController@post_payroll_register');
+Route::post('/ProfilePicture/UpdatePicture', 'ProfilePictureController@UpdatePicture');
 
 
 /**Upload Profile Picture */
 Route::post('/ProfilePicture/UploadPicture', 'ProfilePictureController@UploadPicture');
 Route::get('/ProfilePicture/get_profile_picture', 'ProfilePictureController@get_profile_picture');
+Route::get('/ProfilePicture/get_profile_picture_via_search_employee', 'ProfilePictureController@get_profile_picture_via_search_employee');
 
 
 //Cash Advance

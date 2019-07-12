@@ -15,9 +15,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfilePictureController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');      
+        $this->middleware('revalidate'); // Revalidate back history Security For Back Button
+    }
+    
     public function UploadPicture(Request $request)
     {
-    /**
+        /**
          * @ Validate Images
          * */
         $this->validate($request, [

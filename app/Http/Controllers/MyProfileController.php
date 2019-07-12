@@ -51,6 +51,7 @@ class MyProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');      
+        $this->middleware('revalidate'); // Revalidate back history Security For Back Button
         $this->middleware(function($request, $next){
             if(Session::get("my_profile") == "none")
             {

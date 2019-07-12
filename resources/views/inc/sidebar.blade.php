@@ -314,13 +314,13 @@
 					<a class="nav-link {{$payroll_management_tree}}" href="#"><i class="nav-icon fa fa-user"></i>
 					<p>Payroll Management <i class="right fa fa-angle-left"></i></p></a>
 					<ul class="nav nav-treeview">
-						<li class="nav-item">
+						{{-- <li class="nav-item">
 							<a class="nav-link {{$upload_payrollmanagement}}" href="/payrollmanagement/upload"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Upload Payroll Register</p></a>                                   
-						</li>
+						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$view_payrollmanagement}}" href="/payrollmanagement/view"><i class="fa fa-circle-o nav-icon"></i>
-							<p>View Payroll Register</p></a>
+							<p>Manage Payroll Register</p></a>
 						</li>						
 					</ul>
 				</li>

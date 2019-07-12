@@ -13,7 +13,7 @@
     } 
 }
 $(document).ready(function (){
-    get_profile_picture();
+    
     $('#profile_picture').click(function (){
       $.ajax({
         type: 'GET',
@@ -177,6 +177,11 @@ $(document).ready(function (){
             error: function(data){
   
             }
+
+
+      
+
           });
         }
+
 });
