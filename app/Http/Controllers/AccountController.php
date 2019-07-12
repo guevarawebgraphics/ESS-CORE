@@ -327,7 +327,9 @@ class AccountController extends Controller
                         'hdmf' => $request->input('hdmf'),
                         'nid' => $request->input('nid'),
                         'sec' => $fileNameToStore_sec,
-                        'bir' => $fileNameToStore_bir
+                        'bir' => $fileNameToStore_bir,
+                        'enrollment_date' => $enrollment_date,
+                        'expiry_date' => $expiry_date
                     ]);
 
                     $employer_id = $employer->id;
@@ -361,7 +363,9 @@ class AccountController extends Controller
                         'hdmf' => $request->input('hdmf'),
                         'nid' => $request->input('nid'),
                         'sec' => $fileNameToStore_sec,
-                        'bir' => $fileNameToStore_bir
+                        'bir' => $fileNameToStore_bir,
+                        'enrollment_date' => $enrollment_date,
+                        'expiry_date' => $expiry_date
                     ]);
 
                     $employer_id = $employer->id;
@@ -454,7 +458,7 @@ class AccountController extends Controller
                           'refcitymun.citymunDesc',
                           'refcitymun.citymunCode',
                           'refbrgy.brgyDesc',
-                          'refbrgy.id as refbrgy_id',
+                          'refbrgy.id as refbrgy_id'
                           //'users.enrollment_date',
                           //'users.expiry_date'
                           )
@@ -507,6 +511,14 @@ class AccountController extends Controller
             // Upload Image
             $path_sec = $request->file('sec')->storeAs('public/Documents/sec', $fileNameToStore_sec);
 
+            //Deleting old sec file after user update
+            $query_sec_file = DB::table('employer')->where('id','=',$id)
+            ->select('sec')
+            ->first();
+            
+            $old_sec_file = $query_sec_file->sec;
+            Storage::delete('public/Documents/sec/'.$old_sec_file);
+       
             /*Update Account Employer*/
             DB::table('employer')->where('id', '=', $id)
                                 ->update(array(
@@ -550,7 +562,15 @@ class AccountController extends Controller
              $fileNameToStore_bir= $filename_bir.'_'.time().'.'.$extension_bir;
              // Upload Image
              $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
- 
+             
+             //Deleting old BIR file after user update
+             $query_bir_file = DB::table('employer')->where('id','=',$id)
+                            ->select('bir')
+                            ->first();
+
+             $old_bir_file = $query_bir_file->bir;
+             Storage::delete('public/Documents/bir/'.$old_bir_file);
+
              /*Update Account Employer*/
              DB::table('employer')->where('id', '=', $id)
                                  ->update(array(

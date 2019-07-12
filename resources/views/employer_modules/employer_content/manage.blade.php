@@ -79,10 +79,9 @@
         
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="SaveContent">Save <i  style="margin-left:-15px;color:white;" id="spinner" class=""> </button> 
-    
-        </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>  
+            <button type="button" class="btn btn-primary" id="SaveContent">Save Content <i id="spinner" class="">  </button> 
+        </div>    
     </div>
 </div>
 
@@ -144,6 +143,7 @@
         CKFinder.setupCKEditor( editortwo );
         $(document).on("click", "#SaveContent", function(){ 
             action_to_do = $("#action").val();
+            toastr.remove()
          
             //alert(action_to_do);
             //console.log("asa");
@@ -153,7 +153,7 @@
 
             if(content_title == "")
             {
-                toastr.error('Error. Please Complete the fields', 'Error!')
+              
                 $('#content_title').addClass('is-invalid');
                 $('#error_content_title').html('Content Title is Required'); 
                 spinnerTimout();
@@ -167,7 +167,7 @@
 
             if(CKEDITOR.instances.content_description.getData()  == "")
             {
-                toastr.error('Error. Please Complete the fields', 'Error!')
+          
                 $('#content_description').addClass('is-invalid');
                 $('#error_content_description').html('Content Description is Required');
                 spinnerTimout();
@@ -177,12 +177,26 @@
                 $('#content_description').removeClass('is-invalid');
                 $('#error_content_description').html('');
             }
+             
+            if(content_title == "" && CKEDITOR.instances.content_description.getData()  == "")
+            {
+                toastr.error('Error. Please Complete the fields', 'Error!');
+                spinnerTimout();
+
+            }
+            else{
+                toastr.error('Error. Please Complete the fields', 'Error!');
+                spinnerTimout();
+
+            } 
             
             if(content_title != "" && CKEDITOR.instances.content_description.getData()  != "")
             {
                 if(action_to_do == "add")
                 { 
+                    
                     $('#spinner').addClass('fa fa-refresh fa-spin');
+                      
                     $.ajax({
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         url: "{{ route('createemployercontent') }}",
@@ -226,7 +240,7 @@
                     });
                 }
                 else if(action_to_do == "edit")
-                {
+                { 
                   
                     $.ajax({
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -276,8 +290,9 @@
         //click create content
         $('#btn_createcontent').click(function(e){
             $("#content_title").val(""); 
-            $("#content_description").val("");
-            $('#SaveContent').html('Save Content');
+            content_description = $("#content_description").val("");
+          //  $('#SaveContent').html('Save Content'); 
+            CKEDITOR.instances.content_description.setData("");  
             $("#action").val("add");
             $("#hidden_id").val("");  
             

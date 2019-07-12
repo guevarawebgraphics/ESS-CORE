@@ -98,16 +98,54 @@ class ManageUserController extends Controller
     //show user types on table for Manage User Access View
     public function manageusertypes()
     {     
-        // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");
-       
+        //$user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
+        //$user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");
+        /*$user_type = DB::table('user_type')
+                        ->where('id','=',auth()->user()->user_type_id)
+                        ->where('deleted','=',0)
+                        ->orderBy('created_at','DESC')
+                        ->get();
+          */
+          
+     /*  if(auth()->user()->user_type_id===1)
+        {
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");
+        }
+        elseif(auth()->user()->user_type_id===4)
+        {
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");
+        }
+        else
+        {
+
+            $user_type = DB::table('user_type')
+                        ->where('id','=',auth()->user()->user_type_id)
+                        ->where('deleted','=',0)
+                        ->orderBy('created_at','DESC')
+                        ->get();
+
+        }*/
+     //   $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC"); 
+
+        $created_by_dummy = Auth()->user()->created_by;
+        if($created_by_dummy == 1)
+        {
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");   
+        }
+        else {
+            $user_type =  DB::table('user_type')
+            ->where('created_by','=',$created_by_dummy)
+            ->where('deleted','=',0)
+            ->get();
+        }
+
         if(Session::get("employer_id") != "admin")
         {                    
             return view('welcome');
         }
         else
         {                   
-            return view ('admin_modules.manageusers')->with('user_type', $user_type);         
+            return view ('admin_modules.manageusers',compact('user_type'));         
         } 
         // return view ('admin_modules.manageusers')->with('user_type', $user_type);        
     }
@@ -143,7 +181,7 @@ class ManageUserController extends Controller
     {
         
         // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC ");
+        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '12' ORDER BY created_at DESC ");
         return view ('admin_modules.table.tableusertype')->with('user_type', $user_type);        
     }
 
@@ -266,6 +304,10 @@ class ManageUserController extends Controller
                 $insert_query->employer_id = $employer_id;
             }
             if(auth()->user()->user_type_id == 3)
+            {
+                $insert_query->employer_id = auth()->user()->user_type_for;
+            }
+            else
             {
                 $insert_query->employer_id = auth()->user()->user_type_for;
             }
