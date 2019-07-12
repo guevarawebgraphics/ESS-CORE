@@ -52,6 +52,7 @@ class AnnouncementController extends Controller
      public function __construct()
      {
          $this->middleware('auth', ['except' => 'get_all_announcement_to_notification']);
+         $this->middleware('revalidate'); // Revalidate back history Security For Back Button
          $this->middleware(function($request, $next){
              if(Session::get("send_announcement") == "none")
              {

@@ -62,6 +62,7 @@ class AccountController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => array('UserActivation', 'ActivationPage', 'ActivateUser')]);
+        $this->middleware('revalidate'); // Revalidate back history Security For Back Button
         $this->middleware(function($request, $next){
             if(Session::get("create_profile") == "none")
             {
