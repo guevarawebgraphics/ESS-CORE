@@ -1571,7 +1571,17 @@ $(document).ready(function(){
                 $('#payroll_bank').val(data.payroll_bank);
                 $('#account_no').val(data.account_no);
                 $('#position').val(data.position);
-                $('#employee_profile_picture').attr('src', '/storage/profile_picture/' + data.profifle_picture);
+                /*
+                 * @ Check if the User has a Profile Picture or Null
+                 */
+                if(data.profifle_picture == null)
+                {
+                    $('#employee_profile_picture').attr('src', '/storage/pic.jpg');
+                }
+                else {
+                    $('#employee_profile_picture').attr('src', '/storage/profile_picture/' + data.profifle_picture);
+                }
+                
                 
 
                 $('#citytown option[value="'+data.citytown+'"]').prop('selected', true);
