@@ -446,8 +446,9 @@ class AnnouncementController extends Controller
          // Insert Log
         //  $this->insert_log("Post Announcement");
         //  return Response::json();
-        $redis = Redis::connection();
-        $redis->publish('message',json_encode($Announcement));
+        // $redis = Redis::connection();
+        // $redis->publish('message',json_encode($Announcement));
+        event(new \App\Events\Announcement("New Announcement"));
         
         return response()->json($Announcement,200);
      }
