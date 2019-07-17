@@ -88,6 +88,7 @@
 	<script src="{{ asset('Ionicons/ionicons.js') }}"></script>
 	<!--Upload Image-->
 	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
+	<script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     @include('inc/footer')
 	
 	

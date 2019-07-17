@@ -12,10 +12,10 @@ window.JQuery = require('jquery')
 import VueToastr2 from 'vue-toastr-2'
 import 'vue-toastr-2/dist/vue-toastr-2.min.css'
 window.toastr = require('toastr')
-import VueSocketio from 'vue-socket.io';
-import socketio from 'socket.io-client'
+// import VueSocketio from 'vue-socket.io';
+// import socketio from 'socket.io-client'
 window.Vue = require('vue');
-Vue.use(VueSocketio, socketio(':6999'));
+// Vue.use(VueSocketio, socketio(':6999'));
 
 /**
  * The following block of code may be used to automatically register your
