@@ -810,6 +810,13 @@ class EmployeesEnrollmentController extends Controller
         {
             echo "No Employee Data";
         }
+        /**
+         * @ Security for No Employee Found
+         * */
+        else if(!EmployerEmployee::where('id', '=', $id)->count() > 0)
+        {
+            abort(404);
+        }
         else if($id != "")
         {
             // $employee = DB::connection('mysql')
