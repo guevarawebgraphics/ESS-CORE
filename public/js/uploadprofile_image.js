@@ -9,7 +9,8 @@
         else {
             $('#profile_image_filename').html(files[i].name);
         }
-        $("#Upload").attr('data-image',files[i].name.toLowerCase());
+        $("#Upload").attr('data-image',files[i].name.toLowerCase()); 
+        $("#Upload").attr('data-file',files[i].name);
     } 
 }
 $(document).ready(function (){
