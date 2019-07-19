@@ -184,11 +184,6 @@
                 spinnerTimout();
 
             }
-            else{
-                toastr.error('Error. Please Complete the fields', 'Error!');
-                spinnerTimout();
-
-            } 
             
             if(content_title != "" && CKEDITOR.instances.content_description.getData()  != "")
             {

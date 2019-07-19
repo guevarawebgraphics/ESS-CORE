@@ -88,17 +88,12 @@
     <!-- Content List -->
       <div class="container-fluid border-secondary" style="background:white;border-radius:5px;padding:30px;"> 
           <div class="container" style="border-bottom:1px solid #3C8DBC;">
-
-          <p class="brand-text font-weight-light" style="font-size:25px;"> Your Contents </p>   
+              <p class="brand-text font-weight-light" style="font-size:25px;"> Your Contents </p>   
           </div>
           <br>
-              @if($count>0)  
-                  @foreach($content as $contents) 
-                {{-- --}}
-                    <div class="card" style="padding:30px;  box-shadow: 0px 3px #f2f2f2;"> 
-                
+                  @forelse($content as $contents) 
+                      <div class="card" style="padding:30px;  box-shadow: 0px 3px #f2f2f2;">
                         <div class="card-header"> 
-                          
                             <i class="icon fa fa-calendar-o"> </i> 
                           {{$contents->content_title}}
                             {{--<button type="button" class="close" aria-label="Close">
@@ -108,25 +103,26 @@
                             &#x6c;<span id="date_created_body"> {{ \Carbon\Carbon::parse($contents->created_at)->format('d/m/Y')}} </span>
                         </div>
                         <div class="card-body">
-                          
                           <blockquote class="blockquote mb-0">
-                            <p>       {{ strip_tags(str_limit($contents->content_description,50))}}</p>  
-                        
+                            <p>       {!! strip_tags(str_limit($contents->content_description,50)) !!}</p>  
                           </blockquote>  
-                          </div>
+                        </div>
                         <div class="text-center">
                           <p style="color:#3C8DBC;cursor: pointer;font-size:20px;" data-toggle="modal" data-title="{{$contents->content_title}}" data-description="{{$contents->content_description}}"  id="{{$contents->id}}" class="showfulldescription" data-target="#modal-lg"> See More   </p> 
-                      
                         </div>
-                      </div>
-                    @endforeach
-                  @else 
-                        <h3> No Announcement</h3>
-                  @endif 
-                        <br>
-                        <div class="container" style="border-bottom:1px solid #3C8DBC;">
+                      </div>  
+                      <br>
+                      <div class="container" style="border-bottom:1px solid #3C8DBC;">
                         <p class="brand-text font-weight-light" style="font-size:25px;"> </p>   
-                        </div>
+                      </div>
+                    @empty
+                    <div class="text-center">
+                        <p style="color:#3C8DBC;font-size:20px;"> No content posted   </p> 
+                    </div>   
+                    <div class="container" style="border-bottom:1px solid #3C8DBC;">
+                      <p class="brand-text font-weight-light" style="font-size:25px;"> </p>   
+                    </div> 
+                    @endforelse        
         </div> 
     @else 
 
