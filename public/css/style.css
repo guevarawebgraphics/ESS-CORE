@@ -45,7 +45,7 @@ footer {
 {
         .modalbody {
             overflow-y:auto !important;
-            height:auto !important;
+            height:600px !important;
         } 
         #AddNotificationModal{
             overflow:auto !important;    

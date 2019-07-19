@@ -14,7 +14,7 @@
             @foreach($employer_content as $content)
                 <tr>
                     <td>{{$content->content_title}}</td>
-                    <td>{{ strip_tags( $content->content_description ) }}</td>
+                    <td>{!! strip_tags(str_limit($content->content_description,50))!!}</td>
                     @if($content->content_status == 0)               
                         <td><span class="badge badge-warning">Pending</span></td>
                         <td><a href="#send" class="send btn btn-sm btn-info content-post" data-toggle="modal" data-target="#sendModal" data-add="{{$content->id}}]]{{$content->content_title}}"><i class="fa fa-paper-plane"></i> POST</a></td>               

@@ -210,8 +210,13 @@ Route::get('/financialcalendar', 'FinancialCalendarController@index');
 Route::get('/icredit', 'iCreditController@index');
 
 //Payslips
-Route::get('/payslips', 'PayslipsController@index');
-
+Route::get('/payslips', 'PayslipsController@index')->name('payslips'); 
+Route::get('/payslips/get', 'PayslipsController@getPayslipsList')->name('getPayslipsList');
+Route::get('/payslips/view/{id}', 'PayslipsController@viewpayslips')->name('viewpayslips');
+Route::post('/payslips/filter', 'PayslipsController@filter')->name('filter'); 
+Route::get('/payslips/view', function(){
+    abort(404);
+});
 //Time Attendance
 Route::get('/timeattendance', 'TimeAttendanceController@index');
 

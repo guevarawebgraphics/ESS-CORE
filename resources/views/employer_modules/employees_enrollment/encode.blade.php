@@ -816,12 +816,12 @@ function checknumber(e)
 
 $(document).ready(function(){
     // Config Restriction for Pass Date
-    var date = new Date();
-    date.setDate(date.getDate());
-    $('#enrollment_date').datepicker({
-        autoclose: true,
-        startDate: date
-    });
+        var date = new Date();
+        date.setDate(date.getDate());
+        $('#enrollment_date').datepicker({
+            autoclose: true,
+            startDate: date
+        });
     $('#birthdate').datepicker({
         autoclose: true,
         //startDate: date
