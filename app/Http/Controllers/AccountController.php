@@ -930,7 +930,7 @@ class AccountController extends Controller
         
         if($id != null){
             
-            if(!User::where('id', '=', $account_id)->count() > 0){
+            if(empty($account_id)){
                 abort(404);
             }
             else {

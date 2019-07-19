@@ -1,12 +1,15 @@
  $(document).ready(function (){
-     /*Listen To The port then the emit message*/
-     /**
-      * @ Socket Real time Announcement Notification
-      * */
-	var socket = io('http://127.0.0.1:6999');
-			socket.on('message', function (data) {
-			console.log(data);
-            // Show Notification
+      /*
+      * @ Announcement Notification Pusher
+      */
+    var pusher = new Pusher('3fc4a65760cdcbea6fe6', {
+        cluster: 'ap2',
+        forceTLS: true
+      });
+  
+      var channel = pusher.subscribe('channel1');
+      channel.bind('Announcement', function(data) {
+        // Show Notification
             $.ajax({
                 type: 'ajax',
                 method: 'get',
@@ -14,8 +17,8 @@
                 async: false,
                 dataType: 'json',
                 success: function (data) {
-                    toastr.success('Socket Test', 'Socket Test')
-                    socket.emit('my other event', { my: 'data' });
+                    toastr.success('You have new Announcement')
+                    // socket.emit('my other event', { my: 'data' });
                     var html = '';
                     var i;
                     var count = 1;
@@ -55,7 +58,16 @@
                     
                 }
             });
-    });
+      });
+     /*Listen To The port then the emit message*/
+     /**
+      * @ Socket Real time Announcement Notification
+      * */
+	// var socket = io('http://127.0.0.1:6999');
+	// 		socket.on('message', function (data) {
+	// 		console.log(data);
+    //         
+    // });
         
 
     var session_notification = true;
