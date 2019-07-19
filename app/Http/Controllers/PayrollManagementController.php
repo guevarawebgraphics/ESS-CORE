@@ -104,11 +104,17 @@ class PayrollManagementController extends Controller
          * 
          * Validate Requests
          */
-        $this->validate($request, [
-            'file' => 'required|mimes:xls,xlsx',
-            'batch_no' => 'required'
-        ]);
 
+        
+        $validator = $this->validate($request, [
+            'file' => 'required|mimes:xls,xlsx',
+            'batch_no' => 'required',
+            'payroll_schedule' => 'required',
+            'period_from' => 'required',
+            'period_to' => 'required'
+        ]);
+        
+    
         $path = $request->file('file')->getRealPath();
 
         // Handle File Upload
@@ -128,10 +134,12 @@ class PayrollManagementController extends Controller
         /**
          * @ Create payrollregisterdetails 
          * */
+        $period_from = Carbon::parse($request->period_from)->format('Y-m-d'); 
+        $period_to = Carbon::parse($request->period_to)->format('Y-m-d');
         $payrollregister = payrollregister::create([
             'account_id' => auth()->user()->employer_id,
-            'period_from' => Carbon::now(),
-            'period_to' => Carbon::now(),
+            'period_from' => $period_from,
+            'period_to' => $period_to,
             'payroll_schedule_id' => $request->payroll_schedule,
             'batch_no' => $request->input('batch_no'),
             'payroll_file' => $fileNameToStore_file,

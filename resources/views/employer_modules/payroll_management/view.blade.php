@@ -103,6 +103,7 @@ elseif(Session::get('create_profile') == 'delete'){
 		<div class="modal-body">
             @foreach($Employees_upload_template as $employees_template)
                 <a href="/storage/Documents/templates/{{$employees_template->document_file}}" download>{{$employees_template->document_code}}<div class="float-left mr-3"><i class="fa fa-download"></i></div></a>
+                <input type="hidden" id="defaultfile" value="{{$employees_template->document_file}}">
             @endforeach
 		  <form id="upload_payroll" runat="server">
 			  @csrf
@@ -112,12 +113,21 @@ elseif(Session::get('create_profile') == 'delete'){
               <div class="col-md-12">
                 <div class="input-group">
                     <label for="batch_no">Batch No:</label>
-					<div class="col-md-12">
-                        <input class="form-control" type="text" name="batch_no" id="batch_no" placeholder="Batch No">
+					<div class="col-md-12"> 
+                        
+                        <input class="form-control " type="text" name="batch_no" id="batch_no" placeholder="Batch No">
+                    </div>  
+                    <div class="col-md-6"> 
+                            <label for="Period From">Period From:</label>
+                            <input class="form-control datepicker" type="text" name="period_from" id="period_from" placeholder="YYYY-MM-DD" autocomplete="off">
+                    </div>
+                    <div class="col-md-6"> 
+                            <label for="Period To">Period To:</label>
+                            <input class="form-control datepicker" type="text" name="period_to" id="period_to" placeholder="YYYY-MM-DD" autocomplete="off">
                     </div>
                     <label for="batch_no">Payroll Schedule:</label>
                     <div class="col-md-12">
-                        <select class="form-control" id="payroll_schedule" name="payroll_schedule">
+                        <select class="form-control " id="payroll_schedule" name="payroll_schedule">
                             <option value="">Select Options</option>
                                 <option value="Weekly">Weekly</option>
                                 <option value="Monthly">Monthly</option>
@@ -143,7 +153,7 @@ elseif(Session::get('create_profile') == 'delete'){
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-primary" id="Upload"><span><i class="fa fa-upload"></i></span> Upload <i id="spinner" class=""></button>
+		  <button type="submit" class="btn btn-primary" id="Upload" data-file=""><span><i class="fa fa-upload"></i></span> Upload <i id="spinner" class=""></button>
 		</div>
 		</form>
 	  </div>
@@ -183,11 +193,52 @@ elseif(Session::get('create_profile') == 'delete'){
         */
        $('#upload_payroll').submit(function (e){
         $("#spinner").addClass('fa fa-refresh fa-spin');
-        toastr.remove()
+            toastr.remove()
            console.log("TEST");
            $('#upload_payroll_register_modal').modal('show');
            e.preventDefault();
             var formData = new FormData($(this)[0]);
+            var file = $("#payroll_file").val();  
+             if(fileValidate()==false) 
+            {
+                toastr.error("Please upload appropriate template"); 
+                setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+            } 
+            if($('#batch_no').val()=="")
+            {
+                toastr.error("Batch no is required");  
+                setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+            }
+            if($('#payroll_schedule').val()=="")
+            {
+                toastr.error("Payroll schedule is required");  
+                setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+            }
+            if($('#period_from').val()=="")
+            {
+                toastr.error("Period From is required");  
+                setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+            }
+            if($('#period_to').val()=="")
+            {
+                toastr.error("Period To is required");  
+                setTimeout(function (){
+                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        }, 250);
+            }
+            if($('#batch_no').val()=="" || $('#payroll_schedule').val()=="" || fileValidate()==false) 
+            {
+                return false;
+            }
+            
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -225,18 +276,35 @@ elseif(Session::get('create_profile') == 'delete'){
                         //console.log("422");
                         var errors = $.parseJSON(data.responseText);
                         //console.log(errors.errors.accountname);
+          
                         $.each(errors, function (i, errors) {
                             if(errors.batch_no){
                                 //console.log(errors.batch_no);
                                 toastr.error(errors.batch_no);
-                                $('#batch_no').addClass('is-invalid');
+                                $('#batch_no').addClass('is-invalid'); 
+                             
+                            } 
+                           if(errors.payroll_schedule){
+                                //console.log(errors.batch_no);
+                                toastr.error(errors.payroll_schedule);
+                                $('#payroll_schedule').addClass('is-invalid'); 
+                      
                             }
                         });
                     }
                 }
            });
-       });
+       });  
+       function fileValidate() 
+       { 
+        var default_file = $("#defaultfile").val();
+        var file = $("#payroll_file").val();  
+        if(file.substring(12) !==default_file){
+                return false;
+            }
 
+       }
+       
        /*
         * Post Payroll Register
         */
@@ -312,7 +380,15 @@ elseif(Session::get('create_profile') == 'delete'){
               console.log('Could not get data from database');
             }
           });
-        }
+        } 
+            var date = new Date();
+            date.setDate(date.getDate());
+            $('#period_to').datepicker({
+                autoclose: true,
+            }); 
+            $('#period_from').datepicker({
+                autoclose: true,
+            }); 
     });
 </script>
 @endsection
