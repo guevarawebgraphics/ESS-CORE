@@ -15,6 +15,7 @@ use Maatwebsite\Execel\Facades\Execel;
 use Maatwebsite\Excel\Facades\Excel;
 
 use DB;
+use Mail;
 use Response;
 use Session;
 
@@ -175,6 +176,61 @@ class PayrollManagementController extends Controller
         $this->validate($request, [
             'id' => 'required'
         ]);
+        
+        /**
+         * @ Send Email Payslip Notification Configuration
+         * */
+        $get_employees_email = DB::table('payroll_register_details')
+                                    ->join('employee', 'payroll_register_details.account_id', '=', 'employee_no')
+                                    ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+                                    ->join('payrollregister', 'payroll_register_details.PayRegisterId', '=', 'payrollregister.id')
+                                    ->where('payroll_register_details.PayRegisterId', '=', $request->input('id'))
+                                    ->select('employee_personal_information.email_add',
+                                            'employee_personal_information.lastname',
+                                            'employee_personal_information.firstname',
+                                            'payrollregister.period_from',
+                                            'payrollregister.period_to')
+                                    ->get();
+
+        /*Email Template*/
+        $mail_template = DB::table('notification')
+                ->where('id', '39')
+                ->where('notification_type', 1)
+                ->select('notification_message')
+                ->first();
+
+        $ess_link = "http://127.0.0.1:8000";
+
+
+
+        /**
+         * Loop through $get_employees_email
+         * */
+        foreach($get_employees_email as $key)
+        {
+            // // Replace All The String in the Notification Message
+            $search = ["name",
+                       "Datefrom",
+                       "Dateto",
+                       "url"];
+            $replace = [$key->lastname . $key->firstname,
+                         Carbon::parse($key->period_from)->format('m-d-Y'),
+                         Carbon::parse($key->period_to)->format('m-d-Y'),
+                         "<a href=".$ess_link.">Click Here</a>"];                
+            $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+                            
+
+            // /*Send Mail */
+            $data = array('username' => 'test', "template" => $template_result);
+
+            Mail::send('Email.mail', $data, function($message) use($get_employees_email, $mail_template, $key){
+                $message->to($key->email_add)
+                        ->subject("ESS Payslip ");
+                $message->from('esssample@gmail.com', "ESS");
+            });
+        }
+
+        
 
         /**
          *  Update Query
