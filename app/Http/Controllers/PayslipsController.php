@@ -38,6 +38,7 @@ class PayslipsController extends Controller
         {
             $payslip = DB::Table('payroll_register_details') 
             ->where('account_id','=',auth()->user()->employee_id)
+            ->orderBy('payroll_release_date', 'desc')
             ->get();
            
             if($Request->ajax()){ 
@@ -60,7 +61,6 @@ class PayslipsController extends Controller
                     $viewpayslips = DB::Table('payroll_register_details as prd') 
                     ->Join('employee as e','prd.account_id','=','e.id')
                     ->Join('employee_personal_information as epi','e.employee_info','=','epi.id')
-                    ->orderBy('payroll_release_date', 'desc')
                     ->where('prd.id','=',$id)
                     ->get();
                     return view('employee_modules.payslips.view')
@@ -121,11 +121,11 @@ class PayslipsController extends Controller
                 $month=12;
             }
 
-           
             $payslip = DB::Table('payroll_register_details') 
             ->where('account_id','=',auth()->user()->employee_id) 
             ->whereMonth('payroll_release_date', '=', $month)
-            ->whereYear('payroll_release_date', '=', $Request->year)
+            ->whereYear('payroll_release_date', '=', $Request->year) 
+            ->orderBy('payroll_release_date', 'desc')
             ->get();
            
             if($Request->ajax()){ 
