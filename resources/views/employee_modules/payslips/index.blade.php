@@ -26,8 +26,8 @@
                                 <div class="row">
                                     <div class="col"> 
                                                 <div class="form-group row">
-                                                    <label for="staticEmail" class="col-sm-2 col-form-label">Month</label>
-                                                    <div class="col-sm-10">
+                                                    <label for="staticEmail" class="col-sm-4 col-form-label"><p class="float-right"> Month:</p></label>
+                                                    <div class="col-sm-8">
                                                                     <select class="custom-select" name="months" id="Months">
                                                                     
                                                                     </select>
@@ -36,8 +36,8 @@
                                     </div>
                                     <div class="col">
                                                 <div class="form-group row">
-                                                    <label for="staticEmail" class="col-sm-2 col-form-label">Year:</label>
-                                                    <div class="col-sm-10">
+                                                    <label for="staticEmail" class="col-sm-4 col-form-label float-right"><p class="float-right"> Year:</p></label>
+                                                    <div class="col-sm-8">
                                                                     <select class="custom-select" name="years" id="Years">
                                                                    
                                                                     </select>
@@ -45,8 +45,11 @@
                                                 </div>
                                     </div> 
                                     <div class="col">   
-                                        
-                                            <button type="button" class="btn btn-info" id="generate">Generate</button> 
+                                            <div class="form-group row"> 
+                                                    <div class="col-sm-12">
+                                            <button type="button" class="btn btn-info" id="generate">Generate</button>  
+                                                    </div>
+                                            </div>
                                     </div>
                                 </div>
                         </div> 
@@ -127,7 +130,7 @@
                         if(i===0)
                         {
 
-                            $('#showpayslips').html(" <tr> <td colspan='2'>No Avaible Payslips </td> </tr>");
+                            $('#showpayslips').html(" <tr> <td colspan='2'>No Available Payslips </td> </tr>");
                             return false
                         }        
                         $('#showpayslips').html(html);
@@ -150,22 +153,23 @@
                     }
                     $('#Months').html(list);
         }
-        listYears()
+        listYears() 
         function listYears()
         {
             years = [];
             var currentYear = new Date().getFullYear();
-            var YearBegin =  1990; 
+            var YearEnds =  1990; 
             var i;
             var list= '';
-            while ( YearBegin <= currentYear ) {
-                years.push(YearBegin++); 
+            while ( currentYear >= YearEnds ) {
+                years.push(currentYear--); 
             }   
-            for(i=0;i<years.length;i++)
+           for(i=0;i<years.length;i++)
             {
                 list+= '<option value="'+years[i]+'">'+years[i]+'</option>';
             }
-            $('#Years').html(list);
+            
+           $('#Years').html(list);
         }
   
     }); 
@@ -200,7 +204,7 @@
                             if(i===0)
                             {
 
-                                $('#showpayslips').html(" <tr> <td colspan='2'>No Avaible Payslips </td> </tr>");
+                                $('#showpayslips').html(" <tr> <td colspan='2'>No Available Payslips </td> </tr>");
                                 return false
                             }        
                             $('#showpayslips').html(html);
