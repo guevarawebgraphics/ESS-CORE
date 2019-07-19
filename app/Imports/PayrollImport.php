@@ -64,7 +64,7 @@ class PayrollImport implements ToModel, WithHeadingRow, WithBatchInserts
          * */
         $payroll_register_details = payrollregisterdetails::create([
                     'PayRegisterId' => $this->payregisterid,
-                    'account_id' => '1235422',
+                    'account_id' => $row['employeeno'],
                     'basic' => $row['basic'],
                     'absent' => $row['absent'],
                     'late' => $row['late'],
