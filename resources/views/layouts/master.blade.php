@@ -18,6 +18,9 @@
 	<link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet"><!--DatePicker-->
 	<link href="{{ asset('/plugins/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet"><!--DataTable-->
 	<link href="{{ asset('/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css') }}" rel="stylesheet"><!--Responsive DataTable-->
+	<!--Full Calendar-->
+	<link rel="stylesheet" href="{{ asset('/plugins/fullcalendar/fullcalendar.min.css') }}">
+	{{-- <link rel="stylesheet" href="{{ asset('/plugins/fullcalendar/fullcalendar.print.min.css') }}"> --}}
 
 	<!-- REQUIRED SCRIPTS -->
 	<!-- jQuery -->
@@ -42,7 +45,7 @@
 	<link href="{{ asset('sweetalert/sweetalert.css') }}" rel="stylesheet">
 	<script src="{{ asset('sweetalert/sweetalert.js')}}" ></script>
 	<link href="{{ asset('sweetalert/sweetalert.min.css') }}" rel="stylesheet">	
-	<link href="{{ asset('sweetalert/sweetalert.min.css.map') }}" rel="stylesheet">
+	<link href="{{ asset('sweetalert/sweetalert.min.css.map') }}">
 	<script src="{{ asset('sweetalert/sweetalert.min.js') }}" ></script>
 	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script> --}}
 	<!-- Socket IO -->
@@ -52,6 +55,9 @@
 	<script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 	<script src="{{ asset('/ckeditor/adapters/jquery.js') }}"></script>
 	<script src="{{ asset('/ckeditor/ckfinder/ckfinder.js') }}"></script>
+	<!--Full Calendar-->
+	<script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
+	<script src="{{ asset('/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
 	{{-- <script src="{{ asset('/ckeditor/ckfinder/core/connector/php/connector') }}"></script> --}}
 	<!--ionic icons-->
 	<link href="{{ asset('Ionicons/ionicons.min.css') }}" rel="stylesheet">
@@ -85,9 +91,11 @@
 	</div>
 	{{-- Custom Sript --}}
 	<!--IOnicons Script-->
-	<script src="{{ asset('Ionicons/ionicons.js') }}"></script>
+	{{-- <script src="{{ asset('Ionicons/ionicons.js') }}"></script> --}}
 	<!--Upload Image-->
 	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
+	{{-- Pusher --}}
+	<script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     @include('inc/footer')
 	
 	
