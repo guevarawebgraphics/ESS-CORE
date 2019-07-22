@@ -68,7 +68,7 @@ elseif(Session::get('manage_users') == 'delete'){
                 </div>
                 {{-- <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label> --}}
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary float-md-right" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User Type</button>
+                    <button type="button" class="btn btn-outline-primary btn-flat float-md-right" id="btnCreateUser" {{$add}}><i class="fa fa-plus-square"></i> Create User Type</button>
                 </div>
             </div>
 
@@ -98,8 +98,8 @@ elseif(Session::get('manage_users') == 'delete'){
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnSave">Save changes</button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnSave">Save changes</button>
             </div>
         </div>
     </div>
@@ -183,8 +183,8 @@ elseif(Session::get('manage_users') == 'delete'){
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnSaveUserType">Save User Type</button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnSaveUserType">Save User Type</button>
             </div>
         </div>
     </div>

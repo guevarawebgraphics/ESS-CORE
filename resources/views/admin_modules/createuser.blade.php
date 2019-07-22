@@ -68,7 +68,7 @@ $delete = 'disabled';
                     {{-- <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label> --}}
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary float-md-right" id="btnCreateUser" {{$add}}><i class="icon ion-md-person-add"></i></i> Create User</button>
+                    <button type="button" class="btn btn-outline-primary btn-flat float-md-right" id="btnCreateUser" {{$add}}><i class="icon ion-md-person-add"></i></i> Create User</button>
                 </div>
             </div>
 
@@ -221,8 +221,8 @@ $delete = 'disabled';
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnRegister">Create User</button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnRegister">Create User</button>
             </div>
         </div>
     </div>
@@ -288,8 +288,8 @@ $delete = 'disabled';
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnReset">Reset Password</button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnReset">Reset Password</button>
             </div>
         </div>
     </div>
@@ -316,8 +316,8 @@ $delete = 'disabled';
           <label id="CS-id"></label>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
+            <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-primary btn-flat" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
         </div>
       </div>
     </div>
