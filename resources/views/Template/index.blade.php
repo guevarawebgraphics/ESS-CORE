@@ -49,7 +49,9 @@ elseif(Session::get('manage_docs') == 'delete'){
 <div class="card card-info card-outline">
     <div class="card-header">
         <h3 class="card-title"><i class="fa fa-file"></i> Manage Document and Templates</h3>
+        <i class="fa fa-file"></i>
     </div>
+
     <!-- /.card-header -->
     <div class="card-body">
         <div class="form-group row">
@@ -63,7 +65,7 @@ elseif(Session::get('manage_docs') == 'delete'){
                 </div>
             </div>
             <div class="col-md-6">
-                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addtemplate" data-toggle="modal" data-target="#AddTemplateModal" {{$add}}><i class="fa fa-plus-square"></i> Create Template</a>
+                <a href="#Add" class="btn btn-outline-primary btn-flat float-md-right" id="btn_addtemplate" data-toggle="modal" data-target="#AddTemplateModal" {{$add}}><i class="fa fa-plus-square"></i> Create Template</a>
             </div>
         </div>
 
@@ -141,8 +143,8 @@ elseif(Session::get('manage_docs') == 'delete'){
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="SaveTemplate">Save <i id="spinner" class=""></button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary btn-flat" id="SaveTemplate">Save <i id="spinner" class=""></button>
             </div>
         </form>
           </div>
@@ -389,8 +391,8 @@ $(document).ready(function (){
                                      '<td>'+data[i].document_description+'</td>'+
                                      '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'<div class="float-right"><i class="fa fa-download"></i></div>'+'</a>'+'</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger template-delete" data="'+data[i].id+'" data-documentfile="'+data[i].document_file+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat template-delete" data="'+data[i].id+'" data-documentfile="'+data[i].document_file+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }
