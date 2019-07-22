@@ -1,14 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Template;
-use Session;
-use App\Logs;
-use Response;
-use DB;
 
+/**
+ *  Packages Facades
+ *  */
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
+/**
+ *  Insert Packages Here
+ *  */
+use DB;
+use Session;
+use Response;
+
+
+/**
+ *  Insert Model Here
+ *  */
+use App\Template;
+use App\Logs;
+
 
 class TemplateController extends Controller
 {

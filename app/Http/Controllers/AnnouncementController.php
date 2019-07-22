@@ -1,15 +1,31 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Announcement;
-use Session;
-use App\Logs;
-use Response;
-use DB;
-use Mail;
+
+/**
+ * Packages Facades
+ *  */
+use Illuminate\Http\Request;
+
+/**
+ *  @ Insert Packages Here
+ *  */
 use Redis;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+
+/**
+ *  Insert Model Here
+ *  */
+use App\Logs;
+use App\Announcement;
+
+/**
+ * Laravel
+ *  */
+use DB;
+use Mail;
+use Session;
+use Response;
 
 class AnnouncementController extends Controller
 {
@@ -95,31 +111,20 @@ class AnnouncementController extends Controller
          if(auth()->user()->user_type_id === 1){
             $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                            //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                             ->select('announcement.id',
                              'announcement.announcement_title',
                              'announcement.announcement_description',
                              'announcement.announcement_status',
-                             //'announcement.announcement_type',
                              'employer.business_name',
-                             ////'user_type.type_name',
-                             //'user_type.id as user_type_id',
                              '.announcement.created_at')
-                             //->where('announcement.account_id', '=', auth()->user()->id)
                             ->get();
          }
          if(auth()->user()->user_type_id === 3){
             $Announcement = DB::table('announcement')
-                //->join('employer', 'employer.account_id', '=', 'announcement.account_id')
-                //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                 ->select('announcement.id',
                 'announcement.announcement_title',
                 'announcement.announcement_description',
                 'announcement.announcement_status',
-                //'announcement.announcement_type',
-                //'employer.business_name',
-                ////'user_type.type_name',
-                //'user_type.id as user_type_id',
                 '.announcement.created_at')
                 ->where('announcement.created_by', '=', auth()->user()->id)
                 ->get();
@@ -164,21 +169,16 @@ class AnnouncementController extends Controller
          if(auth()->user()->user_type_id === 3){
             $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                            //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                             ->select('announcement.id',
                              'announcement.announcement_title',
                              'announcement.announcement_description',
                              'announcement.announcement_status',
-                             //'announcement.announcement_type',
                              'employer.business_name',
-                             ////'user_type.type_name',
-                             //'user_type.id as user_type_id',
                              'announcement.created_at',
                              'announcement.updated_at')
                              ->where('announcement.employer_id', '=', auth()->user()->employer_id)
                              ->where('announcement.announcement_type', '=', '1')
                              ->orderBy('announcement.created_at','desc')
-                             //  ->whereNotIn('announcement.account_id', auth()->user()->id)
                             ->get();
          }
          /*Announcement For Employee*/
@@ -186,19 +186,13 @@ class AnnouncementController extends Controller
              $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.id', '=', 'announcement.account_id')
                             ->join('employer_and_employee', 'employer_and_employee.employer_id', '=', 'announcement.employer_id')
-                            //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                             ->select('announcement.id',
                                     'announcement.announcement_title',
                                     'announcement.announcement_description',
                                     'announcement.announcement_status',
-                                    //'announcement.announcement_type',
                                     'employer.business_name',
-                                    ////'user_type.type_name',
-                                    //'user_type.id as user_type_id',
                                     'announcement.created_at',
                                     'announcement.updated_at')
-                            //->where('announcement.announcement_type', '=', auth()->user()->user_type_id)
-                            //->where('announcement.employer_id', '=', auth()->user()->employer_id)
                             ->where('announcement.announcement_type', '=', '3')
                             ->orderBy('announcement.created_at', 'desc')
                             ->get();
@@ -217,15 +211,11 @@ class AnnouncementController extends Controller
                         if(auth()->user()->user_type_id == 3){
                             $Announcement1 = DB::table('announcement')
                                         ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                                        //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                                         ->select('announcement.id',
                                         'announcement.announcement_title',
                                         'announcement.announcement_description',
                                         'announcement.announcement_status',
-                                        //'announcement.announcement_type',
                                         'employer.business_name',
-                                        ////'user_type.type_name',
-                                        //'user_type.id as user_type_id',
                                         'announcement.created_at',
                                         'announcement.updated_at')
                                         ->orderBy('announcement.created_at','desc')
@@ -241,15 +231,11 @@ class AnnouncementController extends Controller
                             $Announcement1 = DB::table('announcement')
                                         ->join('employer', 'employer.id', '=', 'announcement.account_id')
                                         ->join('employer_and_employee', 'announcement.employer_id', '=', 'employer_and_employee.employer_id')
-                                        //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                                         ->select('announcement.id',
                                         'announcement.announcement_title',
                                         'announcement.announcement_description',
                                         'announcement.announcement_status',
-                                        //'announcement.announcement_type',
                                         'employer.business_name',
-                                        ////'user_type.type_name',
-                                        //'user_type.id as user_type_id',
                                         'announcement.created_at',
                                         'announcement.updated_at')
                                         ->orderBy('announcement.created_at','desc')
@@ -285,7 +271,6 @@ class AnnouncementController extends Controller
             $this->validate($request, [
                 'announcement_title' => 'required',
                 'announcement_description' => 'required',
-                //'announcement_type' => 'required',
             ]);
 
             $emp = array();
@@ -355,16 +340,12 @@ class AnnouncementController extends Controller
          $Announcement_id = $request->id;
          $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                            //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
                             ->select('announcement.id',
                              'announcement.announcement_title',
                              'announcement.announcement_description',
                              'announcement.announcement_status',
                              'announcement.employer_id',
-                             //'announcement.announcement_type',
                              'employer.business_name',
-                             //'user_type.type_name',
-                             //'user_type.id as user_type_id'
                              )
                             ->where('announcement.id', $Announcement_id)
                             ->get();
@@ -377,7 +358,6 @@ class AnnouncementController extends Controller
         $this->validate($request, [
             'announcement_title' => 'required',
             'announcement_description' => 'required',
-            //'announcement_type' => 'required',
         ]);
 
         /*Check if all Request is not null*/
@@ -389,7 +369,6 @@ class AnnouncementController extends Controller
                                     'announcement_title' => $request->input('announcement_title'),
                                     'announcement_description' => $request->input('announcement_description'),
                                     'announcement_status' => 0, //0 Means Pending Staus
-                                    //'announcement_type' => $request->input('announcement_type'),
                                     'created_by' => auth()->user()->id,
                                     'updated_by' => auth()->user()->id,
                         ));

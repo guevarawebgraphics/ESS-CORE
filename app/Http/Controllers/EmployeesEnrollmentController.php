@@ -2,30 +2,49 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * @ Packages Facades
+ *  */
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
+/**
+ * @ Insert Packages Here
+ *  */
+use Keygen;
+use Carbon\Carbon;
 use Twilio\Rest\Client;
 use Twilio\Jwt\ClientToken;
 use LasseRafn\Initials\Initials;
 use Maatwebsite\Excel\Facades\Excel;
 
-use Session;
-use DB;
-use Response;
-use Mail;
-use Keygen;
-use Uppercase;
-use DateTime;
-use Carbon\Carbon;
+/**
+ *  @ Insert Model Here
+ *  */
 use App\User;
-use App\UserActivation;
-use App\EmployeeEnrollment;
-use App\ESSBase;
 use App\Logs;
-// use App\OTP;
+use App\ESSBase;
+use App\UserActivation;
 use App\EmployerEmployee;
+use App\EmployeeEnrollment;
 use App\EmployeePersonalInfo;
+
+
+/**
+ *  Laravel
+ *  */
+use DB;
+use Mail;
+use Session;
+use DateTime;
+use Response;
+use Uppercase;
+
+
+/**
+ *  @ Use App Imports
+ *  */
 use App\Imports\EmployeesImport;
 
 class EmployeesEnrollmentController extends Controller
@@ -83,18 +102,10 @@ class EmployeesEnrollmentController extends Controller
     //show the index page
     public function index()
     {
-        // $employee_info = DB::connection('mysql')->select("SELECT a.id, a.employee_no, a.department, a.position, 
-        //     b.firstname, b.middlename, b.lastname 
-        //     FROM employee AS a 
-        //     LEFT JOIN employee_personal_information AS b 
-        //     ON a.employee_info = b.id 
-        //     WHERE a.employer_id = '".auth()->user()->employer_id."' ");
 
         $employee_info = DB::table('employer_and_employee')
                             ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
-                            //->join('users', 'employee.id', '=', 'users.employee_id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
-                            //->where('employee.employer_id', '=', auth()->user()->employer_id)
                             ->select('employer_and_employee.id as eneid',
                                     'employee.id as emp_id',
                                     'employee.employee_no',
@@ -143,24 +154,9 @@ class EmployeesEnrollmentController extends Controller
     //refresh table employee
     public function refresh_table_employee()
     {
-        // $employee_info = DB::connection('mysql')->select("SELECT a.id, a.employee_no, a.department, a.position, 
-        //     b.firstname, b.middlename, b.lastname 
-        //     FROM employee AS a 
-        //     LEFT JOIN employee_personal_information AS b 
-        //     ON a.employee_info = b.id 
-        //     WHERE a.employer_id = '".auth()->user()->employer_id."' ");
-
-        // $employee_info = DB::table('employer_and_employee')
-        //                     ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
-        //                     ->join('users', 'employee.id', '=', 'users.employee_id')
-        //                     ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
-        //                     ->where('employee.employer_id', '=', auth()->user()->employer_id)
-        //                     ->get();
         $employee_info = DB::table('employer_and_employee')
                             ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
-                            //->join('users', 'employee.id', '=', 'users.employee_id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
-                            //->where('employee.employer_id', '=', auth()->user()->employer_id)
                             ->select('employer_and_employee.id as eneid',
                                     'employee.id as emp_id',
                                     'employee.employee_no',
@@ -214,8 +210,6 @@ class EmployeesEnrollmentController extends Controller
         $ess_id = $request->essid;
         $data = array();
         $employee_info = '';
-        
-        //  $search_ess_employee = DB::connection("mysql")->select("SELECT * FROM ess_basetable WHERE ess_id = '$ess_id' ");
 
         $search_ess_employee = DB::table('ess_basetable')
                                     ->where('ess_id', '=', $ess_id)
@@ -237,10 +231,6 @@ class EmployeesEnrollmentController extends Controller
         
         if(!empty($search_ess_employee)){
 
-            //echo "Employee Exist";
-            // $employee = DB::table('employee')          
-            // ->where('employee_info', '=', $search_ess_employee[0]->employee_info)
-            // ->get();
 
             $employee_info = DB::table('employee_personal_information')
                             ->join('employee', 'employee_personal_information.id', '=', 'employee.employee_info')
@@ -408,7 +398,6 @@ class EmployeesEnrollmentController extends Controller
             ];
             $this->validate($request, [
                 'employee_no' => 'required|min:5',
-                //'employer_id' => 'required',
                 'position' => 'required|min:2',
                 'department' => 'required|min:2',
                 'lastname' => 'required|min:1',
@@ -538,12 +527,6 @@ class EmployeesEnrollmentController extends Controller
                     'user_activation_id' => $useractivation_id
                 );
 
-                // //Sending Email
-                // Mail::send('Email.employee_email', $data, function($message) use ($employee_personal_info){
-                //     $message->to($employee_personal_info->email_add)
-                //             ->subject("ESS Employee Successfully Registered ");
-                //     $message->from('esssample@gmail.com', "ESS Employee Registration");
-                // });
 
             /*Email Template*/
             $mail_template = DB::table('notification')
@@ -819,28 +802,9 @@ class EmployeesEnrollmentController extends Controller
         }
         else if($id != "")
         {
-            // $employee = DB::connection('mysql')
-            //     ->select("SELECT a.*, b.*, c.*, d.*, e.*
-            //         FROM employee AS a 
-            //         LEFT JOIN employee_personal_information AS b 
-            //         ON a.employee_info = b.id 
-            //         LEFT JOIN refbrgy AS c
-            //         ON b.barangay = c.id
-            //         LEFT JOIN refcitymun AS d
-            //         ON b.citytown = d.citymunCode
-            //         LEFT JOIN refprovince AS e
-            //         ON b.province = e.provCode
-            //         WHERE a.id = '$id' ");
-            // $employee = DB::table('employee')
-            //                 ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
-            //                 ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
-            //                 ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
-            //                 ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
-            //                 ->where('employee.id', '=', $id)
-            //                 ->get();
+
             $employee = DB::table('employer_and_employee')
                             ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
-                            //->join('users', 'employee.id', '=', 'users.employee_id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
                             ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
                             ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
@@ -875,7 +839,6 @@ class EmployeesEnrollmentController extends Controller
                                 'employee.employment_status',
                                 'employee.payroll_schedule',
                                 'employee.account_no',
-                                //'users.*',
                                 'refprovince.provDesc',
                                 'refprovince.provCode',
                                 'refcitymun.citymunDesc',
@@ -968,12 +931,6 @@ class EmployeesEnrollmentController extends Controller
     // Update Account Status
     public function UpdateAccountStatus(Request $request, $id){
 
-        /*Update Account Employer*/
-        // DB::table('users')->where('employee_id', '=', $id)
-        //         ->update(array(
-        //             'AccountStatus' => $request->input('AccountStatus')
-        // ));
-
         /**
          * @ Update Employee Account Status on Employee Table
          * */
@@ -1004,15 +961,6 @@ class EmployeesEnrollmentController extends Controller
         $path = $request->file('file')->getRealPath();
 
         $import = Excel::import(new EmployeesImport, $path);
-
-        // foreach($import->failures() as $failure) {
-        //     $failure->row();
-        //     $failure->attribute();
-        //     $failure->errors();
-        //     $failure->values();
-        // }
-
-        //$failures = $import->failures();
 
         return Response::json();
     }
