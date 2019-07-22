@@ -64,31 +64,31 @@ $delete = 'disabled';
             </td>
             
             @if($user->user_type_id == 1)
-            <td><button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$user->id}}" disabled>Change Status</button></td>
+            <td><button class="CS btn btn-sm btn-outline-info btn-flat" id="change_status" data-id="{{$user->id}}" disabled>Change Status</button></td>
             <td>
-                <button class="btn btn-sm btn-primary" id="reset_password"
+                <button class="btn btn-sm btn-outline-primary btn-flat" id="reset_password"
                     data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}" disabled><i
                         class="fa fa-edit"></i> Reset Password</button>
             </td>
             <td>
-                <button class="btn btn-sm btn-primary" id="edit_user"
+                <button class="btn btn-sm btn-outline-primary btn-flat" id="edit_user"
                     data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}" disabled><i
                         class="fa fa-edit"></i> Edit</button>
-                <button class="btn btn-sm btn-danger" id="delete_user" data-add="{{$user->id}}]]{{$user->name}}"
+                <button class="btn btn-sm btn-outline-danger btn-flat" id="delete_user" data-add="{{$user->id}}]]{{$user->name}}"
                     disabled><i class="fa fa-trash"></i> Delete</button>
             </td>
             @else
-            <td><button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$user->id}}">Change Status</button></td>
+            <td><button class="CS btn btn-sm btn-outline-info btn-flat" id="change_status" data-id="{{$user->id}}">Change Status</button></td>
             <td>
-                <button class="btn btn-sm btn-info" id="reset_password"
+                <button class="btn btn-sm btn-outline-info btn-flat" id="reset_password"
                     data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}" {{$edit}}><i
                         class="fa fa-edit"></i> Reset Password</button>
             </td>
             <td>
-                <button class="btn btn-sm btn-primary" id="edit_user"
+                <button class="btn btn-sm btn-outline-primary btn-flat" id="edit_user"
                     data-add="{{$user->id}}]]{{$user->name}}]]{{$user->username}}]]{{$user->user_type_id}}]]{{$user->employer_id}}" {{$edit}}><i
                         class="fa fa-edit"></i> Edit</button>
-                <button class="btn btn-sm btn-danger" id="delete_user" data-add="{{$user->id}}]]{{$user->name}}"
+                <button class="btn btn-sm btn-outline-danger btn-flat" id="delete_user" data-add="{{$user->id}}]]{{$user->name}}"
                     {{$delete}}><i class="fa fa-trash"></i> Delete</button>
 
                 

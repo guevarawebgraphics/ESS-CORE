@@ -64,7 +64,7 @@ elseif(Session::get('system_notifications') == 'delete'){
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <a href="#Add" class="btn btn-primary float-md-right" id="btn_addnotification" data-toggle="modal" data-target="#AddNotificationModal" {{$add}}><i class="fa fa-plus-square"></i> Add System Notification</a>
+                    <a href="#Add" class="btn btn-outline-primary float-md-right btn-flat" id="btn_addnotification" data-toggle="modal" data-target="#AddNotificationModal" {{$add}}><i class="fa fa-plus-square"></i> Add System Notification</a>
                 </div>
             </div>
             @endif
@@ -182,8 +182,8 @@ elseif(Session::get('system_notifications') == 'delete'){
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="AddNotification">Save <i id="spinner" class=""></button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="AddNotification">Save <i id="spinner" class=""></button>
             </div>
           </div>
         </div>
@@ -518,8 +518,8 @@ $(document).ready(function (){
                                      '<td>'+type+'</td>'+
                                      '@if(auth()->user()->user_type_id == 1)<td>'+
                                         // '<a href="javascript:;" class="btn btn-sm btn-info" id="ShowNotification" data-toggle="modal" data-target="#AddNotificationModal" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-eye"></i></span>&nbsp;View</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary notification-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger notification-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat notification-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat notification-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>@endif'+
                                 '</tr>';
                     }
