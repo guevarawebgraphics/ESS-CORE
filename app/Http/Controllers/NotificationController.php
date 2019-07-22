@@ -1,12 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+/**
+ *  Insert Models Here
+ * */
 use App\Notifications;
-use DB;
 use App\Logs;
+
+use DB;
 use Response;
 use Session;
 
+/**
+ *  Packages Facades
+ * */
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller

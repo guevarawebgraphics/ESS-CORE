@@ -2,17 +2,35 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * Packages Facades
+ *  */
 use Illuminate\Http\Request;
-use App\User;
-use App\UserType;
-use App\UserModuleAccess;
-use App\Logs;
-use App\Account;
-use Session;
-use DB;
-use Response;
+
+/**
+  *  Insert Packages Here
+  * */
 use Keygen;
 use LasseRafn\Initials\Initials;
+
+
+/**
+ * Insert Model Here
+ *  */
+use App\User;
+use App\Logs;
+use App\Account;
+use App\UserType;
+use App\UserModuleAccess;
+
+/**
+ * Laravel
+ *  */
+use DB;
+use Session;
+use Response;
+
+
 
 class ManageUserController extends Controller
 {
@@ -182,7 +200,21 @@ class ManageUserController extends Controller
     {
         
         // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
-        $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '12' ORDER BY created_at DESC ");
+         // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '12' ORDER BY created_at DESC ");
+        $created_by_dummy = Auth()->user()->created_by; 
+        if($created_by_dummy == 1)
+        {
+      
+              $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");  
+        }
+        else 
+        {
+              $user_type =  DB::table('user_type')
+                ->where('created_by','=', auth()->user()->id)
+                ->where('deleted','=',0)
+                ->get();
+
+        }
         return view ('admin_modules.table.tableusertype')->with('user_type', $user_type);        
     }
 

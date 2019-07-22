@@ -73,8 +73,11 @@
         @guest
 
 		@else	
-            @include('inc/navbar')           
-            @include('inc/sidebar')
+			@include('inc/navbar')
+			@php
+			 $user_picture = DB::table('user_picture')->where('user_id', '=', auth()->user()->id)->pluck('profile_picture')->first(); $link = '/storage/profile_picture/'
+			@endphp           
+            @include('inc/sidebar', ['user_picture' => $user_picture, 'link' => $link])
             <div class="content-wrapper">			
 			<div class="content-header">
 				<div class="container-fluid">
