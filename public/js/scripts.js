@@ -17,7 +17,6 @@
                 async: false,
                 dataType: 'json',
                 success: function (data) {
-                    toastr.success('You have new Announcement')
                     // socket.emit('my other event', { my: 'data' });
                     var html = '';
                     var i;
@@ -46,6 +45,7 @@
                     }
                     if(status == 'Posted'){
                         $('#announcementdesc').html(html);
+                        toastr.success('You have new Announcement')
                         
                     }
                     else if(status == 'Pending'){
@@ -133,7 +133,7 @@
         })
     }
 
-    get_profile_picture();
+    //get_profile_picture();
       /**
        * @ Get Profile Picture
        * */

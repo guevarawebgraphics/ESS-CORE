@@ -1,6 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
+
+/**
+ * @ Packages Facades
+ * */
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+
+
+/**
+ *  Insert Packages Here
+ * */
+use Keygen;
+use Carbon\Carbon;
+
+
+/**
+ *  Insert Models Here
+ * */
 use App\Account;
 use App\UserType;
 use App\User;
@@ -8,18 +29,19 @@ use App\ESSBase;
 use App\Logs;
 use App\UserActivation;
 use App\EmployerEnrollmentHistory;
-use Session;
+
+
+/**
+ * Laravel
+ * */
 use DB;
-use Response;
-use Mail;
-use Keygen;
 use Auth;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
+use Mail;
+use Session;
+use Response;
+
+
+
 
 class AccountController extends Controller
 {   
@@ -77,8 +99,6 @@ class AccountController extends Controller
 
     public function index()
     {
-        //$Account = Account::all();
-        //$user_type = UserType::all();
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
                         ->join('users', 'employer.account_id', '=', 'users.id')
@@ -98,7 +118,6 @@ class AccountController extends Controller
     public function get_all_account(Request $request){
         $Account = DB::table('employer')
                         ->join('user_type', 'employer.user_type', '=', 'user_type.id')
-                        //->join('users', 'employer.account_id', '=', 'users.id')
                         ->select('employer.id',
                         'employer.business_name',
                         'employer.accountname',
@@ -106,7 +125,6 @@ class AccountController extends Controller
                         'employer.sec',
                         'employer.bir',
                         'user_type.type_name',
-                        //'employer.AccountStatus',
                         'employer.account_id')
                         ->get();
                         
@@ -216,54 +234,10 @@ class AccountController extends Controller
                 'hdmf',
                 'nid',
             ])){
-                /*Create User*/
-                // $user = User::create([
-                //     'user_type_id' => $request->input('user_type'),
-                //     'user_type_for' => 3,
-                //     'employer_id' => "none", //Temporary
-                //     'name' => $request->input('accountname'),
-                //     'username' => $request->input('accountname'), //Temporary Username
-                //     'password' => Hash::make($password),
-                //     'enrollment_date' => $enrollment_date,
-                //     'expiry_date' => $expiry_date,//14,
-                //     'created_by' => auth()->user()->id,
-                //     'updated_by' => auth()->user()->id,
-                // ]);
 
-                /*Gett the Id of User*/
-                //$Account_id = $user->id;
-
-                /*Create Employer Enrollment History*/
-                // $employment_history = EmployerEnrollmentHistory::create([
-                //                 'account_id' => $Account_id,
-                //                 'enrollment_date' => $enrollment_date,
-                //                 'expiry_date' => $expiry_date,
-                //                 'created_by' => auth()->user()->id,
-                //                 'updated_by' => auth()->user()->id,
-                // ]);
-                
-                /*Create a User In Base Table*/
-                // $insert_ess = new ESSBase;
-                // $insert_ess->account_id = $Account_id;
-                // $insert_ess->ess_id = "ESSID" . $this->generateESSID();
-                // $insert_ess->user_type_id = $request->input('user_type');            
-                // $insert_ess->created_by = auth()->user()->id;
-                // $insert_ess->updated_by = auth()->user()->id;
-                // $insert_ess->save();
 
                 $activation_code = $this->generateActivationCode();
                 $activation_id = $this->generateUserActivationId();
-
-                /*Create A User Activation with link*/ 
-                // $user_activation = UserActivation::create([
-                //     'account_id' => $Account_id,
-                //     'activation_code' => $activation_code,
-                //     'user_activation_id' => $activation_id,
-                //     'expiration_date' => $expiry_date,//14,
-                //     'created_by' => auth()->user()->id,
-                //     'updated_by' => auth()->user()->id,
-                // ]);
-
 
 
 
@@ -299,10 +273,6 @@ class AccountController extends Controller
 
                     $employer_id = $employer->id;
 
-                    // DB::table('users')->where('id', '=', $Account_id)
-                    // ->update(array(
-                    //     'employer_id' => $employer_id
-                    // )); 
                 }
                 if ($request->input('user_type') == 8){
                     /*Create Account Employer*/
@@ -335,10 +305,6 @@ class AccountController extends Controller
 
                     $employer_id = $employer->id;
 
-                    // DB::table('users')->where('id', '=', $Account_id)
-                    // ->update(array(
-                    //     'employer_id' => $employer_id
-                    // )); 
                 }
                 if ($request->input('user_type') == 9){
                     /*Create Account Employer*/
@@ -371,10 +337,7 @@ class AccountController extends Controller
 
                     $employer_id = $employer->id;
 
-                    // DB::table('users')->where('id', '=', $Account_id)
-                    // ->update(array(
-                    //     'employer_id' => $employer_id
-                    // )); 
+
                 }
             }
             
@@ -452,7 +415,6 @@ class AccountController extends Controller
                           'employer.expiry_date',
                           'user_type.type_name', 
                           'user_type.id as user_type_id',
-                          //'users.AccountStatus', 
                           'employer.account_id',
                           'refprovince.provDesc',
                           'refprovince.provCode',
@@ -460,8 +422,6 @@ class AccountController extends Controller
                           'refcitymun.citymunCode',
                           'refbrgy.brgyDesc',
                           'refbrgy.id as refbrgy_id'
-                          //'users.enrollment_date',
-                          //'users.expiry_date'
                           )
                         ->where('employer.id', $id)
                         ->get();
@@ -644,7 +604,6 @@ class AccountController extends Controller
 
         $msg = 'Success';
 
-        // return redirect('Account')->with('success', 'Account Successfully Updated');
 
         $this->insert_log("Updated Account ");
 
@@ -654,17 +613,12 @@ class AccountController extends Controller
     public function destroy(Request $request){
         $this->getaccount();
         $Account_id = $request->id;
-        /*Delete User From Users*/
-        //$user = User::where('id','=',$Account_id)->delete();
         /*Delete User From Employer*/
         $employer = Account::where('id','=', $Account_id)->delete();
-        /*Delete User From ESS Base Table*/
-        //$base = ESSBase::where('account_id','=',$Account_id)->delete();
+
 
         return response()->json(array(
-            //$user,
             $employer,
-            //$base
         ));
 
     }
@@ -740,21 +694,12 @@ class AccountController extends Controller
     // Update Account Status
     public function UpdateAccountStatus(Request $request, $id){
         $this->getaccount();
-        /*Update Account Employer*/
-        // $user = User::findOrFail($id);
-        // $user->AccountStatus = $request->input('AccountStatus');
-        // $user->save();
 
         /*Update Account Employer*/
         DB::table('users')->where('id', '=', $id)
                 ->update(array(
                     'AccountStatus' => $request->input('AccountStatus')
         ));
-        /*Update Account Users*/
-        // DB::table('employer')->where('id', '=', $id)
-        //         ->update(array(
-        //             'AccountStatus' => $request->input('AccountStatus')
-        // ));
 
         if ($id == null && $request->input('AccountStatus') == null){
             $msg = 'Error';
@@ -771,8 +716,6 @@ class AccountController extends Controller
 
     public function get_all_employer(Request $request){
 
-        // $Account = DB::table('users')
-        //             ->where('business_name', 'LIKE', '%'.$request->search.'%')->get();
         $Account = Account::where('business_name', 'LIKE', $request->q.'%')->get();
         return response()->json($Account);
                     
