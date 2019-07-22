@@ -341,8 +341,8 @@ elseif(Session::get('create_profile') == 'delete'){
                         '<td>' + '<a href="/storage/Documents/sec/'+data[i].sec+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(sec.length > 10 ? sec.substring(0, 10)+'<div class="float-right"><i class="fa fa-download"></i></div>' : data[i].sec) +'</a>' + '</td>'+
                         '<td>' + '<a href="/storage/Documents/bir/'+data[i].bir+'" data-toggle="tooltip" data-placement="top" title="Click To Download This File" download>' +(bir.length > 10 ? bir.substring(0, 10)+'<div class="float-right"><i class="fa fa-download"></i></div>' : data[i].bir) +'</a>' + '</td>'+
                         // '<td>' + '<a href="#ChangeStatus" class="CS btn-sm btn btn-info '+(data[i].AccountStatus == 0 ? 'disabled' : "") +'" data-toggle="modal" data-target="#csModal" data-id="'+data[i].id+'" data-business_name="'+data[i].business_name+'" {{$edit}}><i class="fa fa-info"></i> Change Status</a>' +'</td>'+
-                        '<td>' + '<a href="/Account/edit/'+data[i].id+'" class="btn btn-sm btn-secondary" {{$edit}}><i class="fa fa-edit"></i> Edit</a> ' +
-                          '<a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].id+'" data-business_name="'+data[i].business_name+'" {{$delete}}><i class="fa fa-trash"></i> Delete</a>' +
+                        '<td>' + '<a href="/Account/edit/'+data[i].id+'" class="btn btn-sm btn-outline-info btn-flat" {{$edit}}><i class="fa fa-edit"></i> Edit</a> ' +
+                          '<a href="#Delete" class="Delete btn-sm btn btn-outline-danger btn-flat" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].id+'" data-business_name="'+data[i].business_name+'" {{$delete}}><i class="fa fa-trash"></i> Delete</a>' +
                          '</td>'+
                         '</tr>';
 
