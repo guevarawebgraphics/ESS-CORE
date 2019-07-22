@@ -63,7 +63,7 @@ elseif(Session::get('send_announcement') == 'delete'){
               </div>
             </div>
             <div class="col-md-6">
-                <a href="#Add" class="btn btn-primary float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square" {{$add}}></i> Create Announcement</a>
+                <a href="#Add" class="btn btn-outline-primary btn-flat float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square" {{$add}}></i> Create Announcement</a>
             </div>
         </div>
 
@@ -155,8 +155,8 @@ elseif(Session::get('send_announcement') == 'delete'){
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="SaveAnnoucement" {{$add}}>Save <i id="spinner" class=""></button>
+            <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-primary btn-flat" id="SaveAnnoucement" {{$add}}>Save <i id="spinner" class=""></button>
         </div>
     
       </div>
@@ -199,8 +199,8 @@ elseif(Session::get('send_announcement') == 'delete'){
                 <h1>Post This Announcement</h1>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="PostAnnouncement">Confirm <i id="spinner_post" class=""></button>
+                <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="PostAnnouncement">Confirm <i id="spinner_post" class=""></button>
             </div>
           </div>
         </div>
@@ -522,10 +522,10 @@ $(document).ready(function (){
                                     //  '<td>'+data[i].announcement_description+'</td>'+
                                      '<td>'+AnnouncementStatus+'</td>' +
                                      //'<td>'+data[i].type_name+'</td>'+
-                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-info announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'"  {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
+                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-outline-info btn-flat announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'"  {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-secondary announcement-edit '+posted+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-danger annoucement-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat announcement-edit '+posted+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat annoucement-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }

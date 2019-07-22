@@ -77,7 +77,7 @@ elseif(Session::get('my_profile') == 'delete'){
                     {{-- <p class="text-danger" id="error-notmatch" hidden>* Confirm Password not match</p> --}}
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" id="btnUpdate" {{$edit}}>Update Password</button>                                                                      
+            <button type="button" class="btn btn-outline-primary btn-flat" id="btnUpdate" {{$edit}}>Update Password</button>                                                                      
         </div>              
     </div>      
 </div>
