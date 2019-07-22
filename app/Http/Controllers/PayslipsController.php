@@ -2,13 +2,26 @@
 
 namespace App\Http\Controllers;
 
+/**
+ *  Packages Facades
+ * */
 use Illuminate\Http\Request;
+
 use Session;
 use DB;
-use Carbon\carbon;
-use App\User;
 use Response;
+
+/**
+ *  Insert Packages Here
+ *  */
+use Carbon\carbon;
+
+/**
+ *  Insert Models Here
+ * */
+use App\User;
 use App\payrollregisterdetails;
+
 
 class PayslipsController extends Controller
 {
@@ -32,12 +45,14 @@ class PayslipsController extends Controller
         return view('employee_modules.payslips.index');  
  
     } 
+    
+    //Request payslip table
     public function getPayslipsList(request $Request) 
     {
         if(auth()->user()->user_type_id===4)
         {
             $payslip = DB::Table('payroll_register_details') 
-            ->where('account_id','=',auth()->user()->employee_id)
+            ->where('account_id','=',auth()->user()->employee_id) 
             ->orderBy('payroll_release_date', 'desc')
             ->get();
            
@@ -51,13 +66,17 @@ class PayslipsController extends Controller
 
     public function viewpayslips($id) 
     {       
-   
-                $check = DB::Table('payroll_register_details')
+                //checks if id on url belongs to the user logged in
+                $check = DB::Table('payroll_register_details') 
                             ->where('id','=',$id)
                             ->where('account_id','=',auth()->user()->employee_id)
                             ->get();
-                if(count($check))
+                if(count($check)) 
                 {
+                    //prd as payroll_register_details table
+                    //e as employee table
+                    //epi as employee_personal_information
+                    
                     $viewpayslips = DB::Table('payroll_register_details as prd') 
                     ->Join('employee as e','prd.account_id','=','e.id')
                     ->Join('employee_personal_information as epi','e.employee_info','=','epi.id')
@@ -68,10 +87,12 @@ class PayslipsController extends Controller
                 }
                return abort(404);
     }
-    public function filter(Request $Request)
+    public function filter(Request $Request) //for generating table
     {
         if(auth()->user()->user_type_id===4)
         {   
+            //sets the value of a month to 1-12 value
+
             if($Request->month=="January")
             {
                 $month=1;

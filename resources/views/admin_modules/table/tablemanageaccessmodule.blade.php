@@ -1,4 +1,5 @@
-<table class="table table-bordered table-striped" id="moduleaccess_table">
+
+<table class="table table-bordered table-striped table-responsive" id="moduleaccess_table">
     <thead>
         <tr>
             <th scope="col">Module Name</th>
