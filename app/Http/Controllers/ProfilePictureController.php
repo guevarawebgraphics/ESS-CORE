@@ -6,7 +6,17 @@ use DB;
 use Session;
 use Auth;
 use Response;
+
+/**
+ *  Insert Packages Here
+ *  */
+
 use Carbon\Carbon;
+
+/**
+ *  Packages Facades
+ * */
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
@@ -73,13 +83,15 @@ class ProfilePictureController extends Controller
 
         // Handle File Upload
         if($request->hasFile('profile_picture')){
-                    // Get filename with the extension
+
+                    // Get existing filename with the extension
                     $get_exist_filename = DB::table('user_picture')
                                             ->select('user_id','profile_picture')
                                             ->where('user_id','=',auth()->user()->id)
                                             ->first();
 
-                    $old_filename =  $get_exist_filename->profile_picture; 
+                    $old_filename =  $get_exist_filename->profile_picture;  //get old profile name to delete
+                     
                     Storage::delete('public/profile_picture/'.$old_filename); //delete file inside the storage
    
             
@@ -109,9 +121,7 @@ class ProfilePictureController extends Controller
  
         }
 
-    
         return response()->json();
-
 
     }
 
@@ -128,25 +138,28 @@ class ProfilePictureController extends Controller
         }
         else 
         {
+                //Employer should be always have male profile as default
                 if(auth()->user()->employee_id=="none"){
                     
                     $user_picture = "essmale.png";
                     return response::json($user_picture);
-                    
+
                 }
                 else 
                 {  
+                    //Joining tables 
                     //e as Employee Table 
-                    //epi as Employee_personal_information  
-                    
+                    //epi as Employee_personal_information Table 
+
                     $employee_table = DB::table('employee as e')
                                             ->join('employee_personal_information as epi','e.employee_info','=','epi.id')
                                             ->select('e.id as idno','epi.gender as gender')
                                             ->where('e.id','=',auth()->user()->employee_id)
                                             ->first();
+                                            
                                             $user_picture = $employee_table->gender; //gets the gender of the user 
                                             
-                                            //providing default picture
+                                            //providing default picture 
                                             if($user_picture == "Female") 
                                             {
                                                         $user_picture = "essfemale.png";

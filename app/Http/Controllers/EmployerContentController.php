@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+/**
+ *  Packages Facades
+ * */
 use Illuminate\Http\Request;
+
 use Session;
 use Response;
+use DB;
+
+/**
+ *  Insert Models Here
+ * */
 use App\EmployerContent;
 use App\Logs;
-use DB;
 
 class EmployerContentController extends Controller
 {
