@@ -151,7 +151,7 @@ elseif(Session::get('my_profile') == 'delete'){
                             <div id="email"></div>                                   
                         </div>
                     </div>
-                <button type="button" class="btn btn-primary" id="btnUpdate" {{$edit}}>Update Account</button>                                                                      
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnUpdate" {{$edit}}>Update Account</button>                                                                      
                 </div>              
             </div>
             @if(auth()->user()->user_type_id === 3)

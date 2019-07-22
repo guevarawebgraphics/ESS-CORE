@@ -384,7 +384,7 @@ elseif(Session::get('create_profile') == 'delete'){
 
           <div class="card-footer">
               {{-- <button type="button" class="btn btn-default">Back</button> --}}
-            <button type="submit" class="btn btn-primary float-right btn-flat" id="submit" {{$add}}>Submit <i  class=""></i></button>
+            <button type="submit" class="btn btn-outline-primary float-right btn-flat" id="submit" {{$add}}>Submit <i  class=""></i></button>
           </div>
         </form>
         <!-- Loading (remove the following to stop the loading)-->
