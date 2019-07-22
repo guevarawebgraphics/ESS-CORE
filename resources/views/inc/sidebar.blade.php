@@ -8,7 +8,7 @@
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 			{{-- <div class="image" id="profile_picture"><img alt="User Image" class="img-circle elevation-2" src="/storage/pic.jpg"></div> --}}
-		<div class="image" id="profile_picture"><img alt="User Image" id="user_profile_picture" class="img-circle elevation-2 " style="height: 33px; width: 33px;"></div>
+		<div class="image" id="profile_picture"><img alt="User Image" id="user_profile_picture" class="img-circle elevation-2 " src="{{($user_picture) ? $link.$user_picture : '/storage/Documents/profile_picture/essmale.png' }}" style="height: 33px; width: 33px;"></div>
 			<div class="info">
 				<a class="d-block">{{ Auth::user()->name }}</a>
 			</div>

@@ -2,17 +2,35 @@
 
 namespace App\Http\Controllers;
 
+/**
+ * Packages Facades
+ *  */
 use Illuminate\Http\Request;
-use App\User;
-use App\UserType;
-use App\UserModuleAccess;
-use App\Logs;
-use App\Account;
-use Session;
-use DB;
-use Response;
+
+/**
+  *  Insert Packages Here
+  * */
 use Keygen;
 use LasseRafn\Initials\Initials;
+
+
+/**
+ * Insert Model Here
+ *  */
+use App\User;
+use App\Logs;
+use App\Account;
+use App\UserType;
+use App\UserModuleAccess;
+
+/**
+ * Laravel
+ *  */
+use DB;
+use Session;
+use Response;
+
+
 
 class ManageUserController extends Controller
 {
