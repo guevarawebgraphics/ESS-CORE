@@ -66,7 +66,7 @@ elseif(Session::get('create_profile') == 'delete'){
                 </div>
                 <div class="col-md-6">
                     {{-- <a href="#" class="btn btn-secondary float-md-right mr-4"><i class="fa fa-file"></i> Generate Template</a> --}}
-                    <button class="btn btn-primary float-md-right mr-4" id="upload_payroll_register" data-toggle="modal" data-target="#upload_payroll_register_modal"><i class="fa fa-upload"></i> Upload Payroll Register</button>
+                    <button class="btn btn-outline-primary btn-flat float-md-right mr-4" id="upload_payroll_register" data-toggle="modal" data-target="#upload_payroll_register_modal"><i class="fa fa-upload"></i> Upload Payroll Register</button>
                 </div>
             </div>  
             
@@ -153,7 +153,7 @@ elseif(Session::get('create_profile') == 'delete'){
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-primary" id="Upload" data-file=""><span><i class="fa fa-upload"></i></span> Upload <i id="spinner" class=""></button>
+		  <button type="submit" class="btn btn-outline-primary btn-flat" id="Upload" data-file=""><span><i class="fa fa-upload"></i></span> Upload <i id="spinner" class=""></button>
 		</div>
 		</form>
 	  </div>
@@ -368,7 +368,7 @@ elseif(Session::get('create_profile') == 'delete'){
                         '<td>'+'<a href="/Storage/employees/'+data[i].payroll_file+'" {{$edit}}>'+data[i].payroll_file+ '<div class="float-right"><i class="fa fa-download"></i></div>'+'</a> ' +'</td>'+
                         '<td>'+AccountStatus+'</td>'+
                         '<td>' + 
-                            '<a href="#post" class="btn btn-secondary '+(data[i].account_status == 1 ? 'disabled' : data[i].account_status == 0 ? '' : null)+'" data-id="'+data[i].id+'" id="post_payroll_register" {{$edit}}>POST</a> ' +
+                            '<a href="#post" class="btn btn-outline-secondary btn-flat '+(data[i].account_status == 1 ? 'disabled' : data[i].account_status == 0 ? '' : null)+'" data-id="'+data[i].id+'" id="post_payroll_register" {{$edit}}>POST</a> ' +
                         '</td>'+
                         '</tr>';
 

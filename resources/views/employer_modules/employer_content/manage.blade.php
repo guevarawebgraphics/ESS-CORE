@@ -34,7 +34,7 @@
                         </div>
                 </div>
                 <div class="col-md-6">
-                    <a href="#Add" class="btn btn-primary float-md-right " id="btn_createcontent" data-toggle="modal" data-target="#AddContentModal"><i class="fa fa-plus-square"></i> Create Employer Content</a>
+                    <a href="#Add" class="btn btn-outline-primary btn-flat float-md-right " id="btn_createcontent" data-toggle="modal" data-target="#AddContentModal"><i class="fa fa-plus-square"></i> Create Employer Content</a>
                 </div>
             </div>
     
@@ -79,8 +79,8 @@
         
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>  
-            <button type="button" class="btn btn-primary" id="SaveContent">Save Content <i id="spinner" class="">  </button> 
+            <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>  
+            <button type="button" class="btn btn-outline-primary btn-flat" id="SaveContent">Save Content <i id="spinner" class="">  </button> 
         </div>    
     </div>
 </div>
