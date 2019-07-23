@@ -75,7 +75,37 @@
 		@else	
 			@include('inc/navbar')
 			@php
-			 $user_picture = DB::table('user_picture')->where('user_id', '=', auth()->user()->id)->pluck('profile_picture')->first(); $link = '/storage/profile_picture/'
+			 $user_picture = DB::table('user_picture')->where('user_id', '=', auth()->user()->id)->pluck('profile_picture')->first(); 
+			 $link = '/storage/profile_picture/';  
+			 if(empty($user_picture))
+			 {
+				if(auth()->user()->employee_id=="none")
+				{
+					 $user_picture = "essmale.png";
+				}
+				else 
+				{
+					$employee_table = DB::table('employee as e')
+                                            ->join('employee_personal_information as epi','e.employee_info','=','epi.id')
+                                            ->select('e.id as idno','epi.gender as gender')
+                                            ->where('e.id','=',auth()->user()->employee_id)
+                                            ->first();
+                                            
+                                            $user_picture = $employee_table->gender; //gets the gender of the user 
+                                            
+                                            //providing default picture 
+                                            if($user_picture == "Female") 
+                                            {
+                                                        $user_picture = "essfemale.png";
+                                            }
+                                            else
+                                            {
+                                                        $user_picture = "essmale.png";
+                                            }
+				}
+	
+			 }
+
 			@endphp           
             @include('inc/sidebar', ['user_picture' => $user_picture, 'link' => $link])
             <div class="content-wrapper">			

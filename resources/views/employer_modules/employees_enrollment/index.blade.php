@@ -34,8 +34,8 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <a href="/enrollemployee/encode" class="btn btn-primary float-md-right mr-4" id="btnCreateEmployee"><i class="fa fa-plus-square" ></i> Encode Employee</a>
-                    <a href="#upload" class="btn btn-secondary float-md-right mr-4" id="btnUploadEmployee"><i class="fa fa-upload" ></i> Upload Employee</a>
+                    <a href="/enrollemployee/encode" class="btn btn-outline-primary btn-flat float-md-right mr-4" id="btnCreateEmployee"><i class="fa fa-plus-square" ></i> Encode Employee</a>
+                    <a href="#upload" class="btn btn-outline-info btn-flat float-md-right mr-4" id="btnUploadEmployee"><i class="fa fa-upload" ></i> Upload Employee</a>
                 </div>
             </div>
 
@@ -74,10 +74,10 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="CS btn btn-sm btn-info" id="change_status" data-id="{{$info->emp_id}}">Change Status</button>
+                                <button class="CS btn btn-sm btn-outline-info btn-flat" id="change_status" data-id="{{$info->emp_id}}">Change Status</button>
                             </td>
                             <td>
-                                <a href="/enrollemployee/edit/{{$info->eneid}}" class="btn btn-sm btn-primary" id="btn_editemployee"><i class="fa fa-edit"></i>Edit Employee</a>
+                                <a href="/enrollemployee/edit/{{$info->eneid}}" class="btn btn-sm btn-outline-primary btn-flat" id="btn_editemployee"><i class="fa fa-edit"></i>Edit Employee</a>
                             </td>
                         </tr>
                         @endforeach
@@ -112,8 +112,8 @@
           <label id="CS-id"></label>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
+            <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-primary btn-flat" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
         </div>
       </div>
     </div>
@@ -156,8 +156,8 @@
 		 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="btn_upload">Upload <i id="spinner_upload" class=""></button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_upload">Upload <i id="spinner_upload" class=""></button>
             </div>
         </form>
           </div>
