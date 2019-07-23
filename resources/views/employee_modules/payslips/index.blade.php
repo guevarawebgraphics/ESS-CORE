@@ -18,7 +18,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="card"> 
+    <div class="card card-info card-outline"> 
             
         <div class="card-header">
         
@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                         </div> 
-                    <hr>
+               
                     <center><strong>Payslips List</strong></center>  
 
         </div>

@@ -136,7 +136,7 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.citytown',
                                     'employee_personal_information.barangay',
                                     'employee_personal_information.province',
-                                    'employee_personal_information.zipcode',)
+                                    'employee_personal_information.zipcode')
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->get();
         /**
@@ -187,7 +187,7 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.citytown',
                                     'employee_personal_information.barangay',
                                     'employee_personal_information.province',
-                                    'employee_personal_information.zipcode',)
+                                    'employee_personal_information.zipcode')
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->get();
 
@@ -844,7 +844,7 @@ class EmployeesEnrollmentController extends Controller
                                 'refcitymun.citymunDesc',
                                 'refcitymun.citymunCode',
                                 'refbrgy.brgyDesc',
-                                'refbrgy.id as refbrgy_id',
+                                'refbrgy.id as refbrgy_id'
                             )
                             ->where('employer_and_employee.id', '=', $id)
                             ->get();
