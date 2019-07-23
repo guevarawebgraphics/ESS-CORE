@@ -62,7 +62,7 @@
                                     <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
                                 </div>
                                 <input id="essid_search" type="text" class="form-control" name="essid_search" placeholder="ESS ID / User ID" autofocus>&nbsp;&nbsp;
-                                <input type="button" class="btn btn-primary" id="btn_search" value="Search">
+                                <input type="button" class="btn btn-outline-primary btn-flat" id="btn_search" value="Search">
                             </div>
                             <p class="text-danger" id="error_business_name"></p>
                             
@@ -797,7 +797,7 @@
           <!-- end loading -->
         <div class="card-footer">
             {{-- <button type="button" class="btn btn-default">Back</button> --}}
-            <button type="submit" class="btn btn-primary float-right" id="submit">Submit <i id="spinner" class=""></i></button>
+            <button type="submit" class="btn btn-outline-primary  btn-flat float-right" id="submit">Submit <i id="spinner" class=""></i></button>
         </div>              
     </div>      
 </div>

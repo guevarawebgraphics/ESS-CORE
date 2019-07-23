@@ -133,7 +133,7 @@
         })
     }
 
-    //get_profile_picture();
+    get_profile_picture()
       /**
        * @ Get Profile Picture
        * */
@@ -144,7 +144,7 @@
           async: false,
           dataType: 'json',
           success: function(data){
-            $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
+       //     $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
                if (data=="essfemale.png" || data=="essmale.png") 
                  {
                      $('#data_to_do').val("add");
