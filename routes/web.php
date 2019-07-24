@@ -206,6 +206,9 @@ Route::get('/ewallet', 'EWalletController@index');
 //Financial Calendar
 Route::get('/financialcalendar', 'FinancialCalendarController@index');
 
+//Financial Tips
+Route::get('/financialtips', 'FinancialTipsController@index');
+
 //ICredit
 Route::get('/icredit', 'iCreditController@index');
 

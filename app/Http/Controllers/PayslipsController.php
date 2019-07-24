@@ -27,7 +27,8 @@ class PayslipsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');      
+        $this->middleware('auth');
+        $this->middleware('revalidate'); // Revalidate back history Security For Back Button      
         $this->middleware(function($request, $next){
             if(Session::get("payslips") == "none")
             {

@@ -100,6 +100,7 @@ $(document).ready(function (){
                                             toastr.success('Picture Uploaded Successfully', 'Success') 
                                             get_profile_picture()  
                                             get_profile_picture_settings()
+                                            get_profile_picture_refresh()
                                             console.log("UPLOADED");
                                             $('#upload_profile_picture').modal('hide');
                                             
@@ -143,7 +144,8 @@ $(document).ready(function (){
                                 console.log("UPLOADED");
                                 $('#upload_profile_picture').modal('hide');
                                 get_profile_picture()  
-                                get_profile_picture_settings()
+                                get_profile_picture_settings() 
+                                get_profile_picture_refresh()
                                 
                               },
                               error: function(data){
@@ -178,10 +180,50 @@ $(document).ready(function (){
             error: function(data){
   
             }
-
-
+    
+          });
+        } 
+        /* Refresh profile picture after uploading */
+        function get_profile_picture_refresh(){
+          $.ajax({
+            type: 'GET',
+            url: '/ProfilePicture/get_profile_picture',
+            async: false,
+            dataType: 'json',
+            success: function(data){
+            $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
       
-
+             },
+            error: function(data){
+  
+            }
+          });
+        } 
+        get_profile_picture()
+        /**
+         * @ Get Profile Picture
+         * */
+        function get_profile_picture(){
+          $.ajax({
+            type: 'GET',
+            url: '/ProfilePicture/get_profile_picture',
+            async: false,
+            dataType: 'json',
+            success: function(data){
+         //     $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
+                 if (data=="essfemale.png" || data=="essmale.png") 
+                   {
+                       $('#data_to_do').val("add");
+                   }
+                   else
+                   {
+                       $('#data_to_do').val("update");
+                   }
+              
+             },
+            error: function(data){
+  
+            }
           });
         }
 
