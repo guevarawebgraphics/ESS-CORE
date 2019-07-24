@@ -202,8 +202,8 @@ class AnnouncementController extends Controller
 
         /*Protection for Data View as Json*/
         if($request->ajax()){
-            foreach ($Announcement as $key => $test){
-                if($test->announcement_status == 1){
+            foreach ($Announcement as $key => $value){
+                if($value->announcement_status == 1){
 
                     /**
                      * @ If user is Employer
@@ -231,17 +231,21 @@ class AnnouncementController extends Controller
                             $Announcement1 = DB::table('announcement')
                                         ->join('employer', 'employer.id', '=', 'announcement.account_id')
                                         ->join('employer_and_employee', 'announcement.employer_id', '=', 'employer_and_employee.employer_id')
+                                        ->join('user_picture', 'employer.id', '=', 'user_picture.employer_id')
                                         ->select('announcement.id',
                                         'announcement.announcement_title',
                                         'announcement.announcement_description',
                                         'announcement.announcement_status',
                                         'employer.business_name',
                                         'announcement.created_at',
-                                        'announcement.updated_at')
-                                        ->orderBy('announcement.created_at','desc')
+                                        'announcement.updated_at',
+                                        'user_picture.profile_picture')
+                                        //->orderBy('announcement.created_at','desc')
                                         ->where('announcement.announcement_status', '=', '1')
                                         ->where('announcement.announcement_type', '=', '3')
                                         ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+                                        ->latest()
+                                        //->take(6)
                                         ->get();
                         }
                         return json_encode($Announcement1);
@@ -345,7 +349,7 @@ class AnnouncementController extends Controller
                              'announcement.announcement_description',
                              'announcement.announcement_status',
                              'announcement.employer_id',
-                             'employer.business_name',
+                             'employer.business_name'
                              )
                             ->where('announcement.id', $Announcement_id)
                             ->get();

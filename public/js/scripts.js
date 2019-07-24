@@ -133,11 +133,12 @@
         })
     }
 
-    get_profile_picture()
+ //   get_profile_picture()
       /**
        * @ Get Profile Picture
        * */
-      function get_profile_picture(){
+    /*  
+        function get_profile_picture(){
         $.ajax({
           type: 'GET',
           url: '/ProfilePicture/get_profile_picture',
@@ -161,6 +162,7 @@
         });
       }
 
+    */
     function showAllAnnouncementToNotification(){
         // Show Notification
         $.ajax({
@@ -171,6 +173,7 @@
             dataType: 'json',
             success: function (data) {
                 var html = '';
+                var footer = '';
                 var i;
                 var count = 1;
                 var check_my_notification = get_show_announcement_notification_toggle();
@@ -186,7 +189,7 @@
                     //$('#notif').html(count++);
                     html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+data[i].announcement_description+'"><!-- Message Start -->'+
                             '<div class="media">'+
-                            '<img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="../dist/img/user3-128x128.jpg">'+
+                            '<img alt="User Avatar" style="heigth: 50px; width: 50px;" class="img-size-50 mr-3 img-circle" src="/storage/profile_picture/'+data[i].profile_picture+'">'+
                             '<div class="media-body">'+
                             '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger"><i class="fa fa-star"></i></span></h3>'+
                             // '<p class="text-sm">'+data[i].announcement_description+'</p>'+
@@ -195,8 +198,14 @@
                             '</div><!-- Message End --></a>'+
                             '<div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->';
                 }
+                // footer += '<div class="dropdown-item dropdown-footer" id="see_more">See More Announcement</div>'+
+                //             '</div>';
                 if(status == 'Posted'){
                     $('#announcementdesc').html(html);
+                    // Check if the Data is Greater than 5
+                    if(data.length > 5){
+                        $("#announcementdesc").css('height', '400px');
+                    }
                     
                 }
                 else if(status == 'Pending'){
