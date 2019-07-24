@@ -49,7 +49,7 @@ elseif(Session::get('manage_docs') == 'delete'){
 <div class="card card-info card-outline">
     <div class="card-header">
         <h3 class="card-title"><i class="fa fa-file"></i> Manage Document and Templates</h3>
-        <i class="fa fa-file"></i>
+        {{-- <i class="fa fa-file"></i> --}}
     </div>
 
     <!-- /.card-header -->
