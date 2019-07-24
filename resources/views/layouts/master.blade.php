@@ -97,7 +97,7 @@
                                             if($user_picture == "Female") 
                                             {
                                                         $user_picture = "essfemale.png";
-                                            }
+                                            } 
                                             else
                                             {
                                                         $user_picture = "essmale.png";
@@ -107,7 +107,8 @@
 			 }
 
 			@endphp           
-            @include('inc/sidebar', ['user_picture' => $user_picture, 'link' => $link])
+			@include('inc/sidebar', ['user_picture' => $user_picture, 'link' => $link]) 
+	
             <div class="content-wrapper">			
 			<div class="content-header">
 				<div class="container-fluid">

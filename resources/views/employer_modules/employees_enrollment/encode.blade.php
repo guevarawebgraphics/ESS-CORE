@@ -1325,6 +1325,19 @@ $(document).ready(function(){
             $("#error_zipcode").html("");
             error = 0;
         }
+        if(birthdate != "" && birthdate.substring(6) >= 2001)
+        {
+            $("#birthdate").addClass('is-invalid');
+            $("#error_birthdate").html("Age must be at least 18 years old");
+            error++;
+            spinnerTimout();
+        }
+        else 
+        {
+            $("#birthdate").removeClass('is-invalid');
+            $("#error_birthdate").html("");
+            error = 0;
+        }
 
         if(error <= 0)
         {

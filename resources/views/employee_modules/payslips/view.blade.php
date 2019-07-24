@@ -39,7 +39,15 @@
                                                         </li>
                                                         <li> 
                                                                 <p class="text-muted"> Employment Status:  {{$information[0]->employment_status}}  </p>
+                                                        </li> 
+                                                        <li> 
+                                                          <p class="text-muted"> Department: {{$information[0]->department}}  </p> 
                                                         </li>
+                                                        <li> 
+                                                          <p class="text-muted"> Position: {{$information[0]->position}}  </p> 
+                                                        </li>
+
+                                                  </li>
                                                  </ul>
                                           </th>
                                           <th></th>
@@ -92,10 +100,16 @@
                                                             <td><p class="float-right">{{$information[0]->basic}}</p></td>
                                                           </tr>
                                                           <tr>
-                                                            <th scope="row"><p class="float-left">Absent</p></th>
+                                                            <th scope="row"><p class="float-left">Regular OT</p></th>
                                                             <td></td>
                                                             <td></td>
-                                                            <td><p class="float-right">{{$information[0]->absent}}</p></td>
+                                                            <td><p class="float-right">{{$information[0]->regular_ot}}</p></td>
+                                                          </tr>
+                                                          <tr>
+                                                            <th scope="row"><p class="float-left">Meal Allowance</p></th>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td><p class="float-right">{{$information[0]->meal_allowance}}</p></td>
                                                           </tr>
                                                    
                                                         </tbody>
@@ -103,10 +117,6 @@
                                         </div> 
                                         <div class="container">
                                             <table class="table table-borderless"> 
-                                                    <tr> 
-                                                        <th><p class="float-left text-muted">Total Earnings:</p></th>
-                                                        <th><p class="float-right font-weight-bold"></p></th>
-                                                    </tr>
                                                     <tr> 
                                                         <td><p class="float-left font-weight-bold">Total Gross Pay:</p></td>
                                                         <td><p class="float-right font-weight-bold">{{$information[0]->grosspay}}</p></td>
@@ -129,18 +139,25 @@
                                                         <td></td>
                                                         <td><p class="float-right">{{$information[0]->sss}}</p></td>
                                                       </tr>
+                                                      <tr >
+                                                        <th scope="row"><p class="float-left">HDMF</p></th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td><p class="float-right">{{$information[0]->hdmf}}</p></td>
+                                                      </tr>
+                                                
+                                                      <tr>
+                                                        <th scope="row"><p class="float-left">PHIC</p></th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td><p class="float-right">{{$information[0]->phic}}</p></td>
+                                                      </tr> 
                                                       <tr>
                                                         <th scope="row"><p class="float-left">WTax</p></th>
                                                         <td></td>
                                                         <td></td>
                                                         <td><p class="float-right">{{$information[0]->wtax}}</p></td>
                                                       </tr>
-                                                      <tr>
-                                                            <th scope="row"><p class="float-left">PHIC</p></th>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td><p class="float-right">{{$information[0]->phic}}</p></td>
-                                                          </tr>
                                                
                                                     </tbody>
                                             </table>
