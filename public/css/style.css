@@ -28,6 +28,11 @@ html {
 footer {
     background-color: #eaeaea;
 } 
+
+#announcementdesc {
+    max-height: 650; 
+    overflow-y: auto;
+}
 /* Media Query for Add System Notification */
 @media screen and (max-width: 1380px)
 {

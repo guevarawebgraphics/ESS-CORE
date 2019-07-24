@@ -62,6 +62,7 @@ class ProfilePictureController extends Controller
              **/
             DB::table('user_picture')->insert([
                 'user_id' => auth()->user()->id,
+                'employer_id' => (auth()->user()->user_type_id == 3) ? auth()->user()->employer_id : 0,
                 'profile_picture' => $fileNameToStore_profile_picture,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -114,6 +115,7 @@ class ProfilePictureController extends Controller
              **/
                     DB::table('user_picture')->where('user_id','=',auth()->user()->id)
                                                     ->update(array(
+                                                            'employer_id' => (auth()->user()->user_type_id == 3) ? auth()->user()->employer_id : 0,
                                                             'profile_picture' => $fileNameToStore_profile_picture,
                                                             'created_at' => Carbon::now(),
                                                             'updated_at' => Carbon::now()
