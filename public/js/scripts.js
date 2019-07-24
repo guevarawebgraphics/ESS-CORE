@@ -133,11 +133,12 @@
         })
     }
 
-    get_profile_picture()
+ //   get_profile_picture()
       /**
        * @ Get Profile Picture
        * */
-      function get_profile_picture(){
+    /*  
+        function get_profile_picture(){
         $.ajax({
           type: 'GET',
           url: '/ProfilePicture/get_profile_picture',
@@ -161,6 +162,7 @@
         });
       }
 
+    */
     function showAllAnnouncementToNotification(){
         // Show Notification
         $.ajax({

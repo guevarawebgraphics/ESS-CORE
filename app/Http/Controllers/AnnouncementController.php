@@ -345,7 +345,7 @@ class AnnouncementController extends Controller
                              'announcement.announcement_description',
                              'announcement.announcement_status',
                              'announcement.employer_id',
-                             'employer.business_name',
+                             'employer.business_name'
                              )
                             ->where('announcement.id', $Announcement_id)
                             ->get();
