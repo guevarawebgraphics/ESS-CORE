@@ -144,7 +144,7 @@ elseif(Session::get('manage_docs') == 'delete'){
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-outline-primary btn-flat" id="SaveTemplate">Save <i id="spinner" class=""></button>
+                <button type="submit" class="btn btn-outline-primary btn-flat" id="SaveTemplate">Save <i id="spinner_add" class=""></i></button>
             </div>
         </form>
           </div>
@@ -207,13 +207,15 @@ $(document).ready(function (){
         $('#template_form').removeAttr('hidden');
         $('#document_file_name').attr('hidden', true);
         $('#employer_id').attr('disabled', false);
+        $("#SaveTemplate").removeAttr("disabled");
     });
 
     /*Save Template*/
     $('#template_form').submit(function (e){
         var url = $("#template_form").attr('action');
-        $("#spinner").addClass('fa fa-refresh fa-spin');
+        $("#SaveTemplate").attr("disabled",true);
         e.preventDefault();
+        $("#spinner_add").addClass("fa fa-refresh fa-spin"); 
         toastr.remove();
         var formData = new FormData($(this)[0]);
         $.ajaxSetup({
@@ -224,14 +226,17 @@ $(document).ready(function (){
         if($('#document_code').val() == ""){
             $('#document_code').addClass('is-invalid');
             $('#error_document_code').html('Document Code is Required');
-            spinnerTimout();
+            spinnerTimout()
+            $("#SaveTemplate").removeAttr("disabled");
         }
         if($('#document_description').val() == ""){
             $('#document_description').addClass('is-invalid');
             $('#error_document_description').html('Document Description is Required');
-            spinnerTimout();
+            spinnerTimout()
+            $("#SaveTemplate").removeAttr("disabled");
         }
         if($('#document_code').val() != "" && $('#document_description').val() != "") {
+            $("#SaveTemplate").removeAttr("disabled");
             $.ajax({
             url: url,
             method: 'POST',
@@ -250,17 +255,16 @@ $(document).ready(function (){
                 /*Hide Modal*/
                 setTimeout(function (){
                           $('#AddTemplateModal').modal('hide');
-                }, 400);
+                }, 1000);
+                $("#SaveTemplate").attr("disabled",true);
                 // Display a success toast, with a title
                 toastr.success('Template Saved Successfully', 'Success')
-                setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                }, 1500);
+                spinnerTimout()
             },
             error: function(data, status){
                 toastr.error('Error. Please Complete The Data', 'Error!')
                 setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    $("#spinner_add").removeClass('fa fa-refresh fa-spin');
                 }, 250);
                 var errors = $.parseJSON(data.responseText);
                 $.each(errors, function (i, errors){
@@ -279,6 +283,11 @@ $(document).ready(function (){
         }
         
     });
+    function spinnerTimout(){
+        setTimeout(function (){
+                    $("#spinner_add").removeClass('fa fa-refresh fa-spin');
+        }, 1000);
+    }
 
     /*Edit Template*/
     $('#showdata').on('click', '.template-edit', function(){
@@ -289,6 +298,11 @@ $(document).ready(function (){
         $('#template_form').removeAttr('hidden');
         $('#document_file_name').removeAttr('hidden');
         $('#employer_id').attr('disabled', true);
+        $("#SaveTemplate").removeAttr("disabled"); 
+        $('#error_document_code').html('');
+        $('#document_code').removeClass('is-invalid');
+        $('#error_document_description').html('');
+        $('#document_description').removeClass('is-invalid'); 
         toastr.remove();
         $.ajax({
             type: 'ajax',
@@ -405,12 +419,6 @@ $(document).ready(function (){
                     console.log('Could not get data from database');
                 }
             });
-    }
-
-    function spinnerTimout(){
-        setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-        }, 250);
     }
 
 
