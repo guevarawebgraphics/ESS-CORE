@@ -95,7 +95,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'password' => ['required', 'string', 'min:9', 'confirmed'],
         ]);
     }
 
@@ -260,6 +260,9 @@ class RegisterController extends Controller
     public function reset_password(Request $request)
     {
         $this->getaccount();
+        $this->validate($request, [
+            'password' => 'required||min:9',
+        ]);
         $userId = $request->id;
         $password = $request->password;
 
