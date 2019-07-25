@@ -199,7 +199,7 @@ class PayrollManagementController extends Controller
                 ->select('notification_message')
                 ->first();
 
-        $ess_link = "http://127.0.0.1:8000";
+        $ess_link = "http://127.0.0.1:8000/payslips";
 
 
 
