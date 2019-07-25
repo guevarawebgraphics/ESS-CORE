@@ -99,7 +99,7 @@ elseif(Session::get('manage_users') == 'delete'){
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary btn-flat" id="btnSave">Save changes</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnSave">Save changes<i id="spinner_manage" class=""> </i></button>
             </div>
         </div>
     </div>
@@ -176,15 +176,17 @@ elseif(Session::get('manage_users') == 'delete'){
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">Type Description</label>
                             <div class="col-md-6">
-                                <textarea rows="3" id="desc" class="form-control" name="type_desc" value=""></textarea>               
+                                <textarea rows="3" id="desc" class="form-control" name="type_desc" value=""></textarea>     
+                                <p class="text-danger" id="error-no-desc" hidden>* Field is Required</p>                
                             </div>
+                           
                         </div>                                            
                     </form>                   
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary btn-flat" id="btnSaveUserType">Save User Type</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnSaveUserType">Save User Type <i id="spinner_user_type" class=""> </i></button>
             </div>
         </div>
     </div>
@@ -244,6 +246,7 @@ elseif(Session::get('manage_users') == 'delete'){
         //Manage User Access Modal
         $(document).on("click", "#manage", function(){
             $('#userAccessModal').modal('show');
+            $('#btnSave').removeAttr("disabled");
             manage_info = $(this).data("add");
             manage_data = manage_info.split("||");
             console.log(manage_data[0] + " " + manage_data[1]);
@@ -265,6 +268,8 @@ elseif(Session::get('manage_users') == 'delete'){
         //Update Access Modal
         $(document).on("click", "#btnSave", function(){            
             userid = $(this).data("add");
+            $('#btnSave').attr("disabled",true);
+            $('#spinner_manage').addClass('fa fa-refresh fa-spin');
             $.ajax({
                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 url: "{{ route('updatemoduleaccess') }}",
@@ -273,11 +278,18 @@ elseif(Session::get('manage_users') == 'delete'){
                 success:function(data)
                 {
                     toastr.success('Access Updated Successfully', 'Success') 
-                    $('#userAccessModal').modal('hide');         
+                    spinnerTimout();
+                    setTimeout(function (){
+                        $('#userAccessModal').modal('hide');   
+                    }, 1000);
                 }
             });
         });
-
+        function spinnerTimout(){
+            setTimeout(function (){
+                        $("#spinner_manage").removeClass('fa fa-refresh fa-spin');
+            }, 1000);
+            } 
         //Create user type
         $(document).on("click", "#btnCreateUser", function(){
             
@@ -289,7 +301,10 @@ elseif(Session::get('manage_users') == 'delete'){
             $('#userTypeTitle').html("Create User Type");
             $('#hidden_id_usertype').val("");
             $('#userTypeModal').modal();
-            $("#user_type_for_field").removeAttr("hidden");            
+            $("#user_type_for_field").removeAttr("hidden");   
+            $('#desc').removeClass("is-invalid");      
+            $("#error-no-desc").attr("hidden", true);
+            $("#spinner_user_type").removeClass('fa fa-refresh fa-spin');
         });
 
         //EDIT USER TYPE
@@ -305,6 +320,16 @@ elseif(Session::get('manage_users') == 'delete'){
             $('#desc').val(info[2]);
             $('#hidden_id_usertype').val(info[0]);
             $("#user_type_for_field").attr("hidden", true);
+            $('#btnSaveUserType').removeAttr("disabled");
+            
+            $("#spinner_user_type").removeClass('fa fa-refresh fa-spin');
+
+            $('#error-no-desc').attr("hidden",true); 
+            $('#error-no-type').attr("hidden",true); 
+
+            $('#name').removeClass("is-invalid");
+            $('#desc').removeClass("is-invalid");
+
         });
 
          //Saving of new user type
@@ -312,11 +337,23 @@ elseif(Session::get('manage_users') == 'delete'){
 
             type_name = $('#name').val();
             type_desc = $('#desc').val();
-
+            $('#btnSaveUserType').attr("disabled",true);
+            $('#spinner_user_type').addClass('fa fa-refresh fa-spin');
+            toastr.remove() 
             if(type_name == "")
             {
                 $('#name').addClass("is-invalid");
-                $('#error-no-type').removeAttr("hidden");
+                $('#error-no-type').removeAttr("hidden"); 
+                $('#btnSaveUserType').removeAttr("disabled");
+                spinnerTimoutUserType()
+            }
+            if(type_desc=="")
+            {
+                $('#desc').addClass("is-invalid");
+                $('#error-no-desc').removeAttr("hidden"); 
+                
+                $('#btnSaveUserType').removeAttr("disabled");
+                spinnerTimoutUserType()
             }
             else
             {
@@ -332,7 +369,12 @@ elseif(Session::get('manage_users') == 'delete'){
                         {
                             toastr.success('User Type Added!', 'Success')
                             refreshUsertypeTable();
-                            $('#userTypeModal').modal('hide');           
+                            setTimeout(function (){
+                                $('#userTypeModal').modal('hide'); 
+                            }, 1000);    
+                            spinnerTimoutUserType()
+                            $('#btnSaveUserType').removeAttr("disabled");
+
                         }
                     });
                 }
@@ -346,18 +388,29 @@ elseif(Session::get('manage_users') == 'delete'){
                         {
                             toastr.success('User Type Updated!', 'Success')
                             refreshUsertypeTable();
-                            $('#userTypeModal').modal('hide');           
+               
+                            setTimeout(function (){
+                                $('#userTypeModal').modal('hide'); 
+                            }, 1000);      
+                            $('#btnSaveUserType').removeAttr("disabled");
+     
                         }
                     });
                 }               
             }           
         });
+        function spinnerTimoutUserType(){
+            setTimeout(function (){
+                        $("#spinner_user_type").removeClass('fa fa-refresh fa-spin');
+            }, 1000);
+        } 
 
         
         //DELETE USER TYPE
         $(document).on("click", "#delete_usertype", function(){
             var id = $(this).data("add");
             var data_info = id.split("]]");
+            toastr.remove() 
             //alert(id);
             swal({
                 title: "Do you want to delete User Type " + "'" + data_info[1] + "'?",
