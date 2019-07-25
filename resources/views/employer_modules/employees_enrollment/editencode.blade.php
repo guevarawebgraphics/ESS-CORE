@@ -656,7 +656,7 @@
         </div>
         <div class="card-footer">
             {{-- <button type="button" class="btn btn-default">Back</button> --}}
-            <button type="submit" class="btn btn-primary float-right" id="submit">Submit <i id="spinner" class=""></i></button>
+            <button type="submit" class="btn btn-outline-primary btn-flat float-right" id="submit">Submit <i id="spinner" class=""></i></button>
         </div>              
     </div>      
 </div>

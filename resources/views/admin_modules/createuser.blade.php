@@ -194,7 +194,7 @@ $delete = 'disabled';
                                     </div>
                                     <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
                                 </div>
-                                <p class="text-danger" id="error-no-pass" hidden>* Field is Required | Password must be 6 characters</p>
+                                <p class="text-danger" id="error-no-pass" hidden>* Field is Required | Password must be 9 characters</p>
                                 @if ($errors->has('password'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('password') }}</strong>
@@ -222,7 +222,7 @@ $delete = 'disabled';
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary btn-flat" id="btnRegister">Create User</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnRegister"></button>
             </div>
         </div>
     </div>
@@ -262,7 +262,11 @@ $delete = 'disabled';
                                 </div>
                                 <input id="newpassword" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
                             </div>
-                            <p class="text-danger" id="error-no-pass-reset" hidden>* Field is Required | Password must be 6 characters</p>
+                            <p class="text-danger" id="error-no-pass-reset" hidden>
+                                <ul id="no-pass-reset" class="text-danger">
+                                   
+                                </ul>
+                            </p>
                             @if ($errors->has('password'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('password') }}</strong>
@@ -282,14 +286,18 @@ $delete = 'disabled';
                                 </div>
                                 <input id="newpassword-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
-                            <p class="text-danger" id="error-no-repass-reset" hidden>* Field is Required | Must be same as Password</p>
+                            <p class="text-danger" id="error-no-repass-reset" hidden>
+                                    <ul id="no-repass-reset" class="text-danger">
+                                   
+                                    </ul>
+                            </p>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary btn-flat" id="btnReset">Reset Password</button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="btnReset"></button>
             </div>
         </div>
     </div>
@@ -317,7 +325,7 @@ $delete = 'disabled';
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-outline-primary btn-flat" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""></button>
+            <button type="button" class="btn btn-outline-primary btn-flat" id="ChangeStatusConfirm">Confirm <i id="spinner" class=""><i></button>
         </div>
       </div>
     </div>
@@ -432,9 +440,7 @@ $delete = 'disabled';
 
         //Create new User
         $(document).on("click", "#btnCreateUser", function () {
-
-            $('#btnRegister').html("Create User");
-
+            $('#btnRegister').html("Create User"+"<i id='spinner_user' class=''> </i>");
             $('#createUserModal').modal();
             $("#UserTitle").html("Create User");
 
@@ -461,6 +467,8 @@ $delete = 'disabled';
             $("#password_field").removeAttr("hidden");
             $("#cmbEmployer").removeAttr('disabled');
             $("#txtusername").removeAttr('disabled');
+
+            $("#btnRegister").removeAttr("disabled");
         });
 
         //EDIT USER TYPE
@@ -474,7 +482,7 @@ $delete = 'disabled';
             $('#password').val("");
             $('#password-confirm').val("");
 
-            $('#btnRegister').html("Update User");
+            $('#btnRegister').html("Update User"+"<i id='spinner_user' class=''> </i>");
 
             $('#name').removeClass("is-invalid");
             $('#txtusername').removeClass("is-invalid");
@@ -487,6 +495,9 @@ $delete = 'disabled';
             $('#error-no-repass').attr("hidden", true);
             $('#error-taken').attr("hidden", true);
             $('#txtusername').removeClass("is-invalid");
+
+            $('#cmbEmployer').removeClass("is-invalid");
+            $('#error-no-employer').attr("hidden", true);
 
             info = id.split("]]");
             $('#createUserModal').modal();
@@ -503,11 +514,14 @@ $delete = 'disabled';
             $("#password_field").attr("hidden", true);
             $("#new_or_exist_field").attr("hidden", true);
 
+            $("#btnRegister").removeAttr("disabled");
         });
 
         //REGISTER new user
         $(document).on("click", "#btnRegister", function () {
-
+            $('#btnRegister').attr('disabled',true);
+            $('#spinner_user').addClass('fa fa-refresh fa-spin'); 
+            toastr.remove(); 
             name = $('#name').val();
             username = $('#txtusername').val();
             password = $('#password').val();
@@ -521,6 +535,8 @@ $delete = 'disabled';
                 if (name == "") {
                     $('#name').addClass("is-invalid");
                     $('#error-no-name').removeAttr("hidden");
+                    spinnerTimoutCreateUser() 
+                    $('#btnRegister').removeAttr('disabled');
                 } else {
                     $('#name').removeClass("is-invalid");
                     $('#error-no-name').attr("hidden", true);
@@ -529,14 +545,18 @@ $delete = 'disabled';
                 if (username == "") {
                     $('#txtusername').addClass("is-invalid");
                     $('#error-no-username').removeAttr("hidden");
+                    spinnerTimoutCreateUser()
+                    $('#btnRegister').removeAttr('disabled');
                 } else {
                     $('#txtusername').removeClass("is-invalid");
                     $('#error-no-username').attr("hidden", true);
                 }
 
-                if (password == "" || password.length < 6) {
+                if (password == "" || password.length < 9) {
                     $('#password').addClass("is-invalid");
                     $('#error-no-pass').removeAttr("hidden");
+                    spinnerTimoutCreateUser()
+                    $('#btnRegister').removeAttr('disabled');
                 } else {
                     $('#password').removeClass("is-invalid");
                     $('#error-no-pass').attr("hidden", true);
@@ -545,6 +565,8 @@ $delete = 'disabled';
                 if (repassword == "" || password != repassword) {
                     $('#password-confirm').addClass("is-invalid");
                     $('#error-no-repass').removeAttr("hidden");
+                    spinnerTimoutCreateUser()
+                    $('#btnRegister').removeAttr('disabled');
                 } else {
                     $('#password-confirm').removeClass("is-invalid");
                     $('#error-no-repass').attr("hidden", true);
@@ -553,13 +575,15 @@ $delete = 'disabled';
                 if (employer == "") {
                     $('#cmbEmployer').addClass("is-invalid");
                     $('#error-no-employer').removeAttr("hidden");
+                    spinnerTimoutCreateUser()
+                    $('#btnRegister').removeAttr('disabled');
                 } else {
                     $('#cmbEmployer').removeClass("is-invalid");
                     $('#error-no-employer').attr("hidden", true);
                 }
 
                 if (name != "" && username != "" && password != "" && repassword != "" && password ==
-                    repassword && password.length >= 6 && employer != "") {
+                    repassword && password.length >= 9 && employer != "") {
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -572,11 +596,21 @@ $delete = 'disabled';
                             if (data == "taken") {
                                 $('#txtusername').addClass("is-invalid");
                                 $('#error-taken').removeAttr("hidden");
+                                spinnerTimoutCreateUser()
+                                setTimeout(function (){
+                                  $("#createUserModal").modal('hide');
+                                }, 1000);
+                                $('#btnRegister').attr('disabled',true);
                             }
                             if (data == "suc") {
                                 toastr.success('User Register Successfully', 'Success')
                                 $('#createUserModal').modal('hide');
                                 refreshUserTable();
+                                spinnerTimoutCreateUser()
+                                setTimeout(function (){
+                                  $("#createUserModal").modal('hide');
+                                }, 1000);
+                                $('#btnRegister').attr('disabled',true);
                             }
                         }
                     });
@@ -584,9 +618,14 @@ $delete = 'disabled';
             }
             //EDIT
             else if (action == "edit") {
+                toastr.remove() 
+                $('#btnRegister').attr('disabled',true);
+                
                 if (name == "") {
                     $('#name').addClass("is-invalid");
                     $('#error-no-name').removeAttr("hidden");
+                    spinnerTimoutCreateUser()
+                    $("#btnRegister").removeAttr("disabled");
                 } else {
                     $('#name').removeClass("is-invalid");
                     $('#error-no-name').attr("hidden", true);
@@ -595,9 +634,12 @@ $delete = 'disabled';
                 if (username == "") {
                     $('#txtusername').addClass("is-invalid");
                     $('#error-no-username').removeAttr("hidden");
+                    spinnerTimoutCreateUser()
+                    $("#btnRegister").removeAttr("disabled");
                 } else {
                     $('#txtusername').removeClass("is-invalid");
                     $('#error-no-username').attr("hidden", true);
+                    $("#btnRegister").removeAttr("disabled");
                 }
 
                 if (name != "" && username != "") {
@@ -632,8 +674,11 @@ $delete = 'disabled';
                                             toastr.success(
                                                 'User Updated Successfully',
                                                 'Success')
-                                            $('#createUserModal').modal('hide');
-                                            refreshUserTable();
+                                                setTimeout(function (){
+                                                $("#createUserModal").modal('hide');
+                                                }, 1000);
+                                                refreshUserTable();
+                                                $('#btnRegister').attr('disabled',true);
                                         }
                                     });
                                 } else {
@@ -661,8 +706,11 @@ $delete = 'disabled';
                                         toastr.success(
                                             'User Updated Successfully',
                                             'Success')
-                                        $('#createUserModal').modal('hide');
-                                        refreshUserTable();
+                                            setTimeout(function (){
+                                            $("#createUserModal").modal('hide');
+                                            }, 1000);
+                                            refreshUserTable();
+                                            $('#btnRegister').attr('disabled',true);
                                     }
                                 });
                             }
@@ -671,6 +719,11 @@ $delete = 'disabled';
                 }
             }
         });
+        function spinnerTimoutCreateUser(){
+        setTimeout(function (){
+                    $('#spinner_user').removeClass('fa fa-refresh fa-spin');
+        }, 1000);
+        } 
 
         //DELETE USER TYPE
         $(document).on("click", "#delete_user", function () {
@@ -717,6 +770,7 @@ $delete = 'disabled';
          //Change Status
          $(document).on('click', '#ChangeStatusConfirm', function (){
           $("#spinner").addClass('fa fa-refresh fa-spin');
+     
           let Account_id = $('#account_id').val();
           let AccountStatus = $('#AccountStatus').val();
           toastr.remove()
@@ -781,35 +835,87 @@ $delete = 'disabled';
             console.log(reset_info[0]);
             $("#hidden_id_password").val(reset_info[0]);
             $("#username").val(reset_info[1]);
+            $('#btnReset').html("Reset Password "+"<i id='spinner_user' class=''> </i>");
+            $("#btnReset").removeAttr('disabled');
         });
-
+                //
+         $(document).on("click", ".cancel", function () {
+            $("#btnReset").removeAttr('disabled');
+        });
+        
         //RESET PASSWORD POST
         $(document).on("click", "#btnReset", function () {
-
+            $('#no-pass-reset').html("");
+            $('#no-repass-reset').html("");
             hidden_id = $("#hidden_id_password").val();
             password = $('#newpassword').val();
-            con_newpassword = $('#newpassword-confirm').val();
-
-            if (password == "" || password.length < 6) {
+            con_newpassword = $('#newpassword-confirm').val(); 
+            $('#spinner_user').addClass('fa fa-refresh fa-spin'); 
+            $("#btnReset").attr("disabled",true);
+            if (password == "") {
                 $('#newpassword').addClass("is-invalid");
-                $('#error-no-pass-reset').removeAttr("hidden");
+                $('#error-no-pass-reset').removeAttr("hidden");  
+                
+                $('#no-pass-reset').append(" <li> Password is required </li>");
+                spinnerTimoutCreateUser()
+                $("#btnReset").removeAttr('disabled');
             } else {
                 $('#newpassword').removeClass("is-invalid");
                 $('#error-no-pass-reset').attr("hidden", true);
+                spinnerTimoutCreateUser()
             }
-
-            if (con_newpassword == "" || password != con_newpassword) {
+            if (password.length < 9) {
+                $('#newpassword').addClass("is-invalid");
+                $('#error-no-pass-reset').removeAttr("hidden"); 
+                $('#no-pass-reset').append("<li> Password must be atleast 9 characters  </li>");
+                spinnerTimoutCreateUser()
+                $("#btnReset").removeAttr('disabled');
+            } else {
+                $('#newpassword').removeClass("is-invalid");
+                $('#error-no-pass-reset').attr("hidden", true);
+                spinnerTimoutCreateUser()
+            } 
+            if (con_newpassword == "") {
                 $('#newpassword-confirm').addClass("is-invalid");
-                $('#error-no-repass-reset').removeAttr("hidden");
+                $('#error-no-repass-reset').removeAttr("hidden");  
+                
+                $('#no-repass-reset').append(" <li> Password is required </li>");
+                spinnerTimoutCreateUser()
+                $("#btnReset").removeAttr('disabled');
             } else {
                 $('#newpassword-confirm').removeClass("is-invalid");
                 $('#error-no-repass-reset').attr("hidden", true);
+                spinnerTimoutCreateUser()
+            }
+            if (con_newpassword.length < 9) {
+                $('#newpassword-confirm').addClass("is-invalid");
+                $('#error-no-repass-reset').removeAttr("hidden"); 
+                $('#no-repass-reset').append("<li> Password must be atleast 9 characters  </li>");
+                spinnerTimoutCreateUser()
+                $("#btnReset").removeAttr('disabled');
+            } else {
+                $('#newpassword-confirm').removeClass("is-invalid");
+                $('#error-no-repass-reset').attr("hidden", true);
+                spinnerTimoutCreateUser()
             }
 
-            if (password != "" && con_newpassword != "" && password.length > 6 && password == con_newpassword){
+            if (password != con_newpassword && password == "" && password.length < 9 && con_newpassword == "" && con_newpassword.length < 9) {
+                $('#newpassword').addClass("is-invalid");
+                $('#newpassword-confirm').addClass("is-invalid");
+                $('#error-no-repass-reset').removeAttr("hidden"); 
+                $('#no-repass-reset').append("<li> Password must be match </li>");
+                spinnerTimoutCreateUser()
+                $("#btnReset").removeAttr('disabled');
+            } else {
+                $('#newpassword-confirm').removeClass("is-invalid");
+                $('#no-repass-resett').attr("hidden", true);
+            }
+            if (password != "" && con_newpassword != "" && password.length >= 9 && password == con_newpassword){
                 if(password.length < 5){
                     $('#newpassword').removeClass("is-invalid");
                     $('#error-no-pass-reset').attr("hidden", true);
+                    spinnerTimoutCreateUser()
+                    $("#btnReset").removeAttr('disabled');
                 }
                 else {
                     swal({
@@ -836,9 +942,12 @@ $delete = 'disabled';
                                 toastr.success('Password Reset Successfully!', 'Success')
                                 //refreshUserTable();                         
                                 $('#resetPasswordModal').modal('hide');
+                                
+                                spinnerTimoutCreateUser()
                             }
                         });
-                    }
+                                } 
+                          
                 );
                 }
             }

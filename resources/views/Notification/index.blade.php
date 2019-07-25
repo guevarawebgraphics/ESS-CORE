@@ -283,10 +283,12 @@ $(document).ready(function (){
         CKEDITOR.instances.notification_message.setData('');
         $('#select2-employer_id-container').attr('title', '').text('--Select Employer--');
         $('#select2-message_type_id-container').attr('title', '').text('--Select Message Type--');
+        $('#AddNotification').removeAttr('disabled');
     });
 
     // Store Notification
     $('#AddNotification').click(function () {
+        $('#AddNotification').attr('disabled', true);
         var url = $('#notification_form').attr('action');
         var data = $('#notification_form');
         $("#spinner").addClass('fa fa-refresh fa-spin');
@@ -351,7 +353,7 @@ $(document).ready(function (){
                     //$('#AddNotificationModal').modal('hide');
                     setTimeout(function (){
                             $('#AddNotificationModal').modal('hide');
-                    }, 400);
+                    }, 1000);
                     // Display a success toast, with a title
                     toastr.success('Notification Saved Successfully', 'Success')
                     setTimeout(function (){
