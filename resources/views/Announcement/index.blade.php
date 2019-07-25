@@ -92,7 +92,7 @@ elseif(Session::get('send_announcement') == 'delete'){
 <!-- Add Announcement -->
 <div class="modal fade" id="AddAnnouncementModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
+      <div class="modal-content card-info card-outline">
         <div class="modal-header">
           <h5 class="modal-title" id="title_modal"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -155,7 +155,7 @@ elseif(Session::get('send_announcement') == 'delete'){
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-secondary btn-flat" id="CancelAnnouncement" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-outline-primary btn-flat" id="SaveAnnoucement" {{$add}}>Save <i id="spinner" class=""></button>
         </div>
     
@@ -199,7 +199,7 @@ elseif(Session::get('send_announcement') == 'delete'){
                 <h1>Post This Announcement</h1>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-secondary btn-flat" id="PostCancel" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-outline-primary btn-flat" id="PostAnnouncement">Confirm <i id="spinner_post" class=""></button>
             </div>
           </div>
@@ -271,10 +271,14 @@ $(document).ready(function (){
         $('#annoucement_form').removeAttr('hidden');
         CKEDITOR.instances.announcement_description.setData('');
         $('#select2-employer_id-container').attr('title', '').text('--Select Employer--');
+        $("#SaveAnnoucement").removeAttr('disabled');
+        $('#CancelAnnouncement').removeAttr('disabled');
     });
 
     /*Save Announcement*/
     $('#SaveAnnoucement').click(function (e){
+        $("#SaveAnnoucement").attr('disabled', true);
+        $('#CancelAnnouncement').attr('disabled', true);
         var url = $('#annoucement_form').attr('action');
         var employer_selected = [];
         $('#employer_id :selected').each(function() {
@@ -292,11 +296,13 @@ $(document).ready(function (){
         if($('#announcement_title').val() == ""){
             $('#announcement_title').addClass('is-invalid');
             $('#error_announcement_title').html('Annoucement Title is Required');
+            $("#SaveAnnoucement").removeAttr('disabled');
             spinnerTimout();
         }
         if(CKEDITOR.instances.announcement_description.getData() == ""){
             $('#announcement_description').addClass('is-invalid');
             $('#error_annoucement_description').html('Annoucement Description is Required');
+            $("#SaveAnnoucement").removeAttr('disabled');
             spinnerTimout();
         }
         // if($('#announcement_type').val() == ""){
@@ -329,7 +335,7 @@ $(document).ready(function (){
                         //$('#AddNotificationModal').modal('hide');
                         setTimeout(function (){
                                 $('#AddAnnouncementModal').modal('hide');
-                        }, 400);
+                        }, 1000);
                         // Display a success toast, with a title
                         toastr.success('Announcement Saved Successfully', 'Success')
                         setTimeout(function (){
@@ -338,6 +344,7 @@ $(document).ready(function (){
                     },
                     error: function(data, status){
                         //console.log(employer_selected);
+                        $("#SaveAnnoucement").removeAttr('disabled');
                         toastr.error('Error. Please Complete the fields', 'Error!')
                         setTimeout(function (){
                             $("#spinner").removeClass('fa fa-refresh fa-spin');
@@ -348,10 +355,12 @@ $(document).ready(function (){
                             if(errors.announcement_title){
                                 $('#announcement_title').addClass('is-invalid');
                                 $('#error_announcement_title').html('Annoucement Title is Required');
+                                $("#SaveAnnoucement").removeAttr('disabled');
                             }
                             if(errors.announcement_description){
                                 $('#announcement_description').addClass('is-invalid');
                                 $('#error_annoucement_description').html('Annoucement Description is Required');
+                                $("#SaveAnnoucement").removeAttr('disabled');
                             }
                             // if(errors.announcement_type){
                             //     $('#announcement_type').addClass('is-invalid');
@@ -405,10 +414,16 @@ $(document).ready(function (){
         //var announcement_type = $(this).attr('data-announcementtype');
         $('#PostModal').modal('show');
         $('#PostModal').find('#title_modal').text('Post Announcement');
+        $('#PostAnnouncement').removeAttr('disabled');
+        $('#PostCancel').removeAttr('disabled');
         // console.log(id);
         // console.log(announcement_type);
         toastr.remove()
         $('#PostAnnouncement').unbind().click(function(){
+            $('#PostAnnouncement').attr('disabled', true);
+            $('#PostAnnouncement').addClass('PostAnnouncement');
+            $('.PostAnnouncement').removeAttr('id');
+            $('#PostCancel').attr('disabled', true);
             $('#spinner_post').addClass('fa fa-refresh fa-spin');
             $.ajax({
                 type: 'POST',
@@ -419,6 +434,9 @@ $(document).ready(function (){
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data){
+                    $('#PostAnnouncement').removeAttr('disabled');
+                    $('#PostAnnouncement').removeClass('PostAnnouncement');
+                    $('.PostAnnouncement').attr('id', 'PostAnnouncement');
                     $('#AnnouncementTable').DataTable().destroy();
                     showAllAnnouncement();
                     showAllAnnouncementToNotification();
@@ -439,6 +457,7 @@ $(document).ready(function (){
                     setTimeout(function (){
                         $("#spinner_post").removeClass('fa fa-refresh fa-spin');
                     }, 250);
+                    $('#PostAnnouncement').removeAttr('disabled');
                 }
             });
         });
