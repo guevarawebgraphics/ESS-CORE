@@ -93,6 +93,7 @@ class NotificationController extends Controller
                             'notification_message_type.message_type',
                             'notification.notification_type',
                             'employer.business_name')
+                            ->latest('notification.created_at')
                             ->get();
         }
         // If The user is Employer
@@ -109,6 +110,7 @@ class NotificationController extends Controller
                             ->where('notification.employer_id', auth()->user()->id)
                             //->whereNotIn('notification.account_id', array('1', '2', '3'))
                             ->where('notification_message_type.account_id', array('0'))
+                            ->latest('notification.created_at')
                             ->get();
         }
 

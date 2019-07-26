@@ -122,7 +122,7 @@ elseif(Session::get('create_profile') == 'delete'){
                 </tr>
             @endforeach --}}
         </tbody>
-        <tfoot>
+        <!--<tfoot>
             <tr>
                 {{-- <th>Id</th> --}}
                 <th>Business Name</th>
@@ -135,7 +135,7 @@ elseif(Session::get('create_profile') == 'delete'){
                 {{-- <th>Change Status</th> --}}
                 <th>Action</th>
             </tr>
-        </tfoot>
+        </tfoot>-->
       </table>
       {{-- {{ $Account->links() }} --}}
     </div>
@@ -180,14 +180,14 @@ elseif(Session::get('create_profile') == 'delete'){
           // "searching": false,
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
-          "pageLength": 10000,
+          "pageLength": 10,
            scrollY: 500,
           //  scrollX: true,
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [[4, "asc"]]
+          //"order": [[4, "asc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {

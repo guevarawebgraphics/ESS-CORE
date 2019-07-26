@@ -83,7 +83,7 @@ $delete = 'disabled';
 <div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content card-info card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="UserTitle">Create User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -231,7 +231,7 @@ $delete = 'disabled';
 <div class="modal fade bd-example-modal-lg" id="resetPasswordModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content card-info card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="UserTitle">Reset Password</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -305,7 +305,7 @@ $delete = 'disabled';
 <!-- Modal For Change Status -->
 <div class="modal fade" id="csModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+      <div class="modal-content card-info card-outline">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" >Change Status</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -340,7 +340,7 @@ $delete = 'disabled';
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "ordering": false,
-            "pageLength": 10000,
+            "pageLength": 10,
             scrollY: 500,
             //  scrollX: true,
             "autoWidth": true,
@@ -426,7 +426,7 @@ $delete = 'disabled';
                         // "searching": false,
                         "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                         "paging": true,
-                        "pageLength": 10000,
+                        "pageLength": 10,
                         "ordering": false,
                         scrollY: 500,
                         //  scrollX: true,
@@ -459,7 +459,7 @@ $delete = 'disabled';
             $('#error-no-username').attr("hidden", true);
             $('#error-no-pass').attr("hidden", true);
             $('#error-no-repass').attr("hidden", true);
-            $('#error-taken').attr("hidden", true);
+            $('#error-taken').attr("hidden", true); 
             $('#txtusername').removeClass("is-invalid");
 
             $("#hidden_id").val("");
@@ -469,6 +469,9 @@ $delete = 'disabled';
             $("#txtusername").removeAttr('disabled');
 
             $("#btnRegister").removeAttr("disabled");
+
+            $('#cmbEmployer').removeClass("is-invalid");
+            $('#error-no-employer').attr("hidden", true);
         });
 
         //EDIT USER TYPE
@@ -597,6 +600,7 @@ $delete = 'disabled';
                                 $('#txtusername').addClass("is-invalid");
                                 $('#error-taken').removeAttr("hidden");
                                 spinnerTimoutCreateUser()
+                                refreshUserTable();
                                 setTimeout(function (){
                                   $("#createUserModal").modal('hide');
                                 }, 1000);
