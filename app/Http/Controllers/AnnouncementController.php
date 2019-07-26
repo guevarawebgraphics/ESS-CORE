@@ -117,17 +117,19 @@ class AnnouncementController extends Controller
                              'announcement.announcement_status',
                              'employer.business_name',
                              '.announcement.created_at')
+                             ->latest('announcement.created_at')
                             ->get();
          }
          if(auth()->user()->user_type_id === 3){
             $Announcement = DB::table('announcement')
-                ->select('announcement.id',
-                'announcement.announcement_title',
-                'announcement.announcement_description',
-                'announcement.announcement_status',
-                '.announcement.created_at')
-                ->where('announcement.created_by', '=', auth()->user()->id)
-                ->get();
+                            ->select('announcement.id',
+                            'announcement.announcement_title',
+                            'announcement.announcement_description',
+                            'announcement.announcement_status',
+                            '.announcement.created_at')
+                            ->where('announcement.created_by', '=', auth()->user()->id)
+                            ->latest('announcement.created_at')
+                            ->get();
          }
         
 
