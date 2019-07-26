@@ -111,6 +111,7 @@ class AccountController extends Controller
                          'user_type.type_name',
                          'users.AccountStatus',
                          'employer.account_id')
+                         ->latest('employer.created_at')
                         ->get();
         return view('Account.index', compact('Account'));
     }
@@ -126,6 +127,7 @@ class AccountController extends Controller
                         'employer.bir',
                         'user_type.type_name',
                         'employer.account_id')
+                        ->latest('employer.created_at')
                         ->get();
                         
         if($request->ajax()){
