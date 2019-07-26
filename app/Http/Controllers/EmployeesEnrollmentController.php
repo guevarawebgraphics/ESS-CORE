@@ -138,6 +138,7 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.province',
                                     'employee_personal_information.zipcode')
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
+                            ->latest('employer_and_employee.created_at')
                             ->get();
         /**
          * @ Employees Upload Template
@@ -189,6 +190,7 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.province',
                                     'employee_personal_information.zipcode')
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
+                            ->latest('employer_and_employee.created_at')
                             ->get();
 
         return view('employer_modules.employees_enrollment.table.encodetable')->with('employee_info', $employee_info);
@@ -397,7 +399,7 @@ class EmployeesEnrollmentController extends Controller
                 'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
             ];
             $this->validate($request, [
-                'employee_no' => 'required|min:5',
+                'employee_no' => 'required|min:5|numeric',
                 'position' => 'required|min:2',
                 'department' => 'required|min:2',
                 'lastname' => 'required|min:1',
@@ -665,7 +667,7 @@ class EmployeesEnrollmentController extends Controller
             'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
         ];
         $this->validate($request, [
-            'employee_no' => 'required|min:5|unique:employee,employee_no,'.$request->input('employee_id'),
+            'employee_no' => 'required|numeric|min:5|unique:employee,employee_no,'.$request->input('employee_id'),
             'position' => 'required|min:2',
             'department' => 'required|min:2',
             'lastname' => 'required|min:1',
@@ -733,6 +735,7 @@ class EmployeesEnrollmentController extends Controller
         DB::table('employee')
             ->where('id', '=', $request->input('employee_id'))
             ->update(array(
+                'employee_no' => $request->input('employee_no'),
                 'position' => $request->input('position'),
                 'department' => $request->input('department'),             
                 'enrollment_date' => $enrollment_date,           

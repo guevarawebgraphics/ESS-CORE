@@ -93,7 +93,7 @@
 <!-- Modal For Change Status -->
 <div class="modal fade" id="csModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+      <div class="modal-content card-info card-outline">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" >Change Status</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -122,7 +122,7 @@
   <!-- Modal For Upload Employee -->
 <div class="modal fade" id="UploadEmployees" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
+          <div class="modal-content card-info card-outline">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel" >Upload Employees</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -172,7 +172,8 @@
                 // "searching": false,
                 "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                 "paging": true,
-                "pageLength": 10000,
+                "pageLength": 10,
+                "ordering": false,
                 scrollY: 500,
                 //  scrollX: true,
                 "autoWidth": true,
