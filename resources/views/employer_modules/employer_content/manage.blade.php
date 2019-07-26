@@ -38,7 +38,7 @@
                 </div>
             </div>
     
-            <div id="table_employercontent" style="position: relative; overflow: auto; height: 500px; width: 100%;">
+            <div id="table_employercontent" style="position: relative; overflow: auto; min-height: 870.141px;; width: 100%;">
                 @include("employer_modules.employer_content.tablemanage")    
             </div>                                                              
         </div>              
@@ -48,7 +48,7 @@
 <!-- Add Content Modal -->
 <div class="modal fade" id="AddContentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content card-info card-outline">
         <div class="modal-header">
             <h5 class="modal-title" id="title_modal"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -104,14 +104,13 @@
                         // "searching": false,
                         "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                         "paging": true,
-                        "pageLength": 10000,
+                        "pageLength": 10,
                         "ordering":false,
-                        scrollY: 300,
+                        scrollY: 500,
                         //  scrollX: true,
                         "autoWidth": true,
                         lengthChange: false,
-                        responsive: true,
-                        "order": [[0, "desc"]]
+                        responsive: true
                     }); 
                     $("#searchbox").on("keyup search input paste cut", function () {
                         table.search(this.value).draw();
@@ -124,14 +123,13 @@
           // "searching": false,
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
-          "pageLength": 10000,
+          "pageLength": 10,
           "ordering":false,
-           scrollY: 300,
+           scrollY: 500,
           //  scrollX: true,
           "autoWidth": true,
           lengthChange: false,
-          responsive: true,
-          "order": [[0, "desc"]]
+          responsive: true
         });
      
         
@@ -299,7 +297,8 @@
             $('#content_description').removeClass('is-invalid');
             $('#error_content_description').html('');
 
-            $('#SaveContent').html('Save Content '+' <i id="spinner_content" class=""> '); 
+            $('#SaveContent').html('Save Content '+' <i id="spinner_content" class=""> ');  
+            $('#title_modal').html('Create Content');
         });
 
         //Show edit
@@ -319,6 +318,8 @@
             $('#error_content_title').html('');
             $('#content_description').removeClass('is-invalid');
             $('#error_content_description').html('');
+             
+            $('#title_modal').html('Edit Content');
 
             $.ajax({
                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
