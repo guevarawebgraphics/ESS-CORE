@@ -93,6 +93,7 @@ class PayrollManagementController extends Controller
                                  'created_at',
                                  'updated_by',
                                  'updated_at')
+                                 ->latest('created_at')
                                  ->get();
         return Response::json($payrollregister);
     }
