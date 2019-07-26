@@ -80,7 +80,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>  
-            <button type="button" class="btn btn-outline-primary btn-flat" id="SaveContent">Save Content <i id="spinner" class="">  </button> 
+            <button type="button" class="btn btn-outline-primary btn-flat" id="SaveContent"> </button> 
         </div>    
     </div>
 </div>
@@ -142,12 +142,13 @@
         var editortwo = CKEDITOR.replace('content_description');
         CKFinder.setupCKEditor( editortwo );
         $(document).on("click", "#SaveContent", function(){ 
-            action_to_do = $("#action").val();
+            action_to_do = $("#action").val(); 
+            $('#SaveContent').attr('disabled',true);
             toastr.remove()
          
             //alert(action_to_do);
             //console.log("asa");
-            $("#spinner").addClass('fa fa-refresh fa-spin');
+            $("#spinner_content").addClass('fa fa-refresh fa-spin');
             content_title = $("#content_title").val();
           //  content_desc = $("#content_description").val();
 
@@ -156,13 +157,14 @@
               
                 $('#content_title').addClass('is-invalid');
                 $('#error_content_title').html('Content Title is Required'); 
-                spinnerTimout();
+                spinnerTimeoutEmployer()
+                $('#SaveContent').removeAttr("disabled");
             }
             else
             {
                 $('#content_title').removeClass('is-invalid');
                 $('#error_content_title').html(''); 
-                spinnerTimout();
+                spinnerTimeoutEmployer()
             }
 
             if(CKEDITOR.instances.content_description.getData()  == "")
@@ -170,7 +172,8 @@
           
                 $('#content_description').addClass('is-invalid');
                 $('#error_content_description').html('Content Description is Required');
-                spinnerTimout();
+                spinnerTimeoutEmployer()
+                $('#SaveContent').removeAttr("disabled");
             }
             else
             {
@@ -181,7 +184,8 @@
             if(content_title == "" && CKEDITOR.instances.content_description.getData()  == "")
             {
                 toastr.error('Error. Please Complete the fields', 'Error!');
-                spinnerTimout();
+                spinnerTimeoutEmployer()
+                $('#SaveContent').removeAttr("disabled");
 
             }
             
@@ -204,12 +208,12 @@
                         },           
                         success:function(data)
                         {                          
-                            toastr.success('Content Created Successfully', 'Success')
-                            $('#AddContentModal').modal('hide');
-                            refreshTable();
+                            toastr.success('Content Created Successfully', 'Success') 
                             setTimeout(function (){
-                                $("#spinner").removeClass('fa fa-refresh fa-spin');
-                            }, 300);    
+                                $('#AddContentModal').modal('hide');
+                            }, 1000);
+                            refreshTable(); 
+                            spinnerTimeoutEmployer()
 
                         },
                         error:function(data, status)
@@ -226,9 +230,7 @@
                                     $('#content_description').addClass('is-invalid');
                                     $('#error_content_description').html('Content Description is Required');
                                 }
-                                setTimeout(function (){
-                                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-                                }, 250);
+                                spinnerTimeoutEmployer()
                                 
                             });
                         }
@@ -251,10 +253,10 @@
                         success:function(data)
                         {                          
                             toastr.success('Content Updated Successfully', 'Success')
-                            $('#AddContentModal').modal('hide');
                             setTimeout(function (){
-                                $("#spinner").removeClass('fa fa-refresh fa-spin');
-                            }, 300);    
+                                $('#AddContentModal').modal('hide');
+                            }, 1000);
+                            spinnerTimeoutEmployer()   
                             refreshTable();                                                                  
                         },
                         error:function(data, status)
@@ -289,20 +291,34 @@
           //  $('#SaveContent').html('Save Content'); 
             CKEDITOR.instances.content_description.setData("");  
             $("#action").val("add");
-            $("#hidden_id").val("");  
-            
+            $("#hidden_id").val("");   
+
+            $('#SaveContent').removeAttr("disabled");
+            $('#content_title').removeClass('is-invalid');
+            $('#error_content_title').html('');
+            $('#content_description').removeClass('is-invalid');
+            $('#error_content_description').html('');
+
+            $('#SaveContent').html('Save Content '+' <i id="spinner_content" class=""> '); 
         });
 
         //Show edit
         $(document).on("click", ".content-edit", function(){
+            toastr.remove()
             $("#content_title").val(""); 
             $("#content_description").val("");
-            $('#SaveContent').html('Update Content');
+            $('#SaveContent').html('Update Content '+' <i id="spinner_content" class=""> ');
             $("#action").val("edit");
 
             var edit_id = $(this).data("add");
             //alert(edit_id);
             $('#AddContentModal').modal();
+            $('#SaveContent').removeAttr("disabled"); 
+
+            $('#content_title').removeClass('is-invalid');
+            $('#error_content_title').html('');
+            $('#content_description').removeClass('is-invalid');
+            $('#error_content_description').html('');
 
             $.ajax({
                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -317,17 +333,16 @@
                     $("#content_description").val(data[0].content_description);   
                     CKEDITOR.instances.content_description.setData(data[0].content_description);    
                     refreshTable();     
-                    setTimeout(function (){
-                                $("#spinner").removeClass('fa fa-refresh fa-spin');
-                                }, 300);                                                   
+                    spinnerTimeoutEmployer()                                                
                 }
             });
         });
 
         //delete content
-        $(document).on("click", ".content-delete", function(){
+        $(document).on("click", ".content-delete", function(){ 
+            toastr.remove()
             delete_id = $(this).data("add");
-            delete_data = delete_id.split("]]");
+            delete_data = delete_id.split("]]"); 
             swal({
                 title: "Delete this content?",
                 //text: "Your will not be able to recover this imaginary file!",
@@ -356,7 +371,8 @@
         });
 
         //post content
-        $(document).on("click", ".content-post", function(){
+        $(document).on("click", ".content-post", function(){ 
+            toastr.remove()
             post_id = $(this).data("add");
             post_data = post_id.split("]]");
             console.log(post_id);
@@ -380,9 +396,7 @@
                         {    
                             refreshTable();                                 
                             toastr.success('Content Posted Successfully', 'Success')     
-                            setTimeout(function (){
-                                $("#spinner").removeClass('fa fa-refresh fa-spin');
-                            }, 300);                                                                      
+                            spinnerTimeoutEmployer()                                                                  
                         }
                     });
                 }
@@ -391,10 +405,10 @@
 
     });      
     //spinner
-    function spinnerTimout(){
+    function spinnerTimeoutEmployer(){
         setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
-        }, 250);
+                    $("#spinner_content").removeClass('fa fa-refresh fa-spin');
+        }, 1000);
     }
 </script>
 @endsection
