@@ -604,7 +604,7 @@ $(document).ready(function (){
             spinnerTimout();
         }
         else if(isNaN($('#contact_phone').val())) {
-            $('#error_contact_phone').html('Contact Phone is Must be Number');
+            $('#error_contact_phone').html('Contact Phone  Must be Number');
             $('#error_contact_phone').attr('hidden', false);
             $('#contact_phone').addClass('is-invalid');
             spinnerTimout();
@@ -634,7 +634,7 @@ $(document).ready(function (){
             spinnerTimout();
         } 
         else if (isNaN($('#contact_mobile').val())){
-            $('#error_contact_mobile').html('Contact Mobile is Must Be Number');
+            $('#error_contact_mobile').html('Contact Mobile  Must Be Number');
             $('#error_contact_mobile').attr('hidden', false);
             $('#contact_mobile').addClass('is-invalid');
             spinnerTimout();
