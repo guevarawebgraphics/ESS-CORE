@@ -915,7 +915,7 @@ $(document).ready(function(){
     $(document).on("click", "#submit", function(){
         $('#formOverlay').addClass('overlay');
         $("#spinner").addClass('fa fa-refresh fa-spin');
-        
+        toastr.remove()
         //$("#employer_id").removeAttr("disabled");
 
         error = 0;

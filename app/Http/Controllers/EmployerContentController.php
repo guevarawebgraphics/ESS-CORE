@@ -73,13 +73,13 @@ class EmployerContentController extends Controller
     //show manage content
     public function manage()
     {   
-        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent");   
+        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent ORDER BY created_at DESC");   
         return view('employer_modules.employer_content.manage')->with('employer_content', $employer_content);
     }
     //refresh manage content
     public function refresh_manage()
     {
-        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent");
+        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent ORDER BY created_at DESC");
         return view('employer_modules.employer_content.tablemanage')->with('employer_content', $employer_content);
     }
     //create employer content
