@@ -176,7 +176,16 @@ class PayrollManagementController extends Controller
         $this->validate($request, [
             'id' => 'required'
         ]);
-        
+
+        $check_payroll_status = DB::table('payrollregister')
+                        ->where('id', '=', $request->input('id'))
+                        ->select('account_status')
+                        ->first();
+        /**
+         * @ Check if the Payrollregister is already Posted
+         * */
+        if($check_payroll_status->account_status == 0)
+        {
         /**
          * @ Send Email Payslip Notification Configuration
          * */
@@ -239,6 +248,13 @@ class PayrollManagementController extends Controller
                                 ->update(array(
                                     'account_status' => '1',
                                 ));
+        }
+        else{
+            return response()->json([
+                'error' => 500,
+                'message' => 'Already Posted'
+            ]);
+        }
      }
 
 }
