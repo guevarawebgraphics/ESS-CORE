@@ -105,7 +105,7 @@ elseif(Session::get('create_profile') == 'delete'){
                 <a href="/storage/Documents/templates/{{$employees_template->document_file}}" download>{{$employees_template->document_code}}<div class="float-left mr-3"><i class="fa fa-download"></i></div></a>
                 <input type="hidden" id="defaultfile" value="{{$employees_template->document_file}}">
             @endforeach
-		  <form id="upload_payroll" runat="server">
+		  <form class="payroll_form" id="upload_payroll" runat="server">
 			  @csrf
 			  {{-- <div class="col-md-4 offset-md-4 mb-3">
 					<img class="img-thumbnail" id="image_preview" alt="your image" />
@@ -149,11 +149,11 @@ elseif(Session::get('create_profile') == 'delete'){
 				</div>
 					
 			</div>
-		  
+        
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-outline-primary btn-flat" id="Upload" data-file=""><span><i class="fa fa-upload"></i></span> Upload <i id="spinner" class=""></button>
+		  <button type="submit" class="btn btn-outline-primary btn-flat btn-payroll-upload" id="Upload" data-file=""><span><i class="fa fa-upload"></i></span> Upload <i id="spinner_upload_payroll" class=""></button>
 		</div>
 		</form>
 	  </div>
@@ -188,50 +188,61 @@ elseif(Session::get('create_profile') == 'delete'){
         });
       }
 
+      $('#upload_payroll_register').click(function(e){
+        e.preventDefault();
+        $('#upload_payroll_register_modal').modal('show');
+        $('.btn-payroll-upload').removeAttr('disabled');
+        $('.btn-payroll-upload').attr('type', 'submit');
+      });
+
        /*
         * Upload Payroll Register
         */
        $('#upload_payroll').submit(function (e){
-        $("#spinner").addClass('fa fa-refresh fa-spin');
+            $('.btn-payroll-upload').attr('disabled', true);
             toastr.remove()
            console.log("TEST");
-           $('#upload_payroll_register_modal').modal('show');
            e.preventDefault();
             var formData = new FormData($(this)[0]);
-            var file = $("#payroll_file").val();  
+            var file = $("#payroll_file").val(); 
              if(fileValidate()==false) 
             {
                 toastr.error("Please upload appropriate template"); 
                 setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
+                            $('.btn-payroll-upload').removeAttr('disabled');
                         }, 250);
             } 
             if($('#batch_no').val()=="")
             {
                 toastr.error("Batch no is required");  
                 setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
+                            $('.btn-payroll-upload').removeAttr('disabled');
                         }, 250);
             }
             if($('#payroll_schedule').val()=="")
             {
                 toastr.error("Payroll schedule is required");  
                 setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
+                            $('.btn-payroll-upload').removeAttr('disabled');
                         }, 250);
             }
             if($('#period_from').val()=="")
             {
                 toastr.error("Period From is required");  
                 setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
+                            $('.btn-payroll-upload').removeAttr('disabled');
                         }, 250);
             }
             if($('#period_to').val()=="")
             {
                 toastr.error("Period To is required");  
                 setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
+                            $('.btn-payroll-upload').removeAttr('disabled');
                         }, 250);
             }
             if($('#batch_no').val()=="" || $('#payroll_schedule').val()=="" || fileValidate()==false) 
@@ -251,6 +262,17 @@ elseif(Session::get('create_profile') == 'delete'){
                 cache: false,
                 contentType: false,
                 processData: false,
+                global: false,
+                beforeSend: function(){
+                    $("#spinner_upload_payroll").addClass('fa fa-refresh fa-spin'); 
+                    $('.btn-payroll-upload').removeAttr('type');
+                },
+                complete: function() {
+                    setTimeout(function (){
+                            $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
+                    }, 250);
+                    $('#Upload').removeAttr('disabled');
+                },
                 success: function() {
                     toastr.success('Payroll Register Uploaded!')
                     console.log("Success");
@@ -260,16 +282,18 @@ elseif(Session::get('create_profile') == 'delete'){
                     //Close Modal
                     //$('#upload_payroll_register_modal').modal('hide');
                     setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
                         }, 250);
                     // Hide Modal
                     setTimeout(function (){
                         $('#upload_payroll_register_modal').modal('hide');
-                    }, 550);
+                        $('#upload_payroll')[0].reset();
+                    }, 400);
                 },
                 error: function(data, status){
+                    $('.btn-payroll-upload').removeAttr('disabled');
                     setTimeout(function (){
-                                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                                $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
                     }, 250);
                     //console.log("ERROR");
                     if(data.status === 422) {
@@ -327,6 +351,10 @@ elseif(Session::get('create_profile') == 'delete'){
                             '_token': $('input[name=_token]').val(),
                             id: id,
                         },
+                        global: false,
+                        beforeSend: function(){
+                            $('#post_payroll_register').attr('disabled', true);
+                        },
                         success: function(data) {
                             toastr.success('Payroll Successfully Posted')
                             $("#payroll_register_table").DataTable().destroy();
@@ -374,7 +402,7 @@ elseif(Session::get('create_profile') == 'delete'){
 
               }
                 $('#showdata').html(html);
-              console.log("TEST");
+              //console.log("TEST");
             },
             error: function(){
               console.log('Could not get data from database');
