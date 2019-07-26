@@ -156,7 +156,7 @@ elseif(Session::get('send_announcement') == 'delete'){
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary btn-flat" id="CancelAnnouncement" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-outline-primary btn-flat" id="SaveAnnoucement" {{$add}}>Save <i id="spinner" class=""></button>
+            <button type="button" class="btn btn-outline-primary btn-flat" id="SaveAnnoucement" {{$add}}>Save <i id="spinner_add_announcement" class=""></button>
         </div>
     
       </div>
@@ -277,6 +277,7 @@ $(document).ready(function (){
 
     /*Save Announcement*/
     $('#SaveAnnoucement').click(function (e){
+        $("#spinner_add_announcement").addClass('fa fa-refresh fa-spin');
         $("#SaveAnnoucement").attr('disabled', true);
         $('#CancelAnnouncement').attr('disabled', true);
         var url = $('#annoucement_form').attr('action');
@@ -285,7 +286,6 @@ $(document).ready(function (){
             employer_selected.push($(this).val());
         });
         //var data = $('#annoucement_form').serialize();
-        $("#spinner").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
         toastr.remove();
         $.ajaxSetup({
@@ -297,12 +297,14 @@ $(document).ready(function (){
             $('#announcement_title').addClass('is-invalid');
             $('#error_announcement_title').html('Annoucement Title is Required');
             $("#SaveAnnoucement").removeAttr('disabled');
+            $('#CancelAnnouncement').removeAttr('disabled');
             spinnerTimout();
         }
         if(CKEDITOR.instances.announcement_description.getData() == ""){
             $('#announcement_description').addClass('is-invalid');
             $('#error_annoucement_description').html('Annoucement Description is Required');
             $("#SaveAnnoucement").removeAttr('disabled');
+            $('#CancelAnnouncement').removeAttr('disabled');
             spinnerTimout();
         }
         // if($('#announcement_type').val() == ""){
@@ -339,15 +341,16 @@ $(document).ready(function (){
                         // Display a success toast, with a title
                         toastr.success('Announcement Saved Successfully', 'Success')
                         setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_add_announcement").removeClass('fa fa-refresh fa-spin');
                         }, 1500);
                     },
                     error: function(data, status){
                         //console.log(employer_selected);
                         $("#SaveAnnoucement").removeAttr('disabled');
+                        $("#SaveAnnoucement").removeAttr('disabled');
                         toastr.error('Error. Please Complete the fields', 'Error!')
                         setTimeout(function (){
-                            $("#spinner").removeClass('fa fa-refresh fa-spin');
+                            $("#spinner_add_announcement").removeClass('fa fa-refresh fa-spin');
                         }, 250);
                         /*Add Error Field*/
                         var errors = $.parseJSON(data.responseText);
@@ -356,11 +359,13 @@ $(document).ready(function (){
                                 $('#announcement_title').addClass('is-invalid');
                                 $('#error_announcement_title').html('Annoucement Title is Required');
                                 $("#SaveAnnoucement").removeAttr('disabled');
+                                $('#CancelAnnouncement').removeAttr('disabled');
                             }
                             if(errors.announcement_description){
                                 $('#announcement_description').addClass('is-invalid');
                                 $('#error_annoucement_description').html('Annoucement Description is Required');
                                 $("#SaveAnnoucement").removeAttr('disabled');
+                                $('#CancelAnnouncement').removeAttr('disabled');
                             }
                             // if(errors.announcement_type){
                             //     $('#announcement_type').addClass('is-invalid');
@@ -386,6 +391,8 @@ $(document).ready(function (){
         $('#error_announcement_title').remove();
         $('#announcement_description').removeClass('is-invalid');
         $('#error_annoucement_description').remove();
+        $("#SaveAnnoucement").removeAttr('disabled');
+        $('#CancelAnnouncement').removeAttr('disabled');
         toastr.remove()
         $.ajax({
             type: 'ajax',
@@ -561,7 +568,7 @@ $(document).ready(function (){
 
     function spinnerTimout(){
         setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    $("#spinner_add_announcement").removeClass('fa fa-refresh fa-spin');
         }, 250);
     }
 
