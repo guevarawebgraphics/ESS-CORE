@@ -65,6 +65,8 @@
 	@if(Auth::check())
 	<script src="{{ asset('js/scripts.js') }}"></script> 
 	<script src="{{ asset('js/scripts-j.js') }}"></script>
+	<!--Upload Image-->
+	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
 	@endif
     
 </head>
@@ -126,8 +128,6 @@
 	{{-- Custom Sript --}}
 	<!--IOnicons Script-->
 	{{-- <script src="{{ asset('Ionicons/ionicons.js') }}"></script> --}}
-	<!--Upload Image-->
-	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
 	{{-- Pusher --}}
 	<script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     @include('inc/footer')

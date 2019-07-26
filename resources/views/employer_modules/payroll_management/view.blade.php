@@ -93,7 +93,7 @@ elseif(Session::get('create_profile') == 'delete'){
 <!-- Modal For Upload Profile Picture-->
 <div class="modal fade" id="upload_payroll_register_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
+	  <div class="modal-content card-info card-outline">
 		<div class="modal-header">
 		  <h5 class="modal-title" id="exampleModalLabel">Upload Payroll</h5>
 		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -143,8 +143,8 @@ elseif(Session::get('create_profile') == 'delete'){
 						<span class="fa fa-folder input-group-text"></span>
 					</div>
 					<div class="custom-file">
-						<input type="file" class="custom-file-input" id="payroll_file" name="file" multiple onchange="processSelectedFilesProfileImage(this)">
-						<label class="custom-file-label" for="validatedCustomFile" id="profile_image_filename">Choose file...</label>
+						<input type="file" class="custom-file-input" id="payroll_file" name="file" multiple onchange="processSelectedFilesPayrollFile(this)">
+						<label class="custom-file-label" for="validatedCustomFile" id="payroll_filename">Choose file...</label>
 					</div>
 				</div>
 					
@@ -160,6 +160,21 @@ elseif(Session::get('create_profile') == 'delete'){
 	</div>
   </div>
 <script type="text/javascript">
+    /*Function to get Filename*/
+    function processSelectedFilesPayrollFile(fileInput) {
+            var files = fileInput.files;
+
+            for (var i = 0; i < files.length; i++) {
+                if(files[i].name.length > 50){
+                    $('#payroll_filename').html(files[i].name.substr(0,50));
+                }
+                else {
+                    $('#payroll_filename').html(files[i].name);
+                }
+                $("#Upload").attr('data-image',files[i].name.toLowerCase()); 
+                $("#Upload").attr('data-file',files[i].name);
+            } 
+        }
     $(document).ready(function () {
         /*
          * Functions
@@ -173,14 +188,14 @@ elseif(Session::get('create_profile') == 'delete'){
           // "searching": false,
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
-          "pageLength": 10000,
+          "pageLength": 10,
            scrollY: 500,
           //  scrollX: true,
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [[4, "asc"]]
+          "order": [[4, "desc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {
