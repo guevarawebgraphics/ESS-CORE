@@ -188,7 +188,7 @@ elseif(Session::get('send_announcement') == 'delete'){
     <!-- Post Announcement -->
 <div class="modal fade" id="PostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
+          <div class="modal-content card-info card-outline">
             <div class="modal-header">
               <h5 class="modal-title" id="title_modal"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -233,14 +233,14 @@ $(document).ready(function (){
             // "searching": false,
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
-            "pageLength": 10000,
+            "pageLength": 10,
             scrollY: 500,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
             responsive: true,
             fixedColumns: true,
-            "order": [[0, "desc"]]
+             "order": ({{(auth()->user()->user_type_id)}}) == 1 ? [[0, "desc"]] : [[2, "desc"]]
         });
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {

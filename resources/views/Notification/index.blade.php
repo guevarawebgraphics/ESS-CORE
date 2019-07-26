@@ -102,7 +102,7 @@ elseif(Session::get('system_notifications') == 'delete'){
     <!-- Add System Notification -->
     <div class="modal fade" id="AddNotificationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:hidden;">
         <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content modalcontent">
+          <div class="modal-content card-info card-outline">
             <div class="modal-header">
               <h5 class="modal-title" id="title_modal"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -183,7 +183,7 @@ elseif(Session::get('system_notifications') == 'delete'){
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary btn-flat" id="AddNotification">Save <i id="spinner" class=""></button>
+                <button type="button" class="btn btn-outline-primary btn-flat" id="AddNotification">Save <i id="spinner_add" class=""></button>
             </div>
           </div>
         </div>
@@ -235,14 +235,14 @@ $(document).ready(function (){
             // "searching": false,
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
-            "pageLength": 10000,
+            "pageLength": 10,
             scrollY: 500,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
             responsive: true,
             fixedColumns: true,
-            "order": [[0, "desc"]]
+            //"order": [[0, "desc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {
@@ -288,10 +288,10 @@ $(document).ready(function (){
 
     // Store Notification
     $('#AddNotification').click(function () {
+        $("#spinner_add").addClass('fa fa-refresh fa-spin');
         $('#AddNotification').attr('disabled', true);
         var url = $('#notification_form').attr('action');
         var data = $('#notification_form');
-        $("#spinner").addClass('fa fa-refresh fa-spin');
         toastr.remove()
         $.ajaxSetup({
             headers: {
@@ -301,27 +301,32 @@ $(document).ready(function (){
         if($('#employer_id').val() == ""){
             $('#employer_id').addClass('is-invalid');
             $('#error_employer_id').html('Employer Field is Required');
+            $('#AddNotification').removeAttr('disabled');
             spinnerTimout();
         }
         if($('#notification_title').val() == ""){
             $('#notification_title').addClass('is-invalid');
             $('#error_notification_title').html('Notification Field is Required');
+            $('#AddNotification').removeAttr('disabled');
             spinnerTimout();
         }
         //if(notification_message.getData() == ""){
         if(CKEDITOR.instances.notification_message.getData() == ""){
             $('#notification_message').addClass('is-invalid');
             $('#error_notification_message').html('Notification Message is Required ');
+            $('#AddNotification').removeAttr('disabled');
             spinnerTimout();
         }
         if($('#message_type_id').val()== ""){
             $('#message_type_id').addClass('is-invalid');
             $('#error_message_type_id').html('Message Type is Required ');
+            $('#AddNotification').removeAttr('disabled');
             spinnerTimout();
         }
         if($('#notification_type').val()== ""){
             $('#notification_type').addClass('is-invalid');
             $('#error_notification_type').html('Notification Type is Required ');
+            $('#AddNotification').removeAttr('disabled');
             spinnerTimout();
         }
         
@@ -357,7 +362,8 @@ $(document).ready(function (){
                     // Display a success toast, with a title
                     toastr.success('Notification Saved Successfully', 'Success')
                     setTimeout(function (){
-                        $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        $("#spinner_add").removeClass('fa fa-refresh fa-spin');
+                        $('#AddNotification').removeAttr('disabled');
                     }, 1000);
                     // Show All Data
                     showAllNotification();
@@ -366,7 +372,7 @@ $(document).ready(function (){
                 error: function (data, status){
                     toastr.error('Error. Please Choose a Option', 'Error!')
                     setTimeout(function (){
-                        $("#spinner").removeClass('fa fa-refresh fa-spin');
+                        $("#spinner_add").removeClass('fa fa-refresh fa-spin');
                     }, 250);
                     /*Add Error Field*/
                     var errors = $.parseJSON(data.responseText);
@@ -375,25 +381,30 @@ $(document).ready(function (){
                         {
                             $('#notification_title').addClass('is-invalid');
                             $('#error_notification_title').html('Notification Title is Required');
+                            $('#AddNotification').removeAttr('disabled');
                         }
                         if(errors.notification_message)
                         {
                             $('#notification_message').addClass('is-invalid');
                             $('#error_notification_message').html('Notification Message is Required ');
+                            $('#AddNotification').removeAttr('disabled');
                         }
                         if(errors.notification_type)
                         {
                             $('#notification_type').addClass('is-invalid');
                             $('#error_notification_type').html('Notification Type is Required');
+                            $('#AddNotification').removeAttr('disabled');
                         }
                         if(errors.employer_id)
                         {
                             $('#employer_id').addClass('is-invalid');
                             $('#error_employer_id').html('Employer Field is Required');
+                            $('#AddNotification').removeAttr('disabled');
                         }
                         if(errors.message_type_id){
                             $('#message_type_id').addClass('is-invalid');
                             $('#error_message_type_id').html('Message Type Field is Required');
+                            $('#AddNotification').removeAttr('disabled');
                         }
                     });
                     
@@ -537,7 +548,7 @@ $(document).ready(function (){
 
     function spinnerTimout(){
         setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    $("#spinner_add").removeClass('fa fa-refresh fa-spin');
         }, 250);
     }
 });
