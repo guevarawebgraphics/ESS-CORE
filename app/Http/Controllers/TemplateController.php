@@ -96,6 +96,7 @@ manage_docs') == 'delete'){
                             'template.document_description',
                             'template.document_file',
                             'employer.business_name')
+                            ->latest('template.created_at')
                             ->get();
         return json_encode($Template);
     }

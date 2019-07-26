@@ -91,7 +91,7 @@ class ManageUserController extends Controller
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
         if(auth()->user()->user_type_for == 1)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 ORDER BY a.created_at DESC");
             return view('admin_modules.createuser')->with('users', $users);
         }
         else if (auth()->user()->user_type_for == 2)
@@ -179,7 +179,7 @@ class ManageUserController extends Controller
         // $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE a.AccountStatus = '1' AND a.created_by = 'default' OR a.created_by = '".auth()->user()->id."' "); //--> meron dapat diton g where clause para ma filter kung ano lang ang dapat nyang ishow
         if(auth()->user()->user_type_for == 1)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 ORDER BY a.created_at DESC");
             return view('admin_modules.table.tableuser')->with('users', $users);
         }
         else if (auth()->user()->user_type_for == 2)
