@@ -51,7 +51,7 @@ $delete = 'disabled';
 @endphp
 {{-- {{Session::get("employer_id")}} --}}
 <div class="container-fluid">
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-user-o"></i> Create User</h3>
         </div>
@@ -83,7 +83,7 @@ $delete = 'disabled';
 <div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content card-info card-outline">
+        <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="UserTitle">Create User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -231,7 +231,7 @@ $delete = 'disabled';
 <div class="modal fade bd-example-modal-lg" id="resetPasswordModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content card-info card-outline">
+        <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="UserTitle">Reset Password</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -305,7 +305,7 @@ $delete = 'disabled';
 <!-- Modal For Change Status -->
 <div class="modal fade" id="csModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content card-info card-outline">
+      <div class="modal-content card-custom-blue card-outline">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" >Change Status</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">

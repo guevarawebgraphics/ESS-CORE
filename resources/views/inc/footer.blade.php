@@ -1,4 +1,4 @@
-<footer>
+<footer id="footer">
       <!-- Show Announcement -->
   <div class="modal fade" id="Announcement_to_notification_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

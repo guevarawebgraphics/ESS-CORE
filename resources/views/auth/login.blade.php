@@ -4,12 +4,15 @@
 <div class="container">
 
     <div class="row justify-content-center text-center" style="margin-top: 20%;">
-        <div class="col-md-7">
+        {{-- <div class="col-md-7">
             <h2 class="text-white">Company Logo Here</h2>
-        </div>
+        </div> --}}
     </div> 
     
-    <div class="row justify-content-center">       
+    <div class="row justify-content-center"> 
+        <div class="col-md-7" id="company_logo">
+            <h2 class="text-white text-center">ESS Logo Here</h2>
+        </div>      
         <div class="col-md-5">
             <div class="card card-outline shadow p-3 mb-5 bg-white rounded">
                 <div class="card-header text-center text-black"><!--{{ __('Login') }}--> ESS Login</div>
@@ -24,7 +27,7 @@
                                     <div class="input-group-append">
                                         <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
                                     </div>
-                                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username" required autofocus>
+                                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username / ESSID" required autofocus>
                                 </div>
                                 
                                 @if ($errors->has('username'))
