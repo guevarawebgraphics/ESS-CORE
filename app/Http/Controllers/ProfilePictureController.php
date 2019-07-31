@@ -31,48 +31,7 @@ class ProfilePictureController extends Controller
         $this->middleware('revalidate'); // Revalidate back history Security For Back Button
     }
     
-    public function UploadPicture(Request $request)
-    {
-        /**
-         * @ Validate Images
-         * */
-        $this->validate($request, [
-            'profile_picture' => 'mimes:jpeg,png,jpg|dimensions:min_width=501,min_height=500|max:2048'
-        ]);
-
-        // Handle File Upload
-        if($request->hasFile('profile_picture')){
-            // Get filename with the extension
-            $filenameWithExt_profile_picture = $request->file('profile_picture')->getClientOriginalName();
-
-            // Get just filename
-            $filename_profile_picture = pathinfo($filenameWithExt_profile_picture, PATHINFO_FILENAME);
-
-            // Get just ext
-            $extension_profile_picture = $request->file('profile_picture')->getClientOriginalExtension();
-
-            // Filename to store
-            $fileNameToStore_profile_picture = $filename_profile_picture.'_'.time().'_'.'profile_picture'.'.'.$extension_profile_picture;
-
-            // Upload Image
-            $path_profile_picture = $request->file('profile_picture')->storeAs('public/profile_picture', $fileNameToStore_profile_picture);
-
-            /**
-             * @ Create User Profile Picture
-             **/
-            DB::table('user_picture')->insert([
-                'user_id' => auth()->user()->id,
-                'employer_id' => (auth()->user()->user_type_id == 3) ? auth()->user()->employer_id : 0,
-                'profile_picture' => $fileNameToStore_profile_picture,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]);
- 
-        }
-
-    
-        return response()->json();
-    }
+   
     public function UpdatePicture(Request $request)
     {
          /**

@@ -903,7 +903,7 @@ $delete = 'disabled';
                 spinnerTimoutCreateUser()
             }
 
-            if (password != con_newpassword && password == "" && password.length < 9 && con_newpassword == "" && con_newpassword.length < 9) {
+            if (password != con_newpassword) {
                 $('#newpassword').addClass("is-invalid");
                 $('#newpassword-confirm').addClass("is-invalid");
                 $('#error-no-repass-reset').removeAttr("hidden"); 
@@ -915,13 +915,6 @@ $delete = 'disabled';
                 $('#no-repass-resett').attr("hidden", true);
             }
             if (password != "" && con_newpassword != "" && password.length >= 9 && password == con_newpassword){
-                if(password.length < 5){
-                    $('#newpassword').removeClass("is-invalid");
-                    $('#error-no-pass-reset').attr("hidden", true);
-                    spinnerTimoutCreateUser()
-                    $("#btnReset").removeAttr('disabled');
-                }
-                else {
                     swal({
                         title: "Reset Password?",
                         //text: "Your will not be able to recover this imaginary file!",
@@ -953,7 +946,7 @@ $delete = 'disabled';
                                 } 
                           
                 );
-                }
+               
             }
         });
 

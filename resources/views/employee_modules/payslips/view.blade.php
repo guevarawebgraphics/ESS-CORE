@@ -18,7 +18,7 @@
 
 @section('content')
 <div class="container-fluid">
-        <div class="card">
+        <div class="card card-info card-outline">
             <div class="card-header">
                 <center><strong>Payslips</strong></center>
             </div>
@@ -32,19 +32,19 @@
                                           <th>
                                                 <ul class="list-unstyled float-left" >
                                                         <li> 
-                                                               Employee's Payslip
+                                                            <p class="float-left"> Employee's Payslip </p
                                                         </li>
                                                         <li> 
-                                                             <h3 style="text-transform: capitalize;color:#3C8DBC;">   {{$information[0]->firstname}} {{$information[0]->middlename}} {{$information[0]->lastname}}</h3>
+                                                             <h3 style="text-transform: capitalize;color:#3C8DBC;" class="float-left">   {{$information[0]->firstname}} {{$information[0]->middlename}} {{$information[0]->lastname}}</h3>
                                                         </li>
                                                         <li> 
-                                                                <p class="text-muted"> Employment Status:  {{$information[0]->employment_status}}  </p>
+                                                                <p class="text-muted float-left"> Employment Status:  {{$information[0]->employment_status}}  </p>
                                                         </li> 
                                                         <li> 
-                                                          <p class="text-muted"> Department: {{$information[0]->department}}  </p> 
+                                                          <p class="text-muted float-left"> Department: {{$information[0]->department}}  </p> 
                                                         </li>
                                                         <li> 
-                                                          <p class="text-muted"> Position: {{$information[0]->position}}  </p> 
+                                                          <p class="text-muted float-left"> Position: {{$information[0]->position}}  </p> 
                                                         </li>
 
                                                   </li>
