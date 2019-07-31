@@ -63,7 +63,6 @@ $(document).ready(function (){
                 toastr.remove() 
                 $("#Upload").attr("disabled",true);
                 $('#spinner').addClass('fa fa-refresh fa-spin');
-                profile_to_do = $('#data_to_do').val(); 
                 value_image = $("#Upload").attr('data-image');
                 extension_checker = value_image.substr( (value_image.lastIndexOf('.') +1));
                 
@@ -77,53 +76,7 @@ $(document).ready(function (){
                 } 
                 if(extension_checker == "jpg" || extension_checker == "jpeg" || extension_checker == "png")
                 {
-                        if(profile_to_do === "add")
-                        {
-                          spinnerTimout()
-                          e.preventDefault();
-                          toastr.remove()
-                          var formData = new FormData($(this)[0]);
-                          $.ajaxSetup({
-                              headers: {
-                                  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                              }
-                          });
-                          $.ajaxSetup({
-                            headers: {
-                              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                            }
-                          });
-                                      $.ajax({
-                                          url: '/ProfilePicture/UploadPicture',
-                                          method: 'POST',
-                                          async: false,
-                                          dataType: 'json',
-                                          data: formData,
-                                          cache: false,
-                                          contentType: false,
-                                          enctype: 'multipart/form-data',
-                                          processData: false,
-                                          success: function(data){
-                                            toastr.success('Picture Uploaded Successfully', 'Success') 
-                                            get_profile_picture()  
-                                            get_profile_picture_settings()
-                                            get_profile_picture_refresh()
-                                            console.log("UPLOADED");
-                                            spinnerTimout()
-                                            setTimeout(function (){
-                                              $("#upload_profile_picture").modal('hide');
-                                             }, 1000);
-                                                                  
-                                          },
-                                          error: function(data){
-                                            console.log("ERROR");
-                                          }
-                                     
-                                      });
-                                                   
-                          }
-                  else
-                          {
+
                           e.preventDefault();
                           toastr.remove()
                           var formData = new FormData($(this)[0]);
@@ -151,7 +104,7 @@ $(document).ready(function (){
                               success: function(data){
                                 toastr.success('Picture Updated Successfully', 'Success') 
                                 console.log("UPLOADED");
-                                get_profile_picture()  
+                            //    get_profile_picture()  
                                 get_profile_picture_settings() 
                                 get_profile_picture_refresh()
                                 spinnerTimout() 
@@ -161,12 +114,14 @@ $(document).ready(function (){
                              
                               },
                               error: function(data){
-                                console.log("ERROR");
+                                console.log("ERROR"); 
+                                $("#Upload").removeAttr("disabled"); 
+                                spinnerTimout() 
                               }
                               
                           });
                                      
-                          }
+                          
                 }
                 else {
 
@@ -211,11 +166,11 @@ $(document).ready(function (){
             }
           });
         } 
-        get_profile_picture()
+      //  get_profile_picture()
         /**
          * @ Get Profile Picture
          * */
-        function get_profile_picture(){
+     /*   function get_profile_picture(){
           $.ajax({
             type: 'GET',
             url: '/ProfilePicture/get_profile_picture',
@@ -238,7 +193,7 @@ $(document).ready(function (){
             }
           });
         }
-        
+       */ 
     function spinnerTimout(){
       setTimeout(function (){
                   $("#spinner").removeClass('fa fa-refresh fa-spin');
