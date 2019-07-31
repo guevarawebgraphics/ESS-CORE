@@ -237,6 +237,7 @@ class RegisterController extends Controller
                 'user_id' => $user->id,
                 'employer_id' => $data['cmbEmployer'],
                 'profile_picture' => 'ESS_male1.png',
+                'changed_status' => 0,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
              ]);
