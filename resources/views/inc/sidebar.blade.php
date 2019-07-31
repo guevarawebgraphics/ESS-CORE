@@ -515,7 +515,6 @@
 						<span class="fa fa-folder input-group-text"></span>
 					</div>
 					<div class="custom-file"> 
-						<input type="hidden" id="data_to_do" value="">
 						<input type="file" class="custom-file-input" id="profile_picture" name="profile_picture" multiple onchange="processSelectedFilesProfileImage(this)" >
 						<label class="custom-file-label" for="validatedCustomFile" id="profile_image_filename">Choose file...</label>
 					</div>
@@ -526,7 +525,7 @@
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-primary" data-image="empty" id="Upload"><span><i class="fa fa-upload"></i></span> Upload <i id="spinner" class=""></i></button>
+		  <button type="submit" class="btn btn-primary" data-image="empty" id="Upload"><span><i class="fa fa-upload"></i></span> Update <i id="spinner" class=""></i></button>
 		</div>
 		</form>
 	  </div>

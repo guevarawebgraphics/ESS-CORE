@@ -389,7 +389,7 @@ elseif(Session::get('create_profile') == 'delete'){
         </form>
         <!-- Loading (remove the following to stop the loading)-->
         <div class="" id="formOverlay">
-            <i class="" id="spinner"></i>
+            <i id="spinnercreate" class=""></i>
           </div>
           <!-- end loading -->
       </div>
@@ -539,7 +539,7 @@ $(document).ready(function (){
     /*Add Account*/
     $('#AccountForm').submit(function (e){
         $('#formOverlay').addClass('overlay');
-        $("#spinner").addClass('fa fa-refresh fa-spin');
+        $("#spinnercreate").addClass('fa fa-refresh fa-spin');
         e.preventDefault();
         RemoveErrors();
         toastr.remove();
@@ -975,7 +975,7 @@ $(document).ready(function (){
     /*Function For Spinner*/
     function spinnerTimout(){
         setTimeout(function (){
-            $("#spinner").removeClass('fa fa-refresh fa-spin');
+            $("#spinnercreate").removeClass('fa fa-refresh fa-spin');
             $('#formOverlay').removeClass('overlay');
         }, 250);
     }
