@@ -144,123 +144,42 @@ class AnnouncementController extends Controller
         
      }
 
-     public function get_all_announcement_to_notification(Request $request){
-         /*Announcement for Admin*/
-        if(auth()->user()->user_type_id === 1){
-            // $Announcement = DB::table('announcement')
-            //                 ->join('employer', 'employer.id', '=', 'announcement.account_id')
-            //                 //->join('user_type', 'announcement.announcement_type', '=', 'user_type.id')
-            //                 ->select('announcement.id',
-            //                  'announcement.announcement_title',
-            //                  'announcement.announcement_description',
-            //                  'announcement.announcement_status',
-            //                  //'announcement.announcement_type',
-            //                  'employer.business_name',
-            //                  ////'user_type.type_name',
-            //                  //'user_type.id as user_type_id',
-            //                  'announcement.created_at',
-            //                  'announcement.updated_at')
-            //                  ->orderBy('announcement.created_at','desc')
-            //                  ->whereNotIn('announcement.account_id', auth()->user()->id)
-            //                 ->get();
-            if(auth()->user()->user_type_id == 1){
-                return abort(200);
-            }                  
-         }
-         /*Announcement For Employer*/
-         if(auth()->user()->user_type_id === 3){
-            $Announcement = DB::table('announcement')
-                            ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                            ->select('announcement.id',
-                             'announcement.announcement_title',
-                             'announcement.announcement_description',
-                             'announcement.announcement_status',
-                             'employer.business_name',
-                             'announcement.created_at',
-                             'announcement.updated_at')
-                             ->where('announcement.employer_id', '=', auth()->user()->employer_id)
-                             ->where('announcement.announcement_type', '=', '1')
-                             ->orderBy('announcement.created_at','desc')
-                            ->get();
-         }
-         /*Announcement For Employee*/
-         if(auth()->user()->user_type_id === 4){
-             $Announcement = DB::table('announcement')
-                            ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                            ->join('employer_and_employee', 'employer_and_employee.employer_id', '=', 'announcement.employer_id')
-                            ->select('announcement.id',
-                                    'announcement.announcement_title',
-                                    'announcement.announcement_description',
-                                    'announcement.announcement_status',
-                                    'employer.business_name',
-                                    'announcement.created_at',
-                                    'announcement.updated_at')
-                            ->where('announcement.announcement_type', '=', '3')
-                            ->orderBy('announcement.created_at', 'desc')
-                            ->get();
-                            
-         }
-        
-
-        /*Protection for Data View as Json*/
-        if($request->ajax()){
-            foreach ($Announcement as $key => $value){
-                if($value->announcement_status == 1){
-
-                    /**
-                     * @ If user is Employer
-                     * */
-                        if(auth()->user()->user_type_id == 3){
-                            $Announcement1 = DB::table('announcement')
-                                        ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                                        ->select('announcement.id',
-                                        'announcement.announcement_title',
-                                        'announcement.announcement_description',
-                                        'announcement.announcement_status',
-                                        'employer.business_name',
-                                        'announcement.created_at',
-                                        'announcement.updated_at')
-                                        ->orderBy('announcement.created_at','desc')
-                                        ->where('announcement.announcement_status', '=', '1')
-                                        ->where('announcement.announcement_type', '=', '1')
-                                        ->get();
-                        }
-                        
-                        /**
-                         * @ If User is Employee
-                         * */
-                        if(auth()->user()->user_type_id == 4){
-                            $Announcement1 = DB::table('announcement')
-                                        ->join('employer', 'employer.id', '=', 'announcement.account_id')
-                                        ->join('employer_and_employee', 'announcement.employer_id', '=', 'employer_and_employee.employer_id')
-                                        ->join('user_picture', 'employer.id', '=', 'user_picture.employer_id')
-                                        ->select('announcement.id',
-                                        'announcement.announcement_title',
-                                        'announcement.announcement_description',
-                                        'announcement.announcement_status',
-                                        'employer.business_name',
-                                        'announcement.created_at',
-                                        'announcement.updated_at',
-                                        'user_picture.profile_picture')
-                                        //->orderBy('announcement.created_at','desc')
-                                        ->where('announcement.announcement_status', '=', '1')
-                                        ->where('announcement.announcement_type', '=', '3')
-                                        ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
-                                        ->latest()
-                                        //->take(6)
-                                        ->get();
-                        }
-                        return json_encode($Announcement1);
-                }
-            }
-            
-            
+    public function get_all_announcement_to_notification(Request $request){
+        /**
+        * @ If User is Employee
+         * */
+        if(auth()->user()->user_type_id == 4){
+            $Announcement1 = DB::table('announcement')
+                                ->join('employer', 'employer.id', '=', 'announcement.account_id')
+                                ->join('employer_and_employee', 'announcement.employer_id', '=', 'employer_and_employee.employer_id')
+                                ->join('user_picture', 'employer.id', '=', 'user_picture.employer_id')
+                                ->select('announcement.id',
+                                'announcement.announcement_title',
+                                'announcement.announcement_description',
+                                'announcement.announcement_status',
+                                'announcement.employer_id',
+                                'employer.business_name',
+                                'announcement.created_at',
+                                'announcement.updated_at',
+                                'user_picture.profile_picture')
+                                //->orderBy('announcement.created_at','desc')
+                                ->where('announcement.employer_id', '=', auth()->user()->employer_id)
+                                ->where('announcement.announcement_status', '=', '1')
+                                ->where('announcement.announcement_type', '=', '3')
+                                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+                                ->latest()
+                                //->take(6)
+                                ->get();
         }
-        else {
-            abort(404);
+        else{
+            /**
+            *  Spoof a Request
+            *  */
+            abort(200);
         }
+        return json_encode($Announcement1);
         
-     }
+    }
 
      public function store_announcement(Request $request){
          $this->getaccount();
@@ -479,6 +398,15 @@ class AnnouncementController extends Controller
          $Announcement = Announcement::where('id', '=', $id)->delete();
          $message = 'Successfully Deleted';
          return response()->json($message);
+     }
+
+     public function check_user(Request $request){
+         $id = $request->id;
+         if(auth()->user()->employer_id === $id && auth()->user()->user_type_id === 4)
+         {
+            return json_encode(auth()->user()->user_type_id);
+         }
+         
      }
 
 

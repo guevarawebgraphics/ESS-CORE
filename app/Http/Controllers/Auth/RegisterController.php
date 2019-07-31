@@ -229,6 +229,17 @@ class RegisterController extends Controller
             $insert_ess->created_by = auth()->user()->id;
             $insert_ess->updated_by = auth()->user()->id;
             $insert_ess->save();
+
+             /**
+              * @ Create Employer Default Profile Picture
+              **/
+              DB::table('user_picture')->insert([
+                'user_id' => $user->id,
+                'employer_id' => $data['cmbEmployer'],
+                'profile_picture' => 'essmale.png',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+             ]);
         // }
 
         $this->insert_log("Created '". $data['username'] ."' User Account");

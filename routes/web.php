@@ -152,6 +152,7 @@ Route::post('/Announcement/destroy_announcement', 'AnnouncementController@destro
 Route::post('/Announcement/update_announcement_status', 'AnnouncementController@update_announcement_status');
 Route::post('/Announcement/update_notification_show', 'AnnouncementController@update_notification_show');
 Route::get('/Announcement/get_notification_show', 'AnnouncementController@get_notification_show');
+Route::get('/Announcement/check_user', 'AnnouncementController@check_user');
 
 
 ////// EMPLOYER

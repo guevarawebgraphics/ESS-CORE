@@ -7,7 +7,7 @@
 	<meta content="ie=edge" http-equiv="x-ua-compatible"><!-- Font Awesome Icons -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<!-- Styles -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet"><!--Custome Style-->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"><!--Custome Style-->
 	<link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet"><!-- IonIcons -->
 	<link href="{{ asset('http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}" rel="stylesheet"><!-- Theme style -->
 	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
@@ -70,7 +70,7 @@
 	@endif
     
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini {{ (Auth::guest()) ? "body-background" : ""}}">
 	<div class="wrapper">
         @guest
 
