@@ -51,7 +51,7 @@ elseif(Session::get('my_profile') == 'delete'){
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">          
                     <center><strong> @if(auth()->user()->user_type_id == 1) Admin @elseif(auth()->user()->user_type_id == 3) Employer @elseif(auth()->user()->user_type_id == 4) Employee @endif</strong></center>
                 </div>
@@ -94,7 +94,7 @@ elseif(Session::get('my_profile') == 'delete'){
                     </div>                                    
                 </div>
             </div>
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>About Me</strong></center>
                 </div>
@@ -111,7 +111,7 @@ elseif(Session::get('my_profile') == 'delete'){
                 </div>
             </div>
             @if(auth()->user()->user_type_id != 1)
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Goverment Numbers</strong></center>
                 </div>
@@ -141,7 +141,7 @@ elseif(Session::get('my_profile') == 'delete'){
             @endif
             <!--Documents-->
             @if(auth()->user()->user_type_id === 3)
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Documents</strong></center>
                 </div>
@@ -157,7 +157,7 @@ elseif(Session::get('my_profile') == 'delete'){
             <!--End Documents -->
         </div>
         <div class="col-md-9">
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Account Settings</strong></center>
                 </div>
@@ -187,7 +187,7 @@ elseif(Session::get('my_profile') == 'delete'){
             </div>
             @if(auth()->user()->user_type_id === 3)
             <!--Expiration-->
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Subscription</strong></center>
                 </div>
@@ -213,7 +213,7 @@ elseif(Session::get('my_profile') == 'delete'){
             @endif
             @if(auth()->user()->user_type_id === 4)
             <!--Settings Employer-->
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Current Employers</strong></center>
                 </div>
