@@ -4,14 +4,14 @@
 <div class="container">
 
     <div class="row justify-content-center text-center" style="margin-top: 20%;">
-        <div class="col-md-6">
-            <h2>Company Logo Here</h2>
+        <div class="col-md-7">
+            <h2 class="text-white">Company Logo Here</h2>
         </div>
     </div> 
     
     <div class="row justify-content-center">       
-        <div class="col-md-6">
-            <div class="card card-outline card-primary shadow p-3 mb-5 bg-white rounded">
+        <div class="col-md-5">
+            <div class="card card-outline shadow p-3 mb-5 bg-white rounded">
                 <div class="card-header text-center text-black"><!--{{ __('Login') }}--> ESS Login</div>
                 
                 <div class="card-body">
@@ -94,7 +94,7 @@
                             </div> --}}
 
                             <div class="col-md-8 offset-md-2">
-                                <button type="submit" class="btn btn-primary btn-block btn-flat">
+                                <button type="submit" class="btn btn-login btn-block btn-flat">
                                     {{ __('Login') }}
                                     {{-- <ion-icon name="log-in"></ion-icon> --}}
                                     <i class="icon ion-md-log-in"></i>
