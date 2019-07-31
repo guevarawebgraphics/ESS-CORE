@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" id="sidebar">
 	<!-- Brand Logo -->
 	<a class="brand-link" href="/">  
 		<img src="/storage/ess.png" alt="AdminLTE Logo" class="img-circle" style="height: 45px">      

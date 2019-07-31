@@ -48,7 +48,7 @@ elseif(Session::get('create_profile') == 'delete'){
 }                   
 @endphp
     <!-- general form elements -->
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
           <h3 class="card-title"><i class="fa fa-edit"></i> Create Account</h3>
         </div>
