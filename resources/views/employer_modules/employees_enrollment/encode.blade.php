@@ -792,12 +792,12 @@
 
               
         <div class="" id="formOverlay">
-            <i class="" id="spinner"></i>
+            <i class="" id="spinnerload"></i>
         </div>
           <!-- end loading -->
         <div class="card-footer">
             {{-- <button type="button" class="btn btn-default">Back</button> --}}
-            <button type="submit" class="btn btn-outline-primary  btn-flat float-right" id="submit">Submit <i id="spinner" class=""></i></button>
+            <button type="submit" class="btn btn-outline-primary  btn-flat float-right" id="submit">Submit <i id="spinnerload" class=""></i></button>
         </div>              
     </div>      
 </div>
@@ -914,7 +914,7 @@ $(document).ready(function(){
     //submit
     $(document).on("click", "#submit", function(){
         $('#formOverlay').addClass('overlay');
-        $("#spinner").addClass('fa fa-refresh fa-spin');
+        $("#spinnerload").addClass('fa fa-refresh fa-spin');
         toastr.remove()
         //$("#employer_id").removeAttr("disabled");
 
@@ -1517,11 +1517,11 @@ $(document).ready(function(){
         }
 
         /*Function For Spinner*/
-        function spinnerTimout(time){
+        function spinnerTimout(){
             setTimeout(function (){
-                $("#spinner").removeClass('fa fa-refresh fa-spin');
+                $("#spinnerload").removeClass('fa fa-refresh fa-spin');
                 $('#formOverlay').removeClass('overlay');
-            }, time);
+            }, 1000);
         }       
         });
 
