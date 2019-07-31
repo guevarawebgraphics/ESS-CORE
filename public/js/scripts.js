@@ -22,7 +22,9 @@
                     var i;
                     var count = 1;
                     var check_my_notification = get_show_announcement_notification_toggle();
+                    var check_user_employer = [];
                     for(i=0; i<data.length; i++){
+                        check_user_employer.push(data[i].employer_id);
                         var status = (data[i].announcement_status == 1 ? 'Posted' : data[i].announcement_status == 0 ? 'Pending' : null);
                         const date = new Date(data[i].updated_at);
                         // if(check_my_notification == 1){
@@ -36,7 +38,7 @@
                                 '<div class="media">'+
                                 '<img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="../dist/img/user3-128x128.jpg">'+
                                 '<div class="media-body">'+
-                                '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger"><i class="fa fa-star"></i></span></h3>'+
+                                '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger"></span></h3>'+
                                 // '<p class="text-sm">'+data[i].announcement_description+'</p>'+
                                 '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+'</p>'+
                                 '</div>'+
@@ -44,8 +46,18 @@
                                 '<div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->';
                     }
                     if(status == 'Posted'){
-                        $('#announcementdesc').html(html);
                         toastr.success('You have new Announcement')
+                        $('#announcementdesc').html(html);
+                        /**
+                         * @ Check if the User is Employee
+                         * */
+                        $.get('/Announcement/check_user', {id: check_user_employer[0]}, function(data) {
+                            if(data == 4)
+                            {
+                                
+                            }
+                        });
+                        
                         
                     }
                     else if(status == 'Pending'){
