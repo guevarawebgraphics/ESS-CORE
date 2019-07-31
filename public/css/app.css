@@ -36,16 +36,20 @@ li a p {
 /* Custom card Outline */
 
 .card-custom-blue.card-outline {
-  border-top: 3px solid #0093F0;
+  border-top: 3px solid #0E1E24;
 }
 
 .body-background {
-  background-image: linear-gradient(to right, #173B77, #129D9E 100%);
+  background-image: linear-gradient(to right, #0E1E24, #129D9E 100%);
 }
 
 .btn-login {
   color: #fff;
-  background-image: linear-gradient(to right, #173B77, #129D9E 100%);
+  background-image: linear-gradient(to right, #0E1E24, #129D9E 100%);
+}
+
+#footer {
+  margin-top: 15%;
 }
 
 @-webkit-keyframes half-circle-spinner-animation {
@@ -94,6 +98,14 @@ li a p {
 
   #AddNotificationModal {
     overflow: auto !important;
+  }
+}
+
+/*Login Page Media Queries*/
+
+@media screen and (min-width: 1181px) {
+  #company_logo {
+    display: center;
   }
 }
 

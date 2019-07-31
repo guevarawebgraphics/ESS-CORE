@@ -53,7 +53,7 @@ elseif(Session::get('create_profile') == 'delete'){
         {{session('success')}}
     </div>
 @endif
-<div class="card card-info card-outline">
+<div class="card card-custom-blue card-outline">
     <div class="card-header">
       <h3 class="card-title"><i class="fa fa-edit"></i> Manage Accounts</h3>
     </div>

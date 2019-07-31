@@ -51,7 +51,7 @@ elseif(Session::get('my_profile') == 'delete'){
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">          
                     <center><strong> @if(auth()->user()->user_type_id == 1) Admin @elseif(auth()->user()->user_type_id == 3) Employer @elseif(auth()->user()->user_type_id == 4) Employee @endif</strong></center>
                 </div>
@@ -59,42 +59,16 @@ elseif(Session::get('my_profile') == 'delete'){
                     <div class="image">
                         <center>
                                 @php
-                                $user_picture = DB::table('user_picture')->where('user_id', '=', auth()->user()->id)->pluck('profile_picture')->first(); 
-                                $link = '/storage/profile_picture/';  
-                                if(empty($user_picture))
-                                {
-                                   if(auth()->user()->employee_id=="none")
-                                   {
-                                        $user_picture = "essmale.png";
-                                   }
-                                   else 
-                                   {
-                                       $employee_table = DB::table('employee as e')
-                                                               ->join('employee_personal_information as epi','e.employee_info','=','epi.id')
-                                                               ->select('e.id as idno','epi.gender as gender')
-                                                               ->where('e.id','=',auth()->user()->employee_id)
-                                                               ->first();
-                                                               
-                                                               $user_picture = $employee_table->gender; //gets the gender of the user 
-                                                               
-                                                               //providing default picture 
-                                                               if($user_picture == "Female") 
-                                                               {
-                                                                           $user_picture = "essfemale.png";
-                                                               }
-                                                               else
-                                                               {
-                                                                           $user_picture = "essmale.png";
-                                                               }
-                                   }
-                                }
+                 		        $user_picture = DB::table('user_picture')->where('user_id', '=', auth()->user()->id)->pluck('profile_picture')->first(); 
+			                    $status = DB::table('user_picture')->where('user_id','=',auth()->user()->id)->pluck('changed_status')->first();
+		            	        $status == 0 ? $link = '/storage/profile_picture/ESS_DEFAULT_PICTURE/' : $link = '/storage/profile_picture/'  
                                @endphp   
                             <img alt="User Image" class="profile-user-img img-responsive img-circle elevation-2" id="settings_profile_picture" src="{{$link.$user_picture}}" style="height: 100px; width: 99px;">
                         </center>
                     </div>                                    
                 </div>
             </div>
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>About Me</strong></center>
                 </div>
@@ -111,7 +85,7 @@ elseif(Session::get('my_profile') == 'delete'){
                 </div>
             </div>
             @if(auth()->user()->user_type_id != 1)
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Goverment Numbers</strong></center>
                 </div>
@@ -141,7 +115,7 @@ elseif(Session::get('my_profile') == 'delete'){
             @endif
             <!--Documents-->
             @if(auth()->user()->user_type_id === 3)
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Documents</strong></center>
                 </div>
@@ -157,7 +131,7 @@ elseif(Session::get('my_profile') == 'delete'){
             <!--End Documents -->
         </div>
         <div class="col-md-9">
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Account Settings</strong></center>
                 </div>
@@ -187,7 +161,7 @@ elseif(Session::get('my_profile') == 'delete'){
             </div>
             @if(auth()->user()->user_type_id === 3)
             <!--Expiration-->
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Subscription</strong></center>
                 </div>
@@ -213,7 +187,7 @@ elseif(Session::get('my_profile') == 'delete'){
             @endif
             @if(auth()->user()->user_type_id === 4)
             <!--Settings Employer-->
-            <div class="card card-info card-outline">
+            <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Current Employers</strong></center>
                 </div>
@@ -425,7 +399,7 @@ elseif(Session::get('my_profile') == 'delete'){
           dataType: 'json',
           success: function(data){
             //console.log(data);
-            $('#settings_profile_picture').attr('src', '/storage/profile_picture/' + data);
+            $('#settings_profile_picture').attr('src',data);
           },
           error: function(data){
 

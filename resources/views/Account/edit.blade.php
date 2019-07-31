@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- general form elements -->
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
           <h3 class="card-title"><i class="fa fa-edit"></i> Update Account</h3>
         </div>

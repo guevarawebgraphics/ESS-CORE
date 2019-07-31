@@ -236,7 +236,8 @@ class RegisterController extends Controller
               DB::table('user_picture')->insert([
                 'user_id' => $user->id,
                 'employer_id' => $data['cmbEmployer'],
-                'profile_picture' => 'essmale.png',
+                'profile_picture' => 'ESS_male1.png',
+                'changed_status' => 0,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
              ]);

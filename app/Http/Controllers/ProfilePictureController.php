@@ -76,6 +76,7 @@ class ProfilePictureController extends Controller
                                                     ->update(array(
                                                             'employer_id' => (auth()->user()->user_type_id == 3) ? auth()->user()->employer_id : 0,
                                                             'profile_picture' => $fileNameToStore_profile_picture,
+                                                            'changed_status' => 1,
                                                             'created_at' => Carbon::now(),
                                                             'updated_at' => Carbon::now()
                                                     ));
@@ -93,45 +94,16 @@ class ProfilePictureController extends Controller
     public function get_profile_picture(Request $request)
     {
       $user_picture = DB::table('user_picture')->where('user_id', '=', auth()->user()->id)->pluck('profile_picture')->first();
-        if($user_picture){
-
-            return response::json($user_picture);
-        }
-        else 
-        {
-                //Employer should be always have male profile as default
-                if(auth()->user()->employee_id=="none"){
-                    
-                    $user_picture = "essmale.png";
-                    return response::json($user_picture);
-
-                }
-                else 
-                {  
-                    //Joining tables 
-                    //e as Employee Table 
-                    //epi as Employee_personal_information Table 
-
-                    $employee_table = DB::table('employee as e')
-                                            ->join('employee_personal_information as epi','e.employee_info','=','epi.id')
-                                            ->select('e.id as idno','epi.gender as gender')
-                                            ->where('e.id','=',auth()->user()->employee_id)
-                                            ->first();
-                                            
-                                            $user_picture = $employee_table->gender; //gets the gender of the user 
-                                            
-                                            //providing default picture 
-                                            if($user_picture == "Female") 
-                                            {
-                                                        $user_picture = "essfemale.png";
-                                            }
-                                            else
-                                            {
-                                                        $user_picture = "essmale.png";
-                                            }
-                                            return response::json($user_picture);
-                }                          
-        }
-                
+      $status = DB::table('user_picture')->where('user_id','=',auth()->user()->id)->first();
+      $changed_status = $status->changed_status;
+      if($changed_status === 0)
+      {
+        $profile_picture_value = '/storage/profile_picture/ESS_DEFAULT_PICTURE/'.$user_picture;
+      }
+      else 
+      {
+        $profile_picture_value = '/storage/profile_picture/'.$user_picture; 
+      }
+            return response::json($profile_picture_value);   
     }
 }

@@ -33,7 +33,7 @@ li a p{
 
 /* Custom card Outline */
 .card-custom-blue.card-outline {
-    border-top: 3px solid $custom_blue;
+    border-top: 3px solid $primary;
 }
 
 .body-background {
@@ -45,7 +45,12 @@ li a p{
     background-image: linear-gradient(to right, $primary , $secondary 100%);
 }
 
-  @keyframes half-circle-spinner-animation {
+#footer {
+    margin-top: 15%;
+}
+
+
+@keyframes half-circle-spinner-animation {
     0% {
       transform: rotate(0deg);
 
@@ -54,6 +59,8 @@ li a p{
       transform: rotate(360deg);
     }
   }
+
+  
 /* Media Query for Add System Notification */
 @media screen and (max-width: 1380px)
 {
@@ -76,4 +83,12 @@ li a p{
         #AddNotificationModal{
             overflow:auto !important;    
         }
+}
+
+/*Login Page Media Queries*/
+@media screen and (min-width: 1181px)
+{
+    #company_logo {
+        display: center;
+    }
 }
