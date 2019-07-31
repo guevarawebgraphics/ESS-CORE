@@ -22,6 +22,6 @@
         Anything you want
     </div><!-- Default to the left --> --}}
     <div class="text-center">
-        <strong class="text-lg-center">Copyright &copy; {{ now()->year }} CSI</strong> All rights reserved.
+        <div class="text-lg-center text-white">Copyright &copy; {{ now()->year }} CSI . All rights reserved</div>
     </div>
 </footer>
