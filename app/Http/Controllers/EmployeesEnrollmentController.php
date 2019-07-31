@@ -8,7 +8,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Arr;
 /**
  * @ Insert Packages Here
  *  */
@@ -570,6 +570,42 @@ class EmployeesEnrollmentController extends Controller
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id
                 ]);
+
+                // Random Profile Picture for Employee
+                if( $request->input('gender') === "Male")
+                    $arrayPicture = 
+                    ["ESS_male1.png",
+                    "ESS_male2.png",
+                    "ESS_male3.png",
+                    "ESS_male4.png",
+                    "ESS_male5.png",
+                    "ESS_male6.png",
+                    "ESS_male7.png",
+                    "ESS_male8.png",
+                    "ESS_male9.png"
+                    ];
+                else 
+                {
+                    $arrayPicture = 
+                    ["ESS_female1.png",
+                    "ESS_female2.png",
+                    "ESS_female3.png",
+                    "ESS_female4.png",
+                    "ESS_female5.png",
+                    "ESS_female6.png",
+                    "ESS_female7.png"
+                    ];
+                }
+                $default_profile = Arr::random($arrayPicture);
+
+                DB::table('user_picture')->insert([
+                    'user_id' => $user->id,
+                    'employer_id' => auth()->user()->employer_id,
+                    'profile_picture' =>  $default_profile,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                 ]);
+
             }
         }
         else if($request->input('rbn_emp') == 'existing_employee')
