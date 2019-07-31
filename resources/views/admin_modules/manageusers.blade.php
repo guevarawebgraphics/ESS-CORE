@@ -51,7 +51,7 @@ elseif(Session::get('manage_users') == 'delete'){
 @endphp
 
 <div class="container-fluid">
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-gears"></i> Manage User Access</h3>
         </div>
@@ -82,7 +82,7 @@ elseif(Session::get('manage_users') == 'delete'){
 <!-- Modal for manage user access-->
 <div class="modal fade bd-example-modal-lg" id="userAccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content card-info card-outline">
+        <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Manage User Access</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -108,7 +108,7 @@ elseif(Session::get('manage_users') == 'delete'){
 <!-- Modal for Create/Edit User type -->
 <div class="modal fade" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content card-info card-outline">
+        <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="userTypeTitle">Create User Type</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

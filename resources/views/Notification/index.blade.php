@@ -46,7 +46,7 @@ elseif(Session::get('system_notifications') == 'delete'){
     $delete = 'disabled';
 }                   
 @endphp
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-bell"></i> System Notification</h3>
         </div>
@@ -102,7 +102,7 @@ elseif(Session::get('system_notifications') == 'delete'){
     <!-- Add System Notification -->
     <div class="modal fade" id="AddNotificationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:hidden;">
         <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content card-info card-outline">
+          <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
               <h5 class="modal-title" id="title_modal"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
