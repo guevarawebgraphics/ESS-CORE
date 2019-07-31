@@ -25,7 +25,7 @@ $(document).ready(function (){
         dataType: 'json',
         success: function(data){
           //console.log(data);
-          $('#image_preview').attr('src', '/storage/profile_picture/' + data);
+          $('#image_preview').attr('src',data);
         },
         error: function(data){
 
@@ -142,7 +142,7 @@ $(document).ready(function (){
             dataType: 'json',
             success: function(data){
               //console.log(data);
-              $('#settings_profile_picture').attr('src', '/storage/profile_picture/' + data);
+              $('#settings_profile_picture').attr('src',data);
             },
             error: function(data){
   
@@ -158,7 +158,7 @@ $(document).ready(function (){
             async: false,
             dataType: 'json',
             success: function(data){
-            $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
+            $('#user_profile_picture').attr('src',data);
       
              },
             error: function(data){
