@@ -46,7 +46,7 @@ elseif(Session::get('send_announcement') == 'delete'){
     $delete = 'disabled';
 }                   
 @endphp
-<div class="card card-info card-outline">
+<div class="card card-custom-blue card-outline">
     <div class="card-header">
         <h3 class="card-title"><i class="fa fa-bullhorn"></i> Announcements</h3>
     </div>
@@ -92,7 +92,7 @@ elseif(Session::get('send_announcement') == 'delete'){
 <!-- Add Announcement -->
 <div class="modal fade" id="AddAnnouncementModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content card-info card-outline">
+      <div class="modal-content card-custom-blue card-outline">
         <div class="modal-header">
           <h5 class="modal-title" id="title_modal"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -188,7 +188,7 @@ elseif(Session::get('send_announcement') == 'delete'){
     <!-- Post Announcement -->
 <div class="modal fade" id="PostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content card-info card-outline">
+          <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
               <h5 class="modal-title" id="title_modal"></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
