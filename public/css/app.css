@@ -36,20 +36,24 @@ li a p {
 /* Custom card Outline */
 
 .card-custom-blue.card-outline {
-  border-top: 3px solid #0E1E24;
+  border-top: 3px solid #0A3873;
 }
 
 .body-background {
-  background-image: linear-gradient(to right, #0E1E24, #129D9E 100%);
+  background-image: linear-gradient(to right, #0A3873, #129D9E 100%);
 }
 
 .btn-login {
   color: #fff;
-  background-image: linear-gradient(to right, #0E1E24, #129D9E 100%);
+  background-image: linear-gradient(to right, #0A3873, #129D9E 100%);
 }
 
 #footer {
   margin-top: 15%;
+}
+
+#ess_logo {
+  width: 75%;
 }
 
 @-webkit-keyframes half-circle-spinner-animation {
@@ -103,9 +107,12 @@ li a p {
 
 /*Login Page Media Queries*/
 
-@media screen and (min-width: 1181px) {
-  #company_logo {
-    display: center;
+@media screen and (max-width: 1007px) {
+  #ess_logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
   }
 }
 

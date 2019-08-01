@@ -65,6 +65,14 @@ class LoginController extends Controller
                 return redirect('login')->withErrors($errors);
             }
         }
+        /**
+         * @ Security For Case Sensitive Credentials
+         *  */
+        elseif($user->username !== $request->{$this->username()}){
+                $errors = [$this->username() => trans('auth.failed')];
+                auth()->logout();
+                return redirect('login')->withErrors($errors);
+        }
         // return redirect()->back()
         //             ->withInput($request->only($this->username(), 'remember'))
         //             ->withErrors($errors);
