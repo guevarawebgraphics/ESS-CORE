@@ -100,7 +100,7 @@ elseif(Session::get('system_notifications') == 'delete'){
 
 
     <!-- Add System Notification -->
-    <div class="modal fade" id="AddNotificationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:hidden;">
+    <div class="modal fade" id="AddNotificationModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
