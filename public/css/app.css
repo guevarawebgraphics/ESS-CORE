@@ -78,6 +78,19 @@ li a p {
 
 /* Media Query for Add System Notification */
 
+@media (min-height: 600px) and (min-width: 1300px) {
+  #AddNotificationModal {
+    max-width: 100% !important;
+    height: auto !important;
+    overflow-y: auto;
+  }
+
+  .modalbody {
+    overflow-y: auto;
+    height: 600px !important;
+  }
+}
+
 @media screen and (max-width: 1380px) {
   #AddNotificationModal {
     max-width: 100% !important;
