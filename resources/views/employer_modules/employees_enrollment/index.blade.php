@@ -147,8 +147,8 @@
                             <span class="fa fa-folder input-group-text"></span>
                         </div>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="imgInp" name="file" multiple onchange="processSelectedFilesProfileImage(this)">
-                            <label class="custom-file-label" for="validatedCustomFile" id="profile_image_filename">Choose file...</label>
+                            <input type="file" class="custom-file-input" id="imgInp" name="file" multiple onchange="processSelectedFilesUploadEmployees(this)">
+                            <label class="custom-file-label" for="validatedCustomFile" id="upload_image_file">Choose file...</label>
                         </div>
                     </div>
 		
@@ -156,7 +156,7 @@
 		 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal" id="btn_upload_close">Close</button>
                 <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_upload">Upload <i id="spinner_upload" class=""></button>
             </div>
         </form>
@@ -164,6 +164,14 @@
         </div>
       </div>
 <script type="text/javascript">
+    /*Function to get Filename*/
+    function processSelectedFilesUploadEmployees(fileInput) {
+        var files = fileInput.files;
+
+        for (var i = 0; i < files.length; i++) {
+                $('#upload_image_file').html(files[i].name);
+        }
+    }
     $(document).ready(function () {
          initDataTable();
          function initDataTable(){
@@ -303,9 +311,10 @@
                 processData: false,
                 success: function (){
                     refreshUserTable();
+                    $('#upload_employees_form')[0].reset();
                     $('#UploadEmployees').modal('hide');
                     toastr.success('Account Employees Created Successfully', 'Success')
-                    console.log("Success");
+                    //console.log("Success");
                     setTimeout(function (){
                             $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
                         }, 300);
@@ -313,20 +322,27 @@
                 error: function(data, status){
                     setTimeout(function (){
                             $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
+                            $('#btn_upload').removeAttr('disabled');
+                            $('#btn_upload_close').removeAttr('disabled');
                         }, 250);
                     // /console.log(data);
                     if(data.status === 422) {
+                        //console.log(data.responseJSON.errors);
+                        var err = data.responseJSON.errors;
                         //console.log("422");
                         var errors = $.parseJSON(data.responseText);
                         //console.log(errors);
-                        $.each(errors, function (i, errors) {
+                        $.each(err, function (i, err) {
+                            //console.log(err);
+                            $('#ttttt').append('<li><label class="text-danger" id="error_fields">'+err+'</label></li></br>');
+                            //$('#ttttt').append('<li><label class="text-danger" id="error_fields"> * '+errors+'</label></li></br>');
                            /**
                             * @ Temporary Fix
                             **/
                             for (i = 0; i < errors.length; i++){
                                 if(errors[i]){
                                     //$('#ttttt').html('<li><label class="text-danger" id="error_fields">'+errors[i]+'</label></li></br>');
-                                    $('#ttttt').html('<li><label class="text-danger" id="error_fields"> * Please Double Check Your Upload File</label></li></br>')
+                                    // $('#ttttt').html('<li><label class="text-danger" id="error_fields"> * Please Double Check Your Upload File</label></li></br>')
                                 }
                             }
                             // for (let test of errors) {

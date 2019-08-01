@@ -140,9 +140,9 @@ elseif(Session::get('manage_users') == 'delete'){
                                         <span class="fa fa-user input-group-text"></span>
                                     </div>
                                     <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">                                   
-                                            <option value="2">ESS Admin</option>
+                                            <option value="2">Lender</option>
                                             <option value="4">Employer</option>   
-                                            <option value="6">CMS</option>                                                        
+                                            <option value="6">Biller</option>                                                        
                                     </select>
                                 </div>
                             </div>                   

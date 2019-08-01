@@ -544,12 +544,12 @@ class EmployeesEnrollmentController extends Controller
 
             // Replace All The String in the Notification Message
             $search = ["name", "username", "mobile", "url", "password"];
-            $replace = [$employee_ess_id, $employee_ess_id, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
+            $replace = [$user->name, $user->name, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
             $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                              
 
             /*Send Mail */
-            $data = array('username' => $employee_ess_id, "password" => $password, "template" => $template_result);
+            $data = array('username' => $user->name, "password" => $password, "template" => $template_result);
 
             Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
                 $message->to($employee_personal_info->email_add)

@@ -22,6 +22,7 @@ use App\UserActivation;
 /**
  * Maat Website Packages
  *  */
+use Illuminate\Validation\Rule;
 use LasseRafn\Initials\Initials;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -45,6 +46,23 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
     */
     public function model(array $row)  
     {
+        $emp_no = $row['employee_no'];
+        $employer_id = auth()->user()->employer_id;
+        /**
+         * @ Validate Employee No
+         *  */
+        Validator::make($row, [
+            //'employee_no' => 'required|min:3|unique:employee,employee_no,employer_id,'.$row['employee_no'].','.auth()->user()->employer_id,
+            //'employee_no' => 'required|min:3|unique:employee,employee_no,'.auth()->user()->employer_id,
+            //'employee_no' => Rule::unique('employee')->where('employee_no', '=', $row['employee_no'])->where('employer_id', '=', auth()->user()->employer_id)
+            'employee_no' => ['required',
+                Rule::unique('employee')->where(function ($query) use ($row) {
+                    return $query
+                        ->where('employee_no', '=', $row['employee_no'])
+                        ->where('employer_id', '=', auth()->user()->employer_id);
+                }),
+            ]
+        ])->validate();
 
         /**
          * @
@@ -94,15 +112,15 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             $emppid = $Employee_personal_info->id;
             $employee = EmployeeEnrollment::create([
                     'employee_info' => $emppid,
-                    'employee_no' => 'test',
-                    'position' => 'test',
-                    'payroll_bank' => 'test',
+                    'employee_no' => $row['employee_no'],
+                    'position' => $row['position'],
+                    'payroll_bank' => $row['payroll_bank'],
                     'employer_id' => auth()->user()->employer_id,
-                    'department' => 'test',
+                    'department' => $row['department'],
                     'enrollment_date' => Carbon::now(),
-                    'employment_status' => 'test',
-                    'payroll_schedule' => 'test',
-                    'account_no' => 'test',
+                    'employment_status' => 'Regular',
+                    'payroll_schedule' => $row['payroll_schedule'],
+                    'account_no' => $row['account_no'],
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id
             ]);
@@ -170,12 +188,12 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
 
         // Replace All The String in the Notification Message
         $search = ["name", "username", "mobile", "url", "password"];
-        $replace = [$employee_ess_id, $employee_ess_id, $row['mobile_no'], "<a href=".$activation_link.">Click Here</a>", $password];                
+        $replace = [$user->name, $user->name, $row['mobile_no'], "<a href=".$activation_link.">Click Here</a>", $password];                
         $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                 
         $email = $row['email_add'];
         /*Send Mail */
-        $data = array('username' => $employee_ess_id, "password" => $password, "template" => $template_result);
+        $data = array('username' => $user->name, "password" => $password, "template" => $template_result);
 
         Mail::send('Email.mail', $data, function($message) use($mail_template, $email){
             $message->to($email)
@@ -221,14 +239,17 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
     public function rules(): array
     {
         return [
-            'lastname' => 'required|unique:employee_personal_information',
-            '*.lastname' => 'required|unique:employee_personal_information',
+            // 'employee_no' => 'required',
+            // '*.employee_no' => 'required',
 
-            'firstname' => 'required|string|unique:employee_personal_information',
-            '*.firstname' => 'required|string|unique:employee_personal_information',
+            'lastname' => 'required|string',
+            '*.lastname' => 'required|string',
 
-            'middlename' => 'required|string|unique:employee_personal_information',
-            '*.middlename' => 'required|string|unique:employee_personal_information',
+            'firstname' => 'required|string',
+            '*.firstname' => 'required|string',
+
+            'middlename' => 'required|string',
+            '*.middlename' => 'required|string',
 
             'tin' => 'required|string|unique:employee_personal_information',
             '*.tin' => 'required|unique:employee_personal_information',
@@ -355,8 +376,15 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
      */
     public function onFailure(Failure ...$failures)
     {
-        $this->failures = array_merge($this->failures, $failures);
+        //$this->failures = array_merge($this->failures, $failures);
         // Handle the failures how you'd like.
+        foreach ($failures as $failure) {
+            $failure->row(); // row that went wrong
+            $failure->attribute(); // either heading key (if using heading row concern) or column index
+            $failure->errors(); // Actual error messages from Laravel validator
+            $failure->values(); // The values of the row that has failed.
+        }
+        
     }
 
     public function failures()

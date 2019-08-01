@@ -49,6 +49,9 @@ li a p{
     margin-top: 15%;
 }
 
+#ess_logo {
+    width: 75%;
+}
 
 @keyframes half-circle-spinner-animation {
     0% {
@@ -62,6 +65,18 @@ li a p{
 
   
 /* Media Query for Add System Notification */
+@media (min-height: 600px) and (min-width: 1300px) {
+    #AddNotificationModal{
+        max-width:100% !important;
+        height: auto !important;
+        overflow-y:auto;
+    }
+    .modalbody {
+        overflow-y:auto;
+        height:600px !important;
+
+    }
+}
 @media screen and (max-width: 1380px)
 {
         #AddNotificationModal{
@@ -86,9 +101,12 @@ li a p{
 }
 
 /*Login Page Media Queries*/
-@media screen and (min-width: 1181px)
+@media screen and (max-width: 1007px)
 {
-    #company_logo {
-        display: center;
+    #ess_logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
     }
 }
