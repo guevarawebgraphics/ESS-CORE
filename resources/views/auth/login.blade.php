@@ -11,11 +11,12 @@
     
     <div class="row justify-content-center"> 
         <div class="col-md-7" id="company_logo">
-            <h2 class="text-white text-center">ESS Logo Here</h2>
+            {{-- <h2 class="text-white text-center">ESS Logo Here</h2> --}}
+            <img class="text-center" id="ess_logo" src="{{asset("../storage/logo.png")}}" alt="ess_logo">
         </div>      
         <div class="col-md-5">
             <div class="card card-outline shadow p-3 mb-5 bg-white rounded">
-                <div class="card-header text-center text-black"><!--{{ __('Login') }}--> ESS Login</div>
+                <div class="card-header text-center text-black" id="ess_login_text"><!--{{ __('Login') }}--> ESS LOGIN</div>
                 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -24,9 +25,9 @@
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <div class="input-group">
-                                    <div class="input-group-append">
+                                    {{-- <div class="input-group-append">
                                         <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
-                                    </div>
+                                    </div> --}}
                                     <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username / ESSID" required autofocus>
                                 </div>
                                 
@@ -41,9 +42,9 @@
                         <div class="form-group row">
                             <div class="col-md-8 offset-md-2">
                                 <div class="input-group">
-                                    <div class="input-group-append">
+                                    {{-- <div class="input-group-append">
                                         <span class="fa fa-lock input-group-text" style="background-color: #fff;"></span>
-                                    </div>
+                                    </div> --}}
                                     <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
                                 </div>
                                 @if ($errors->has('password'))
