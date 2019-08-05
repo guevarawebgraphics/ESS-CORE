@@ -182,7 +182,6 @@ $(document).ready(function (){
     function initdataTableDocumentAndTemplate(){
         /*DataTable*/ 
         var table = $("#DocumentAndTemplate").DataTable({
-            // "searching": false,
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10,
@@ -336,10 +335,6 @@ $(document).ready(function (){
     $('#showdata').on('click', '.template-delete', function(){
         var id = $(this).attr('data');
         var documentfile = $(this).attr('documentfile');
-        // $('#DeleteTemplateModal').modal('show');
-        // $('#DeleteTemplateModal').find('#title_modal').text('Delete Template');
-        // $('#template_form').attr('hidden', true);
-        //$("#SaveTemplate").prop("type", "button");
         toastr.remove()
         toastr.clear()
         swal({
@@ -377,12 +372,6 @@ $(document).ready(function (){
             }
         );
 
-        // Prevent Previous handler - unbind()
-        // $('#DeleteTemplate').unbind().click(function(){
-        //     $("#spinner_delete").addClass('fa fa-refresh fa-spin');
-            
-        // });
-
 
     }); 
 
@@ -399,7 +388,7 @@ $(document).ready(function (){
                     for(i=0; i<data.length; i++){
                        var file_name = (data[i].document_file.string > 5 ? data[i].document_file.substring(0,5) : data[i].document_file.substring(0,10));
                         html +='<tr>'+
-                                    // '<td>'+data[i].id+'</td>'+
+                                  
                                      '<td>'+data[i].business_name+'</td>'+
                                      '<td>'+data[i].document_code+'</td>'+
                                      '<td>'+data[i].document_description+'</td>'+
@@ -410,10 +399,10 @@ $(document).ready(function (){
                                     '</td>'+
                                 '</tr>';
                     }
-                    // if(type != null){
+                   
                         $('#showdata').html(html);
-                    // }
-                    //console.log('success');
+                   
+                
                 },
                 error: function(){
                     console.log('Could not get data from database');

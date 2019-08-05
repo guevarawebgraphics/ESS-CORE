@@ -363,7 +363,6 @@ elseif(Session::get('my_profile') == 'delete'){
                     {
                         swal({
                             title: "Update this account?",
-                            //text: "Your will not be able to recover this imaginary file!",
                             type: "warning",             
                             confirmButtonClass: "btn-info",
                             confirmButtonText: "Yes",
@@ -398,7 +397,6 @@ elseif(Session::get('my_profile') == 'delete'){
           async: false,
           dataType: 'json',
           success: function(data){
-            //console.log(data);
             $('#settings_profile_picture').attr('src',data);
           },
           error: function(data){
