@@ -65,7 +65,6 @@ elseif(Session::get('create_profile') == 'delete'){
                     </div>
                 </div>
                 <div class="col-md-6">
-                    {{-- <a href="#" class="btn btn-secondary float-md-right mr-4"><i class="fa fa-file"></i> Generate Template</a> --}}
                     <button class="btn btn-outline-primary btn-flat float-md-right mr-4" id="upload_payroll_register" data-toggle="modal" data-target="#upload_payroll_register_modal"><i class="fa fa-upload"></i> Upload Payroll Register</button>
                 </div>
             </div>  
@@ -107,9 +106,6 @@ elseif(Session::get('create_profile') == 'delete'){
             @endforeach
 		  <form class="payroll_form" id="upload_payroll" runat="server">
 			  @csrf
-			  {{-- <div class="col-md-4 offset-md-4 mb-3">
-					<img class="img-thumbnail" id="image_preview" alt="your image" />
-              </div> --}}
               <div class="col-md-12">
                 <div class="input-group">
                     <label for="batch_no">Batch No:</label>
@@ -294,8 +290,6 @@ elseif(Session::get('create_profile') == 'delete'){
                     $("#payroll_register_table").DataTable().destroy();
                     showAllPayRegister();
                     initDataTable();
-                    //Close Modal
-                    //$('#upload_payroll_register_modal').modal('hide');
                     setTimeout(function (){
                             $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
                         }, 250);
@@ -310,21 +304,15 @@ elseif(Session::get('create_profile') == 'delete'){
                     setTimeout(function (){
                                 $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
                     }, 250);
-                    //console.log("ERROR");
                     if(data.status === 422) {
-                        //console.log("422");
                         var errors = $.parseJSON(data.responseText);
-                        //console.log(errors.errors.accountname);
-          
                         $.each(errors, function (i, errors) {
                             if(errors.batch_no){
-                                //console.log(errors.batch_no);
                                 toastr.error(errors.batch_no);
                                 $('#batch_no').addClass('is-invalid'); 
                              
                             } 
                            if(errors.payroll_schedule){
-                                //console.log(errors.batch_no);
                                 toastr.error(errors.payroll_schedule);
                                 $('#payroll_schedule').addClass('is-invalid'); 
                       

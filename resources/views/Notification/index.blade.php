@@ -54,7 +54,6 @@ elseif(Session::get('system_notifications') == 'delete'){
         <div class="card-body" >
             @if(auth()->user()->user_type_id == 1)
             <div class="form-group row">
-                {{-- <label for="searchbox" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search:</label> --}}
                 <div class="col-md-6">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -71,7 +70,6 @@ elseif(Session::get('system_notifications') == 'delete'){
             <table id="Notification" class="table table-boredered table-striped">
                 <thead>
                     <tr>
-                        {{-- <th>ID</th> --}}
                         <th>Employer</th>
                         <th>Notificatiion Title</th>
                         <th>Notification Message</th>
@@ -83,16 +81,7 @@ elseif(Session::get('system_notifications') == 'delete'){
                     </tr>
                 </thead>
                 <tbody id="showdata">
-                    {{-- @foreach($Notification as $Notifications)
-                    <tr>
-                        <td>{{ $Notifications->id }}</td>
-                        <td>{{ $Notifications->account_id }}</td>
-                        <td>{{ $Notifications->notification_title }}</td>
-                        <td>{{ $Notifications->notification_message }}</td>
-                        <td>{{ $Notifications->notification_type }}</td>
-                        <td>EDIT | DELETE</td>
-                    </tr>
-                    @endforeach --}}
+
                 </tbody>
             </table>
         </div>
@@ -121,7 +110,6 @@ elseif(Session::get('system_notifications') == 'delete'){
                         </div>
                     </div>
                     <div class="form-group">
-                    {{-- <label for="notification_message" class="control-label col-md-4 text-md-center">Notification Message:</label> --}}
                         <div class="col-md-12">
                             
                             <textarea id="notification_message" class="form-control" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>
@@ -131,15 +119,6 @@ elseif(Session::get('system_notifications') == 'delete'){
                     @if(auth()->user()->user_type_id == 1)
                     <div class="form-group row">
                             <label for="employer_id" class="control-label col-md-4 text-md-center">Select Employer:</label>
-                            {{-- <select class="form-control col-md-4" name="employer_id" id="employer_id">
-                                <option value="" selected>Select Employer</option>>
-                            </select> --}}
-
-                            {{-- <input id="employer_id" type="text" class="form-control" name="employer_id" list="business_name" placeholder="Employer" style="width: 260px !important;"   autofocus>
-                                <p class="text-danger" id="error_employer_id"></p>
-                                <datalist id="business_name">
-                                    <option value="1">
-                                </datalist> --}}
 
                                 <div class="col-md-8">
                                     <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
@@ -214,16 +193,6 @@ elseif(Session::get('system_notifications') == 'delete'){
 <script>
 $(document).ready(function (){
     CKEDITOR.replace( 'notification_message' );
-    // CKEDITOR Config
-    // let notification_message;
-    // ClassicEditor
-    //     .create( document.querySelector( '#notification_message' ) )
-    //     .then( newNotification_message => {
-    //         notification_message = newNotification_message;
-    //     } )
-    //     .catch( error => {
-    //         console.error( error );
-    //     } );
     //Initialize Select2 Elements
     $('.select2').select2()
     // Show All Notification
@@ -261,7 +230,7 @@ $(document).ready(function (){
             });
         },
         error: function (response) {
-            console.log("Error cannot be");
+            //console.log("Error cannot be");
         }
     });
 
@@ -449,7 +418,7 @@ $(document).ready(function (){
                 
             },
             error: function(){
-                console.log('Error');
+                //console.log('Error');
             }
         });
     });
@@ -457,9 +426,6 @@ $(document).ready(function (){
     //Delete a Notification
     $('#showdata').on('click', '.notification-delete', function(){
         var id = $(this).attr('data');
-        // $('#DeleteNotificationModal').modal('show');
-        // $('#DeleteNotificationModal').find('#title_modal').text('Delete Notification');
-        // $('#notification_form').attr('hidden', true);
         toastr.remove()
         toastr.clear()
         swal({
@@ -500,12 +466,6 @@ $(document).ready(function (){
             }
         
         );
-        //$('.modal-dialog').removeClass('modal-lg');
-        // Prevent Previous handler - unbind()
-        // $('#DeleteNotification').unbind().click(function(){
-        //     $("#spinner_delete").addClass('fa fa-refresh fa-spin');
-            
-        // });
     });
 
 
@@ -523,14 +483,12 @@ $(document).ready(function (){
                         var type = (data[i].notification_type == 1 ? "Email" : data[i].notification_type == 2 ? "SMS" : null);
                         var notification_message = data[i].notification_message;
                         html +='<tr>'+
-                                    // '<td>'+data[i].id+'</td>'+
                                      '<td>'+data[i].business_name+'</td>'+
                                      '<td>'+data[i].notification_title+'</td>'+
                                      '<td>'+(notification_message.length > 10 ? notification_message.substring(0, 10)+'...' : data[i].notification_message)+'</td>'+
                                      '<td>'+data[i].message_type+'</td>'+
                                      '<td>'+type+'</td>'+
                                      '@if(auth()->user()->user_type_id == 1)<td>'+
-                                        // '<a href="javascript:;" class="btn btn-sm btn-info" id="ShowNotification" data-toggle="modal" data-target="#AddNotificationModal" data="'+data[i].id+'"><span class="icon is-small"><i class="fa fa-eye"></i></span>&nbsp;View</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat notification-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat notification-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>@endif'+
@@ -541,7 +499,7 @@ $(document).ready(function (){
                     }
                 },
                 error: function(){
-                    console.log('Could not get data from database');
+                    //console.log('Could not get data from database');
                 }
             });
     }

@@ -1,13 +1,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" id="sidebar">
 	<!-- Brand Logo -->
 	<a class="brand-link" href="/">  
-		<img src="/storage/ess.png" alt="AdminLTE Logo" class="img-circle" style="height: 45px">      
+		<img src="/storage/logo.png" alt="AdminLTE Logo" class="img-circle" style="height: 45px">      
 		<span class="brand-text font-weight-light">ESS PORTAL</span>
 	</a> <!-- Sidebar -->
 	<div class="sidebar">
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-			{{-- <div class="image" id="profile_picture"><img alt="User Image" class="img-circle elevation-2" src="/storage/pic.jpg"></div> --}}
 		<div class="image" id="profile_picture"><img alt="User Image" id="user_profile_picture" class="img-circle elevation-2 " src="{{$link.$user_picture}}" style="height: 33px; width: 33px;"></div>
 			<div class="info">
 				<a class="d-block">{{ Auth::user()->name }}</a>
@@ -86,7 +85,7 @@
 						$myprofile_tree = "active";
 						if(Request::segment(2) == 'settings')
 						{
-							$settings = 'active';
+							$settings = 'active'; 
 						}
 						if(Request::segment(2) == 'changepassword')
 						{
@@ -294,10 +293,6 @@
 					<a class="nav-link {{$employee_enrollment_tree}}" href="#"><i class="nav-icon fa fa-user"></i>
 					<p>Employees Enrollment <i class="right fa fa-angle-left"></i></p></a>
 					<ul class="nav nav-treeview">
-						{{-- <li class="nav-item">
-							<a class="nav-link {{$upload_employee_enrollment}}" href="/enrollemployee/upload"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Upload Employee</p></a>                                   
-						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Employee</p></a>
@@ -314,10 +309,6 @@
 					<a class="nav-link {{$payroll_management_tree}}" href="#"><i class="nav-icon fa fa-user"></i>
 					<p>Payroll Management <i class="right fa fa-angle-left"></i></p></a>
 					<ul class="nav nav-treeview">
-						{{-- <li class="nav-item">
-							<a class="nav-link {{$upload_payrollmanagement}}" href="/payrollmanagement/upload"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Upload Payroll Register</p></a>                                   
-						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$view_payrollmanagement}}" href="/payrollmanagement/view"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Payroll Register</p></a>
@@ -410,10 +401,6 @@
 					<a class="nav-link {{$employercontent_tree}}" href="#"><i class="nav-icon fa fa-table"></i>
 					<p>Employer Content <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
-						{{-- <li class="nav-item">
-							<a class="nav-link {{$create_employercontent}}" href="/employercontent/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Content</p></a>
-						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$manage_employercontent}}" href="/employercontent/manage"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Content</p></a>
@@ -430,10 +417,6 @@
 					<a class="nav-link {{$systemnotifications_tree}}" href="#"><i class="nav-icon fa fa-bell"></i>
 					<p>System Notifications <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
-						{{-- <li class="nav-item">
-							<a class="nav-link {{$create_notif}}" href="/systemnotifications/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Notifications</p></a>
-						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$create_notif}}" href="/Notification"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Notifications</p></a>
@@ -451,10 +434,6 @@
 					<a class="nav-link {{$sendannounce_tree}}" href="#"><i class="nav-icon fa fa-bullhorn"></i>
 					<p>Send Announcements <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
-						{{-- <li class="nav-item">
-							<a class="nav-link {{$create_sendannounce}}" href="/sendannouncements/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create Announcements</p></a>
-						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$create_sendannounce}}" href="/Announcement"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Announcements</p></a>
@@ -472,10 +451,6 @@
 					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-file"></i>
 					<p>Manage Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
 					<ul class="nav nav-treeview">
-						{{-- <li class="nav-item">
-							<a class="nav-link {{$create_managedocs}}" href="/managedocs/create"><i class="fa fa-circle-o nav-icon"></i>
-							<p>Create</p></a>
-						</li> --}}
 						<li class="nav-item">
 							<a class="nav-link {{$create_managedocs}}" href="/Template"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Template</p></a>
@@ -524,7 +499,6 @@
 		  
 		</div>
 		<div class="modal-footer">
-		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
 		  <button type="submit" class="btn btn-primary" data-image="empty" id="Upload"><span><i class="fa fa-upload"></i></span> Update <i id="spinner" class=""></i></button>
 		</div>
 		</form>

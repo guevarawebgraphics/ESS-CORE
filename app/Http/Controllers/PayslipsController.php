@@ -63,7 +63,7 @@ class PayslipsController extends Controller
                             ->where('u.employee_id','=',auth()->user()->employee_id)
                             ->where('pr.account_status','=',1)
                             ->latest('prd.created_at')
-                            ->select('prd.account_id','prd.id')
+                            ->select('prd.account_id','prd.id','prd.payroll_release_date')
                             ->get();
            
             if($Request->ajax()){ 
@@ -200,10 +200,10 @@ class PayslipsController extends Controller
             ->join('payrollregister as pr','prd.PayRegisterId','=','pr.id')
             ->where('pr.account_status','=',1)
             ->where('u.employee_id','=',auth()->user()->employee_id)
-            ->whereMonth('payroll_release_date', '=', $month)
-            ->whereYear('payroll_release_date', '=', $Request->year) 
-            ->orderBy('payroll_release_date', 'desc')
-            ->select('prd.account_id','prd.id')
+            ->whereMonth('prd.payroll_release_date', '=', $month)
+            ->whereYear('prd.payroll_release_date', '=', $Request->year) 
+            ->orderBy('prd.payroll_release_date', 'desc')
+            ->select('prd.account_id','prd.id','prd.payroll_release_date')
             ->get();
            
             if($Request->ajax()){ 

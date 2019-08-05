@@ -120,18 +120,6 @@ elseif(Session::get('manage_users') == 'delete'){
                     <form id="usertype_form">
                         @csrf
 
-                        {{-- <div class="form-group row">
-                            <input type="radio" name="gender" value="admin" checked> For ESS Admin
-                            <input type="radio" name="gender" value="employer"> For Employer             
-                        </div>
-                        <div class="form-group row" id="employer_field" hidden>
-                            <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
-                            <div class="col-md-6">
-                                <select id="employer" class="form-control" name="cmbUser_type">                                                                 
-                                </select>
-                            </div>                   
-                        </div> --}}
-
                         <div class="form-group row" id="user_type_for_field">
                             <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type for</label>
                             <div class="col-md-6">
@@ -197,13 +185,11 @@ elseif(Session::get('manage_users') == 'delete'){
 
         /*DataTable*/ 
         var table = $("#usertype_table").DataTable({
-            // "searching": false,
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10,
             "ordering": false,
             scrollY: 500,
-            //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
             responsive: true,
@@ -224,7 +210,6 @@ elseif(Session::get('manage_users') == 'delete'){
                 data:{},                 
                 success:function(data)
                 {
-                    //alert(data);
                     $('#table_usertype').html(data);       
                     /*DataTable*/ 
                     var table = $("#usertype_table").DataTable({
@@ -234,7 +219,6 @@ elseif(Session::get('manage_users') == 'delete'){
                         "pageLength": 10,
                         "ordering": false,
                         scrollY: 500,
-                        //  scrollX: true,
                         "autoWidth": true,
                         lengthChange: false,
                         responsive: true,
@@ -250,7 +234,6 @@ elseif(Session::get('manage_users') == 'delete'){
             manage_info = $(this).data("add");
             manage_data = manage_info.split("||");
             console.log(manage_data[0] + " " + manage_data[1]);
-            //alert(userid);
             $.ajax({
                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 url: "{{ route('showmodule') }}",
@@ -443,7 +426,6 @@ elseif(Session::get('manage_users') == 'delete'){
         $("#userTypeFor").change(function (){
 
             val = $('#userTypeFor').val();
-            //alert(val);
             if(val == 4)
             {
                 $('#employer_field').removeAttr("hidden");

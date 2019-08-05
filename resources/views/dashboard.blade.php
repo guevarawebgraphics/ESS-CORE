@@ -95,7 +95,9 @@
                       <div class="card" style="padding:30px;  box-shadow: 0px 3px #f2f2f2;">
                         <div class="card-header"> 
                             <i class="icon fa fa-calendar-o"> </i> 
-                          {{$contents->content_title}}
+                          {{$contents->content_title}} 
+
+                           {{-- DON'T DELETE!!! -}}
                             {{--<button type="button" class="close" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>  
@@ -135,10 +137,6 @@
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
             @foreach($content as $contents) 
-          {{--  <li data-target="#carouselExampleIndicators" data-slide-to="{{$contents->id}}" @if($loop->first) class="active" @endif>
-            </li> 
-            
-            --}}
             <li data-target="#carouselExampleIndicators" >
             </li>   
             @endforeach 

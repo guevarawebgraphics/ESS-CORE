@@ -21,11 +21,15 @@ li a p{
 #navbar {
     background-color: $navbar;
 }
-
 #sidebar {
-    background-color: #31313D;
-}
-
+    background-image: linear-gradient(to right, $primary , $secondary 120%);
+} 
+.active {
+    background-image: linear-gradient(to right, $primary , $secondary 120%);
+    border-right: 5px solid #fff;
+    border-radius: 0 !important;
+    color:white !important;
+} 
 #announcementdesc {
     max-height: 650; 
     overflow-y: auto;
