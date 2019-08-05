@@ -492,7 +492,7 @@ $(document).ready(function (){
                     });
                 },
                 error: function (response) {
-                        console.log("Error cannot be");
+                        //console.log("Error cannot be");
                 }
         });
     });
@@ -531,7 +531,7 @@ $(document).ready(function (){
             });
         },
         error: function (response) {
-            console.log("Error cannot be");
+            //console.log("Error cannot be");
         }
     });
 
