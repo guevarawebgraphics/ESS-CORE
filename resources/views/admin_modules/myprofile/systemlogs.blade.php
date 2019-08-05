@@ -49,13 +49,11 @@
     $(document).ready(function(){
          /*DataTable*/ 
          var table = $("#system_logs_table").DataTable({
-            // "searching": false,
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 22,
             "ordering": false,
             scrollY: 500,
-            //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
             responsive: true,

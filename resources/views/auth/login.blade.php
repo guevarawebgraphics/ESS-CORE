@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @if (!Auth::check())
-@section('content')
+@section('content')   
 <div class="container">
 
     <div class="row justify-content-center text-center" style="margin-top: 20%;">
@@ -8,7 +8,7 @@
             <h2 class="text-white">Company Logo Here</h2>
         </div> --}}
     </div> 
-    
+ 
     <div class="row justify-content-center"> 
         <div class="col-md-7" id="company_logo">
             {{-- <h2 class="text-white text-center">ESS Logo Here</h2> --}}
@@ -111,7 +111,7 @@
             </div>
         </div>
     </div>
-      
+  
 </div>
 @endsection
 @endif
