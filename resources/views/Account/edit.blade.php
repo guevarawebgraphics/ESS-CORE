@@ -97,7 +97,6 @@
                                     <span class="fa fa-globe input-group-text"></span>
                                 </div>
                                 <select id="address_country" name="address_country" class="form-control">
-                                    {{-- <option value="" selected>Choose Country...</option> --}}
                                     <option>Philippines</option>
                                 </select>
                             </div>
@@ -125,11 +124,8 @@
                                 <div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
                                 </div>
-                                {{-- <input type="text" id="provCode" value="{{ $Account->address_cityprovince}}" hidden> --}}
                                 <select id="address_cityprovince" name="address_cityprovince" class="form-control">
-                                        {{-- <option value="" selected>Choose Province...</option> --}}
                                         <option value="{{ $Account[0]->provCode}}" selected>{{ $Account[0]->provDesc}}</option>
-                                        {{-- <option id="province">Province</option> --}}
                                 </select>
                             </div>
                             <p class="text-danger" id="error_address_cityprovince"></p>
@@ -157,9 +153,7 @@
                                     <span class="fa fa-globe input-group-text"></span>
                                 </div>
                                 <select id="address_town" name="address_town" class="form-control{{ $errors->has('address_town') ? ' is-invalid' : '' }}">
-                                        {{-- <option value="" selected>Choose CityTown...</option> --}}
                                         <option value="{{ $Account[0]->citymunCode}}" selected>{{ $Account[0]->citymunDesc}}</option>
-                                        {{-- <option>CityTown</option> --}}
                                 </select>
                             </div>
                              <p class="text-danger" id="error_address_town"></p>
@@ -187,9 +181,7 @@
                                     <span class="fa fa-globe input-group-text"></span>
                                 </div>
                                 <select id="address_barangay" name="address_barangay" class="form-control">
-                                        {{-- <option value="" selected>Choose Barangay...</option> --}}
                                         <option value="{{ $Account[0]->refbrgy_id}}">{{ $Account[0]->brgyDesc}}</option>
-                                        {{-- <option>Barangay</option> --}}
                                 </select>
                             </div>
                             <p class="text-danger" id="error_address_barangay"></p>
@@ -246,7 +238,6 @@
                                 <select id="user_type" name="user_type" class="form-control">
                                         <option value="" selected>Choose Account Type...</option>
                                         <option value="{{ $Account[0]->user_type_id }}" selected>{{ $Account[0]->type_name }}</option>
-                                        {{-- <option>accounttype</option> --}}
                                 </select>
                             </div>
                             <p class="text-danger" id="error_user_type"></p>
@@ -302,12 +293,6 @@
             <div class="form-group row">
                 <label for="accountstatus" class="col-md-2 text-md-center">Select File SEC/DTI:</label>
                 <div class="col-md-4">
-                    
-                        {{-- <div class="custom-file">
-                            <input type="file" class="form-control-file" id="sec" name="sec">
-                        </div>
-                        <input type="text" class="form-control" value="" disabled="true" id="secval" name="secval"> --}}
-
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="fa fa-folder input-group-text"></span>
@@ -322,11 +307,6 @@
                 
                 <label for="accountstatus" class="col-md-2 text-md-center">Select File BIR COR:</label>
                 <div class="col-md-4">
-                    
-                        {{-- <div class="custom-file">
-                            <input type="file" class="form-control-file" id="bir" name="bir">
-                        </div>
-                        <input type="text" class="form-control" value="" disabled="true" id="birval" name="birval"> --}}
 
                         <div class="input-group mb-3">
                                 <div class="input-group-prepend">
@@ -400,30 +380,13 @@ $(document).ready(function (){
             dataType: 'json',
             // data: {code: provCode},
 			success: function (data) {
-                // console.log("success");
-                // console.log(data);
                 $.each(data, function (i, data) {
                     $("#address_cityprovince").append('<option value="' + data.provCode + '">' + data.provDesc + '</option>');
                 });
-                // $('#address_cityprovince').click(function (){
-                //     $.ajax({
-                //         method: 'get',
-                //         url: '/Account/get_province',
-                //         dataType: 'json',
-                //         success: function (data){
-                //             $.each(data, function (i, data) {
-                //                 $("#address_cityprovince").append('<option value="' + data.provCode + '">' + data.provDesc + '</option>');
-                //             });
-                //         },
-                //         error: function (data){
-                //             console.log("Error");
-                //         }
-                //     });
-                // });
                 
 			},
 			error: function (response) {
-					console.log("Error cannot be");
+					//console.log("Error cannot be");
 			}
     });
 
@@ -436,14 +399,12 @@ $(document).ready(function (){
                 url: '/Account/get_citytown/' + $code,
                 dataType: 'json',
                 success: function (data) {
-                    // console.log("success");
-                    // console.log(data);
                     $.each(data, function (i, data) {
                         $("#address_town").append('<option value="' + data.citymunCode + '">' + data.citymunDesc + '</option>');
                     });
                 },
                 error: function (response) {
-                        console.log("Error cannot be");
+                        //console.log("Error cannot be");
                 }
         });
     });
@@ -457,14 +418,12 @@ $(document).ready(function (){
                 url: '/Account/get_barangay/' + $code,
                 dataType: 'json',
                 success: function (data) {
-                    // console.log("success");
-                    // console.log(data);
                     $.each(data, function (i, data) {
                         $("#address_barangay").append('<option value="' + data.id + '">' + data.brgyDesc + '</option>');
                     });
                 },
                 error: function (response) {
-                        console.log("Error cannot be");
+                       // console.log("Error cannot be");
                 }
         });
     });
@@ -481,7 +440,7 @@ $(document).ready(function (){
             });
         },
         error: function (response) {
-            console.log("Error cannot be");
+            //console.log("Error cannot be");
         }
     });
 
@@ -615,26 +574,6 @@ $(document).ready(function (){
             $('#nid').addClass('is-invalid');
             spinnerTimout();
         }
-        // if($('#expirydate').val() == ""){
-        //     $('#error_expirydate').html('Expiry Date is Required');
-        //     $('#error_expirydate').attr('hidden', false);
-        //     $('#expirydate').addClass('is-invalid');
-        //     spinnerTimout();
-        // }
-        // else if ($('#expirydate').val() == 0 || $('#expirydate').val() < 0) {
-        //     $('#error_expirydate').html('Expiry Date is Invalid');
-        //     $('#error_expirydate').attr('hidden', false);
-        //     $('#expirydate').addClass('is-invalid');
-        //     spinnerTimout();
-        // }
-        // else if(isNaN($('#expirydate').val())){
-        //     $('#error_expirydate').html('Expiry Date must be Number');
-        //     $('#error_expirydate').attr('hidden', false);
-        //     $('#expirydate').addClass('is-invalid');
-        //     spinnerTimout();
-        // }
-
-       
 
         if($('#business_name').val() != "" &&
          $('#contact_person').val() != "" &&
@@ -666,7 +605,7 @@ $(document).ready(function (){
                 enctype: 'multipart/form-data',
                 processData: false,
                 success: function(data){
-                    console.log("success");
+                    //console.log("success");
                     //Reset Form
                     $('#AccountForm')[0].reset();
                     // Display a success toast, with a title
@@ -683,7 +622,7 @@ $(document).ready(function (){
                     });
                 },
                 error: function(data){
-                    console.log("Error");
+                    //console.log("Error");
                     setTimeout(function (){
                         $("#spinner").removeClass('fa fa-refresh fa-spin');
                         $('#formOverlay').removeClass('overlay');
