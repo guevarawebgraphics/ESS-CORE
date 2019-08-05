@@ -21,11 +21,18 @@ li a p {
 }
 
 #navbar {
-  background-color: #f2f2f2;
+  background-color: #ffffff;
 }
 
 #sidebar {
-  background-color: #31313D;
+  background-image: linear-gradient(to right, #0A3873, #129D9E 120%);
+}
+
+.active {
+  background-image: linear-gradient(to right, #0A3873, #129D9E 120%);
+  border-right: 5px solid #fff;
+  border-radius: 0 !important;
+  color: white !important;
 }
 
 #announcementdesc {
@@ -116,6 +123,7 @@ li a p {
   #AddNotificationModal {
     overflow: auto !important;
   }
+
 }
 
 /*Login Page Media Queries*/
