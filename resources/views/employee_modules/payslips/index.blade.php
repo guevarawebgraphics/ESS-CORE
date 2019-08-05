@@ -67,17 +67,7 @@
                     </tr>
                 </thead>
                 <tbody id="showpayslips">
-                    
-                    {{--@forelse($payslip as $payslips)
-                    <tr>
-                        <td> {{ \Carbon\Carbon::parse($payslips->payroll_release_date)->isoFormat('LL')}}  </td>
-                        <td> <a href="/payslips/view/{{$payslips->id}} ">View </a>   </td>
-                    </tr>
-                    @empty 
-                    <tr>
-                       <td colspan="2">  No payslip available </td> 
-                    </tr>
-                    @endforelse--}}   
+
                 
                 </tbody>
                 </table> 

@@ -65,7 +65,6 @@ $delete = 'disabled';
                         </div>
                         <input id="searchbox" type="text" class="form-control" name="searchbox" placeholder="Search" autofocus>
                     </div>
-                    {{-- <label for="address_zipcode" class="col-md-2 text-md-center">Search: </label> --}}
                 </div>
                 <div class="col-md-6">
                     <button type="button" class="btn btn-outline-primary btn-flat float-md-right" id="btnCreateUser" {{$add}}><i class="icon ion-md-person-add"></i></i> Create User</button>
@@ -91,30 +90,8 @@ $delete = 'disabled';
                 </button>
             </div>
             <div class="modal-body">
-                {{-- <form id="formUserLevel">
-                    @csrf
-                    <input type="hidden" id="hidden_id" name="hidden_id">
-                    <div id="modal_module"></div>
-                </form> --}}
-
                 <form method="POST" id="createuser_form">
                     @csrf
-                    {{-- <div id="new_or_exist_field">
-                        <div class="form-group row">
-                            <div class="offset-md-4">            
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" class="custom-control-input" id="customRadio" name="rbn_type"
-                                        value="new_profile" checked>
-                                    <label class="custom-control-label" for="customRadio">Account for New Profile</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" class="custom-control-input" id="customRadio2" name="rbn_type"
-                                        value="existing_profile">
-                                    <label class="custom-control-label" for="customRadio2">Account for Existing Profile</label>
-                                </div>                                             
-                            </div>
-                        </div>
-                    </div> --}}
 
                     <div class="form-group row">
                         <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -128,11 +105,6 @@ $delete = 'disabled';
                                 <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
                             </div>
                             <p class="text-danger" id="error-no-name" hidden>* Field is Required</p>
-                            {{-- @if ($errors->has('name'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                            @endif --}}
                         </div>
                     </div>
                     @if(auth()->user()->user_type_id == 1)
@@ -733,10 +705,8 @@ $delete = 'disabled';
         $(document).on("click", "#delete_user", function () {
             var id = $(this).data("add");
             var data = id.split("]]");
-            //alert(id);
             swal({
                     title: "Delete this user '" + data[1] + "' ?",
-                    //text: "Your will not be able to recover this imaginary file!",
                     type: "error",
                     confirmButtonClass: "btn-danger",
                     confirmButtonText: "Yes",
@@ -805,7 +775,6 @@ $delete = 'disabled';
                       refreshUserTable();
                       //Set the dropdown to the default selected
                       $('#AccountStatus option[value=""]').prop('selected', true);
-                      //console.log('Success');
                       // Display a success toast, with a title
                       toastr.success('Account Updated Successfully', 'Success')
                       setTimeout(function (){
@@ -818,7 +787,6 @@ $delete = 'disabled';
                     },
                     error: function (data, e){
                       if(data.status == 500){
-                        //console.log('Error');
                         toastr.error('Error. Please Choose a Option', 'Error!')
                         setTimeout(function (){
                                 $("#spinner").removeClass('fa fa-refresh fa-spin');
@@ -917,7 +885,6 @@ $delete = 'disabled';
             if (password != "" && con_newpassword != "" && password.length >= 9 && password == con_newpassword){
                     swal({
                         title: "Reset Password?",
-                        //text: "Your will not be able to recover this imaginary file!",
                         type: "warning",
                         confirmButtonClass: "btn-info",
                         confirmButtonText: "Yes",
@@ -936,8 +903,7 @@ $delete = 'disabled';
                                 password: password
                             },
                             success: function (data) {
-                                toastr.success('Password Reset Successfully!', 'Success')
-                                //refreshUserTable();                         
+                                toastr.success('Password Reset Successfully!', 'Success')                       
                                 $('#resetPasswordModal').modal('hide');
                                 
                                 spinnerTimoutCreateUser()

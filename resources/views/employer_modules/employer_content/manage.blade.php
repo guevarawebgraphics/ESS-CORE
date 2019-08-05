@@ -101,7 +101,6 @@
                 {   
                     $('#table_employercontent').html(data);                    
                     var table = $("#EmployerContentTable").DataTable({
-                        // "searching": false,
                         "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                         "paging": true,
                         "pageLength": 10,
@@ -120,13 +119,11 @@
 
         }
         var table = $("#EmployerContentTable").DataTable({
-          // "searching": false,
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
           "pageLength": 10,
           "ordering":false,
            scrollY: 500,
-          //  scrollX: true,
           "autoWidth": true,
           lengthChange: false,
           responsive: true
@@ -143,12 +140,9 @@
             action_to_do = $("#action").val(); 
             $('#SaveContent').attr('disabled',true);
             toastr.remove()
-         
-            //alert(action_to_do);
-            //console.log("asa");
             $("#spinner_content").addClass('fa fa-refresh fa-spin');
             content_title = $("#content_title").val();
-          //  content_desc = $("#content_description").val();
+
 
             if(content_title == "")
             {
@@ -202,7 +196,6 @@
                         _token:     '{{ csrf_token() }}',
                         content_title: $('#content_title').val(),
                         content_description: CKEDITOR.instances.content_description.getData(),
-                        // announcement_type: $('#announcement_type').val(),
                         },           
                         success:function(data)
                         {                          

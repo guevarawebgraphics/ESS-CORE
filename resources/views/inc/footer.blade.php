@@ -16,12 +16,8 @@
           </div>
         </div>
       </div>
-    
-    {{-- <!-- To the right -->
-    <div class="float-right d-none d-sm-block-down">
-        Anything you want
-    </div><!-- Default to the left --> --}}
+  
     <div class="text-center">
-        <div class="text-lg-center text-white">Copyright &copy; {{ now()->year }} CSI . All rights reserved</div>
+        <div class="text-lg-center text-dark">Copyright &copy; {{ now()->year }} CSI . All rights reserved</div>
     </div>
 </footer>
