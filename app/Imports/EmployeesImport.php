@@ -187,8 +187,8 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
 
 
         // Replace All The String in the Notification Message
-        $search = ["name", "username", "mobile", "url", "password"];
-        $replace = [$user->name, $user->name, $row['mobile_no'], "<a href=".$activation_link.">Click Here</a>", $password];                
+        $search = ["name", "userid", "mobile", "url", "password"];
+        $replace = [$user->name, $user->username, $row['mobile_no'], "<a href=".$activation_link.">Click Here</a>", $password];                
         $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                 
         $email = $row['email_add'];

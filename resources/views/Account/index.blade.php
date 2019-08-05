@@ -59,9 +59,7 @@ elseif(Session::get('create_profile') == 'delete'){
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-      {{-- <input type="text" id="searchbox" class="form-control col-md-4"> --}}
       <div class="form-group row">
-          {{-- <label for="search" class="col-md-2 text-md-center" style="margin-top: 5px;"><i class="fa fa-search"></i>Search: </label> --}}
           <div class="col-md-6">
               <div class="input-group">
                   <div class="input-group-prepend">
@@ -80,64 +78,20 @@ elseif(Session::get('create_profile') == 'delete'){
       <table id="Accounts" class="table table-bordered table-striped">
         <thead>
         <tr>
-          {{-- <th>Id</th> --}}
           <th>Business Name</th>
           <th>AccountName</th>
           <th>Account Type</th>
           <th>Email</th>
-          {{-- <th>Account Status</th> --}}
           <th>Document Sec</th>
           <th>Document Bir</th>
-          {{-- <th>Change Status</th> --}}
           <th>Action</th>
         </tr>
         </thead>
         <tbody id="showdata">
-            {{-- @foreach($Account as $Accounts)
-                <tr> updated develop
-                    <td>{{ $Accounts->id }}</td>
-                    <td>{{ $Accounts->business_name }}</td>
-                    <td>{{ $Accounts->accountname }}</td>
-                    <td>{{ $Accounts->type_name}}</td>
-                    <td>{{ $Accounts->contact_email}}</td>
-                    <td>
-                      @if($Accounts->AccountStatus == 1)
-                        Active
-                      @endif
-                      @if($Accounts->AccountStatus == 2)
-                        In-Active
-                      @endif
-                      @if($Accounts->AccountStatus == 3)
-                        Deactivated
-                      @endif
-                    </td>
-                    <td><a href="/storage/Documents/sec/{{$Accounts->sec}}" download>{{$Accounts->sec}}</a></td>
-                    <td><a href="/storage/Documents/bir/{{$Accounts->bir}}" download>{{$Accounts->bir}}</a></td>
-                    <td>
-                      <a href="#ChangeStatus" class="CS btn-sm btn btn-info" data-toggle="modal" data-target="#csModal" data-id="{{ $Accounts->account_id }}" data-business_name="{{ $Accounts->business_name}}"><i class="fa fa-info"></i> Change Status</a>
-                    </td>
-                    <td> <a href="/Account/edit/{{ $Accounts->account_id }}" class="btn btn-sm btn-secondary"><i class="fa fa-edit"></i> Edit</a> 
-                    <a href="#Delete" class="Delete btn-sm btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="{{ $Accounts->account_id }}" data-business_name="{{ $Accounts->business_name}}"><i class="fa fa-trash"></i> Delete</a>
-                    </td>
-                </tr>
-            @endforeach --}}
+
         </tbody>
-        <!--<tfoot>
-            <tr>
-                {{-- <th>Id</th> --}}
-                <th>Business Name</th>
-                <th>AccountName</th>
-                <th>Account Type</th>
-                <th>Email</th>
-                {{-- <th>Account Status</th> --}}
-                <th>Document Sec</th>
-                <th>Document Bir</th>
-                {{-- <th>Change Status</th> --}}
-                <th>Action</th>
-            </tr>
-        </tfoot>-->
       </table>
-      {{-- {{ $Account->links() }} --}}
+
     </div>
 
 
@@ -347,9 +301,7 @@ elseif(Session::get('create_profile') == 'delete'){
                         '</tr>';
 
               }
-              // if(AccountStatus != null){
                 $('#showdata').html(html);
-              // }
             },
             error: function(){
               console.log('Could not get data from database');
