@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use App\User;
 use App\EmployeeEnrollment;
 use App\payrollregister;
-use App\payrollregisterdetails;
+use App\payroll_register_details_preview;
 
 /**
  * Maat Website Packages
@@ -32,39 +32,31 @@ use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-// use Illuminate\Support\Collection;
-// use Maatwebsite\Excel\Concerns\ToCollection;
-
-class PayrollImport implements ToModel, WithHeadingRow, WithBatchInserts
+class PayrollImportPreview implements ToModel, WithHeadingRow, WithBatchInserts
 {
+
     use Importable;
     /**
      * PayrollImport Construct
      * */
-    public function __construct($payregisterid)
-    {
+    // public function __construct($payregisterid)
+    // {
 
-      $this->payregisterid = $payregisterid;
+    //   $this->payregisterid = $payregisterid;
       
-    }
+    // }
     /**
       * @param array $row
     *
-    * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function model(array $row)
     {
-      /**
-       * Get Employee ID
-       */
-      $get_employee_id = EmployeeEnrollment::where('employee_no', '=', $row['employeeno'])->pluck('id');
-
         /**
          * @ Create Payroll Register Details
          * */
-        $payroll_register_details = payrollregisterdetails::create([
-                    'PayRegisterId' => $this->payregisterid,
-                    'employeeno' => $row['employeeno'],
+        $payroll_register_details = payroll_register_details_preview::create([
+                    'PayRegisterId' => '0',
+                    'employee_no' => $row['employeeno'],
                     'basic' => $row['basic'],
                     'absent' => $row['absent'],
                     'late' => $row['late'],
@@ -89,7 +81,7 @@ class PayrollImport implements ToModel, WithHeadingRow, WithBatchInserts
                     'hdmf' => $row['hdmf'],
                     'wtax' => $row['wtax'],
                     'sss_loan' => $row['sss_loan'],
-                    'hdmf_load' => $row['hdmf_loan'],
+                    'hdmf_loan' => $row['hdmf_loan'],
                     'bank_loan' => $row['bank_loan'],
                     'cash_advance' => $row['cash_advance'],
                     'total_deduction' => $row['total_deductions'],

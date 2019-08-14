@@ -615,6 +615,8 @@ $(document).ready(function (){
                         $("#spinner").removeClass('fa fa-refresh fa-spin');
                         $('#formOverlay').removeClass('overlay');
                     }, 500);
+                    /*Redirect To Account*/
+                    window.location.replace('{{ config('app.url') }}/Account/edit/'+EmployerId);
                     //Remove Errors
                     $('.form-control').each(function(i, obj){
                         $('.form-control').removeClass('is-invalid');

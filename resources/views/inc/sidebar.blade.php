@@ -329,7 +329,11 @@
 						<li class="nav-item">
 							<a class="nav-link {{$view_payrollmanagement}}" href="/payrollmanagement/view"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Payroll Register</p></a>
-						</li>						
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {{$upload_payrollmanagement}}" href="/payrollmanagement/upload"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Upload Payroll Register</p></a>
+						</li>							
 					</ul>
 				</li>
 				@else								

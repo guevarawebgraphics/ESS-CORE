@@ -67,6 +67,13 @@ li a p {
   width: 75%;
 }
 
+/*Custom input for table in Payroll Management*/
+
+.custom-table-input {
+  border: none !important;
+  background-color: transparent !important;
+}
+
 @-webkit-keyframes half-circle-spinner-animation {
   0% {
     -webkit-transform: rotate(0deg);
