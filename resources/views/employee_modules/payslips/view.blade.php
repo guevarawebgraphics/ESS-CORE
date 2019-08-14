@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
             <a href="{{Route('payslips')}}">Payslips</a>
             </li>
-            <li class="breadcrumb-item active">Index</li>
+            <li class="breadcrumb-item active-viewpayslip text-secondary">Index</li>
         </ol>
     </div>
 </div>
@@ -44,11 +44,10 @@
                                                           <p class="text-muted float-left"> Department: {{$information[0]->department}}  </p> 
                                                         </li>
                                                         <li> 
-                                                          <p class="text-muted float-left"> Position: {{$information[0]->position}}  </p> 
+                                                          <p class="text-muted float-left"> Position: {{$information[0]->position}}</p> 
                                                         </li>
-
-                                                  </li>
-                                                 </ul>
+            
+                                                </ul>
                                           </th>
                                           <th></th>
                                           <td>
@@ -59,6 +58,9 @@
                                                         <li> 
                                                              <h3>   {{$information[0]->employee_no}} </h3>
                                                         </li> 
+                                                        <li>
+                                                            <p class="text-muted float-left" style="color:#3C8DBC;"> Employer: {{$information[0]->accountname}}  </p> 
+                                                        </li>
                                                  </ul>
                                               
                                           </td>
@@ -67,17 +69,27 @@
                                         
                                         <tr>
                                           <td ><p class="float-left"></p></td>
-                                          <td></td>
                                           <td>
-                                            <ul class="list-unstyled float-right" >
-                                            <li> 
-                                                    Release Date:
-                                            </li>
-                                            <li style="color:#3C8DBC;"> 
-                                                 <h5>   {{ \Carbon\Carbon::parse($information[0]->payroll_release_date)->isoFormat('LL')}}</h5>
-                                            </li>
+                                                  <ul class="list-unstyled float-right" >
+                                                  <li> 
+                                                          Period Cover:
+                                                  </li>
+                                                  <li style="color:#3C8DBC;"> 
+                                                       <h5>   {{ \Carbon\Carbon::parse($information[0]->period_from)->isoFormat('LL')}}- {{ \Carbon\Carbon::parse($information[0]->period_to)->isoFormat('LL')}} </h5>
+                                                  </li>
+      
+                                                  </ul>
+                                          </td>
+                                          <td>
+                                                  <ul class="list-unstyled float-right" >
+                                                  <li> 
+                                                          Release Date:
+                                                  </li>
+                                                  <li style="color:#3C8DBC;"> 
+                                                      <h5>   {{ \Carbon\Carbon::parse($information[0]->payroll_release_date)->isoFormat('LL')}}</h5>
+                                                  </li>
 
-                                            </ul>
+                                                  </ul>
                                           
                                           </td>
                                         </tr>

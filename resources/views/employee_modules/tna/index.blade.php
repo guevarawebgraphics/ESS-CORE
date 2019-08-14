@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Time and Attendance</a>
             </li>
-            <li class="breadcrumb-item active">Index</li>
+            <li class="breadcrumb-item active-tna text-secondary">Index</li>
         </ol>
     </div>
 </div>

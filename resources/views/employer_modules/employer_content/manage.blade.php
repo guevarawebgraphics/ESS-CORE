@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Employer Content</a>
             </li>
-            <li class="breadcrumb-item active">Manage Content</li>
+            <li class="breadcrumb-item active-employercontent text-secondary">Manage Content</li>
         </ol>
     </div>
 </div>

@@ -25,7 +25,11 @@ li a p {
 }
 
 #sidebar {
-  background-image: linear-gradient(to right, #0A3873, #129D9E 120%);
+  background-image: linear-gradient(to right, #0A3873, #129D9E 100%);
+}
+
+.text-secondary {
+  color: black;
 }
 
 .active {
@@ -123,7 +127,6 @@ li a p {
   #AddNotificationModal {
     overflow: auto !important;
   }
-
 }
 
 /*Login Page Media Queries*/

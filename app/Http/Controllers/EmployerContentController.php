@@ -103,7 +103,7 @@ class EmployerContentController extends Controller
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
 
-            ]);
+            ]); 
 
              // Insert Log
             $this->insert_log("Create Employer Content '" . $request->input('content_title') . "'" );
@@ -173,6 +173,7 @@ class EmployerContentController extends Controller
         $this->insert_log("Post Employer Content '" . $request->title . "'");
     }
 
+
     // Method for inserting into logs
     public function insert_log($event)
     {
@@ -181,7 +182,6 @@ class EmployerContentController extends Controller
         $inserlog->log_event = $event;
         $inserlog->save();
     }
-
-
+ 
 
 }

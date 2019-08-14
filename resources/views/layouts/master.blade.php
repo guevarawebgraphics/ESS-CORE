@@ -54,7 +54,7 @@
 	<!-- CKEDITOR 4 -->
 	<script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 	<script src="{{ asset('/ckeditor/adapters/jquery.js') }}"></script>
-	<script src="{{ asset('/ckeditor/ckfinder/ckfinder.js') }}"></script>
+	<script src="{{ asset('/ckeditor/ckfinder/ckfinder.js') }}"></script> 
 	<!--Full Calendar-->
 	<script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
 	<script src="{{ asset('/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
