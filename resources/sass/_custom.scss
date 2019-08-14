@@ -22,8 +22,12 @@ li a p{
     background-color: $navbar;
 }
 #sidebar {
-    background-image: linear-gradient(to right, $primary , $secondary 120%);
+    background-image: linear-gradient(to right, $primary , $secondary 100%);
+ 
 } 
+.text-secondary {
+    color:black;
+}
 .active {
     background-image: linear-gradient(to right, $primary , $secondary 120%);
     border-right: 5px solid #fff;

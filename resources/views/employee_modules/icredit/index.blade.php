@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">i Credit</a>
             </li>
-            <li class="breadcrumb-item active">Index</li>
+            <li class="breadcrumb-item active-icredit text-secondary">Index</li>
         </ol>
     </div>
 </div>

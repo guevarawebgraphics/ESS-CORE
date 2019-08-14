@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">My Profile</a>
             </li>
-            <li class="breadcrumb-item active">Change Password</li>
+            <li class="breadcrumb-item active-changepassword text-secondary">Change Password</li>
         </ol>
     </div>
 </div>

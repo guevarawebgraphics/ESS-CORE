@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Prepaid E-Wallet</a>
             </li>
-            <li class="breadcrumb-item active">Index</li>
+            <li class="breadcrumb-item active-ewallet text-secondary">Index</li>
         </ol>
     </div>
 </div>

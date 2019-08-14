@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">My Profile</a>
             </li>
-            <li class="breadcrumb-item active">System Logs</li>
+            <li class="breadcrumb-item active-systemlogs text-secondary">System Logs</li>
         </ol>
     </div>
 </div>

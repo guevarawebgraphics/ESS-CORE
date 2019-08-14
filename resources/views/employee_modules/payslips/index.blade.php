@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                     <a href="{{Route('payslips')}}">Payslips</a>
             </li>
-            <li class="breadcrumb-item active">Index</li>
+            <li class="breadcrumb-item active-payslip text-secondary">Index</li>
         </ol>
     </div>
 </div>
