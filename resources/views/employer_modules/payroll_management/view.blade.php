@@ -10,34 +10,34 @@
             <li class="breadcrumb-item">
                 <a href="#">Payroll Management</a>
             </li>
-            <li class="breadcrumb-item active">View Payroll Register</li>
+            <li class="breadcrumb-item active-payrollregister text-secondary">View Payroll Register</li>
         </ol>
     </div>
 </div>
 @endsection
 @section('content')
 @php
-if(Session::get('create_profile') == 'all'){
+if(Session::get('payroll_management') == 'all'){
     $add = '';
     $edit = '';
     $delete = '';
 }
-elseif(Session::get('create_profile') == 'view'){
+elseif(Session::get('payroll_management') == 'view'){
     $add = 'disabled';
     $edit = 'disabled';
     $delete = 'disabled';
 }
-elseif(Session::get('create_profile') == 'add'){
+elseif(Session::get('payroll_management') == 'add'){
     $add = '';
     $edit = 'disabled';
     $delete = 'disabled';
 }
-elseif(Session::get('create_profile') == 'edit'){
+elseif(Session::get('payroll_management') == 'edit'){
     $add = '';
     $edit = '';
     $delete = 'disabled';
 }
-elseif(Session::get('create_profile') == 'delete'){
+elseif(Session::get('payroll_management') == 'delete'){
     $add = '';
     $edit = 'disabled';
     $delete = '';
@@ -65,7 +65,7 @@ elseif(Session::get('create_profile') == 'delete'){
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-outline-primary btn-flat float-md-right mr-4" id="upload_payroll_register" data-toggle="modal" data-target="#upload_payroll_register_modal"><i class="fa fa-upload"></i> Upload Payroll Register</button>
+                    {{-- <button class="btn btn-outline-primary btn-flat float-md-right mr-4 {{$add}}" id="upload_payroll_register" data-toggle="modal" data-target="#upload_payroll_register_modal"><i class="fa fa-upload"></i> Upload Payroll Register</button> --}}
                 </div>
             </div>  
             
@@ -284,7 +284,7 @@ elseif(Session::get('create_profile') == 'delete'){
                     }, 250);
                     $('#Upload').removeAttr('disabled');
                 },
-                success: function() {
+                success: function(data) {
                     toastr.success('Payroll Register Uploaded!')
                     console.log("Success");
                     $("#payroll_register_table").DataTable().destroy();
@@ -298,6 +298,10 @@ elseif(Session::get('create_profile') == 'delete'){
                         $('#upload_payroll_register_modal').modal('hide');
                         $('#upload_payroll')[0].reset();
                     }, 400);
+                    // Preview Data
+                    $.each(data, function (i, data) { 
+                        console.log(data[0]['employeeno']);
+                    });
                 },
                 error: function(data, status){
                     $('.btn-payroll-upload').removeAttr('disabled');
@@ -396,10 +400,10 @@ elseif(Session::get('create_profile') == 'delete'){
                         '<td>'+period_to.toDateString()+'</td>'+
                         '<td>'+data[i].batch_no+'</td>'+
                         '<td>'+data[i].payroll_schedule_id+'</td>'+
-                        '<td>'+'<a href="/Storage/employees/'+data[i].payroll_file+'" {{$edit}}>'+data[i].payroll_file+ '<div class="float-right"><i class="fa fa-download"></i></div>'+'</a> ' +'</td>'+
+                        '<td>'+'<a href="/payrollmanagement/PayrollExport/'+data[i].id+'" class="export_batch_csv_file" data-batch_no="'+data[i].batch_no+'" {{$edit}}>'+data[i].payroll_file+ '<div class="float-right"><i class="fa fa-download"></i></div>'+'</a> ' +'</td>'+
                         '<td>'+AccountStatus+'</td>'+
                         '<td>' + 
-                            '<a href="#post" class="btn btn-outline-secondary btn-flat '+(data[i].account_status == 1 ? 'disabled' : data[i].account_status == 0 ? '' : null)+'" data-id="'+data[i].id+'" id="post_payroll_register" {{$edit}}>POST</a> ' +
+                            '<a href="#post" class="btn btn-outline-secondary btn-flat {{$add}} '+(data[i].account_status == 1 ? 'disabled' : data[i].account_status == 0 ? '' : null)+'" data-id="'+data[i].id+'" id="post_payroll_register" {{$edit}}>POST</a> ' +
                         '</td>'+
                         '</tr>';
 
@@ -412,6 +416,30 @@ elseif(Session::get('create_profile') == 'delete'){
             }
           });
         } 
+
+        // $('#showdata').on('click', '.export_batch_csv_file', function(){
+        //     var batch_no = $(this).attr('data-batch_no');
+        //     /*AjaxSetup*/
+        //     $.ajaxSetup({
+        //     headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         }
+        //     });;
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: '/payrollmanagement/PayrollExport',
+        //         data: {batch_no, '_token': $('input[name=_token]').val()},
+        //         success: function(data) {
+        //             console.log(data);
+        //         },
+        //         error: function(data)  {
+        //             console.log(data);
+        //         }
+        //     });
+        // });
+
+
+
             var date = new Date();
             date.setDate(date.getDate());
             $('#period_to').datepicker({

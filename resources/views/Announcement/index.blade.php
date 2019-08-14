@@ -9,7 +9,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Send Announcements</a>
             </li>
-            <li class="breadcrumb-item active">Manage Announement</li>
+            <li class="breadcrumb-item active-announcement text-secondary">Manage Announement</li>
         </ol>
     </div>
 </div>
@@ -62,7 +62,7 @@ elseif(Session::get('send_announcement') == 'delete'){
               </div>
             </div>
             <div class="col-md-6">
-                <a href="#Add" class="btn btn-outline-primary btn-flat float-md-right" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square" {{$add}}></i> Create Announcement</a>
+                <a href="#Add" class="btn btn-outline-primary btn-flat float-md-right {{$add}}" id="btn_addannouncement" data-toggle="modal" data-target="#AddAnnouncementModal"><i class="fa fa-plus-square" {{$add}}></i> Create Announcement</a>
             </div>
         </div>
 
@@ -490,10 +490,10 @@ $(document).ready(function (){
                                      '@if(auth()->user()->user_type_id === 1)<td>'+data[i].business_name+'</td>@endif'+
                                      '<td>'+data[i].announcement_title+'</td>'+
                                      '<td>'+AnnouncementStatus+'</td>' +
-                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-outline-info btn-flat announcement-post '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'"  {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
+                                     '<td>' + '<a href="#send" class="send btn btn-sm btn-outline-info btn-flat announcement-post {{$add}} '+posted+'" data-toggle="modal" data-target="#sendModal" data="'+data[i].id+'"  {{$edit}}><i class="fa fa-paper-plane"></i> POST</a>' + '</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat announcement-edit '+posted+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat annoucement-delete" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat announcement-edit {{$edit}} '+posted+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat annoucement-delete {{$delete}}" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                     '</td>'+
                                 '</tr>';
                     }
