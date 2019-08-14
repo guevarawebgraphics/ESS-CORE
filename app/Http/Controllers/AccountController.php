@@ -503,7 +503,8 @@ class AccountController extends Controller
                                     'phic' => $request->input('phic'),
                                     'hdmf' => $request->input('hdmf'),
                                     'nid' => $request->input('nid'),
-                                    'sec' => $fileNameToStore_sec
+                                    'sec' => $fileNameToStore_sec,
+                                    'expiry_date' => $expiry_date
             ));
 
             
@@ -555,7 +556,8 @@ class AccountController extends Controller
                                      'phic' => $request->input('phic'),
                                      'hdmf' => $request->input('hdmf'),
                                      'nid' => $request->input('nid'),
-                                     'bir' => $fileNameToStore_bir
+                                     'bir' => $fileNameToStore_bir,
+                                     'expiry_date' => $expiry_date
              ));
  
              
@@ -588,6 +590,7 @@ class AccountController extends Controller
                                 'phic' => $request->input('phic'),
                                 'hdmf' => $request->input('hdmf'),
                                 'nid' => $request->input('nid'),
+                                'expiry_date' => $expiry_date
                             ));
         /*Create Employer Enrollment History*/
         $employment_history = EmployerEnrollmentHistory::create([

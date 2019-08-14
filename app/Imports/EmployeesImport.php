@@ -177,13 +177,15 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
          /*Email Template*/
          $mail_template = DB::table('notification')
                 //->where('employer_id', auth()->user()->id)
-                ->where('id', '31')
+                ->where('employer_id', auth()->user()->employer_id)
                 ->where('notification_type', 1)
                 ->select('notification_message')
                 ->first();
+        // Enviroment Variable
+        $enviroment = config('app.url');
 
 
-        $activation_link = "http://127.0.0.1:8000/Account/Activation/".$useractivation_id;
+        $activation_link = $enviroment."/Account/Activation/".$useractivation_id;
 
 
         // Replace All The String in the Notification Message

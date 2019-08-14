@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Employees Enrollment</a>
             </li>
-            <li class="breadcrumb-item active">Encode Employees</li>
+            <li class="breadcrumb-item active-encode-employees text-secondary">Encode Employees</li>
         </ol>
     </div>
 </div>
@@ -282,9 +282,9 @@
                                 </div>
                                 <select class="form-control" id="payroll_schedule" name="payroll_schedule">
                                         <option value="">Select Options</option>
-                                        <option value="Week">Weekly</option>
-                                        <option value="Month">Monthly</option>
-                                        <option value="2Month">2x Monthly</option>                                            
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="2xMonthly">2x Monthly</option>                                            
                                 </select>
                             </div>
                             <p class="text-danger text-md-center" id="error_payroll_schedule"></p>

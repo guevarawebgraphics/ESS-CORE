@@ -9,7 +9,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Create Profile</a>
             </li>
-            <li class="breadcrumb-item active">Create Account</li>
+            <li class="breadcrumb-item active-create-account text-secondary">Create Account</li>
         </ol>
     </div>
 </div>
@@ -848,6 +848,8 @@ $(document).ready(function (){
                 setTimeout(function (){
                     $("#spinner").removeClass('fa fa-refresh fa-spin');
                     $('#formOverlay').removeClass('overlay');
+                    /*Redirect To Account*/
+                    window.location.replace('{{ config('app.url') }}/Account');
                 }, 3000);
                 //Remove Errors
                 $('.form-control').each(function(i, obj){

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @ Excel Export
+ * */
+use App\Exports\PayrollExport;
+use Maatwebsite\Execel\Facades\Execel;
+use Illuminate\Http\Request; 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -189,6 +195,17 @@ Route::get('/payrollmanagement/get_payroll_register', 'PayrollManagementControll
 Route::post('/payrollmanagement/upload_payregister', 'PayrollManagementController@upload_payregister');
 Route::post('/payrollmanagement/post_payroll_register', 'PayrollManagementController@post_payroll_register');
 Route::post('/ProfilePicture/UpdatePicture', 'ProfilePictureController@UpdatePicture');
+Route::post('payrollmanagement/upload_payroll_preview', 'PayrollManagementController@upload_payroll_preview');
+Route::get('payrollmanagement/get_payroll_register_details_preview', 'PayrollManagementController@get_payroll_register_details_preview');
+Route::get('/payrollmanagement/check_employee_no', 'PayrollManagementController@check_employee_no');
+Route::get('/payrollmanagement/check_employee_exists_in_excel', 'PayrollManagementController@check_employee_exists_in_excel');
+Route::post('/payrollmanagement/submit_payroll_register_details', 'PayrollManagementController@submit_payroll_register_details');
+Route::post('/payrollmanagement/delete_preview_details', 'PayrollManagementController@delete_preview_details');
+// Export Payroll Register
+Route::get('/payrollmanagement/PayrollExport/{payregister_id}', function(Request $request){
+    $filename = DB::table('payrollregister')->where('id', '=', $request->payregister_id)->select('payroll_file')->get();
+    return Excel::download(new PayrollExport($request->payregister_id), $filename[0]->payroll_file .'.csv');
+});
 
 
 /**Upload Profile Picture */
