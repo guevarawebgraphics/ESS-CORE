@@ -71,7 +71,8 @@ class MyProfileController extends Controller
                                 ->join('employee', 'employer_and_employee.employee_id', '=', 'employee.id')
                                 ->select('employer.business_name',
                                          'employee.enrollment_date',
-                                         'employer_and_employee.status')
+                                         'employer_and_employee.status',
+                                         'employer_and_employee.employee_no')
                                 ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
 

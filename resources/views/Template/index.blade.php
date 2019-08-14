@@ -9,7 +9,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Manage Docs & Template</a>
             </li>
-            <li class="breadcrumb-item active">Manage</li>
+            <li class="breadcrumb-item active-template text-secondary">Manage</li>
         </ol>
     </div>
 </div>
