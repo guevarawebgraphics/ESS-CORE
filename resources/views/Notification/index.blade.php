@@ -9,7 +9,7 @@
             <li class="breadcrumb-item">
                 <a href="#">System Notifications</a>
             </li>
-            <li class="breadcrumb-item active">Manage Notifications</li>
+            <li class="breadcrumb-item active-notification text-secondary">Manage Notifications</li>
         </ol>
     </div>
 </div>
@@ -253,6 +253,8 @@ $(document).ready(function (){
         $('#select2-employer_id-container').attr('title', '').text('--Select Employer--');
         $('#select2-message_type_id-container').attr('title', '').text('--Select Message Type--');
         $('#AddNotification').removeAttr('disabled');
+        $('#employer_id').removeClass('is-invalid');
+        $('#error_employer_id').remove('Employer Field is Required');
     });
 
     // Store Notification
@@ -367,7 +369,7 @@ $(document).ready(function (){
                         if(errors.employer_id)
                         {
                             $('#employer_id').addClass('is-invalid');
-                            $('#error_employer_id').html('Employer Field is Required');
+                            $('#error_employer_id').html(errors.employer_id);
                             $('#AddNotification').removeAttr('disabled');
                         }
                         if(errors.message_type_id){

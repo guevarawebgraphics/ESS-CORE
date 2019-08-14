@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @ Excel Export
+ * */
+use App\Exports\PayrollExport;
+use Maatwebsite\Execel\Facades\Execel;
+use Illuminate\Http\Request; 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,7 +47,13 @@ Route::get('/', function () { // root if the user is login
                                 ->orderBy('created_at')
                                 ->where('account_id','=',auth()->user()->employer_id)
                                 ->where('content_status','=',$content_status)
-                                ->get(); 
+                                ->paginate(5, ['*'], 'content_page'); 
+                $financial_tips_status ="1"; // content_status 
+                $financial = DB::table('financial_tips')   //for showing employer's content
+                                ->orderBy('created_at')
+                                ->where('account_id','=',auth()->user()->employer_id)
+                                ->where('status','=',$financial_tips_status)
+                                ->get();
                                 
                 // count number of content posted
                 $count = DB::table('employercontent')
@@ -58,7 +70,7 @@ Route::get('/', function () { // root if the user is login
                                 ->where('employee_id','=',auth()->user()->employee_id)
                                 ->count();
     
-                return view('dashboard', compact('content','count','count_employee','count_my_employeer'));
+                return view('dashboard', compact('content','count','count_employee','count_my_employeer','financial'));
             
             }
             
@@ -173,6 +185,7 @@ Route::patch('/enrollemployee/UpdateAccountStatus/{id}', 'EmployeesEnrollmentCon
 Route::post('/enrollemployee/upload_employees', 'EmployeesEnrollmentController@upload_employees');
 
 //Employer Content
+
 Route::get('/employercontent/manage', 'EmployerContentController@manage');
 Route::get('/employercontent/manage/refresh', 'EmployerContentController@refresh_manage')->name('refreshmanage');
 Route::get('/employercontent/edit', 'EmployerContentController@edit_content')->name('editemployercontent');
@@ -180,6 +193,8 @@ Route::post('/employercontent/create', 'EmployerContentController@create_employe
 Route::post('/employercontent/edit/post', 'EmployerContentController@update_content')->name('updateemployercontent');
 Route::post('/employercontent/delete', 'EmployerContentController@delete_content')->name('deleteemployercontent');
 Route::post('/employercontent/post_content', 'EmployerContentController@post_content')->name('postemployercontent');
+//For adding status read
+Route::get('/employercontent/change_action','ProfilePictureController@change_action_taken');
 
 
 //Payroll Management
@@ -189,6 +204,17 @@ Route::get('/payrollmanagement/get_payroll_register', 'PayrollManagementControll
 Route::post('/payrollmanagement/upload_payregister', 'PayrollManagementController@upload_payregister');
 Route::post('/payrollmanagement/post_payroll_register', 'PayrollManagementController@post_payroll_register');
 Route::post('/ProfilePicture/UpdatePicture', 'ProfilePictureController@UpdatePicture');
+Route::post('payrollmanagement/upload_payroll_preview', 'PayrollManagementController@upload_payroll_preview');
+Route::get('payrollmanagement/get_payroll_register_details_preview', 'PayrollManagementController@get_payroll_register_details_preview');
+Route::get('/payrollmanagement/check_employee_no', 'PayrollManagementController@check_employee_no');
+Route::get('/payrollmanagement/check_employee_exists_in_excel', 'PayrollManagementController@check_employee_exists_in_excel');
+Route::post('/payrollmanagement/submit_payroll_register_details', 'PayrollManagementController@submit_payroll_register_details');
+Route::post('/payrollmanagement/delete_preview_details', 'PayrollManagementController@delete_preview_details');
+// Export Payroll Register
+Route::get('/payrollmanagement/PayrollExport/{payregister_id}', function(Request $request){
+    $filename = DB::table('payrollregister')->where('id', '=', $request->payregister_id)->select('payroll_file')->get();
+    return Excel::download(new PayrollExport($request->payregister_id), $filename[0]->payroll_file .'.csv');
+});
 
 
 /**Upload Profile Picture */
@@ -205,11 +231,18 @@ Route::get('/cashadvance', 'CashAdvanceController@index');
 Route::get('/ewallet', 'EWalletController@index');
 
 //Financial Calendar
-Route::get('/financialcalendar', 'FinancialCalendarController@index');
+Route::get('/financialcalendar', 'FinancialCalendarController@index'); 
+
 
 //Financial Tips
 Route::get('/financialtips', 'FinancialTipsController@index');
-
+Route::get('/financialtips/manage', 'FinancialTipsController@manage'); 
+Route::get('/financialtips/tablemanage', 'FinancialTipsController@FinancialTipsTableManage');
+Route::post('/financialtips/post','FinancialTipsController@post_financial_tips')->name('postfinancialtips'); 
+Route::post('/financialtips/delete','FinancialTipsController@delete_financial_tips')->name('deletefinancialtips');
+Route::get('/financialtips/refresh','FinancialTipsController@refreshmanage')->name('refreshfinancialtips');
+Route::post('/financialtips/create','FinancialTipsController@create_financial_tips')->name('createfinancialtips');
+Route::post('/financialtips/edit','FinancialTipsController@edit_financial_tips')->name('editfinancialtips');
 //ICredit
 Route::get('/icredit', 'iCreditController@index');
 
@@ -239,4 +272,7 @@ Route::get('/email', function() {
 
 Route::get('/Testsocket', function() {
     return view('Testsocket');
+});
+Route::get('/ckeditor/ckfinder/ckfinder.html', function() {
+ 
 });

@@ -77,6 +77,10 @@
 					$financialcalendar_index = "";
 					//financial tips
 					$financialtips_index = "";
+					$financial_tips = "";
+					$financial_tips_tree ="";
+					$manage_financial_tips = "";
+					$encode_financial_tips =""; 
 
 
 					if(Request::segment(1) == 'myprofile')
@@ -166,6 +170,19 @@
 						if(Request::segment(2) == 'manage')
 						{
 							$manage_employercontent = "active";
+						}					
+					}
+					else if(Request::segment(1) == 'financialtips')
+					{
+						$financial_tips = "menu-open";
+						$financial_tips_tree = "active";
+						if(Request::segment(2) == 'create')
+						{
+							$create_financial_tips = "active";
+						}
+						if(Request::segment(2) == 'manage')
+						{
+							$manage_financial_tips = "active";
 						}					
 					}	
 					else if(Request::segment(1) == 'payrollmanagement')
@@ -312,12 +329,32 @@
 						<li class="nav-item">
 							<a class="nav-link {{$view_payrollmanagement}}" href="/payrollmanagement/view"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Payroll Register</p></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {{$upload_payrollmanagement}}" href="/payrollmanagement/upload"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Upload Payroll Register</p></a>
+						</li>							
+					</ul>
+				</li>
+				@else								
+				@endif
+				<!-- END -->
+				<!-- FINANCIAL TIPS -->
+				@if(Session::get("financial_tips") != "none")
+				<li class="nav-item has-treeview {{$financial_tips}}">
+					<a class="nav-link {{$financial_tips_tree}}" href="#"><i class="nav-icon fa fa-user"></i>
+					<p>Financial Tips <i class="right fa fa-angle-left"></i></p></a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a class="nav-link {{$manage_financial_tips}}" href="/financialtips/manage"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Manage Financial Tips</p></a>
 						</li>						
 					</ul>
 				</li>
 				@else								
 				@endif
 				<!-- END -->
+				
 				
 				<!-- END EMPLOYER -->
 
@@ -383,7 +420,7 @@
 				@endif
 				<!-- END  -->
 
-				<!-- FINANCIAL TIPS -->
+			{{--	<!-- FINANCIAL TIPS -->
 				@if(Session::get("financial_tips") != "none")
 				<li class="nav-item has-treeview">
 					<a class="nav-link {{$financialtips_index}}" href="/financialtips"><i class="nav-icon fa fa-table"></i>
@@ -392,7 +429,7 @@
 				@else							
 				@endif
 				<!-- END  -->
-
+			--}}
 				<!-- END EMPLOYEE -->
 
 				@if(Session::get("employer_content") != "none")				

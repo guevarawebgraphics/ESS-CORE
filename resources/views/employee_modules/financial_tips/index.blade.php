@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Financial Tips</a>
             </li>
-            <li class="breadcrumb-item active">Index</li>
+            <li class="breadcrumb-item active-financialtips text-secondary">Index</li>
         </ol>
     </div>
 </div>

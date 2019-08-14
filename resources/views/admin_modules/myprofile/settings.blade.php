@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">My Profile</a>
             </li>
-            <li class="breadcrumb-item active">Settings</li>
+            <li class="breadcrumb-item active-settings text-secondary">Settings</li>
         </ol>
     </div>
 </div>
@@ -187,15 +187,18 @@ elseif(Session::get('my_profile') == 'delete'){
             @endif
             @if(auth()->user()->user_type_id === 4)
             <!--Settings Employer-->
+          
             <div class="card card-custom-blue card-outline">
                 <div class="card-header">
                     <center><strong>Current Employers</strong></center>
                 </div>
                 <div class="card-body">
+                    <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Employer</th>
+                                <th>Employee No</th>
                                 <th>Enrollment Date</th>
                                 <th>Status</th>
                             </tr>
@@ -204,6 +207,7 @@ elseif(Session::get('my_profile') == 'delete'){
                             @foreach($get_all_employers as $employers)
                             <tr>
                                 <td>{{ $employers->business_name }}</td>
+                                <td>{{ $employers->employee_no }}</td>
                                 <td>{{ \Carbon\Carbon::parse($employers->enrollment_date)->format('l jS \\of F Y') }}</td>
                                 <td>@if( $employers->status  == 1) <span class="badge badge-success">Active</span> @endif
                                      @if( $employers->status  == 2) <span class="badge badge-secondary">In-Active</span> @endif
@@ -214,6 +218,7 @@ elseif(Session::get('my_profile') == 'delete'){
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
             @endif
