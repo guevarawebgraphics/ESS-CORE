@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Employees Enrollment</a>
             </li>
-            <li class="breadcrumb-item active">Encode Employees</li>
+            <li class="breadcrumb-item active-edit-employees text-secondary">Encode Employees</li>
         </ol>
     </div>
 </div>

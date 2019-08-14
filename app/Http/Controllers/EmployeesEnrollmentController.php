@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Arr;
 /**
  * @ Insert Packages Here
@@ -399,7 +400,11 @@ class EmployeesEnrollmentController extends Controller
                 'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
             ];
             $this->validate($request, [
-                'employee_no' => 'required|min:5|numeric',
+                'employee_no' => ['required','min:5','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                    return $query
+                            ->where('employee_no', '=', $request->employee_no)
+                            ->where('employer_id', '=', auth()->user()->employer_id);
+                }))],
                 'position' => 'required|min:2',
                 'department' => 'required|min:2',
                 'lastname' => 'required|min:1',
@@ -533,13 +538,16 @@ class EmployeesEnrollmentController extends Controller
             /*Email Template*/
             $mail_template = DB::table('notification')
                             //->where('employer_id', auth()->user()->id)
-                            ->where('id', '31')
+                            ->where('employer_id', auth()->user()->employer_id)
                             ->where('notification_type', 1)
                             ->select('notification_message')
                             ->first();
+            
+            // Enviroment Variable
+            $enviroment = config('app.url');
 
 
-            $activation_link = "http://127.0.0.1:8000/Account/Activation/".$useractivation_id;
+            $activation_link = $enviroment."/Account/Activation/".$useractivation_id;
 
 
             // Replace All The String in the Notification Message

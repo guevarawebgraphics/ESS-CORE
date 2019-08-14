@@ -9,7 +9,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Create Profile</a>
             </li>
-            <li class="breadcrumb-item active">Update Profile</li>
+            <li class="breadcrumb-item active-update-profile text-secondary">Update Profile</li>
         </ol>
     </div>
 </div>
