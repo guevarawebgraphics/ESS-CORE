@@ -6,6 +6,7 @@ use DB;
 use Session;
 use Auth;
 use Response;
+use App\ReadStatus;
 
 /**
  *  Insert Packages Here
@@ -106,4 +107,27 @@ class ProfilePictureController extends Controller
       }
             return response::json($profile_picture_value);   
     }
+    //for adding read status for employer content
+    public function change_action_taken(Request $request)
+    {
+                    $id = $request->id;
+                    $get  = DB::table('read_status')->where('employer_content_id','=',$id)
+                                                    ->where('employee_id','=',auth()->user()->employee_id)
+                                                    ->get();
+                    if(count($get))
+                    {
+
+                    }
+                    else 
+                    {
+                      $create = ReadStatus::create([
+                        'employee_id' => auth()->user()->employee_id,
+                        'employer_content_id' => $id,
+                        'action_taken' =>1 
+                        ]);
+                    }
+      
+           
+    }
+
 }
