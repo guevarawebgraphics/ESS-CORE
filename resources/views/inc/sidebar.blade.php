@@ -81,7 +81,10 @@
 					$financial_tips_tree ="";
 					$manage_financial_tips = "";
 					$encode_financial_tips =""; 
-
+					// Template
+					$viewdocs ="";
+					$view_tree ="";
+					$view_viewdocs = "";
 
 					if(Request::segment(1) == 'myprofile')
 					{
@@ -145,7 +148,20 @@
 						
 						$manage_managedocs = "active";
 											
-					}	
+					}
+					else if(Request::segment(1) == 'TemplateView')
+					{
+						$viewdocs = "menu-open";
+						$viewdocs_tree = "active";
+						
+						$view_viewdocs = "active"; 
+						if(Request::segment(2) == 'view')
+						{
+							$view_viewdocs = "active";
+						}		
+											
+					}		
+					
 					else if(Request::segment(1) == 'enrollemployee')
 					{
 						$employee_enrollment = "menu-open";
@@ -483,7 +499,7 @@
 				<!-- END -->
 
 				<!-- DOCS AND TEMPLATES -->
-				@if(Session::get("manage_docs") != "none")
+				@if(Session::get("manage_docs") == "all")
 				<li class="nav-item has-treeview {{$managedocs}}">
 					<a class="nav-link {{$managedocs_tree}}" href="#"><i class="nav-icon fa fa-file"></i>
 					<p>Manage Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
@@ -496,7 +512,22 @@
 				</li>	
 				@else								
 				@endif
-				<!-- END -->
+				<!-- END --> 
+				<!-- DOCS AND TEMPLATES -->
+				@if(Session::get("manage_docs") == "view")
+				<li class="nav-item has-treeview {{$viewdocs}}">
+					<a class="nav-link {{$view_viewdocs}}" href="#"><i class="nav-icon fa fa-file"></i>
+						<p>Docs & Templates <i class="fa fa-angle-left right"></i></p></a>
+						<ul class="nav nav-treeview">
+							<li class="nav-item">
+								<a class="nav-link {{$view_viewdocs}}" href="/TemplateView/view"><i class="fa fa-circle-o nav-icon"></i>
+								<p>View Template</p></a>
+							</li>
+						</ul>
+					</li>	
+				@else								
+				@endif
+					<!-- END -->
 
 
 			</ul>           
