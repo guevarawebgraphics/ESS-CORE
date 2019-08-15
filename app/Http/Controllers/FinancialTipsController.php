@@ -24,7 +24,7 @@ class FinancialTipsController extends Controller
             }
         });     
     }
-    //show index 
+    //show index justin
     public function index()
     {          
         return view('employee_modules.financial_tips.index');
