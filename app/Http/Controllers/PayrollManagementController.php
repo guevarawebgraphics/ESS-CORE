@@ -549,12 +549,28 @@ class PayrollManagementController extends Controller
                                             'payrollregister.period_to')
                                     ->get();
 
-        /*Email Template*/
-        $mail_template = DB::table('notification')
+         //Check
+         $check_notification = DB::table('notification')
+                //->where('employee_no', '=', $request->employee_no)
+                ->where('employer_id', '=', auth()->user()->employer_id)
+                ->count() > 0;
+        if($check_notification == true){
+            $mail_template = DB::table('notification')
+                //->where('employer_id', auth()->user()->id)
+                ->where('employer_id', auth()->user()->employer_id)
+                ->where('notification_type', 1)
+                ->select('notification_message')
+                ->first();
+        }
+        if($check_notification == false) {
+            /*Email Template*/
+            $mail_template = DB::table('notification')
                 ->where('id', '39')
                 ->where('notification_type', 1)
                 ->select('notification_message')
                 ->first();
+        }
+        
         
         // Enviroment Variable
         $enviroment = config('app.url');
