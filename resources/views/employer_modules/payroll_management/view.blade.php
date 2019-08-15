@@ -49,7 +49,7 @@ elseif(Session::get('payroll_management') == 'delete'){
 @endphp
 @section('content')
 <div class="container-fluid">
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <center><strong>View Payroll Register</strong></center>
         </div>
