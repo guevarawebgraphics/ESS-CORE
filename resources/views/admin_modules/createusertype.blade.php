@@ -10,7 +10,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Manage Users</a>
             </li>
-            <li class="breadcrumb-item active">Create User Type</li>
+            <li class="breadcrumb-item active-create-user-type text-secondary">Create User Type</li>
         </ol>
     </div>
 </div>

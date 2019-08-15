@@ -132,7 +132,7 @@ class AnnouncementController extends Controller
                             ->latest('announcement.created_at')
                             ->get();
          }
-         if(auth()->user()->user_type_id !== 1){
+         if(auth()->user()->user_type_id){
             $Announcement = DB::table('announcement')
                             ->select('announcement.id',
                             'announcement.announcement_title',
@@ -164,7 +164,7 @@ class AnnouncementController extends Controller
             $Announcement1 = DB::table('announcement')
                                 ->join('employer', 'employer.id', '=', 'announcement.employer_id')
                                 ->join('employer_and_employee', 'announcement.employer_id', '=', 'employer_and_employee.employer_id')
-                                ->join('user_picture', 'employer.id', '=', 'user_picture.employer_id')
+                                ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
                                 ->select('announcement.id',
                                 'announcement.announcement_title',
                                 'announcement.announcement_description',
