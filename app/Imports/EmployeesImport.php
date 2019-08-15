@@ -22,6 +22,7 @@ use App\UserActivation;
 /**
  * Maat Website Packages
  *  */
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use LasseRafn\Initials\Initials;
 use Illuminate\Support\Facades\Hash;
@@ -174,13 +175,29 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             ]);
         //}
 
-         /*Email Template*/
-         $mail_template = DB::table('notification')
+        //Check
+        $check_notification = DB::table('notification')
+                                //->where('employee_no', '=', $request->employee_no)
+                                ->where('employer_id', '=', auth()->user()->employer_id)
+                                ->count() > 0;
+        if($check_notification == true){
+            $mail_template = DB::table('notification')
                 //->where('employer_id', auth()->user()->id)
                 ->where('employer_id', auth()->user()->employer_id)
                 ->where('notification_type', 1)
                 ->select('notification_message')
                 ->first();
+        }
+        if($check_notification == false){
+            /*Email Template*/
+            $mail_template = DB::table('notification')
+                //->where('employer_id', auth()->user()->id)
+                //->where('employer_id', auth()->user()->employer_id)
+                ->where('id', '=', 31)
+                ->where('notification_type', 1)
+                ->select('notification_message')
+                ->first();
+        }
         // Enviroment Variable
         $enviroment = config('app.url');
 
@@ -214,6 +231,30 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id
         ]);
+        $arrayPicture = 
+        ["ESS_male1.png",
+        "ESS_male2.png",
+        "ESS_male3.png",
+        "ESS_male4.png",
+        "ESS_male5.png",
+        "ESS_male6.png",
+        "ESS_male7.png",
+        "ESS_male8.png",
+        "ESS_male9.png"
+        ];
+
+        $default_profile = Arr::random($arrayPicture);
+
+
+        $default_profile = Arr::random($arrayPicture);
+
+                DB::table('user_picture')->insert([
+                    'user_id' => $user->id,
+                    'employer_id' => auth()->user()->employer_id,
+                    'profile_picture' =>  $default_profile,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                 ]);
     }
     /*Generate Key*/
     protected function generateESSKey(){

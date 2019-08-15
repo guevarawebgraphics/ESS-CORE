@@ -371,6 +371,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                         $('#Upload').removeAttr('disabled');
                         $('.btn-payroll-upload').removeAttr('disabled');
                     }, 400);
+                    window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
                 },
                 error: function(data, status){
                     $('.btn-payroll-upload').removeAttr('disabled');
@@ -758,6 +759,8 @@ elseif(Session::get('payroll_management') == 'delete'){
                         $("#payroll_register_table").DataTable().destroy();
                         showAllPayRegister();
                         initDataTable();
+                        /*Redirect To Account*/
+                    window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
                     }
                     console.log(data);
                 },

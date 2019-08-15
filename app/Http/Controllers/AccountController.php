@@ -342,6 +342,14 @@ class AccountController extends Controller
 
                 }
             }
+
+            DB::table('user_picture')->insert([
+                'user_id' => $employer->id,
+                'employer_id' => $employer->id,
+                'profile_picture' => "ESS_male1.png",
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+             ]);
             
             /*Email Template*/
             // $mail_template = DB::table('notification')
