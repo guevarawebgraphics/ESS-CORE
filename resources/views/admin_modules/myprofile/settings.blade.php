@@ -60,8 +60,10 @@ elseif(Session::get('my_profile') == 'delete'){
                         <center>
                                 @php
                  		        $user_picture = DB::table('user_picture')->where('user_id', '=', auth()->user()->id)->pluck('profile_picture')->first(); 
-			                    $status = DB::table('user_picture')->where('user_id','=',auth()->user()->id)->pluck('changed_status')->first();
-		            	        $status == 0 ? $link = '/storage/profile_picture/ESS_DEFAULT_PICTURE/' : $link = '/storage/profile_picture/'  
+                                $status = DB::table('user_picture')->where('user_id','=',auth()->user()->id)->pluck('changed_status')->first(); 
+                              
+			                 
+                                $status == 0 ? $link = '/storage/profile_picture/ESS_DEFAULT_PICTURE/' : $link = '/storage/profile_picture/' 
                                @endphp   
                             <img alt="User Image" class="profile-user-img img-responsive img-circle elevation-2" id="settings_profile_picture" src="{{$link.$user_picture}}" style="height: 100px; width: 99px;">
                         </center>
@@ -81,7 +83,15 @@ elseif(Session::get('my_profile') == 'delete'){
                         <div id="location"></div>
 
                     <h6 class="card-title"><strong>Notes</strong></h6>
-                    <p class="card-text">-</p>     
+                     <p class="card-text"></p 
+                    @if(auth()->user()->user_type_id ===4) 
+                    @php 
+                      $employee_no = DB::table('employee')->where('id','=',auth()->user()->employee_id)->first();
+                      $employee_value_no = $employee_no->employee_no;
+                    @endphp
+                    <h6 class="card-title"><strong>Employee No</strong></h6>
+                    <p class="card-text">{{$employee_value_no}}</p>
+                    @endif  
                 </div>
             </div>
             @if(auth()->user()->user_type_id != 1)
@@ -198,7 +208,6 @@ elseif(Session::get('my_profile') == 'delete'){
                         <thead>
                             <tr>
                                 <th>Employer</th>
-                                <th>Employee No</th>
                                 <th>Enrollment Date</th>
                                 <th>Status</th>
                             </tr>
@@ -207,7 +216,6 @@ elseif(Session::get('my_profile') == 'delete'){
                             @foreach($get_all_employers as $employers)
                             <tr>
                                 <td>{{ $employers->business_name }}</td>
-                                <td>{{ $employers->employee_no }}</td>
                                 <td>{{ \Carbon\Carbon::parse($employers->enrollment_date)->format('l jS \\of F Y') }}</td>
                                 <td>@if( $employers->status  == 1) <span class="badge badge-success">Active</span> @endif
                                      @if( $employers->status  == 2) <span class="badge badge-secondary">In-Active</span> @endif
