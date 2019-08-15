@@ -90,7 +90,7 @@ manage_docs') == 'delete'){
 
     public function get_all_template(){
         $Template = DB::table('template')
-                            ->join('employer', 'employer.id', '=', 'template.account_id')
+                            ->join('employer', 'employer.id', '=', 'template.employer_id')
                             ->select('template.id',
                             'template.document_code',
                             'template.document_description',
@@ -130,8 +130,9 @@ manage_docs') == 'delete'){
         /*Check if all Request is not null*/
         if($request->all() != null){
             /*Create Template Document*/
-            $template = Template::create([
-                'account_id' => $request->input('employer_id'),
+            $template = Template::create([ 
+                'account_id' => auth()->user()->id,
+                'employer_id' => $request->input('employer_id'),
                 'document_code' => $request->input('document_code'),
                 'document_description' => $request->input('document_description'),
                 'document_file' => $fileNameToStore_document_file,
@@ -218,13 +219,13 @@ manage_docs') == 'delete'){
     //Docs (view) restriction 
     public function viewtemplates(){
         $Templates = DB::table('template')
-        ->join('employer', 'employer.id', '=', 'template.account_id')
+        ->join('employer', 'employer.id', '=', 'template.employer_id')
         ->select('template.id',
         'template.document_code',
         'template.document_description',
         'template.document_file',
         'employer.business_name')
-        ->where('template.account_id','=',auth()->user()->id)
+        ->where('template.employer_id','=',auth()->user()->employer_id)
         ->latest('template.created_at')
         ->get();
         return view('Template.view', compact('Templates'));

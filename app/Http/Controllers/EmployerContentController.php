@@ -96,8 +96,8 @@ class EmployerContentController extends Controller
         if($request->all() != null){
             /*Create Content*/
             $Content = EmployerContent::create([
-                'account_id' => auth()->user()->employer_id, //Employer_ID
-                'employer_id' => auth()->user()->id, 
+                'account_id' => auth()->user()->id, //Employer_ID
+                'employer_id' => auth()->user()->employer_id, 
                 'content_title' => $request->input('content_title'),
                 'content_description' => $request->input('content_description'),
                 'content_status' => 0, //0 Means Pending Staus
