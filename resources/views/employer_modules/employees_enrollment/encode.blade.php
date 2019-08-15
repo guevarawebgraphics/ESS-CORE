@@ -18,7 +18,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header card-info card-outline">
+        <div class="card-header card-custom-blue card-outline">
             <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>
         <form method="POST" id="EmployeeForm">

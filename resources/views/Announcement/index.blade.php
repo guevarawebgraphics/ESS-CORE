@@ -371,51 +371,64 @@ $(document).ready(function (){
     /*Post Announcement*/
     $('#showdata').on('click', '.announcement-post', function(){
         var id = $(this).attr('data');
-        $('#PostModal').modal('show');
-        $('#PostModal').find('#title_modal').text('Post Announcement');
-        $('#PostAnnouncement').removeAttr('disabled');
-        $('#PostCancel').removeAttr('disabled');
+        // $('#PostModal').modal('show');
+        // $('#PostModal').find('#title_modal').text('Post Announcement');
+        // $('#PostAnnouncement').removeAttr('disabled');
+        // $('#PostCancel').removeAttr('disabled');
         toastr.remove()
-        $('#PostAnnouncement').unbind().click(function(){
-            $('#PostAnnouncement').attr('disabled', true);
-            $('#PostAnnouncement').addClass('PostAnnouncement');
-            $('.PostAnnouncement').removeAttr('id');
-            $('#PostCancel').attr('disabled', true);
-            $('#spinner_post').addClass('fa fa-refresh fa-spin');
-            $.ajax({
-                type: 'POST',
-                url: '/Announcement/update_announcement_status',
-                data: {
-                    id: id,
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data){
-                    $('#PostAnnouncement').removeAttr('disabled');
-                    $('#PostAnnouncement').removeClass('PostAnnouncement');
-                    $('.PostAnnouncement').attr('id', 'PostAnnouncement');
-                    $('#AnnouncementTable').DataTable().destroy();
-                    showAllAnnouncement();
-                    showAllAnnouncementToNotification();
-                    initDataTableAnnouncement();
-                    // Modal hide
-                    setTimeout(function (){
-                            $('#PostModal').modal('hide');
-                    }, 400);
-                    // Display a success toast, with a title
-                    toastr.success('Announcement Successfully Posted', 'Success')
-                    setTimeout(function (){
-                        $("#spinner_post").removeClass('fa fa-refresh fa-spin');
-                    }, 300);
-                },
-                error: function(){
-                    toastr.error('Error Deleting Announcement')
-                    setTimeout(function (){
-                        $("#spinner_post").removeClass('fa fa-refresh fa-spin');
-                    }, 250);
-                    $('#PostAnnouncement').removeAttr('disabled');
+        //$('#PostAnnouncement').unbind().click(function(){
+            swal({
+                title: "Are you sure you want to post this Announcement?",
+                type: "info",
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Yes",
+                showCancelButton: true,
+                closeOnConfirm: true,
+            },
+                function(){
+                    // $('#PostAnnouncement').attr('disabled', true);
+                    // $('#PostAnnouncement').addClass('PostAnnouncement');
+                    // $('.PostAnnouncement').removeAttr('id');
+                    // $('#PostCancel').attr('disabled', true);
+                    // $('#spinner_post').addClass('fa fa-refresh fa-spin');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Announcement/update_announcement_status',
+                        data: {
+                            id: id,
+                            '_token': $('input[name=_token]').val(),
+                        },
+                        success: function(data){
+                            $('#PostAnnouncement').removeAttr('disabled');
+                            $('#PostAnnouncement').removeClass('PostAnnouncement');
+                            $('.PostAnnouncement').attr('id', 'PostAnnouncement');
+                            $('#AnnouncementTable').DataTable().destroy();
+                            showAllAnnouncement();
+                            showAllAnnouncementToNotification();
+                            initDataTableAnnouncement();
+                            // Modal hide
+                            setTimeout(function (){
+                                    $('#PostModal').modal('hide');
+                            }, 400);
+                            // Display a success toast, with a title
+                            toastr.success('Announcement Successfully Posted', 'Success')
+                            setTimeout(function (){
+                                $("#spinner_post").removeClass('fa fa-refresh fa-spin');
+                            }, 300);
+                        },
+                        error: function(){
+                            toastr.error('Error Deleting Announcement')
+                            setTimeout(function (){
+                                $("#spinner_post").removeClass('fa fa-refresh fa-spin');
+                            }, 250);
+                            $('#PostAnnouncement').removeAttr('disabled');
+                        }
+                    });
                 }
-            });
-        });
+
+            );
+            
+        //});
         
     });
 

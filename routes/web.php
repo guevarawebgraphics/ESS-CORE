@@ -210,6 +210,7 @@ Route::get('/payrollmanagement/check_employee_no', 'PayrollManagementController@
 Route::get('/payrollmanagement/check_employee_exists_in_excel', 'PayrollManagementController@check_employee_exists_in_excel');
 Route::post('/payrollmanagement/submit_payroll_register_details', 'PayrollManagementController@submit_payroll_register_details');
 Route::post('/payrollmanagement/delete_preview_details', 'PayrollManagementController@delete_preview_details');
+Route::post('/payrollmanagement/update_payroll_details_preview', 'PayrollManagementController@update_payroll_details_preview');
 // Export Payroll Register
 Route::get('/payrollmanagement/PayrollExport/{payregister_id}', function(Request $request){
     $filename = DB::table('payrollregister')->where('id', '=', $request->payregister_id)->select('payroll_file')->get();
