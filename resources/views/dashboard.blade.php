@@ -40,12 +40,19 @@
         <span class="info-box-icon" style="background-color:#F39C12;color:white;"><i class="icon ion-md-people"></i></span>
 
         <div class="info-box-content">
-          <span class="info-box-text">Registered Employer</span> 
+   
           @if(auth()->user()->user_type_id===1)
+          <a href="/manageuser/create" style="color:black;">
+          <span class="info-box-text">Registered Employer</span> 
           <span class="info-box-number">{{$employers}}</span>
+          </a>
           @elseif(auth()->user()->user_type_id===3)
+          <a href="/enrollemployee" style="color:black;">
+          <span class="info-box-text">Registered Employee</span> 
           <span class="info-box-number">{{$count_employee}}</span>
-          @elseif(auth()->user()->user_type_id===4)
+          </a>
+          @elseif(auth()->user()->user_type_id===4) 
+          <span class="info-box-text">Registered Employer</span> 
           <span class="info-box-number">{{$count_my_employeer}}</span>
           @else 
           <span class="info-box-number">0</span>
