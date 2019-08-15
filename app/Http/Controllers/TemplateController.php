@@ -214,6 +214,20 @@ manage_docs') == 'delete'){
         // Insert Log
         $this->insert_log("Delete Template");
         return response()->json($template);
+    } 
+    //Docs (view) restriction 
+    public function viewtemplates(){
+        $Templates = DB::table('template')
+        ->join('employer', 'employer.id', '=', 'template.account_id')
+        ->select('template.id',
+        'template.document_code',
+        'template.document_description',
+        'template.document_file',
+        'employer.business_name')
+        ->where('template.account_id','=',auth()->user()->id)
+        ->latest('template.created_at')
+        ->get();
+        return view('Template.view', compact('Templates'));
     }
 
 
