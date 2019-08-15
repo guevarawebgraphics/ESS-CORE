@@ -369,6 +369,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                         $('#upload_payroll_register_modal').modal('hide');
                         $('#upload_payroll')[0].reset();
                         $('#Upload').removeAttr('disabled');
+                        $('.btn-payroll-upload').removeAttr('disabled');
                     }, 400);
                 },
                 error: function(data, status){
