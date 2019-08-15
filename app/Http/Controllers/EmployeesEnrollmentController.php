@@ -630,8 +630,8 @@ class EmployeesEnrollmentController extends Controller
                 'department' => 'required|min:2',              
                 'enrollment_date' => 'required',          
                 'employment_status' => 'required',      
-                'payroll_schedule' => 'required',
-                'payroll_bank' => 'required',
+                // 'payroll_schedule' => 'required',
+                // 'payroll_bank' => 'required',
                 'account_no' => 'required|numeric|min:3',
             ], $customMessages);
 
@@ -664,9 +664,9 @@ class EmployeesEnrollmentController extends Controller
                 'department' => $request->input('department'),             
                 'enrollment_date' => $enrollment_date,           
                 'employment_status' => $request->input('employment_status'),                          
-                'payroll_schedule' => $request->input('payroll_schedule'),
-                'payroll_bank' => $request->input('payroll_bank'), 
-                'account_no' => $request->input('account_no'), 
+                'payroll_schedule' => "2xMonthly",
+                'payroll_bank' => "File", 
+                'account_no' => "BDO", 
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id    
             ]);
