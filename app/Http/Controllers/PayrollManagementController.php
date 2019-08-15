@@ -371,108 +371,117 @@ class PayrollManagementController extends Controller
                                     'employee.payroll_schedule')
                                     ->get();
 
-        foreach($get_payroll_register_details_preview as $check_schedule)
-        {
-            /**
-             * @ Check if the Payroll Schedule is equal to the payroll schedule request
-             * */
-            if($check_schedule->payroll_schedule !== $request->payroll_schedule)
+        // check if the employer if there is a pending employees to upload
+        if($get_payroll_register_details_preview->count() > 0){
+            foreach($get_payroll_register_details_preview as $check_schedule)
             {
-                return json_encode([
-                    'message' => 'Payroll Schedule is not Match',
-                    'status'  => 'false',
-                    'rest' => $check_schedule->employee_no
-                ]);
-            }
-            else {
                 /**
-                 * @ Create payrollregisterdetails 
+                 * @ Check if the Payroll Schedule is equal to the payroll schedule request
                  * */
-                $period_from = Carbon::parse($request->period_from)->format('Y-m-d'); 
-                $period_to = Carbon::parse($request->period_to)->format('Y-m-d');
-                $payrollregister = payrollregister::create([
-                    'account_id' => auth()->user()->id,
-                    'employer_id' => auth()->user()->employer_id,
-                    'period_from' => $period_from,
-                    'period_to' => $period_to,
-                    'payroll_schedule_id' => $request->payroll_schedule,
-                    'batch_no' => $request->input('batch_no'),
-                    'payroll_file' => 'PayRegister'.'_'.carbon::now()->format('Y-m-d').'_'.$request->input('batch_no'),
-                    'account_status' => '0',
-                    'account_status_date_time' => Carbon::now(),
-                    'created_by' => auth()->user()->employer_id,
-                    'created_at' => Carbon::now(),
-                    'updated_by' => auth()->user()->employer_id,
-                    'updated_at' => Carbon::now()
-                ]);
-
-                /**
-                 * @ Get PayrollRegister Id 
-                 **/
-                $payregisterid = $payrollregister->id; 
-
-                foreach($get_payroll_register_details_preview as $row) {
-
+                if($check_schedule->payroll_schedule !== $request->payroll_schedule)
+                {
+                    return json_encode([
+                        'message' => 'Payroll Schedule is not Match',
+                        'status'  => 'false',
+                        'rest' => $check_schedule->employee_no
+                    ]);
+                }
+                else {
                     /**
-                     * @ Insert to the Main Table
+                     * @ Create payrollregisterdetails 
                      * */
-                    $payroll_register_details = payrollregisterdetails::create([
-                        'PayRegisterId' => $payregisterid,
-                        'employee_no' => $row->employee_no,
-                        'basic' => $row->basic,
-                        'absent' => $row->absent,
-                        'late' => $row->late,
-                        'regular_ot' => $row->regular_ot,
-                        'undertime' => $row->undertime,
-                        'legal_holiday' => $row->undertime,
-                        'special_holiday' => $row->special_holiday,
-                        'night_differencial' => $row->night_differencial,
-                        'adjustment_salary' => $row->adjustment_salary,
-                        'night_diff_ot' => $row->night_diff_ot,
-                        'incentives' => $row->incentives,
-                        'commision' => $row->commision,
-                        'net_basic_taxable' => $row->net_basic_taxable,
-                        'non_taxable_allowance' => $row->non_taxable_allowance,
-                        'rice_allowance' => $row->rice_allowance,
-                        'meal_allowance' => $row->meal_allowance,
-                        'transpo' => $row->transpo,
-                        'ecola' => $row->ecola,
-                        'grosspay' => $row->grosspay,
-                        'sss' => $row->sss,
-                        'phic' => $row->phic,
-                        'hdmf' => $row->hdmf,
-                        'wtax' => $row->wtax,
-                        'sss_loan' => $row->sss_loan,
-                        'hdmf_loan' => $row->hdmf_loan,
-                        'bank_loan' => $row->bank_loan,
-                        'cash_advance' => $row->cash_advance,
-                        'total_deduction' => $row->total_deduction,
-                        'net_pay' => $row->net_pay,
-                        'bank_id' => '1',
-                        'payroll_release_date' => Carbon::now(),
-                        'overtime_hours' => $row->overtime_hours,
-                        'absences_days' => $row->absences_days,
-                        'account_status_datetime' => Carbon::now(),
+                    $period_from = Carbon::parse($request->period_from)->format('Y-m-d'); 
+                    $period_to = Carbon::parse($request->period_to)->format('Y-m-d');
+                    $payrollregister = payrollregister::create([
+                        'account_id' => auth()->user()->id,
+                        'employer_id' => auth()->user()->employer_id,
+                        'period_from' => $period_from,
+                        'period_to' => $period_to,
+                        'payroll_schedule_id' => $request->payroll_schedule,
+                        'batch_no' => $request->input('batch_no'),
+                        'payroll_file' => 'PayRegister'.'_'.carbon::now()->format('Y-m-d').'_'.$request->input('batch_no'),
+                        'account_status' => '0',
+                        'account_status_date_time' => Carbon::now(),
+                        'created_by' => auth()->user()->employer_id,
                         'created_at' => Carbon::now(),
-                        'created_by' => auth()->user()->id,
-                        'created_datetime' => Carbon::now(),
-                        'updated_at' => Carbon::now(),
-                        'updated_datetime' => Carbon::now(),
+                        'updated_by' => auth()->user()->employer_id,
+                        'updated_at' => Carbon::now()
                     ]);
 
-                        /**
-                         * @ Delete Preview
-                         * */
-                        payroll_register_details_preview::where('id', '=', $row->id)->where('created_by', '=', auth()->user()->id)->delete();
+                    /**
+                     * @ Get PayrollRegister Id 
+                     **/
+                    $payregisterid = $payrollregister->id; 
 
+                    foreach($get_payroll_register_details_preview as $row) {
+
+                        /**
+                         * @ Insert to the Main Table
+                         * */
+                        $payroll_register_details = payrollregisterdetails::create([
+                            'PayRegisterId' => $payregisterid,
+                            'employee_no' => $row->employee_no,
+                            'basic' => $row->basic,
+                            'absent' => $row->absent,
+                            'late' => $row->late,
+                            'regular_ot' => $row->regular_ot,
+                            'undertime' => $row->undertime,
+                            'legal_holiday' => $row->undertime,
+                            'special_holiday' => $row->special_holiday,
+                            'night_differencial' => $row->night_differencial,
+                            'adjustment_salary' => $row->adjustment_salary,
+                            'night_diff_ot' => $row->night_diff_ot,
+                            'incentives' => $row->incentives,
+                            'commision' => $row->commision,
+                            'net_basic_taxable' => $row->net_basic_taxable,
+                            'non_taxable_allowance' => $row->non_taxable_allowance,
+                            'rice_allowance' => $row->rice_allowance,
+                            'meal_allowance' => $row->meal_allowance,
+                            'transpo' => $row->transpo,
+                            'ecola' => $row->ecola,
+                            'grosspay' => $row->grosspay,
+                            'sss' => $row->sss,
+                            'phic' => $row->phic,
+                            'hdmf' => $row->hdmf,
+                            'wtax' => $row->wtax,
+                            'sss_loan' => $row->sss_loan,
+                            'hdmf_loan' => $row->hdmf_loan,
+                            'bank_loan' => $row->bank_loan,
+                            'cash_advance' => $row->cash_advance,
+                            'total_deduction' => $row->total_deduction,
+                            'net_pay' => $row->net_pay,
+                            'bank_id' => '1',
+                            'payroll_release_date' => Carbon::now(),
+                            'overtime_hours' => $row->overtime_hours,
+                            'absences_days' => $row->absences_days,
+                            'account_status_datetime' => Carbon::now(),
+                            'created_at' => Carbon::now(),
+                            'created_by' => auth()->user()->id,
+                            'created_datetime' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                            'updated_datetime' => Carbon::now(),
+                        ]);
+
+                            /**
+                             * @ Delete Preview
+                             * */
+                            payroll_register_details_preview::where('id', '=', $row->id)->where('created_by', '=', auth()->user()->id)->delete();
+
+                    }
+                    
+                    return json_encode([
+                        'message' => 'OK',
+                        'status'  => 'true',
+                        'rest' => $get_payroll_register_details_preview
+                    ]);
                 }
-                
-                return json_encode([
-                    'message' => 'OK',
-                    'status'  => 'true',
-                    'rest' => $get_payroll_register_details_preview
-                ]);
             }
+        }
+        else {
+            return json_encode([
+                'message' => 'Upload Employee First',
+                'status' => 'failed',
+            ]);
         }
 
 
@@ -598,5 +607,96 @@ class PayrollManagementController extends Controller
             ]);
         }
      }
+
+
+     /**
+      * @ Update Payroll Details Preview
+     **/
+    public function update_payroll_details_preview(Request $request) {
+        /**
+         * @ Validate Request
+         **/
+        $this->validate($request, [
+            'id' => 'required',
+            'employee_no' => 'required',
+            'basic' => 'required',
+            'late' => 'required',
+            'absent' => 'required',
+            'regular_ot' => 'required',
+            'undertime' => 'required',
+            'legal_holiday' => 'required',
+            'special_holiday' => 'required',
+            'night_differencial' => 'required',
+            'adjustment_salary' => 'required',
+            'night_diff_ot' => 'required',
+            'incentives' => 'required',
+            'commision' => 'required',
+            'net_basic_taxable' => 'required',
+            'non_taxable_allowance' => 'required',
+            'rice_allowance' => 'required',
+            'meal_allowance' => 'required',
+            'telecom' => 'required',
+            'transpo' => 'required',
+            'ecola' => 'required',
+            'grosspay' => 'required',
+            'sss' => 'required',
+            'phic' => 'required',
+            'hdmf' => 'required',
+            'wtax' => 'required',
+            'sss_loan' => 'required',
+            'hdmf_loan' => 'required',
+            'bank_loan' => 'required',
+            'cash_advance' => 'required',
+            'total_deduction' => 'required',
+            'net_pay' => 'required',
+            'overtime_hours' => 'required',
+            'absences_days' => 'required',
+        ]);
+
+        $update_payroll_details_preview = DB::table('payroll_register_details_preview')
+                                                ->where('id', '=', $request->id)
+                                                ->where('created_by', '=', auth()->user()->id)
+                                                ->update(array(
+                                                    'employee_no' => $request->employee_no,
+                                                    'basic' => $request->basic,
+                                                    'absent' => $request->absent,
+                                                    'late' => $request->late,
+                                                    'regular_ot' => $request->regular_ot,
+                                                    'undertime' => $request->undertime,
+                                                    'legal_holiday' => $request->undertime,
+                                                    'special_holiday' => $request->special_holiday,
+                                                    'night_differencial' => $request->night_differencial,
+                                                    'adjustment_salary' => $request->adjustment_salary,
+                                                    'night_diff_ot' => $request->night_diff_ot,
+                                                    'incentives' => $request->incentives,
+                                                    'commision' => $request->commision,
+                                                    'net_basic_taxable' => $request->net_basic_taxable,
+                                                    'non_taxable_allowance' => $request->non_taxable_allowance,
+                                                    'rice_allowance' => $request->rice_allowance,
+                                                    'meal_allowance' => $request->meal_allowance,
+                                                    'transpo' => $request->transpo,
+                                                    'ecola' => $request->ecola,
+                                                    'grosspay' => $request->grosspay,
+                                                    'sss' => $request->sss,
+                                                    'phic' => $request->phic,
+                                                    'hdmf' => $request->hdmf,
+                                                    'wtax' => $request->wtax,
+                                                    'sss_loan' => $request->sss_loan,
+                                                    'hdmf_loan' => $request->hdmf_loan,
+                                                    'bank_loan' => $request->bank_loan,
+                                                    'cash_advance' => $request->cash_advance,
+                                                    'total_deduction' => $request->total_deduction,
+                                                    'net_pay' => $request->net_pay,
+                                                    'overtime_hours' => $request->overtime_hours,
+                                                    'absences_days' => $request->absences_days,
+                                                ));
+        
+        
+        return json_encode([
+            'message' => 'OK',
+            'status' => 'true',
+            'rest' => $request->employee_no
+        ]);
+    }
 
 }
