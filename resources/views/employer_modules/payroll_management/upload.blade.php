@@ -721,7 +721,7 @@ elseif(Session::get('payroll_management') == 'delete'){
 
         //     $('#employee_no').val(employee_no);
         //     $('#basic').val(basic);
-        //     $('#absent').val(absent);
+        //     $('#absent').val(absent);a
          });
          
 
