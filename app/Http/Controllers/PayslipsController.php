@@ -114,7 +114,7 @@ class PayslipsController extends Controller
                         $get_employee_no = DB::Table('payroll_register_details')
                         ->where('id','=',$id)
                         ->first();
-                        $employee_no = $get_employee_no->account_id;
+                        $employee_no = $get_employee_no->employee_no;
                         //checks if employee belongs to user logged in
                         $check = DB::Table('employee')
                                     ->where('id','=',auth()->user()->employee_id)
@@ -128,7 +128,7 @@ class PayslipsController extends Controller
                           //  ->Join('employer as emr','emr.id','=','eae.employer_id')
                             ->Join('employee_personal_information as epi','e.employee_info','=','epi.id')
                             ->join('payrollregister as pr','pr.id','=','prd.PayRegisterId')
-                            ->Join('employer as emr','emr.id','=','pr.employee_no')
+                            ->Join('employer as emr','emr.id','=','pr.employer_id')
                             ->where('prd.id','=',$id)
                             ->get();
              

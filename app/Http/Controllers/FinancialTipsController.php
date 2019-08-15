@@ -75,6 +75,7 @@ class FinancialTipsController extends Controller
 
         $create_financial_tips = FinancialTip::create([
             'account_id'=>auth()->user()->id,
+            'employer_id'=>auth()->user()->id,
             'financial_tips_title'=>$title,
             'financial_tips_description'=>$description,
             'status'=>0,
