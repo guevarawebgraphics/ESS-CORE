@@ -18,7 +18,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="card">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <center><strong>i Credit</strong></center>
         </div>
