@@ -83,7 +83,7 @@ elseif(Session::get('my_profile') == 'delete'){
                         <div id="location"></div>
 
                     <h6 class="card-title"><strong>Notes</strong></h6>
-                     <p class="card-text"></p 
+                     <p class="card-text"></p> 
                     @if(auth()->user()->user_type_id ===4) 
                     @php 
                       $employee_no = DB::table('employee')->where('id','=',auth()->user()->employee_id)->first();
@@ -208,6 +208,7 @@ elseif(Session::get('my_profile') == 'delete'){
                         <thead>
                             <tr>
                                 <th>Employer</th>
+                                <th> Employee No </th>
                                 <th>Enrollment Date</th>
                                 <th>Status</th>
                             </tr>
@@ -216,6 +217,7 @@ elseif(Session::get('my_profile') == 'delete'){
                             @foreach($get_all_employers as $employers)
                             <tr>
                                 <td>{{ $employers->business_name }}</td>
+                                <td>{{$employers->employee_no}} </td>
                                 <td>{{ \Carbon\Carbon::parse($employers->enrollment_date)->format('l jS \\of F Y') }}</td>
                                 <td>@if( $employers->status  == 1) <span class="badge badge-success">Active</span> @endif
                                      @if( $employers->status  == 2) <span class="badge badge-secondary">In-Active</span> @endif

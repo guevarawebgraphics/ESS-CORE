@@ -72,7 +72,7 @@ class MyProfileController extends Controller
                                 ->select('employer.business_name',
                                          'employee.enrollment_date',
                                          'employer_and_employee.status',
-                                         'employer_and_employee.employee_no')
+                                         'employee.employee_no')
                                 ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
 
