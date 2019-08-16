@@ -113,6 +113,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                                     <th>HDMF</th>
                                     <th>WTAX</th>
                                     <th>SSS LOAN</th>
+                                    <th>HDMF LOAN</th>
                                     <th>BANK LOAN</th>
                                     <th>CASH ADVANCE</th>
                                     <th>TOTAL DEDUCTION</th>
@@ -455,14 +456,15 @@ elseif(Session::get('payroll_management') == 'delete'){
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="sss_loan" value="'+data[i].sss_loan+'" class="form-control custom-table-input sss_loan"  hidden="true">'+data[i].sss_loan+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="hdmf_loan" value="'+data[i].hdmf_loan+'" class="form-control custom-table-input hdmf_loan"  hidden="true">'+data[i].hdmf_loan+'</td>'+
 
-                        '<td><input class="preview_data_details'+data[i].id+'" type="number" name="cash_advance" value="'+data[i].cash_advance+'" class="form-control custom-table-input cash_advance"  hidden="true">'+data[i].cash_advance+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="bank_loan" value="'+data[i].bank_loan+'" class="form-control custom-table-input bank_loan"  hidden="true">'+data[i].bank_loan+'</td>'+
+                        '<td><input class="preview_data_details'+data[i].id+'" type="number" name="cash_advance" value="'+data[i].cash_advance+'" class="form-control custom-table-input cash_advance"  hidden="true">'+data[i].cash_advance+'</td>'+
+                        
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="total_deduction" value="'+data[i].total_deduction+'" class="form-control custom-table-input total_deduction"  hidden="true">'+data[i].total_deduction+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="net_pay" value="'+data[i].net_pay+'" class="form-control custom-table-input net_pay"  hidden="true">'+data[i].net_pay+'</td>'+
+                        '<td><input class="preview_data_details'+data[i].id+'" type="number" name="net_pay" value="'+data[i].bank_id+'" class="form-control custom-table-input net_pay"  hidden="true">'+data[i].bank_id+'</td>'+
                         // '<td>'+release_payroll_date.toDateString()+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="overtime_hours" value="'+data[i].overtime_hours+'" class="form-control custom-table-input overtime_hours"  hidden="true">'+data[i].overtime_hours+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="absences_days" value="'+data[i].absences_days+'" class="form-control custom-table-input absences_days"  hidden="true">'+data[i].absences_days+'</td>'+
-
                         '<td>'+ 
                             '<a href="javascript:;" class="btn btn-sm btn-outline-primary btn-flat save-edit-payroll-register-details'+data[i].id+' {{$add}} data-id"'+data[i].id+'" disabled="true" hidden="true"><span class="icon is-small"><i class="fa fa-save"></i></span>&nbsp;Save</a>'+
                             '<a href="#post" class="btn btn-sm btn-outline-info btn-flat edit_payroll_register {{$edit}}" data-id="'+data[i].id+'" data-employee_no="'+data[i].employee_no+'" data-basic="'+data[i].basic+'" data-absent="'+data[i].absent+'" data-late="'+data[i].late+'" data-undertime="'+data[i].undertime+'" '+
