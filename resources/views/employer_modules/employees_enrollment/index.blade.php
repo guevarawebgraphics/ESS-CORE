@@ -93,7 +93,7 @@
 <!-- Modal For Change Status -->
 <div class="modal fade" id="csModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content card-info card-outline">
+      <div class="modal-content card-custom-blue card-outline">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" >Change Status</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -122,7 +122,7 @@
   <!-- Modal For Upload Employee -->
 <div class="modal fade" id="UploadEmployees" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content card-info card-outline">
+          <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel" >Upload Employees</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
