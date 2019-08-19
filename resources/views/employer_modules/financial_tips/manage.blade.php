@@ -19,7 +19,7 @@
 @section('content')
 
 <div class="container-fluid">
-        <div class="card">
+        <div class="card card-custom-blue card-outline">
             <div class="card-header">
                 <center><strong>Financial Tips</strong></center>
             </div>
@@ -44,7 +44,7 @@
 </div>
 <div class="modal fade" id="ModalFinancialTips" tabindex="2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content card-info card-outline">
+            <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="title_modal"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -60,7 +60,7 @@
                     <div class="form-group row">
                         <label for="ft_title" class="control-label col-md-4 text-md-center">Financial Tips Title:</label>     
                             <div class="col-md-6">    
-                                <input id="financial_tips_title" type="text" class="form-control" name="financialtips_title" placeholder="Financial Tips Title"   autofocus>
+                                <input id="financial_tips_title" type="text" class="form-control" name="financialtips_title" placeholder="Financial Tips Title" autofocus>
                                 <p class="text-danger" id="error_financialtips_title"></p>
                             </div>        
                     </div>
@@ -276,11 +276,15 @@
                         
                         }
                         $(document).on('click','#Add_financialtips',function(){
+                            $("#financial_tips_title").val("");
+                            CKEDITOR.instances.financialtips_description.setData("");  
                             $('#error_financialtips_title').html("");
                             $('#error_financialtips_description').html("");
                             $('#action_to_do').val("add");
                             $('.SaveFinancialTips').removeAttr('disabled');
-                            $('.SaveFinancialTips').html("Save Financial Tips" +" <i id='spinner-financial' class=''> </i>");
+                            $('.SaveFinancialTips').html("Save Financial Tips" +" <i id='spinner-financial' class=''> </i>"); 
+                            $('#title_modal').html("Create Financial Tips"); 
+                        
                         });
                         $(document).on('click','.financial-tips-edit',function(){
                             $('#error_financialtips_title').html("");
@@ -289,6 +293,7 @@
                             $('.SaveFinancialTips').removeAttr('disabled');
                             $('.SaveFinancialTips').attr('data-edit-value',$(this).data('add'));
                             $('.SaveFinancialTips').html("Update Financial Tips" +" <i id='spinner-financial' class=''></i>");
+                            $('#title_modal').html("Edit Financial Tips");
                             var financial_tips = {
                                 title : $(this).attr('data-title'),
                                 description: $(this).attr('data-description'),

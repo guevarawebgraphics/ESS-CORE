@@ -45,13 +45,13 @@ Route::get('/', function () { // root if the user is login
                 $content_status ="1"; // content_status 
                 $content = DB::table('employercontent')   //for showing employer's content
                                 ->orderBy('created_at')
-                                ->where('account_id','=',auth()->user()->employer_id)
+                                ->where('employer_id','=',auth()->user()->employer_id)
                                 ->where('content_status','=',$content_status)
                                 ->paginate(5, ['*'], 'content_page'); 
                 $financial_tips_status ="1"; // content_status 
                 $financial = DB::table('financial_tips')   //for showing employer's content
                                 ->orderBy('created_at')
-                                ->where('account_id','=',auth()->user()->employer_id)
+                                ->where('employer_id','=',auth()->user()->employer_id)
                                 ->where('status','=',$financial_tips_status)
                                 ->get();
                                 
@@ -152,6 +152,7 @@ Route::get('/Template/edit_template', 'TemplateController@edit_template');
 Route::post('/Template/update_template/{id}', 'TemplateController@update_template');
 Route::post('/Template/store_template', 'TemplateController@store_template');
 Route::post('/Template/destroy_template', 'TemplateController@destroy_template');
+Route::get('/TemplateView/view','TemplateController@viewtemplates')->name('TemplateView.view');
 
 /*Route Config For Announcement*/
 Route::get('/Announcement', 'AnnouncementController@index')->name('Announcement.index');
@@ -210,6 +211,7 @@ Route::get('/payrollmanagement/check_employee_no', 'PayrollManagementController@
 Route::get('/payrollmanagement/check_employee_exists_in_excel', 'PayrollManagementController@check_employee_exists_in_excel');
 Route::post('/payrollmanagement/submit_payroll_register_details', 'PayrollManagementController@submit_payroll_register_details');
 Route::post('/payrollmanagement/delete_preview_details', 'PayrollManagementController@delete_preview_details');
+Route::post('/payrollmanagement/update_payroll_details_preview', 'PayrollManagementController@update_payroll_details_preview');
 // Export Payroll Register
 Route::get('/payrollmanagement/PayrollExport/{payregister_id}', function(Request $request){
     $filename = DB::table('payrollregister')->where('id', '=', $request->payregister_id)->select('payroll_file')->get();

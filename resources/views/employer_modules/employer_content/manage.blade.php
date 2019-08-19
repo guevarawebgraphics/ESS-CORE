@@ -18,7 +18,7 @@
 
 @section('content')
 <div class="container-fluid" >
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-bullhorn"></i> Employer Content</h3>
         </div>
@@ -48,7 +48,7 @@
 <!-- Add Content Modal -->
 <div class="modal fade" id="AddContentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content card-info card-outline">
+        <div class="modal-content card-custom-blue card-outline">
         <div class="modal-header">
             <h5 class="modal-title" id="title_modal"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">

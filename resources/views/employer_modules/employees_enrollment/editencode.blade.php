@@ -17,7 +17,7 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-    <div class="card card-outline card-info">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>

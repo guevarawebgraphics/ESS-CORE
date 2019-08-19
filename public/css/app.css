@@ -25,7 +25,7 @@ li a p {
 }
 
 #sidebar {
-  background-image: linear-gradient(to right, #0A3873, #129D9E 100%);
+  background-image: linear-gradient(to right, #0A3873, #129D9E 125%);
 }
 
 .text-secondary {
@@ -47,7 +47,7 @@ li a p {
 /* Custom card Outline */
 
 .card-custom-blue.card-outline {
-  border-top: 3px solid #0A3873;
+  border-top: 3px solid #129D9E;
 }
 
 .body-background {

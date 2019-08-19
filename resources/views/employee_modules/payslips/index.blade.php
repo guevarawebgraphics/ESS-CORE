@@ -18,7 +18,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="card card-info card-outline"> 
+    <div class="card card-custom-blue card-outline"> 
             
         <div class="card-header">
         
@@ -47,7 +47,7 @@
                                     <div class="col">   
                                             <div class="form-group row"> 
                                                     <div class="col-sm-12">
-                                            <button type="button" class="btn btn-info" id="generate">Generate</button>  
+                                            <button type="button" class="btn btn-outline-info" id="generate">Generate</button>  
                                                     </div>
                                             </div>
                                     </div>

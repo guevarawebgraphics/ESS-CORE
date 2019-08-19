@@ -22,7 +22,7 @@ li a p{
     background-color: $navbar;
 }
 #sidebar {
-    background-image: linear-gradient(to right, $primary , $secondary 100%);
+    background-image: linear-gradient(to right, $primary , $secondary 125%);
  
 } 
 .text-secondary {
@@ -41,7 +41,7 @@ li a p{
 
 /* Custom card Outline */
 .card-custom-blue.card-outline {
-    border-top: 3px solid $primary;
+    border-top: 3px solid $outline-color;
 }
 
 .body-background {

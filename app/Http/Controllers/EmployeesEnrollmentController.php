@@ -534,14 +534,30 @@ class EmployeesEnrollmentController extends Controller
                     'user_activation_id' => $useractivation_id
                 );
 
-
+            
+            //Check
+            $check_notification = DB::table('notification')
+                    //->where('employee_no', '=', $request->employee_no)
+                    ->where('employer_id', '=', auth()->user()->employer_id)
+                    ->count() > 0;
+            if($check_notification == true){
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    ->where('employer_id', auth()->user()->employer_id)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }
+            if($check_notification == false){
             /*Email Template*/
             $mail_template = DB::table('notification')
-                            //->where('employer_id', auth()->user()->id)
-                            ->where('employer_id', auth()->user()->employer_id)
-                            ->where('notification_type', 1)
-                            ->select('notification_message')
-                            ->first();
+                    //->where('employer_id', auth()->user()->id)
+                    //->where('employer_id', auth()->user()->employer_id)
+                    ->where('id', '=', 31)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }  
             
             // Enviroment Variable
             $enviroment = config('app.url');
@@ -551,7 +567,7 @@ class EmployeesEnrollmentController extends Controller
 
 
             // Replace All The String in the Notification Message
-            $search = ["name", "username", "mobile", "url", "password"];
+            $search = ["name", "userid", "mobile", "url", "password"];
             $replace = [$user->name, $user->name, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
             $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                              
@@ -630,8 +646,8 @@ class EmployeesEnrollmentController extends Controller
                 'department' => 'required|min:2',              
                 'enrollment_date' => 'required',          
                 'employment_status' => 'required',      
-                'payroll_schedule' => 'required',
-                'payroll_bank' => 'required',
+                // 'payroll_schedule' => 'required',
+                // 'payroll_bank' => 'required',
                 'account_no' => 'required|numeric|min:3',
             ], $customMessages);
 
@@ -664,9 +680,9 @@ class EmployeesEnrollmentController extends Controller
                 'department' => $request->input('department'),             
                 'enrollment_date' => $enrollment_date,           
                 'employment_status' => $request->input('employment_status'),                          
-                'payroll_schedule' => $request->input('payroll_schedule'),
-                'payroll_bank' => $request->input('payroll_bank'), 
-                'account_no' => $request->input('account_no'), 
+                'payroll_schedule' => "2xMonthly",
+                'payroll_bank' => "File", 
+                'account_no' => "BDO", 
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id    
             ]);

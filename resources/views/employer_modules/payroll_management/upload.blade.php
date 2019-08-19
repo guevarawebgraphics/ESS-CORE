@@ -48,7 +48,7 @@ elseif(Session::get('payroll_management') == 'delete'){
 @endphp
 @section('content')
 <div class="container-fluid">
-    <div class="card card-info card-outline">
+    <div class="card card-custom-blue card-outline">
         <div class="card-header">
             <center><strong>Upload Payroll Register</strong></center>
         </div>
@@ -113,6 +113,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                                     <th>HDMF</th>
                                     <th>WTAX</th>
                                     <th>SSS LOAN</th>
+                                    <th>HDMF LOAN</th>
                                     <th>BANK LOAN</th>
                                     <th>CASH ADVANCE</th>
                                     <th>TOTAL DEDUCTION</th>
@@ -140,7 +141,7 @@ elseif(Session::get('payroll_management') == 'delete'){
 <!-- Modal For Upload Upload Payroll-->
 <div class="modal fade" id="upload_payroll_register_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-	  <div class="modal-content card-info card-outline">
+	  <div class="modal-content card-custom-blue card-outline">
 		<div class="modal-header">
 		  <h5 class="modal-title" id="exampleModalLabel">Upload Payroll</h5>
 		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -170,7 +171,7 @@ elseif(Session::get('payroll_management') == 'delete'){
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-outline-primary btn-flat btn-payroll-upload" id="Upload"><span><i class="fa fa-upload"></i></span> Upload <i id="spinner_upload_payroll" class=""></button>
+		  <button type="submit" class="btn btn-outline-primary btn-flat btn-payroll-upload" id="Upload"><span><i class="fa fa-upload"></i></span> Upload</button>
 		</div>
 		</form>
 	  </div>
@@ -181,7 +182,7 @@ elseif(Session::get('payroll_management') == 'delete'){
   <!-- Modal For Save Payroll-->
 <div class="modal fade" id="save_payroll_register_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-	  <div class="modal-content card-info card-outline">
+	  <div class="modal-content card-custom-blue card-outline">
 		<div class="modal-header">
 		  <h5 class="modal-title" id="exampleModalLabel">Save Payroll</h5>
 		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -239,8 +240,8 @@ elseif(Session::get('payroll_management') == 'delete'){
     <!-- Modal For Upload Edit Payroll Register Details-->
 <div class="modal fade" id="edit_payroll_register_details_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header card-info card-outline">
+          <div class="modal-content modal-lg">
+            <div class="modal-header card-custom-blue card-outline">
               <h5 class="modal-title" id="exampleModalLongTitle">Edit Payroll Register Details</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -249,61 +250,17 @@ elseif(Session::get('payroll_management') == 'delete'){
             <div class="modal-body">
               <form id="edit_payroll_details">
                   @csrf
-                  <div class="col-md-6">
-                      <div class="input-group">
-                          <div class="col-md-12">
-                                <label for="batch_no">Employee No:</label>
-                              <input type="text" name="employee_no" id="employee_no" class="form-control" placeholder="Employee No">
-                          </div>
-                      </div>
-                      <div class="input-group">
-                          <div class="col-md-12">
-                                <label for="batch_no">Basic:</label>
-                              <input type="number" name="basic" id="basic" class="form-control" placeholder="Basic ">
-                          </div>
-                      </div>
-                      <div class="input-group">
-                          <div class="col-md-12">
-                                <label for="batch_no">Absent:</label>
-                              <input type="number" name="absent" id="absent" class="form-control" placeholder="Absent">
-                          </div>
-                      </div>
-                      <div class="input-group">
-                            <div class="col-md-12">
-                                  <label for="batch_no">Late:</label>
-                                <input type="number" name="late" id="late" class="form-control" placeholder="Late">
-                            </div>
-                      </div>
-                      <div class="input-group">
-                            <div class="col-md-12">
-                                  <label for="batch_no">Undertime:</label>
-                                <input type="number" name="undertime" id="undertime" class="form-control" placeholder="Undertime">
-                            </div>
-                      </div>
-                      <div class="input-group">
-                            <div class="col-md-12">
-                                  <label for="batch_no">Regular OT:</label>
-                                <input type="number" name="regularot" id="regularot" class="form-control" placeholder="Regular OT">
-                            </div>
-                      </div>
-                      <div class="input-group">
-                            <div class="col-md-12">
-                                  <label for="batch_no">Legal Holiday:</label>
-                                <input type="number" name="legal_holiday" id="legal_holiday" class="form-control" placeholder="Legal Holiday">
-                            </div>
-                      </div>
-                      <div class="input-group">
-                            <div class="col-md-12">
-                                  <label for="batch_no">Legal Holiday:</label>
-                                <input type="number" name="legal_holiday" id="legal_holiday" class="form-control" placeholder="Legal Holiday">
-                            </div>
-                      </div>
+                  <div class="row">
+                    <div class="col-md-6" id="edit_payroll_field_col_1">
+                    </div>
+                    <div class="col-md-6" id="edit_payroll_field_col_2">
+                    </div>
                   </div>
               </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-outline-primary btn-flat">Save changes</button>
+              <button type="button" class="btn btn-outline-primary btn-flat" id="save_edit_payroll_register_details">Save changes</button>
             </div>
         </div>
     </div>
@@ -344,7 +301,7 @@ elseif(Session::get('payroll_management') == 'delete'){
           scrollX: true,
           "autoWidth": true,
           lengthChange: false,
-          //responsive: true,
+          responsive: true,
           fixedColumns: true,
           "order": [[4, "desc"]]
         }); 
@@ -401,7 +358,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                 },
                 success: function(data) {
                     toastr.success('Payroll Register Uploaded!')
-                    console.log("Success");
+                    //console.log("Success");
                     $("#payroll_register_table").DataTable().destroy();
                     showAllPayRegister();
                     initDataTable();
@@ -413,7 +370,9 @@ elseif(Session::get('payroll_management') == 'delete'){
                         $('#upload_payroll_register_modal').modal('hide');
                         $('#upload_payroll')[0].reset();
                         $('#Upload').removeAttr('disabled');
+                        $('.btn-payroll-upload').removeAttr('disabled');
                     }, 400);
+                    window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
                 },
                 error: function(data, status){
                     $('.btn-payroll-upload').removeAttr('disabled');
@@ -469,7 +428,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                 const release_payroll_date = new Date(data[i].payroll_release_date);
                 html += '<form id="preview_details">'+
                         '<tr>'+
-                        '<td><input class="form-control custom-table-input employee_no preview_data_details'+data[i].id+'" type="text" name="employee_no" value="'+data[i].employee_no+'" class=" "  hidden="false">'+data[i].employee_no+'</td>'+
+                        '<td><input class="form-control custom-table-input employee_no preview_data_details'+data[i].id+'" type="text" name="employee_no" value="'+data[i].employee_no+'" class=" "  hidden="true">'+data[i].employee_no+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="basic" value="'+data[i].basic+'" class="form-control custom-table-input basic"  hidden="true">'+data[i].basic+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="absent" value="'+data[i].absent+'" class="form-control custom-table-input absent"  hidden="true">'+data[i].absent+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="late" value="'+data[i].late+'" class="form-control custom-table-input late"  hidden="true">'+data[i].late+'</td>'+
@@ -497,20 +456,22 @@ elseif(Session::get('payroll_management') == 'delete'){
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="sss_loan" value="'+data[i].sss_loan+'" class="form-control custom-table-input sss_loan"  hidden="true">'+data[i].sss_loan+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="hdmf_loan" value="'+data[i].hdmf_loan+'" class="form-control custom-table-input hdmf_loan"  hidden="true">'+data[i].hdmf_loan+'</td>'+
 
-                        '<td><input class="preview_data_details'+data[i].id+'" type="number" name="cash_advance" value="'+data[i].cash_advance+'" class="form-control custom-table-input cash_advance"  hidden="true">'+data[i].cash_advance+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="bank_loan" value="'+data[i].bank_loan+'" class="form-control custom-table-input bank_loan"  hidden="true">'+data[i].bank_loan+'</td>'+
+                        '<td><input class="preview_data_details'+data[i].id+'" type="number" name="cash_advance" value="'+data[i].cash_advance+'" class="form-control custom-table-input cash_advance"  hidden="true">'+data[i].cash_advance+'</td>'+
+                        
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="total_deduction" value="'+data[i].total_deduction+'" class="form-control custom-table-input total_deduction"  hidden="true">'+data[i].total_deduction+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="net_pay" value="'+data[i].net_pay+'" class="form-control custom-table-input net_pay"  hidden="true">'+data[i].net_pay+'</td>'+
+                        '<td><input class="preview_data_details'+data[i].id+'" type="number" name="net_pay" value="'+data[i].bank_id+'" class="form-control custom-table-input net_pay"  hidden="true">'+data[i].bank_id+'</td>'+
                         // '<td>'+release_payroll_date.toDateString()+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="overtime_hours" value="'+data[i].overtime_hours+'" class="form-control custom-table-input overtime_hours"  hidden="true">'+data[i].overtime_hours+'</td>'+
                         '<td><input class="preview_data_details'+data[i].id+'" type="number" name="absences_days" value="'+data[i].absences_days+'" class="form-control custom-table-input absences_days"  hidden="true">'+data[i].absences_days+'</td>'+
-
                         '<td>'+ 
+                            '<a href="javascript:;" class="btn btn-sm btn-outline-primary btn-flat save-edit-payroll-register-details'+data[i].id+' {{$add}} data-id"'+data[i].id+'" disabled="true" hidden="true"><span class="icon is-small"><i class="fa fa-save"></i></span>&nbsp;Save</a>'+
                             '<a href="#post" class="btn btn-sm btn-outline-info btn-flat edit_payroll_register {{$edit}}" data-id="'+data[i].id+'" data-employee_no="'+data[i].employee_no+'" data-basic="'+data[i].basic+'" data-absent="'+data[i].absent+'" data-late="'+data[i].late+'" data-undertime="'+data[i].undertime+'" '+
                             'data-regular_ot="'+data[i].regular_ot+'" data-legal_holiday="'+data[i].legal_holiday+'" data-special_holiday="'+data[i].special_holiday+'" data-night_differencial="'+data[i].night_differencial+'" data-adjustment_salary="'+data[i].adjustment_salary+'" data-night_diff_ot="'+data[i].night_diff_ot+'" data-incentives="'+data[i].incentives+'" '+
                             'data-commision="'+data[i].commision+'" data-net_basic_taxable="'+data[i].net_basic_taxable+'" data-non_taxable_allowance="'+data[i].non_taxable_allowance+'" data-rice_allowance="'+data[i].rice_allowance+'" data-meal_allowance="'+data[i].meal_allowance+'" data-telecom="'+data[i].telecom+'" data-transpo="'+data[i].transpo+'" '+
                             'data-ecola="'+data[i].ecola+'" data-grosspay="'+data[i].grosspay+'" data-sss="'+data[i].sss+'" data-phic="'+data[i].phic+'" data-phic="'+data[i].phic+'" data-hdmf="'+data[i].hdmf+'" data-wtax="'+data[i].wtax+'" data-sss_loan="'+data[i].sss_loan+'" data-hdmf_loan="'+data[i].hdmf_loan+'" '+
-                            'data-hdmf_load="'+data[i].hdmf_load+'" data-cash_advance="'+data[i].cash_advance+'" data-bank_loan="'+data[i].bank_loan+'" data-total_deduction="'+data[i].total_deduction+'" data-net_pay="'+data[i].net_pay+'" data-overtime_hours="'+data[i].overtime_hours+'" data-absences_days="'+data[i].absences_days+'" id="edit_payroll_register" ><i class="fa fa-pencil"></i></span>&nbsp;EDIT</a> ' +
+                            'data-hdmf_load="'+data[i].hdmf_load+'" data-cash_advance="'+data[i].cash_advance+'" data-bank_loan="'+data[i].bank_loan+'" data-total_deduction="'+data[i].total_deduction+'" data-net_pay="'+data[i].net_pay+'" data-overtime_hours="'+data[i].overtime_hours+'" data-absences_days="'+data[i].absences_days+'" id="edit_payroll_register" data-toggle="modal" data-target="#edit_payroll_register_details_modal"><i class="fa fa-pencil"></i></span>&nbsp;EDIT</a> ' +
                             '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat delete_payroll_register {{$delete}}" id="delete_payroll_details" data="'+data[i].id+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                         '</td>'+
 
@@ -623,6 +584,13 @@ elseif(Session::get('payroll_management') == 'delete'){
                                 $('#save_payroll_errors').removeAttr('hidden');
                                 $('#save_validation_error_message').html('<label>'+ data.message +'</label><br>');
                             }
+                            else if(data.status == 'failed'){
+                                // Display a success toast, with a title
+                                toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
+                                console.log(data);
+                                $('#save_payroll_errors').removeAttr('hidden');
+                                $('#save_validation_error_message').html('<label>'+ data.message +'</label><br>');
+                            }
                             else {
                             // Display a success toast, with a title
                             toastr.success('Pay Register Details Successfully Posted', 'Success')
@@ -673,7 +641,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                 autoclose: true,
             }); 
 
-        /*Edit Payroll Register Details*/
+        // /*Edit Payroll Register Details*/
         $('#previewdata').on('click', '.edit_payroll_register', function(){
             
             var id = $(this).attr('data-id');
@@ -681,12 +649,128 @@ elseif(Session::get('payroll_management') == 'delete'){
             var basic = $(this).attr('data-basic');
             var absent = $(this).attr('data-absent');
             console.log(id);
-            $('.preview_data_details'+id).removeAttr('hidden');
 
-            $('#employee_no').val(employee_no);
-            $('#basic').val(basic);
-            $('#absent').val(absent);
-        });
+            let edit_details_col_1 = {
+                //id: $(this).attr('data-id'),
+                employee_no: $(this).attr('data-employee_no'),
+                basic: $(this).attr('data-basic'),
+                absent: $(this).attr('data-absent'),
+                late: $(this).attr('data-late'),
+                regular_ot: $(this).attr('data-regular_ot'),
+                undertime: $(this).attr('data-undertime'),
+                legal_holiday: $(this).attr('data-legal_holiday'),
+                special_holiday: $(this).attr('data-special_holiday'),
+                night_differencial: $(this).attr('data-night_differencial'),
+                adjustment_salary: $(this).attr('data-adjustment_salary'),
+                night_diff_ot: $(this).attr('data-night_diff_ot'),
+                incentives: $(this).attr('data-incentives'),
+                commision: $(this).attr('data-commision'),
+                net_basic_taxable: $(this).attr('data-net_basic_taxable'),
+                non_taxable_allowance: $(this).attr('data-non_taxable_allowance'),
+                rice_allowance: $(this).attr('data-rice_allowance'),
+                meal_allowance: $(this).attr('data-meal_allowance'),
+                
+            };
+
+            let edit_details_col_2  = {
+                
+                telecom: $(this).attr('data-telecom'),
+                transpo: $(this).attr('data-transpo'),
+                ecola: $(this).attr('data-ecola'),
+                grosspay: $(this).attr('data-grosspay'),
+                sss: $(this).attr('data-sss'),
+                phic: $(this).attr('data-sss'),
+                hdmf: $(this).attr('data-hdmf'),
+                wtax: $(this).attr('data-wtax'),
+                sss_loan: $(this).attr('data-sss_loan'),
+                hdmf_loan: $(this).attr('data-hdmf_loan'),
+                bank_loan: $(this).attr('data-bank_loan'),
+                cash_advance: $(this).attr('data-cash_advance'),
+                total_deduction: $(this).attr('data-total_deduction'),
+                net_pay: $(this).attr('data-net_pay'),
+                overtime_hours: $(this).attr('data-overtime_hours'),
+                absences_days: $(this).attr('data-absences_days'),
+            };
+
+            $.each(edit_details_col_1, function(key, edit_details_col_1){
+                $('#edit_payroll_field_col_1').append(`
+                <div class="input-group input-group-sm mb-3">
+                <input type="text" name="id" value="`+id+`" hidden="true">
+                    <div class="col-md-12">
+                        <label for="batch_no" style="font-family: Poppins !important;">`+key.charAt(0).toUpperCase() + key.slice(1)+`:</label>
+                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_1+`" class="form-control" placeholder="`+key+` ">
+                    </div>
+                </div>
+                `);
+            });
+
+            $.each(edit_details_col_2, function(key, edit_details_col_2){
+                $('#edit_payroll_field_col_2').append(`
+                <div class="input-group input-group-sm mb-3">
+                    <div class="col-md-12">
+                        <label for="batch_no" style="font-family: Poppins !important;">`+key.charAt(0).toUpperCase() + key.slice(1)+`:</label>
+                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_2+`" class="form-control" placeholder="`+key+` ">
+                    </div>
+                </div>
+                `);
+            });
+
+            
+
+        //     $('.preview_data_details'+id).removeAttr('hidden');
+        //     $('.save-edit-payroll-register-details'+id).removeAttr('hidden');
+        //     $('.save-edit-payroll-register-details'+id).removeAttr('disabled');
+
+        //     $('#employee_no').val(employee_no);
+        //     $('#basic').val(basic);
+        //     $('#absent').val(absent);a
+         });
+         
+
+         // Close Edit modal
+         $('#edit_payroll_register_details_modal').on('hidden.bs.modal', function(e) {
+            $('.input-group').remove();
+         });
+
+
+
+
+         // Update Details
+         $('#save_edit_payroll_register_details').click(function (e){
+            e.preventDefault();
+            toastr.remove()
+            var formData = new FormData($('#edit_payroll_details')[0]);
+            $.ajax({
+                url: '/payrollmanagement/update_payroll_details_preview',
+                method: 'POST',
+                async: false,
+                dataType: 'json',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if(data.status == 'true'){
+                        // Modal hide
+                        setTimeout(function (){
+                                $('#edit_payroll_register_details_modal').modal('hide');
+                        }, 400);
+                        // Display a success toast, with a title
+                        toastr.success('Payroll Details Updated', 'Success')
+                        $('#edit_payroll_details')[0].reset();
+                        $("#payroll_register_table").DataTable().destroy();
+                        showAllPayRegister();
+                        initDataTable();
+                        /*Redirect To Account*/
+                    window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
+                    }
+                    console.log(data);
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+         });
 
         /*Delete Payroll Detailks*/
         $('#previewdata').on('click', '.delete_payroll_register', function() {
@@ -724,6 +808,18 @@ elseif(Session::get('payroll_management') == 'delete'){
                 });
             }
         );
+        });
+
+         // Edit 
+         $('#previewdata').on('click', '.preview_data_details', function(){
+            var id = $(this).attr('data-id');
+            $('.preview_data_details'+id).attr('hidden', true);
+            console.log(id);
+        });
+
+        // Save Payroll Register Details
+        $('#previewdata').on('click', '.save-edit-payroll-register-details', function(){
+
         });
 
 

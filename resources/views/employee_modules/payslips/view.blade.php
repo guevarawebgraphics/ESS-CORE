@@ -18,7 +18,7 @@
 
 @section('content')
 <div class="container-fluid">
-        <div class="card card-info card-outline">
+        <div class="card card-custom-blue card-outline">
             <div class="card-header">
                 <center><strong>Payslips</strong></center>
             </div>
@@ -206,7 +206,7 @@
                                   <div class="table-responsive">
                                   <table class="table table-borderless">
                                       <colgroup>
-                                        <col span="1" style="background-color:#f2f2f2">
+                                        <col span="1" style="background-color:white">
                                       </colgroup>
                                       <tr>
                                         <th colspan="1">Government Numbers: </th>

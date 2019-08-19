@@ -18,7 +18,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header card-info card-outline">
+        <div class="card-header card-custom-blue card-outline">
             <h3 class="card-title"><i class="fa fa-edit"></i> Encode Employees</h3>
         </div>
         <form method="POST" id="EmployeeForm">
@@ -1232,7 +1232,7 @@ $(document).ready(function(){
                 $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname);
                 $('#employee_position').html(data.position);
                 $('#employee_address').html(data.address_unit + ' ' + data.provDesc + ' ' + data.citymunDesc + ' ' + data.brgyDesc);
-                $('#employee_employeeno').html(data.employee_no);
+                //$('#employee_employeeno').html(data.employee_no);
                 $('#employee_department').html(data.department);
                 $('#employee_email').html(data.email_add);
                 $('#employee_mobileno').html(data.mobile_no);
@@ -1267,7 +1267,7 @@ $(document).ready(function(){
                 $("#zipcode").val(data.zipcode);
                 $("#hidden_personalinfo_id").val(data.id);
                 $("#hidden_essid").val(data.ess_id);
-                $('#employee_no').val(data.employee_no);
+                //$('#employee_no').val(data.employee_no);
                 $('#enrollment_date').val(data.enrollment_date);
                 $('#department').val(data.department);
                 $('#employment_status').val(data.employment_status);
