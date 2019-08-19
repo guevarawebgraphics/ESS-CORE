@@ -47,7 +47,7 @@
                                     <div class="col">   
                                             <div class="form-group row"> 
                                                     <div class="col-sm-12">
-                                            <button type="button" class="btn btn-info" id="generate">Generate</button>  
+                                            <button type="button" class="btn btn-outline-info" id="generate">Generate</button>  
                                                     </div>
                                             </div>
                                     </div>
