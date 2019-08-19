@@ -534,14 +534,30 @@ class EmployeesEnrollmentController extends Controller
                     'user_activation_id' => $useractivation_id
                 );
 
-
+            
+            //Check
+            $check_notification = DB::table('notification')
+                    //->where('employee_no', '=', $request->employee_no)
+                    ->where('employer_id', '=', auth()->user()->employer_id)
+                    ->count() > 0;
+            if($check_notification == true){
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    ->where('employer_id', auth()->user()->employer_id)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }
+            if($check_notification == false){
             /*Email Template*/
             $mail_template = DB::table('notification')
-                            //->where('employer_id', auth()->user()->id)
-                            ->where('employer_id', auth()->user()->employer_id)
-                            ->where('notification_type', 1)
-                            ->select('notification_message')
-                            ->first();
+                    //->where('employer_id', auth()->user()->id)
+                    //->where('employer_id', auth()->user()->employer_id)
+                    ->where('id', '=', 31)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }  
             
             // Enviroment Variable
             $enviroment = config('app.url');
@@ -551,7 +567,7 @@ class EmployeesEnrollmentController extends Controller
 
 
             // Replace All The String in the Notification Message
-            $search = ["name", "username", "mobile", "url", "password"];
+            $search = ["name", "userid", "mobile", "url", "password"];
             $replace = [$user->name, $user->name, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
             $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                              

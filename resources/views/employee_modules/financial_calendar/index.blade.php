@@ -28,6 +28,11 @@
                 {{-- Col --}}
                 <div class="col-md-12">
                     <div class="card-body p-0">
+                        <br />
+                        <a data-toggle="modal" href="#modal-action-show" class="btn btn-outline-primary btn-flat" style="margin-right: 5px;"><i class="fa fa-money"></i><span> CashNow</span></a>
+                        <a data-toggle="modal" href="#modal-action-collection" class="btn btn-outline-secondary btn-flat" style="margin-right: 5px;"><i class="fa fa-money"></i><span> Collection</span></a>
+                        <a data-toggle="modal" href="#modal-action-payment" class="btn btn-outline-info btn-flat"><i class="fa fa-money"></i><span> Payment</span></a>
+                        <!-- THE CALENDAR -->
                         {{-- Calendar --}}
                         <div id="calendar"></div>
                     </div>
