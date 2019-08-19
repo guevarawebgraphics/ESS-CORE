@@ -866,7 +866,7 @@ $(document).ready(function (){
                 toastr.error('Error. Please Complete The Fields', 'Error!')
                 // Set Timeout For Loading in Submit button
                 setTimeout(function (){
-                    $("#spinner").removeClass('fa fa-refresh fa-spin');
+                    $("#spinnercreate").removeClass('fa fa-refresh fa-spin');
                     $('#formOverlay').removeClass('overlay');
                 }, 250);
                 // Handle a 422 Status Code
