@@ -30,6 +30,7 @@ use App\UserActivation;
 use App\EmployerEmployee;
 use App\EmployeeEnrollment;
 use App\EmployeePersonalInfo;
+use App\employee_personal_information_preview;
 
 
 /**
@@ -47,6 +48,7 @@ use Uppercase;
  *  @ Use App Imports
  *  */
 use App\Imports\EmployeesImport;
+use App\Imports\EmployeesImportPreview;
 
 class EmployeesEnrollmentController extends Controller
 {
@@ -196,6 +198,53 @@ class EmployeesEnrollmentController extends Controller
 
         return view('employer_modules.employees_enrollment.table.encodetable')->with('employee_info', $employee_info);
     }
+
+    // Get Employees Details Preview
+    public function get_employees_details_preview(Request $request){
+        $employee_info_preview = DB::table('employer_and_employee')
+                            ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
+                            ->join('employee_personal_information_preview', 'employee.employee_info', '=', 'employee_personal_information_preview.id')
+                            ->select('employer_and_employee.id as eneid',
+                                    'employee.id as emp_id',
+                                    'employee.employee_no',
+                                    'employee.enrollment_date',
+                                    'employee.department',
+                                    'employee.employment_status',
+                                    'employee.payroll_schedule',
+                                    'employee.payroll_bank',
+                                    'employee.account_no',
+                                    'employee.AccountStatus as AccountStatus',
+                                    'employee.position',
+                                    'employee_personal_information_preview.id',
+                                    'employee_personal_information_preview.lastname',
+                                    'employee_personal_information_preview.firstname',
+                                    'employee_personal_information_preview.middlename',
+                                    'employee_personal_information_preview.TIN',
+                                    'employee_personal_information_preview.SSSGSIS',
+                                    'employee_personal_information_preview.PHIC',
+                                    'employee_personal_information_preview.HDMF',
+                                    'employee_personal_information_preview.NID',
+                                    'employee_personal_information_preview.mobile_no',
+                                    'employee_personal_information_preview.email_add',
+                                    'employee_personal_information_preview.birthdate',
+                                    'employee_personal_information_preview.gender',
+                                    'employee_personal_information_preview.civil_status',
+                                    'employee_personal_information_preview.country',
+                                    'employee_personal_information_preview.address_unit',
+                                    'employee_personal_information_preview.citytown',
+                                    'employee_personal_information_preview.barangay',
+                                    'employee_personal_information_preview.province',
+                                    'employee_personal_information_preview.zipcode')
+                            ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
+                            ->latest('employer_and_employee.created_at')
+                            ->get();
+        // return json_encode([
+        //     'message' => 'OK',
+        //     'status' => 'true',
+        //     'rest' => $employee_info
+        // ]);
+        return json_encode($employee_info_preview);
+    }
     //show encode employees
     public function encode()
     {          
@@ -204,7 +253,14 @@ class EmployeesEnrollmentController extends Controller
     //show upload employees
     public function upload()
     {          
-        return view('employer_modules.employees_enrollment.upload');
+        $Employees_upload_template = DB::table('template')
+                                        ->where('id', '=', 25)
+                                        ->select(
+                                            'document_code',
+                                            'document_file')
+                                        ->get();
+
+        return view('employer_modules.employees_enrollment.upload', compact('Employees_upload_template'));
     }  
 
     //searching of existing employee with ess id
@@ -568,7 +624,7 @@ class EmployeesEnrollmentController extends Controller
 
             // Replace All The String in the Notification Message
             $search = ["name", "userid", "mobile", "url", "password"];
-            $replace = [$user->name, $user->name, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
+            $replace = [$user->name, $user->username, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
             $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                              
 
@@ -1024,6 +1080,433 @@ class EmployeesEnrollmentController extends Controller
         $path = $request->file('file')->getRealPath();
 
         $import = Excel::import(new EmployeesImport, $path);
+
+        return Response::json();
+    }
+
+    /**
+     * @ Check if Employee Register Exists in table
+     **/
+    public function check_employee_details_exists_in_excel(Request $request){
+        
+        $check_employee_exists_in_excel = DB::table('employee_personal_information_preview')
+                                            ->join('employee', 'employee_personal_information_preview.id', '=', 'employee.employee_info')
+                                            ->where('employee.employee_no', '=', $request->employee_no)
+                                            ->orWhere('employee_personal_information_preview.TIN', '=', $request->TIN)
+                                            ->orWhere('employee_personal_information_preview.SSSGSIS', '=', $request->SSSGSIS)
+                                            ->orWhere('employee_personal_information_preview.PHIC', '=', $request->PHIC)
+                                            ->orWhere('employee_personal_information_preview.HDMF', '=', $request->HDMF)
+                                            ->orWhere('employee_personal_information_preview.NID', '=', $request->NID)
+                                            ->orWhere('employee_personal_information_preview.mobile_no', '=', $request->mobile_no)
+                                            ->orWhere('employee_personal_information_preview.email_add', '=', $request->email_add)
+                                            ->Where('employee.created_by', '=', auth()->user()->id)
+                                            ->count() > 1;
+        /**
+         * @ Check for Employee Number
+         * */
+        $check_employee_no_for_employer = DB::table('employee')
+                                            ->where('employee_no', '=', $request->employee_no)
+                                            ->where('employer_id', '=', auth()->user()->employer_id)
+                                            //->where('employee_info', '!=', $request->id)
+                                            ->count() > 1;
+
+        // foreach($request->all() as $key => $value){
+        //     if($key == 'employee_no'){
+        //         $check_employee_exists_in_excel = DB::table('employee_personal_information_preview')
+        //                                     ->join('employee', 'employee_personal_information_preview.id', '=', 'employee.employee_info')
+        //                                     ->where('employee.employee_no', '=', $request->employee_no)
+        //                                     ->Where('employee.created_by', '=', auth()->user()->id)
+        //                                     ->count() > 1;
+        //     }
+        // }
+
+        /**
+         * @ Check for Employee Details
+         * */
+        if($check_employee_exists_in_excel == true){
+            /*Validate Request*/
+         $customMessages = [
+            'required' => 'The :attribute field is required.',
+            'unique' => 'The ' . str_replace(' ', '', strtolower(':attribute')) .' is already taken.',
+            'regex' => 'The Mobile Number is Invalid'
+        ];
+        $validator = $this->validate($request, [
+                    'employee_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                        return $query
+                                ->where('employee_no', '=', $request->employee_no)
+                                ->where('employer_id', '=', auth()->user()->employer_id);
+                    }))],
+                    'TIN' => 'unique:employee_personal_information_preview,TIN,'.$request->id,
+                    'SSSGSIS' => 'unique:employee_personal_information_preview,SSSGSIS,'.$request->id,
+                    'PHIC' => 'unique:employee_personal_information_preview,PHIC,'.$request->id,
+                    'HDMF' => 'unique:employee_personal_information_preview,HDMF,'.$request->id,
+                    'NID' => 'unique:employee_personal_information_preview,NID,'.$request->id,
+                    'mobile_no' => 'numeric|regex:/(09)[0-9]{9}/|unique:employee_personal_information_preview,mobile_no,'.$request->id,
+                    'email_add' => 'email|unique:employee_personal_information_preview,email_add,'.$request->id,
+            ], $customMessages);
+
+            return json_encode([
+                'message' => 'OK',
+                'status'  => 'true',
+                'result'  => $validator
+            ]);
+        }
+
+
+
+
+        // if($check_employee_no_for_employer) {
+        //     /*Validate Request*/
+        //     $customMessages = [
+        //         'required' => 'The :attribute field is required.',
+        //         'unique' => 'The Employee No ' . $request->employee_no .' is already taken.',
+        //         'regex' => 'The Mobile Number is Invalid'
+        //     ];
+        //     $check_employee_no = $this->validate($request, [
+                
+        //     ], $customMessages);
+        //     return json_encode([
+        //         'message' => 'OK',
+        //         'status'  => 'true',
+        //         'result'  => $check_employee_no
+        //     ]);
+        // }
+
+        
+
+        if($check_employee_exists_in_excel == false){
+            return json_encode([
+                'message' => 'OK',
+                'status'  => 'true',
+                'result'  => $check_employee_exists_in_excel
+            ]);
+        }
+
+        
+        
+    }
+
+    /**
+     * @ Update Employees Preview Details
+     * */
+    public function update_employees_details_preview(Request $request){
+
+        /*Validate Request*/
+         $customMessages = [
+            'required' => 'The :attribute field is required.',
+            'unique' => 'The ' . str_replace(' ', '', strtolower(':attribute')) .' is already taken.',
+            'regex' => 'The Mobile Number is Invalid'
+        ];
+        $validator = $this->validate($request, [
+            'employee_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                return $query
+                        ->where('employee_no', '=', $request->employee_no)
+                        ->where('employer_id', '=', auth()->user()->employer_id);
+            }))],
+            'TIN' => 'required|unique:employee_personal_information,TIN,'.$request->employee_preview_id,
+            'SSSGSIS' => 'required|unique:employee_personal_information,SSSGSIS,'.$request->employee_preview_id,
+            'PHIC' => 'required|unique:employee_personal_information,PHIC,'.$request->employee_preview_id,
+            'HDMF' => 'required|unique:employee_personal_information,HDMF,'.$request->employee_preview_id,
+            'NID' => 'required|unique:employee_personal_information,NID,'.$request->employee_preview_id,
+            'mobile_no' => 'required|numeric|regex:/(09)[0-9]{9}/|unique:employee_personal_information,mobile_no,'.$request->employee_preview_id,
+            'email_add' => 'required|email|unique:employee_personal_information,email_add,'.$request->employee_preview_id,
+        ], $customMessages);
+
+        $update_employee = DB::table('employee')
+                            ->where('employee_info', '=', $request->employee_preview_id)
+                            ->update(array(
+                                'employee_no' => $request->employee_no
+                            ));
+
+        $update_details = DB::table('employee_personal_information_preview')
+                            ->where('id', '=', $request->employee_preview_id)
+                            ->where('created_by', '=', auth()->user()->id)
+                            ->update(array(
+                                //'employee_no' => $request->employee_no,
+                                'TIN' => $request->TIN,
+                                'SSSGSIS' => $request->SSSGSIS,
+                                'PHIC' => $request->PHIC,
+                                'HDMF' => $request->HDMF,
+                                'NID' => $request->NID,
+                                'mobile_no' => $request->mobile_no,
+                                'email_add' => $request->email_add
+                            ));
+        // if($update_details){
+        //     return json_encode([
+        //         'message' => 'ok',
+        //         'status' => 'true'
+        //     ]);
+        // }
+
+        if($update_employee || $update_details){
+            return json_encode([
+                'message' => 'ok',
+                'status' => 'true',
+                'result' => $update_details
+            ]);
+        }
+        // else{
+        //     return json_encode([
+        //         'message' => 'FAILED',
+        //         'status' => 'false'
+        //     ]);
+        // }
+
+
+    }
+
+
+    /**
+     * @ Delete Employee Details Preview
+     * */
+    public function delete_employee_details(Request $request){
+        $id = $request->id;
+
+        /**
+         * @ Get Employee ID
+         * */
+        $get_employee_id = DB::table('employee')
+                            ->where('employee_info', '=', $request->id)
+                            ->where('created_by', '=', auth()->user()->id)
+                            ->select('id')
+                            ->first();
+
+        /**
+         * @ Delete Employee Personal Information Preview
+         * */
+        $delete_employee_detail = DB::table('employee_personal_information_preview')
+                                    ->where('id', '=', $request->id)
+                                    ->where('created_by', '=', auth()->user()->id)
+                                    ->delete();
+        /**
+         * @ Delete Employee
+         * */
+        $delete_employee = DB::table('employee')
+                                ->where('employee_info', '=' , $request->id)
+                                ->where('created_by', '=', auth()->user()->id)
+                                ->delete();
+        /**
+         * @ Delete ESS employer_and_employee
+         * */
+        $employer_and_employee = DB::table('employer_and_employee')
+                                    ->where('employee_id', '=' , $get_employee_id->id)
+                                    ->delete();
+
+        /**
+         * @ Delete ESS Base Table
+         * */
+        $delete_ess_base_table = DB::table('ess_basetable')
+                                    ->where('account_id', '=', $get_employee_id->id)
+                                    ->delete();
+        /**
+         * @ Delete User
+         * */
+        $delete_user = DB::table('users')
+                        ->where('employee_id', '=', $get_employee_id->id)
+                        ->delete();
+
+        if($delete_employee_detail){
+            return json_encode([
+                'message' => 'OK',
+                'status' => 'true'
+            ]); 
+        }
+        
+        if(!$delete_employee_detail){
+            return json_encode([
+                'message' => 'FAILEd',
+                'status' => 'false'
+            ]);
+        }
+    }
+
+
+    /**
+     * @ Save Employees Preview
+     * */
+    public function save_employees_preview(Request $request){
+        
+        $password = Keygen::alphanum(10)->generate();
+        $UserActivation = Keygen::length(6)->numeric()->generate();
+        $useractivation_id = $this->generateUserActivationId();
+
+        // Get Preview Employees
+        $get_employees_preview = DB::table('employee_personal_information_preview')
+                                    ->where('created_by', '=', auth()->user()->id)
+                                    ->select(
+                                        'id',
+                                        'lastname',
+                                        'firstname',
+                                        'middlename',
+                                        'TIN',
+                                        'SSSGSIS',
+                                        'PHIC',
+                                        'HDMF',
+                                        'NID',
+                                        'mobile_no',
+                                        'email_add',
+                                        'birthdate',
+                                        'gender',
+                                        'civil_status',
+                                        'country',
+                                        'address_unit',
+                                        'citytown',
+                                        'barangay',
+                                        'province',
+                                        'zipcode',
+                                        'created_by',
+                                        'updated_by',
+                                        'created_at',
+                                        'updated_at',
+                                    )
+                                    ->get();
+        /**
+         * @ Check if there is a pending Employee in Preview Table
+         * */
+       //if($get_employees_preview->count() > 0){
+            foreach($get_employees_preview as $employees_preview){
+
+                /**
+                 * @ Insert to the Main Table
+                 * */
+                $employee_personal_info = EmployeePersonalInfo::create([
+                            'id' => $employees_preview->id,
+                            'lastname' => $employees_preview->lastname,
+                            'firstname' => $employees_preview->firstname,
+                            'middlename' => $employees_preview->middlename,
+                            'TIN' => $employees_preview->TIN,
+                            'SSSGSIS' => $employees_preview->SSSGSIS,
+                            'PHIC' => $employees_preview->PHIC,
+                            'HDMF' => $employees_preview->HDMF, 
+                            'birthdate' => $employees_preview->birthdate, 
+                            'NID' => $employees_preview->NID, 
+                            'mobile_no' => $employees_preview->mobile_no,    
+                            'email_add' => $employees_preview->email_add,
+                            'gender' => $employees_preview->gender,        
+                            'civil_status' => $employees_preview->civil_status,             
+                            'country' => $employees_preview->country,
+                            'address_unit' => $employees_preview->address_unit,
+                            'province' => $employees_preview->province,
+                            'citytown' => $employees_preview->citytown,
+                            'barangay' => $employees_preview->barangay, 
+                            'zipcode' => $employees_preview->zipcode,
+                            'created_by' => auth()->user()->id,
+                            'updated_by' => auth()->user()->id,
+                            'created_at' => $employees_preview->created_at,
+                            'updated_at' => $employees_preview->updated_at
+                ]);
+
+
+            //Check
+            // $check_notification = DB::table('notification')
+            //         //->where('employee_no', '=', $request->employee_no)
+            //         ->where('employer_id', '=', auth()->user()->employer_id)
+            //         ->count() > 0;
+            // if($check_notification == true){
+            // $mail_template = DB::table('notification')
+            //         //->where('employer_id', auth()->user()->id)
+            //         ->where('employer_id', auth()->user()->employer_id)
+            //         ->where('notification_type', 1)
+            //         ->select('notification_message')
+            //         ->first();
+            // }
+            // if($check_notification == false){
+
+            //}  
+            
+
+
+            // Get Employees Details
+            $employee_details = DB::table('employee')
+                                ->join('users', 'employee.id', '=', 'users.employee_id')
+                                ->join('user_activation', 'users.id', '=', 'user_activation.account_id')
+                                ->where('employee_info', '=', $employees_preview->id)
+                                ->select('employee.id as emp_id',
+                                        'users.id as users_id',
+                                        'users.name',
+                                        'users.username',
+                                        'users.password',
+                                        'user_activation.user_activation_id'
+                                )
+                                ->get();
+
+
+            foreach($employee_details as $emp_details){
+                // Enviroment Variable
+                $enviroment = config('app.url');
+
+                // Activation Link
+                $activation_link = $enviroment."/Account/Activation/".$emp_details->user_activation_id;
+                /*Email Template*/
+                $mail_template = DB::table('notification')
+                            //->where('employer_id', auth()->user()->id)
+                            //->where('employer_id', auth()->user()->employer_id)
+                            ->where('id', '=', 31)
+                            ->where('notification_type', 1)
+                            ->select('notification_message')
+                            ->first();
+                // Replace All The String in the Notification Message
+                $search = ["name", "userid", "mobile", "url", "password"];
+                $replace = [$emp_details->name, $emp_details->username, $request->input('mobile_no'), "<a href=".$activation_link.">Click Here</a>", $password];                
+                $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+                                
+
+                /*Send Mail */
+                $data = array('username' => $emp_details->name, "password" => $password, "template" => $template_result);
+
+                Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
+                    $message->to($employee_personal_info->email_add)
+                            ->subject("ESS Successfully Registered ");
+                    $message->from('esssample@gmail.com', "ESS");
+                });
+            // /**
+            //  * @ Create A Activation
+            //  * */
+            // $UserActivation = UserActivation::create([
+            //     'account_id' => $emp_details->users_id,
+            //     'activation_code' => $UserActivation,
+            //     'user_activation_id' => $useractivation_id,
+            //     'expiration_date' => Carbon::now(), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
+            //     'created_by' => auth()->user()->id,
+            //     'updated_by' => auth()->user()->id
+            // ]);
+            }
+
+
+            
+
+           
+
+                /**
+                 * @ Delete Employees Preview
+                 * */
+                employee_personal_information_preview::where('id', '=', $employees_preview->id)->where('created_by', '=', auth()->user()->id)->delete();
+                
+            }
+            return json_encode([
+                'message' => 'OK',
+                'status' => 'true',
+                'rest' => $employee_personal_info
+            ]);
+        // }
+        // else {
+        //     return json_encode([
+        //         'message' => 'FAILED to Save',
+        //         'status' => 'false',
+        //         // 'rest' => $employee_personal_info
+        //     ]);
+        // }
+    }
+
+    /*Upload Employees*/
+    public function upload_employees_preview(Request $request){
+        $this->validate($request, [
+            'file'  => 'required|mimes:xls,xlsx'
+        ]);
+      
+        $path = $request->file('file')->getRealPath();
+
+        $import = Excel::import(new EmployeesImportPreview, $path);
 
         return Response::json();
     }
