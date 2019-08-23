@@ -106,7 +106,7 @@ elseif(Session::get('manage_users') == 'delete'){
 </div>
 
 <!-- Modal for Create/Edit User type -->
-<div class="modal fade" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="userTypeModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
@@ -127,7 +127,8 @@ elseif(Session::get('manage_users') == 'delete'){
                                     <div class="input-group-prepend">
                                         <span class="fa fa-user input-group-text"></span>
                                     </div>
-                                    <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">                                   
+                                    <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">  
+                                            <option selected disabled>Choose User Type</option>                                  
                                             <option value="2">Lender</option>
                                             <option value="4">Employer</option>   
                                             <option value="6">Biller</option>                                                        
@@ -138,10 +139,10 @@ elseif(Session::get('manage_users') == 'delete'){
 
                         @if(auth()->user()->user_type_id == 1)
                         <div class="form-group row" id="employer_field" hidden>
-                            <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
+                            <label for="user_type" class="col-md-4 col-form-label text-md-right user_type"></label>
                             <div class="col-md-6">
-                                <select id="employer" class="form-control" name="cmb_Employe">                                                                 
-                                </select>
+                                <select id="employer" class="form-control usertype-for-search" name="cmb_Employe"  style="width: 100%;">                                                                 
+                            </select>
                             </div>                   
                         </div>
                         @endif
@@ -182,7 +183,7 @@ elseif(Session::get('manage_users') == 'delete'){
 
 <script>
     $(document).ready(function(){
-
+        $('.usertype-for-search').select2()
         /*DataTable*/ 
         var table = $("#usertype_table").DataTable({
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
@@ -422,28 +423,37 @@ elseif(Session::get('manage_users') == 'delete'){
             );       
         });
 
-        //FOR EMPLOYER SELECTION
-        $("#userTypeFor").change(function (){
+        //FOR EMPLOYER SELECTION 
 
-            val = $('#userTypeFor').val();
-            if(val == 4)
-            {
+        $("#userTypeFor").change(function (){
+                $('#select2-employer-container').html("");
+                val = $('#userTypeFor').val();
+                if(val ==4)
+                {
+                    $('.user_type').html("Employer");
+                }
+                else if( val == 6)
+                {
+                    $('.user_type').html("Biller");
+                }
+                else 
+                {
+                    $('.user_type').html("Lender");
+                }
                 $('#employer_field').removeAttr("hidden");
                 $.ajax({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: "{{ route('loademployer') }}",
+                    url: "{{ route('loadusertypeinput') }}",
                     method: "GET",
-                    data:{},                 
+                    data:{
+                        value : val
+                    },                 
                     success:function(data)
                     {
                         $("#employer").html(data);
                     }
                 });
-            }
-            else
-            {
-                $('#employer_field').attr("hidden", true);
-            }
+        
         });
 
         
