@@ -159,16 +159,31 @@ manage_docs') == 'delete'){
 
     public function edit_template(Request $request){
         $Template_id = $request->id;
-        $Template = DB::table('template')
-                        ->join('employer', 'employer.id', '=', 'template.account_id')
-                        ->select('template.id',
-                        'template.document_code',
-                        'template.document_description',
-                        'template.document_file',
-                        'employer.business_name')
-                        ->where('template.id', $Template_id)
-                        ->get();
-        return json_encode($Template);
+        $employer_id = DB::Table('template')->where('id','=',$Template_id)->pluck('employer_id');
+        if($employer_id == null)
+        {
+   
+            $Template = DB::table('template')  
+            ->where('id','=',$request->id) 
+            ->get();  
+    
+        }
+        else 
+        { 
+            $Template = DB::table('template')
+            ->join('employer', 'employer.id', '=', 'template.employer_id')
+            ->select('template.id',
+            'template.document_code',
+            'template.document_description',
+            'template.document_file',
+            'employer.business_name')
+            ->where('template.id', $Template_id)
+            ->get();
+            return json_encode($Template); 
+      
+        }
+    
+      
     }
 
     public function update_template(Request $request, $id){
