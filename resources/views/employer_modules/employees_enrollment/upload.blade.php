@@ -255,7 +255,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     $('#upload_employees_form')[0].reset();
                     $('#UploadEmployees').modal('hide');
                     toastr.success('Employees Uploaded Successfully', 'Success')
-                    //console.log("Success");
+                    ////console.log("Success");
                     setTimeout(function (){
                             $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
                         }, 300);
@@ -268,15 +268,15 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                             $('#btn_upload').removeAttr('disabled');
                             $('#btn_upload_close').removeAttr('disabled');
                         }, 250);
-                    // /console.log(data);
+                    // ///console.log(data);
                     if(data.status === 422) {
-                        //console.log(data.responseJSON.errors);
+                        ////console.log(data.responseJSON.errors);
                         var err = data.responseJSON.errors;
-                        //console.log("422");
+                        ////console.log("422");
                         var errors = $.parseJSON(data.responseText);
-                        //console.log(errors);
+                        ////console.log(errors);
                         $.each(err, function (i, err) {
-                            //console.log(err);
+                            ////console.log(err);
                             $('#ttttt').append('<li><label class="text-danger" id="error_fields">'+err+'</label></li></br>');
                             
                         });
@@ -315,10 +315,10 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                             '</tr>';
                 }
                 $('#preview_employee_details').html(html);
-                //console.log(data);
+                ////console.log(data);
             },
             error: function(data){
-                //console.log('Could not get data from database');
+                ////console.log('Could not get data from database');
             }
            });
        }
@@ -343,18 +343,18 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     email_add: email_add},
                 dataType: 'json',
                 success: function(data){
-                    //console.log(data);
+                    ////console.log(data);
                     if(data.status == "false"){
-                            console.log();
+                            ////console.log();
                             $('#error_alert').removeAttr('hidden');
                             $('#upload_validation_error_message').append('<label>Employee No: ' + employee_no + ' '+ data.message +'</label><br>');
                         }
                 },
                 error: function(data){
-                    console.log(data);
+                    ////console.log(data);
                     // Handle Errors
                     var errors = $.parseJSON(data.responseText);
-                    console.log(errors.errors)
+                    ////console.log(errors.errors)
                     $.each(errors, function(i, errors){
                         if(errors.employee_no){
                             $('#error_alert').removeAttr('hidden');
@@ -406,7 +406,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                 email_add: $(this).attr('data-email_add')
             };
 
-            console.log(employee_details);
+            //console.log(employee_details);
             $('#employee_detail_id').val(id);
             $.each(employee_details, function(key, edit_employees_field_col_1){
                 $('#edit_employees_field_col_1').append(`
@@ -440,7 +440,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                 contentType: false,
                 processData: false,
                 success: function(data){
-                    console.log(data);
+                    ////console.log(data);
                     $("#upload_employees_preview_table").DataTable().destroy();
                     if(data.status == 'true'){
                         // Modal hide
@@ -453,17 +453,17 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                         
                         showAllEmployeesDetailsPreview();
                         initDataTableEmployeePreview();
-                         /*Redirect To Account*/
+                         /*Redirect To Employees Upload*/
                          window.location.replace('{{ config('app.url') }}/enrollemployee/upload');
                         
                     }
                     
                 },
                 error: function(data){
-                    console.log(data);
+                    ////console.log(data);
                     // Handle Errors
                     var errors = $.parseJSON(data.responseText);
-                    console.log(errors.errors)
+                    ////console.log(errors.errors)
                     if(errors.errors){
                         $('#error_alert_upodate').removeAttr('hidden');
                         $('#update_validation_error_message').html('<hr><label>Employee No Already Taken</label><br>');
@@ -526,17 +526,19 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                             '_token': $('input[name=_token]').val(),
                         },
                         success: function(data){
-                            if(data.status == 'true'){
+                            //if(data.status == "true"){
                                 toastr.success('Employee Details Deleted', 'Success')
                                 $("#upload_employees_preview_table").DataTable().destroy();
                                 showAllEmployeesDetailsPreview();
                                 initDataTableEmployeePreview();
-                            }
+                                window.location.replace('{{ config('app.url') }}/enrollemployee/upload');
+                            // }
+                            // console.log(data);
                             
                         },
                         error: function(data){
                             toastr.error('Error Deleting Employee')
-                            console.log(data);
+                            //console.log(data);
                         }
                     });
                 }
@@ -564,14 +566,18 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                         url: '/EmployeesEnrollmentController/save_employees_preview',
                         data: {'_token': $('input[name=_token]').val()},
                         success: function(data){
-                            console.log(data);
-                            toastr.success('Employees Details Saved', 'Success')
-                            $("#upload_employees_preview_table").DataTable().destroy();
-                            showAllEmployeesDetailsPreview();
-                            initDataTableEmployeePreview();
+                                $("#upload_employees_preview_table").DataTable().destroy();
+                                //console.log(data);
+                                toastr.success('Employees Details Saved', 'Success')
+                                showAllEmployeesDetailsPreview();
+                                initDataTableEmployeePreview();
+                                /*Redirect To Employees Upload*/
+                                //window.location.replace('{{ config('app.url') }}/enrollemployee/upload');
+                         
+                            //console.log(data);
                         },
                         error: function(data){
-                            console.log(data);
+                            //console.log(data);
                         }
                     });
                 }
