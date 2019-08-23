@@ -183,9 +183,16 @@ Route::post('/enrollemployee/encode/post', 'EmployeesEnrollmentController@encode
 Route::get('/enrollemployee/searchemployee', 'EmployeesEnrollmentController@search_existing_employee');
 Route::get('/enrollemployee/edit/{id}', 'EmployeesEnrollmentController@edit_encode');
 Route::get('/enrollemployee/refresh_table_employee', 'EmployeesEnrollmentController@refresh_table_employee');
+Route::get('/enrollemployee/get_employees_details_preview', 'EmployeesEnrollmentController@get_employees_details_preview');
 Route::patch('/enrollemployee/update_employee/{id}', 'EmployeesEnrollmentController@update_employee');
 Route::patch('/enrollemployee/UpdateAccountStatus/{id}', 'EmployeesEnrollmentController@UpdateAccountStatus');
 Route::post('/enrollemployee/upload_employees', 'EmployeesEnrollmentController@upload_employees');
+Route::post('/enrollemployee/upload_employees_preview', 'EmployeesEnrollmentController@upload_employees_preview');
+Route::post('/EmployeesEnrollmentController/check_employee_details_exists_in_excel', 'EmployeesEnrollmentController@check_employee_details_exists_in_excel');
+Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
+Route::post('/EmployeesEnrollmentController/update_employees_details_preview', 'EmployeesEnrollmentController@update_employees_details_preview');
+Route::post('/EmployeesEnrollmentController/delete_employee_details', 'EmployeesEnrollmentController@delete_employee_details');
+Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
 
 //Employer Content
 

@@ -762,7 +762,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                         showAllPayRegister();
                         initDataTable();
                         /*Redirect To Account*/
-                    window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
+                        window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
                     }
                     console.log(data);
                 },

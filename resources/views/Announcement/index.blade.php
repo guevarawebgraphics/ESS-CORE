@@ -66,7 +66,7 @@ elseif(Session::get('send_announcement') == 'delete'){
             </div>
         </div>
 
-        <table id="AnnouncementTable" class="table table-boredered table-striped">
+        <table id="AnnouncementTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     @if(auth()->user()->user_type_id === 1)

@@ -143,7 +143,7 @@
             async: false,
             dataType: 'json',
             success: function (data){
-                console.log(data);
+                //console.log(data);
             }
         })
     }

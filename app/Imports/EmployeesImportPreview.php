@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Imports;
+
 /**
  * @ Insert Laravel Packages Here
  * */
@@ -18,6 +19,7 @@ use App\EmployerEmployee;
 use App\EmployeeEnrollment;
 use App\EmployeePersonalInfo;
 use App\UserActivation;
+use App\employee_personal_information_preview;
 
 /**
  * Maat Website Packages
@@ -37,15 +39,15 @@ use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
-class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts
+class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow, WithBatchInserts
 {
     use Importable, SkipsFailures;
     /**
-      * @param array $row
+    * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)  
+    public function model(array $row) 
     {
         $emp_no = $row['employee_no'];
         $employer_id = auth()->user()->employer_id;
@@ -62,6 +64,13 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
         //                 ->where('employee_no', '=', $row['employee_no'])
         //                 ->where('employer_id', '=', auth()->user()->employer_id);
         //         }),
+        //         'TIN' => 'unique:employee_personal_information_preview',
+        //             'SSSGSIS' => 'unique:employee_personal_information_preview',
+        //             'PHIC' => 'unique:employee_personal_information_preview',
+        //             'HDMF' => 'unique:employee_personal_information_preview',
+        //             'NID' => 'unique:employee_personal_information_preview',
+        //             'mobile_no' => 'unique:employee_personal_information_preview',
+        //             'email_add' => 'unique:employee_personal_information_preview',
         //     ]
         // ])->validate();
 
@@ -83,7 +92,7 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
              * @ Create a Employee Personal Information
              * @ The Test Inputs are Temporary
              * */
-            $Employee_personal_info = EmployeePersonalInfo::create([
+            $Employee_personal_info = employee_personal_information_preview::create([
                         'lastname'  => $row['lastname'],
                         'firstname' => $row['firstname'],
                         'middlename' => $row['middlename'],
@@ -173,88 +182,40 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
             ]);
+
+            $UserActivation = UserActivation::create([
+                'account_id' => $user->id,
+                'activation_code' => $UserActivation,
+                'user_activation_id' => $useractivation_id,
+                'expiration_date' => Carbon::now()->addCentury(), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
+                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id
+            ]);
+            $arrayPicture = 
+            ["ESS_male1.png",
+            "ESS_male2.png",
+            "ESS_male3.png",
+            "ESS_male4.png",
+            "ESS_male5.png",
+            "ESS_male6.png",
+            "ESS_male7.png",
+            "ESS_male8.png",
+            "ESS_male9.png"
+            ];
+    
+            $default_profile = Arr::random($arrayPicture);
+    
+    
+            $default_profile = Arr::random($arrayPicture);
+    
+                    DB::table('user_picture')->insert([
+                        'user_id' => $user->id,
+                        'employer_id' => auth()->user()->employer_id,
+                        'profile_picture' =>  $default_profile,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                     ]);
         //}
-
-        //Check
-        $check_notification = DB::table('notification')
-                                //->where('employee_no', '=', $request->employee_no)
-                                ->where('employer_id', '=', auth()->user()->employer_id)
-                                ->count() > 0;
-        if($check_notification == true){
-            $mail_template = DB::table('notification')
-                //->where('employer_id', auth()->user()->id)
-                ->where('employer_id', auth()->user()->employer_id)
-                ->where('notification_type', 1)
-                ->select('notification_message')
-                ->first();
-        }
-        if($check_notification == false){
-            /*Email Template*/
-            $mail_template = DB::table('notification')
-                //->where('employer_id', auth()->user()->id)
-                //->where('employer_id', auth()->user()->employer_id)
-                ->where('id', '=', 31)
-                ->where('notification_type', 1)
-                ->select('notification_message')
-                ->first();
-        }
-        // Enviroment Variable
-        $enviroment = config('app.url');
-
-
-        $activation_link = $enviroment."/Account/Activation/".$useractivation_id;
-
-
-        // Replace All The String in the Notification Message
-        $search = ["name", "userid", "mobile", "url", "password"];
-        $replace = [$user->name, $user->username, $row['mobile_no'], "<a href=".$activation_link.">Click Here</a>", $password];                
-        $template_result = str_replace($search, $replace, $mail_template->notification_message); 
-                
-        $email = $row['email_add'];
-        /*Send Mail */
-        $data = array('username' => $user->name, "password" => $password, "template" => $template_result);
-
-        Mail::send('Email.mail', $data, function($message) use($mail_template, $email){
-            $message->to($email)
-                ->subject("ESS Successfully Registered ");
-            $message->from('esssample@gmail.com', "ESS");
-        });
-
-        //$date = new DateTime();
-        $date_unitl = date("Y-m-d H:i:s", strtotime('+5 minutes'));
-
-        $UserActivation = UserActivation::create([
-            'account_id' => $user->id,
-            'activation_code' => $UserActivation,
-            'user_activation_id' => $useractivation_id,
-            'expiration_date' => Carbon::now()->addCentury(), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
-            'created_by' => auth()->user()->id,
-            'updated_by' => auth()->user()->id
-        ]);
-        $arrayPicture = 
-        ["ESS_male1.png",
-        "ESS_male2.png",
-        "ESS_male3.png",
-        "ESS_male4.png",
-        "ESS_male5.png",
-        "ESS_male6.png",
-        "ESS_male7.png",
-        "ESS_male8.png",
-        "ESS_male9.png"
-        ];
-
-        $default_profile = Arr::random($arrayPicture);
-
-
-        $default_profile = Arr::random($arrayPicture);
-
-                DB::table('user_picture')->insert([
-                    'user_id' => $user->id,
-                    'employer_id' => auth()->user()->employer_id,
-                    'profile_picture' =>  $default_profile,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
-                 ]);
     }
     /*Generate Key*/
     protected function generateESSKey(){
@@ -276,7 +237,8 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
         return $ess_id;
     }
 
-    /**
+
+     /**
      * @return array
      */
     public function rules(): array
@@ -294,26 +256,26 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             'middlename' => 'required|string',
             '*.middlename' => 'required|string',
 
-            'tin' => 'required|string|unique:employee_personal_information',
-            '*.tin' => 'required|unique:employee_personal_information',
+            'tin' => 'required|string|unique:employee_personal_information_preview',
+            '*.tin' => 'required|unique:employee_personal_information_preview',
 
-            'sssgsis' => 'required|unique:employee_personal_information',
-            '*.sssgsis' => 'required|unique:employee_personal_information',
+            'sssgsis' => 'required|unique:employee_personal_information_preview',
+            '*.sssgsis' => 'required|unique:employee_personal_information_preview',
 
-            'phic' => 'required|unique:employee_personal_information',
-            '*.phic' => 'required|unique:employee_personal_information',
+            'phic' => 'required|unique:employee_personal_information_preview',
+            '*.phic' => 'required|unique:employee_personal_information_preview',
 
-            'hdmf' => 'required|unique:employee_personal_information',
-            '*.hdmf' => 'required|unique:employee_personal_information',
+            'hdmf' => 'required|unique:employee_personal_information_preview',
+            '*.hdmf' => 'required|unique:employee_personal_information_preview',
 
-            'nid' => 'required|unique:employee_personal_information',
-            '*.nid' => 'required|unique:employee_personal_information',
+            'nid' => 'required|unique:employee_personal_information_preview',
+            '*.nid' => 'required|unique:employee_personal_information_preview',
             
-            'mobile_no' => 'required|unique:employee_personal_information',
-            '*.mobile_no' => 'required|unique:employee_personal_information',
+            'mobile_no' => 'required|unique:employee_personal_information_preview',
+            '*.mobile_no' => 'required|unique:employee_personal_information_preview',
             
-            'email_add' => 'required|unique:employee_personal_information',
-            '*.email_add' => 'required|unique:employee_personal_information',
+            'email_add' => 'required|unique:employee_personal_information_preview',
+            '*.email_add' => 'required|unique:employee_personal_information_preview',
 
             'birthdate' => 'required|before:'.\Carbon\Carbon::now()->subYears(21)->format('Y-m-d'),
             '*.birthdate' => 'required|before:'.\Carbon\Carbon::now()->subYears(21)->format('Y-m-d'),
