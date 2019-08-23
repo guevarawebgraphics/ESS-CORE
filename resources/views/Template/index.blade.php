@@ -301,7 +301,11 @@ $(document).ready(function (){
         $('#error_document_code').html('');
         $('#document_code').removeClass('is-invalid');
         $('#error_document_description').html('');
-        $('#document_description').removeClass('is-invalid'); 
+        $('#document_description').removeClass('is-invalid');  
+
+        var code = $(this).attr('data-code'); 
+        var description = $(this).attr('data-description'); 
+        var file = $(this).attr('data-file');
         toastr.remove();
         $.ajax({
             type: 'ajax',
@@ -310,11 +314,22 @@ $(document).ready(function (){
             data: {id: id},
             dataType: 'json',
             success: function(data){
+                if(data.length == 0)
+                {
+                    $('#document_code').val(code); 
+                    $('#document_description').val(description);
+                    $('#document_file_name').val(file); 
+                    $('#select2-employer_id-container').text("");
+                }                
+                else 
+                {
                 $('#select2-employer_id-container').attr('title', data[0].employer_id).text(data[0].business_name);
                 $('#document_code').val(data[0].document_code);
                 $('#document_description').val(data[0].document_description);
                 $('#document_file').attr('value', data[0].document_file);
                 $('#document_file_name').val(data[0].document_file);
+                }
+                       
             },
             error: function(){
                 $.each(errors, function (i, errors){
@@ -409,8 +424,8 @@ $(document).ready(function (){
                                      '<td>'+data[i].document_description+'</td>'+
                                      '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'<div class="float-right"><i class="fa fa-download"></i></div>'+'</a>'+'</td>'+
                                      '<td>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
-                                        '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat template-delete" data="'+data[i].id+'" data-documentfile="'+data[i].document_file+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat template-edit" data-file="'+data[i].document_file+'" data-code="'+data[i].document_code+'"  data-description="'+data[i].document_description+'" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat template-delete" data="'+data[i].id+'"  data-documentfile="'+data[i].document_file+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
                                      '</td>'+
                                 '</tr>';
                     }
