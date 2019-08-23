@@ -423,7 +423,6 @@ class ManageUserController extends Controller
         $inserlog->log_event = $event;
         $inserlog->save();
     }
-
     //sample employer
     public function loademployer()
     {
@@ -442,6 +441,45 @@ class ManageUserController extends Controller
         else 
         {
             $data .= '<option value="">No employer</option>';
+        }
+
+        echo $data;      
+    }
+
+    //sample employer
+    public function loadUserTypeFor(Request $request)
+    {
+        $data = "";
+        $label = "";
+        $UserType = $request->value;  
+        if($UserType=="4")
+        {
+            $employer = DB::connection('mysql')->select("SELECT * FROM employer where user_type='3'"); 
+            $label  = "Employer";
+        }
+        else if($UserType=="2")
+        {
+            $employer = DB::connection('mysql')->select("SELECT * FROM employer where user_type='8'"); 
+            $label  = "Lender";
+        }
+        else 
+        {
+            $employer = DB::connection('mysql')->select("SELECT * FROM employer where user_type='9'"); 
+            $label  = "Biller";
+        }
+
+    
+        $data .= "<option value=''>Select ".$label."</option>";
+        if(count($employer) > 0)
+        {
+            foreach($employer as $user)
+            {   
+                $data .= '<option value="'. $user->id . '" data-add="'.$user->business_name.']]'.$user->account_id.'">'. $user->business_name .'</option>';   
+            }
+        }
+        else 
+        {
+            $data .= '<option value="">No '.$label.'</option>';
         }
 
         echo $data;      

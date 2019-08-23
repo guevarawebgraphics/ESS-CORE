@@ -29,7 +29,7 @@
                                                     <label for="staticEmail" class="col-sm-4 col-form-label"><p class="float-right"> Month:</p></label>
                                                     <div class="col-sm-8">
                                                                     <select class="custom-select" name="months" id="Months">
-                                                                    
+                                                              
                                                                     </select>
                                                     </div>
                                                 </div>
@@ -141,7 +141,7 @@
                     {
                         list+= '<option value="'+month[i]+'">'+month[i]+'</option>';
                     }
-                    $('#Months').html(list);
+                    $('#Months').html('<option selected disabled> Choose Month</option>'+list);
         }
         listYears() 
         function listYears()
@@ -159,7 +159,7 @@
                 list+= '<option value="'+years[i]+'">'+years[i]+'</option>';
             }
             
-           $('#Years').html(list);
+           $('#Years').html('<option selected disabled> Choose Year </option>'+list);
         }
   
     }); 

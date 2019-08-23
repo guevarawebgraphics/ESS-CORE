@@ -173,11 +173,15 @@
                         <div class="container-fluid">
                          
                       <h4> {{$contents->content_title}} </h4>
-               
+                      <div class="box-body img-thumbnail" id="content-{{$contents->id}}-body" style="display:none;overflow-wrap: break-word;">
+                          {!! $contents->content_description !!}
+                      </div>
                         </div>
                     </div>
                     <div class="timeline-footer">
-                    <a class="btn btn-info btn-sm text-info showfulldescription btn-outline-info" data-toggle="modal" data-action="{{$contents->id}}" data-title="{{$contents->content_title}}" data-description="<div id='imageview'>{{$contents->content_description}} </div>"  id="{{$contents->id}}" class="showfulldescription" data-target="#modal-lg">Read Content</a>
+                   {{-- <a class="btn btn-info btn-sm text-info showfulldescription btn-outline-info" data-toggle="modal" data-action="{{$contents->id}}" data-title="{{$contents->content_title}}" data-description="<div id='imageview'>{{$contents->content_description}} </div>"  id="{{$contents->id}}" class="showfulldescription" data-target="#modal-lg">Read Content</a>
+                    --}}
+                    <a class="btn btn-info btn-sm text-info btn-outline-info readmore" id-value="{{$contents->id}}"  data-action="{{$contents->id}}"><label id="{{$contents->id}}-label-value" label-value="show"> Read Content </label></a>
                     </div>
                   </div>
                 </li> 

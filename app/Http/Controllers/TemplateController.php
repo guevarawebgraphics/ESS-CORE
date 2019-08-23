@@ -88,24 +88,35 @@ manage_docs') == 'delete'){
         return view('Template.index', compact('employers'));
     }
 
-    public function get_all_template(){
+    public function get_all_template(){ 
+       // $list = DB::table('template')->where('employer_id','=',0)->pluck('id')->toArray();
         $Template = DB::table('template')
-                            ->join('employer', 'employer.id', '=', 'template.employer_id')
-                            ->select('template.id',
-                            'template.document_code',
-                            'template.document_description',
-                            'template.document_file',
-                            'employer.business_name')
                             ->latest('template.created_at')
                             ->get();
+  
         return json_encode($Template);
+    }
+    public function get_employer_name(request $Request){
+     
+        $employer_id = DB::table('template')->where('id','=',$Request->id)->pluck('employer_id');
+        
+        if(count($employer_id))
+        {
+            $business_name = DB::table('employer')->where('id','=',$employer_id)->pluck('business_name'); 
+            $id = DB::table('template')->where('id','=',$Request->id)->pluck('id'); 
+            return response()->json([
+                    'name' => $business_name,
+                    'id' => $id
+                    ]);
+        } 
+  
     }
 
     public function store_template(Request $request){
         $this->getaccount();
         /*Validate Request*/
         $this->validate($request, [
-            'employer_id' => 'required',
+
             'document_code' => 'required',
             'document_description' => 'required',
             'document_file' => 'required|file',
@@ -218,17 +229,15 @@ manage_docs') == 'delete'){
     } 
     //Docs (view) restriction 
     public function viewtemplates(){
-        $Templates = DB::table('template')
-        ->join('employer', 'employer.id', '=', 'template.employer_id')
-        ->select('template.id',
-        'template.document_code',
-        'template.document_description',
-        'template.document_file',
-        'employer.business_name')
-        ->where('template.employer_id','=',auth()->user()->employer_id)
-        ->latest('template.created_at')
-        ->get();
-        return view('Template.view', compact('Templates'));
+ 
+        $user_id = auth()->user()->employer_id;
+        $Templates  = DB::table("template")
+                                ->orWhere('employer_id','=',$user_id)
+                                ->orWhere('employer_id','=',0)
+                                ->latest('created_at')
+                                ->get();
+    
+       return view('Template.view', compact('Templates')); 
     }
 
 

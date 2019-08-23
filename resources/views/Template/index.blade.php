@@ -121,7 +121,7 @@ elseif(Session::get('manage_docs') == 'delete'){
                         <label for="employer" class="col-md-4 text-md-center">Select Employer</label>
                         <div class="col-md-6">
                             <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
-                                <option selected value="">--Select Employer</option>
+                                <option selected value="0">--Select Employer</option>
                                     @foreach($employers as $employer)
                                         <option value="{{$employer->id}}">{{$employer->business_name}}</option>
                                     @endforeach
@@ -387,16 +387,31 @@ $(document).ready(function (){
                     var i;
                     for(i=0; i<data.length; i++){
                        var file_name = (data[i].document_file.string > 5 ? data[i].document_file.substring(0,5) : data[i].document_file.substring(0,10));
+                                         $.ajax({
+                                            type: 'ajax',
+                                            method: 'get',
+                                            url: '/Template/get_employer_name',
+                                            data: {id:data[i].id},
+                                            dataType: 'json',
+                                            async:true,
+                                            success: function(response){       
+                                                $("#employer-name-"+response.id+"").html(response.name);                              
+                                                if(response.name==false)
+                                                {
+                                                    $("#employer-name-"+response.id+"").html("Available to all");
+                                                }
+                                            }, 
+                                                 }); 
+                                     
                         html +='<tr>'+
-                                  
-                                     '<td>'+data[i].business_name+'</td>'+
+                                     '<td id="employer-name-'+data[i].id+'"></td>'+
                                      '<td>'+data[i].document_code+'</td>'+
                                      '<td>'+data[i].document_description+'</td>'+
                                      '<td data-toggle="tooltip" data-placement="top" title="Click To Download This Template">'+'<a href="/storage/Documents/templates/'+data[i].document_file+'" download>' +file_name+'<div class="float-right"><i class="fa fa-download"></i></div>'+'</a>'+'</td>'+
                                      '<td>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat template-edit" data="'+data[i].id+'" {{$edit}}><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>'+' '+
                                         '<a href="javascript:;" class="btn btn-sm btn-outline-danger btn-flat template-delete" data="'+data[i].id+'" data-documentfile="'+data[i].document_file+'" {{$delete}}><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>'+
-                                    '</td>'+
+                                     '</td>'+
                                 '</tr>';
                     }
                    
