@@ -1,6 +1,6 @@
 	//for showing description 
     $(document).ready(function(){
-        $('.showfulldescription').click(function(e){ 
+       /* $('.showfulldescription').click(function(e){ 
            
             var id = $(this).attr('id');
             var data_description = $(this).attr('data-description'); 
@@ -38,7 +38,7 @@
                 }
             });
     
-        });  
+        });  */
         $('.financial-tips-btn').click(function(){  
                  var financial_tips = {
                         title : $(this).attr('data-title'),
@@ -50,9 +50,42 @@
                  if(check_has){
                      $('#imageviewft img').addClass('img-fluid img-thumbnail');
                  }
-                
+      
         });
 
-            $('.carousel').carousel()          
+            $('.carousel').carousel()      
+            
+            $( ".readmore" ).click(function() {
+                var id = $(this).attr('id-value');
+                var labelvalue = $('#'+id+'-label-value').attr('label-value');
+                $('#'+id+'-action').html("<span class='badge badge-primary'>Read</span>");
+       
+                labelvalue === "hide" ?
+                $('#'+id+'-label-value').html('Read Content').attr("label-value","show") 
+                :
+                $('#'+id+'-label-value').html('Hide Content').attr("label-value","hide");
+                    
+                $( "#content-"+id+"-body" ).toggle( "slow", function() {
+                        $("#content-"+id+"-body img").addClass('img-fluid img-thumbnail');
+                });
+
+                $.ajax({
+                    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    type: "get",
+                    dataType:'json',
+                    url: "/employercontent/change_action",
+                    data:{
+                        id: id,
+                    },    
+                    success:function(data)
+                    {    
+                                                                                    
+                    },
+                    error: function(data){
+                    }
+                });
+
+
+              });
 
     });

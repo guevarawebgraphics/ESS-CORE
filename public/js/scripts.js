@@ -100,7 +100,7 @@
     $('#announcementdesc').on('click', '.show_announcement_notification',function (){
         var announcement_id = $(this).attr('data-id');
         var title = $(this).attr('data-title');
-        var description = $(this).attr('data-description');
+        var description = $(this).attr('data-description');     
         var employer_name = $(this).attr('data-business_name');
         // swal({
         //         title: title,
@@ -108,11 +108,14 @@
         //         showCancelButton: true,
         //     },
         // );
-        var announcement_des = jQuery(description).text();
+       // var announcement_des = jQuery(description).text();
+        var announcement_des = description;
         $('#Announcement_to_notification_modal').modal('show');
         $('#Announcement_to_notification_modal').find('#title_modal').text('Employer' + ' ' + 'Announcement');
         $('#announcement_title').html(title);
-        $('#announcement_description').html(announcement_des);
+        $('#announcement_description').html("<div class='des-container'>"+announcement_des+"</div>");
+        $('.des-container img').addClass('img-fluid img-thumbnail');
+        $('.des-container').css("overflow-wrap","break-word");
         $.ajax({
             type: 'POST',
             url: '/Announcement/update_notification_show',
@@ -198,8 +201,9 @@
                     if(session_notification = false){
                         $('#notif').html(count++);
                     }
-                    //$('#notif').html(count++);
-                    html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+data[i].announcement_description+'"><!-- Message Start -->'+
+                    //$('#notif').html(count++); 
+                    var announcement_des_strip = data[i].announcement_description.replace(/"/g, "'");
+                    html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'"><!-- Message Start -->'+
                             '<div class="media">'+
                             '<img alt="User Avatar" style="heigth: 50px; width: 50px;" class="img-size-50 mr-3 img-circle" src="/storage/profile_picture/'+data[i].profile_picture+'">'+
                             '<div class="media-body">'+

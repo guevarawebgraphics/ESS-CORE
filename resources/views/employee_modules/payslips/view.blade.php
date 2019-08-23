@@ -68,9 +68,8 @@
                                    
                                         
                                         <tr>
-                                          <td ><p class="float-left"></p></td>
-                                          <td>
-                                                  <ul class="list-unstyled float-right" >
+                                          <td><p class="float-left">
+                                              <ul class="list-unstyled float-right" >
                                                   <li> 
                                                           Period Cover:
                                                   </li>
@@ -78,7 +77,12 @@
                                                        <h5>   {{ \Carbon\Carbon::parse($information[0]->period_from)->isoFormat('LL')}}- {{ \Carbon\Carbon::parse($information[0]->period_to)->isoFormat('LL')}} </h5>
                                                   </li>
       
-                                                  </ul>
+                                              </ul>  
+                                          
+                                              </p>
+                                          </td>
+                                          <td>
+                                              
                                           </td>
                                           <td>
                                                   <ul class="list-unstyled float-right" >
@@ -138,6 +142,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="container ">
+                                            
                                             <table class="table table-hover border-right border-left table-light no-spacing border-bottom" cellspacing="0">
                                                     <thead>
                                                       <tr>
@@ -173,6 +178,7 @@
                                                
                                                     </tbody>
                                             </table>
+                                    
                                             <div class="container">
                                                     <div class="row">
                                                       <div class="col-sm">
@@ -213,18 +219,21 @@
                                         <th></th>
                                         <th></th>
                                       </tr>
+                                  
                                       <tr class="border-bottom">
+                                      
                                         <td><p class="float-center">SSS:</p></td>
-                                        <td colspan="2"><input type="text" value="{{$information[0]->SSSGSIS}}" placeholder="" class="border" style="color: #3C8DBC;padding: 4px 4px;" readonly></td>
+                                        <td colspan="2">{{$information[0]->SSSGSIS}}</td>
                                       </tr> 
                                       <tr class="border-bottom">
-                                          <td padding="10"><p class="float-center">TIN</p></td>
-                                          <td colspan="2"><input type="text" value="{{$information[0]->TIN}}" placeholder="" class="border"  style="color: #3C8DBC;padding: 4px 4px;" readonly></td>
+                                          <td padding="10"><p class="float-center">TIN:</p></td>
+                                          <td colspan="2">{{$information[0]->TIN}}</td>
                                       </tr>
                                       <tr>
-                                          <td padding="10"><p class="float-center">PHIC</p></td>
-                                          <td colspan="2"><input type="text" value="{{$information[0]->PHIC}}" placeholder="" class="border transparent-input"  style="color: #3C8DBC;padding: 4px 4px;" readonly></td>
+                                          <td padding="10"><p class="float-center">PHIC:</p></td>
+                                          <td colspan="2">{{$information[0]->PHIC}}</td>
                                       </tr>
+                                     
                                   </table>
                                   </div>
                                     
