@@ -100,7 +100,8 @@ Route::post('/manageuser/updateusertype_post', 'ManageUserController@updateusert
 Route::post('/manageuser/deleteusertype_post', 'ManageUserController@deleteusertype_post')->name('deleteusertype_post');
 Route::post('/manageuser/updateuser_post', 'Auth\\RegisterController@updateuser_post')->name('updateuser_post');
 Route::post('/manageuser/deleteuser_post', 'ManageUserController@deleteuser_post')->name('deleteuser_post');
-Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer');
+Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer'); 
+Route::get('/manageuser/load_usertypeinput', 'ManageUserController@loadUserTypeFor')->name('loadusertypeinput');
 Route::get('/manageuser/checkusername', 'Auth\\RegisterController@checkusername')->name('checkusername');
 Route::post('/manageuser/create/reset_password', 'Auth\\RegisterController@reset_password')->name('resetpassword');
 Route::get('/manageuser/generate', 'ManageUserController@ESSIDGenerate');
@@ -153,6 +154,7 @@ Route::post('/Template/update_template/{id}', 'TemplateController@update_templat
 Route::post('/Template/store_template', 'TemplateController@store_template');
 Route::post('/Template/destroy_template', 'TemplateController@destroy_template');
 Route::get('/TemplateView/view','TemplateController@viewtemplates')->name('TemplateView.view');
+Route::get('/Template/get_employer_name','TemplateController@get_employer_name');
 
 /*Route Config For Announcement*/
 Route::get('/Announcement', 'AnnouncementController@index')->name('Announcement.index');
@@ -181,9 +183,16 @@ Route::post('/enrollemployee/encode/post', 'EmployeesEnrollmentController@encode
 Route::get('/enrollemployee/searchemployee', 'EmployeesEnrollmentController@search_existing_employee');
 Route::get('/enrollemployee/edit/{id}', 'EmployeesEnrollmentController@edit_encode');
 Route::get('/enrollemployee/refresh_table_employee', 'EmployeesEnrollmentController@refresh_table_employee');
+Route::get('/enrollemployee/get_employees_details_preview', 'EmployeesEnrollmentController@get_employees_details_preview');
 Route::patch('/enrollemployee/update_employee/{id}', 'EmployeesEnrollmentController@update_employee');
 Route::patch('/enrollemployee/UpdateAccountStatus/{id}', 'EmployeesEnrollmentController@UpdateAccountStatus');
 Route::post('/enrollemployee/upload_employees', 'EmployeesEnrollmentController@upload_employees');
+Route::post('/enrollemployee/upload_employees_preview', 'EmployeesEnrollmentController@upload_employees_preview');
+Route::post('/EmployeesEnrollmentController/check_employee_details_exists_in_excel', 'EmployeesEnrollmentController@check_employee_details_exists_in_excel');
+Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
+Route::post('/EmployeesEnrollmentController/update_employees_details_preview', 'EmployeesEnrollmentController@update_employees_details_preview');
+Route::post('/EmployeesEnrollmentController/delete_employee_details', 'EmployeesEnrollmentController@delete_employee_details');
+Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
 
 //Employer Content
 
