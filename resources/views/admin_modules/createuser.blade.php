@@ -79,7 +79,7 @@ $delete = 'disabled';
 </div>
 
 <!-- Modal for create user-->
-<div class="modal fade bd-example-modal-lg" id="createUserModal" tabindex="-1" role="dialog"
+<div class="modal fade bd-example-modal-lg" id="createUserModal" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content card-custom-blue card-outline">
@@ -116,7 +116,7 @@ $delete = 'disabled';
                                     <span class="fa fa-user input-group-text"></span>
                                 </div>
                                 <input type="hidden" name = "hidden_account_id" id = "hidden_account_id" >
-                                <select id="cmbEmployer" class="form-control" name="cmbEmployer"></select>
+                                <select id="cmbEmployer" class="form-control employer-select" name="cmbEmployer" style="display:none !important;width:90%;"></select>
                             </div>
                             <p class="text-danger" id="error-no-employer" hidden>* Select an Employer</p>
                         </div>
@@ -339,6 +339,7 @@ $delete = 'disabled';
 
         
         //AJAX ON LOADING THE ESS USER ID
+        $('.employer-select').select2()
         $("#cmbEmployer").change(function(){
 
             val = $('#cmbEmployer').val();

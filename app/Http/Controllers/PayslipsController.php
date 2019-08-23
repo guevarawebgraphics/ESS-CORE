@@ -130,12 +130,41 @@ class PayslipsController extends Controller
                             ->join('payrollregister as pr','pr.id','=','prd.PayRegisterId')
                             ->Join('employer as emr','emr.id','=','pr.employer_id')
                             ->where('prd.id','=',$id)
+                            ->select('epi.firstname',
+                                    'epi.middlename',
+                                    'epi.lastname',
+                                    'e.employment_status',
+                                    'e.department',
+                                    'e.position',
+                                    'e.employee_no',
+                                    'emr.accountname',
+                                    'prd.sss',
+                                    'prd.hdmf',
+                                    'prd.phic',
+                                    'prd.wtax',
+                                    'pr.period_from',
+                                    'pr.period_to',
+                                    'prd.payroll_release_date',
+                                    'prd.basic',
+                                    'prd.regular_ot',
+                                    'prd.meal_allowance',
+                                    'prd.grosspay',
+                                    'prd.sss',
+                                    'prd.hdmf',
+                                    'prd.phic',
+                                    'prd.wtax',
+                                    'prd.total_deduction',
+                                    'prd.net_pay',
+                                    'epi.SSSGSIS',
+                                    'epi.TIN',
+                                    'epi.PHIC'
+                                    )
                             ->get();
              
     
-                                return view('employee_modules.payslips.view')
+                             return view('employee_modules.payslips.view')
                                 ->with('information',$viewpayslips);
-                               // return $viewpayslips;
+                            //   return $viewpayslips;
                         }
                         else 
                         {

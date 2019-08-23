@@ -100,7 +100,8 @@ Route::post('/manageuser/updateusertype_post', 'ManageUserController@updateusert
 Route::post('/manageuser/deleteusertype_post', 'ManageUserController@deleteusertype_post')->name('deleteusertype_post');
 Route::post('/manageuser/updateuser_post', 'Auth\\RegisterController@updateuser_post')->name('updateuser_post');
 Route::post('/manageuser/deleteuser_post', 'ManageUserController@deleteuser_post')->name('deleteuser_post');
-Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer');
+Route::get('/manageuser/load_employer', 'ManageUserController@loademployer')->name('loademployer'); 
+Route::get('/manageuser/load_usertypeinput', 'ManageUserController@loadUserTypeFor')->name('loadusertypeinput');
 Route::get('/manageuser/checkusername', 'Auth\\RegisterController@checkusername')->name('checkusername');
 Route::post('/manageuser/create/reset_password', 'Auth\\RegisterController@reset_password')->name('resetpassword');
 Route::get('/manageuser/generate', 'ManageUserController@ESSIDGenerate');
@@ -153,6 +154,7 @@ Route::post('/Template/update_template/{id}', 'TemplateController@update_templat
 Route::post('/Template/store_template', 'TemplateController@store_template');
 Route::post('/Template/destroy_template', 'TemplateController@destroy_template');
 Route::get('/TemplateView/view','TemplateController@viewtemplates')->name('TemplateView.view');
+Route::get('/Template/get_employer_name','TemplateController@get_employer_name');
 
 /*Route Config For Announcement*/
 Route::get('/Announcement', 'AnnouncementController@index')->name('Announcement.index');
