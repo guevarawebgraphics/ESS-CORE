@@ -82,6 +82,8 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
             $password = Keygen::alphanum(10)->generate();
             $UserActivation = Keygen::length(6)->numeric()->generate();
             $useractivation_id = $this->generateUserActivationId();
+            $employee_id = $this->GenerateEmployeeID($table = "EmployeeEnrollment");
+            $employee_info_id = $this->GenerateEmployeeID($table = "employee_personal_information_preview");
             /**
              * @//Generated ESS ID
              * */
@@ -93,6 +95,7 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
              * @ The Test Inputs are Temporary
              * */
             $Employee_personal_info = employee_personal_information_preview::create([
+                        'id' => $employee_info_id,
                         'lastname'  => $row['lastname'],
                         'firstname' => $row['firstname'],
                         'middlename' => $row['middlename'],
@@ -121,6 +124,7 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
              **/
             $emppid = $Employee_personal_info->id;
             $employee = EmployeeEnrollment::create([
+                    'id' => $employee_id,
                     'employee_info' => $emppid,
                     'employee_no' => $row['employee_no'],
                     'position' => $row['position'],
@@ -145,7 +149,7 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
              * Create into ESSBase Table
              */
             ESSBase::create([
-                'account_id' => $emp_id,
+                'account_id' => $emp_id, // Change column to employee_id
                 'ess_id' => $employee_ess_id,
                 'employee_info' => $emppid,
                 'user_type_id' => 4,
@@ -235,6 +239,33 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
         }
 
         return $ess_id;
+    }
+
+    protected function genereateEmpId(){
+        return Keygen::length(6)->numeric()->generate();
+    }
+
+    /**
+     * @ Generate Employee Id
+     * */
+    protected function GenerateEmployeeID($table){
+        $employee_id = $this->genereateEmpId();
+
+        if($table == "EmployeeEnrollment"){
+            // Ensure ID does not exist
+            // Generate new one if ID already exists
+            while (EmployeeEnrollment::where('id', $employee_id)->count() > 0){
+                $employee_id = $this->genereateEmpId();
+            }
+        }
+        if($table == "employee_personal_information_preview"){
+            // Ensure ID does not exist
+            // Generate new one if ID already exists
+            while (employee_personal_information_preview::where('id', $employee_id)->count() > 0){
+                $employee_id = $this->genereateEmpId();
+            }
+        }
+        return $employee_id;
     }
 
 

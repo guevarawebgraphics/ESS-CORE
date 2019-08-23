@@ -1363,7 +1363,7 @@ class EmployeesEnrollmentController extends Controller
         /**
          * @ Check if there is a pending Employee in Preview Table
          * */
-       //if($get_employees_preview->count() > 0){
+       if($get_employees_preview->count() > 0){
             foreach($get_employees_preview as $employees_preview){
 
                 /**
@@ -1488,14 +1488,14 @@ class EmployeesEnrollmentController extends Controller
                 'status' => 'true',
                 'rest' => $employee_personal_info
             ]);
-        // }
-        // else {
-        //     return json_encode([
-        //         'message' => 'FAILED to Save',
-        //         'status' => 'false',
-        //         // 'rest' => $employee_personal_info
-        //     ]);
-        // }
+            // }
+            // else {
+            //     return json_encode([
+            //         'message' => 'FAILED to Save',
+            //         'status' => 'false',
+            //         // 'rest' => $employee_personal_info
+            //     ]);
+        }
     }
 
     /*Upload Employees*/
