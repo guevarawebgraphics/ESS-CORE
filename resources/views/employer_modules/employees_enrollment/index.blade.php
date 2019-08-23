@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-6">
                     <a href="/enrollemployee/encode" class="btn btn-outline-primary btn-flat float-md-right mr-4" id="btnCreateEmployee"><i class="fa fa-plus-square" ></i> Encode Employee</a>
-                    <a href="#upload" class="btn btn-outline-info btn-flat float-md-right mr-4" id="btnUploadEmployee"><i class="fa fa-upload" ></i> Upload Employee</a>
+                    {{-- <a href="#upload" class="btn btn-outline-info btn-flat float-md-right mr-4" id="btnUploadEmployee"><i class="fa fa-upload" ></i> Upload Employee</a> --}}
                 </div>
             </div>
 

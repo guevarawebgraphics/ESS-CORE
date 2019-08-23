@@ -329,7 +329,11 @@
 						<li class="nav-item">
 							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Employee</p></a>
-						</li>						
+						</li>	
+						<li class="nav-item">
+							<a class="nav-link {{$encode_employee_enrollment}}" href="/enrollemployee/upload"><i class="fa fa-circle-o nav-icon"></i>
+							<p>Upload Employee</p></a>
+						</li>					
 					</ul>
 				</li>
 				@else								
