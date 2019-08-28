@@ -30,7 +30,7 @@
                 {{-- HIDDEN INPUT FIELD FOR EMPLOYEE PERSONAL INFO ID--}}
                 <input type="hidden" id="hidden_personalinfo_id" name="hidden_personalinfo_id">
                 <input type="hidden" id="hidden_essid" name="hidden_essid">
-                <div class="form-group row">
+    {{--  <div class="form-group row">
                         <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -41,8 +41,8 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_employee_no"></p>
                         </div>
-                </div>
-                <div class="form-group row">
+                </div> --}}
+        {{--    <div class="form-group row">
                         <label for="position" class="col-md-2 text-md-center">Position :</label>    
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -63,8 +63,8 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_department"></p>
                         </div>
-                </div>
-                <div class="form-group row">
+                </div>--}}
+        {{--   <div class="form-group row">
                         <label for="lastname" class="col-md-2 text-md-center">Last Name :</label>     
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -85,8 +85,8 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_mobile_no"></p>
                         </div>
-                </div>
-                <div class="form-group row">
+                </div> --}}
+            {{--<div class="form-group row">
                         <label for="firstname" class="col-md-2 text-md-center">First Name :</label>        
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -108,8 +108,8 @@
                             <p class="text-danger text-md-center" id="error_email_add"></p>
                         </div>
                 </div>
-
-                <div class="form-group row">
+                --}}
+                {{--<div class="form-group row">
                         <label for="middlename" class="col-md-2 text-md-center">Middle Name :</label>            
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -128,11 +128,11 @@
                                 </div>
                                 <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY" value="{{ \Carbon\Carbon::parse($employee[0]->enrollment_date)->format('m/d/Y')}}"   autofocus>
                                 {{-- <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date" value="{{$employee[0]->enrollment_date}}" autofocus> --}}
-                            </div>
+                {{--            </div>
                             <p class="text-danger text-md-center" id="error_enrollment_date"></p>
                         </div>
-                </div>
-                <div class="form-group row">
+                </div> --}}
+            {{--    <div class="form-group row">
                         <label for="TIN" class="col-md-2 text-md-center">TIN :</label>            
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -151,7 +151,7 @@
                                 </div>
                                 <select class="form-control" id="employment_status" name="employment_status">
                                         <option value="{{$employee[0]->employment_status}}">{{$employee[0]->employment_status}}</option> --}}                           
-                                        <option value="">Select Options</option>
+                {{--                    <option value="">Select Options</option>
                                         <option value="Contractual">Contractual</option>
                                         <option value="Probationary">Probationary</option>
                                         <option value="Permanent">Permanent</option>
@@ -160,8 +160,8 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_employment_status"></p>
                         </div>
-                </div>
-                <div class="form-group row">
+                </div>--}}
+             {{--   <div class="form-group row">
                         <label for="SSSGSIS" class="col-md-2 text-md-center">SSS/GSIS :</label>       
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -292,10 +292,266 @@
                             <p class="text-danger text-md-center" id="error_account_no"></p>
                         </div>
                 </div>
-
+                --}} 
+                <hr>
+                <label class="control-label text-md-center">Personal Information</label>
+                <div class="form-group row mt-4">
+                        <label for="firstname" class="col-md-2 text-md-center">First Name :</label>        
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="firstname" type="text" class="form-control" name="firstname" placeholder="First Name" value="{{$employee[0]->firstname}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_firstname"></p>
+                        </div>
+                        <label for="middlename" class="col-md-2 text-md-center">Middle Name :</label>            
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="middlename" type="text" class="form-control" name="middlename" placeholder="Middle Name" value="{{$employee[0]->middlename}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_middlename"></p>
+                        </div>
+                        <label for="lastname" class="col-md-2 text-md-center">Last Name :</label>     
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="lastname" type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{$employee[0]->lastname}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_lastname"></p>
+                        </div> 
+                        <label for="gender" class="col-md-2 text-md-center">Gender :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="gender" name="gender">
+                                        <option value="{{$employee[0]->gender}}">{{$employee[0]->gender}}</option>
+                                        <option value="">Select Options</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>                               
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_gender"></p>
+                        </div>
+                        <label for="civil_status" class="col-md-2 text-md-center">Civil Status :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="civil_status" name="civil_status">                              
+                                        <option value="{{$employee[0]->civil_status}}">{{$employee[0]->civil_status}}</option>
+                                        <option value="">Select Options</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widow">Widow</option>                                            
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_civil_status"></p>
+                        </div>
+                        <label for="birthdate" class="col-md-2 text-md-center">Birthdate :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="birthdate" type="text" class="form-control datepicker" name="birthdate" value="{{$employee[0]->birthdate}}" placeholder="MM/DD/YYYY"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_birthdate"></p>
+                        </div>
+                </div>
+                <hr>
+                <label class="control-label text-md-center">Employee Information</label>
+                <div class="form-group row mt-4">
+                        <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No" value="{{$employee[0]->employee_no}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_employee_no"></p>
+                        </div>
+                        <label for="position" class="col-md-2 text-md-center">Position :</label>    
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="position" type="text" class="form-control" name="position" placeholder="Position" value="{{$employee[0]->position}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_position"></p>
+                        </div>
+                        <label for="department" class="col-md-2 text-md-center">Department :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="department" type="text" class="form-control" name="department" placeholder="Department" value="{{$employee[0]->department}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_department"></p>
+                        </div>
+                        <label for="employment_status" class="col-md-2 text-md-center">Employment Status :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="employment_status" name="employment_status">
+                                        <option value="{{$employee[0]->employment_status}}">{{$employee[0]->employment_status}}</option>                        
+                                        <option value="">Select Options</option>
+                                        <option value="Contractual">Contractual</option>
+                                        <option value="Probationary">Probationary</option>
+                                        <option value="Permanent">Permanent</option>
+                                        <option value="Regular">Regular</option>
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_employment_status"></p>
+                        </div>
+                        <label for="payroll_schedule" class="col-md-2 text-md-center">Payroll Schedule :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="payroll_schedule" name="payroll_schedule">
+                                        <option value="{{$employee[0]->payroll_schedule}}">{{$employee[0]->payroll_schedule}}</option>
+                                        <option value="">Select Options</option>
+                                        <option value="Week">Weekly</option>
+                                        <option value="Month">Monthly</option>
+                                        <option value="2Month">2x Monthly</option>                                            
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_civil_status"></p>
+                        </div>
+                        <label for="payroll_bank" class="col-md-2 text-md-center">Payroll Bank :</label> 
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="payroll_bank" name="payroll_bank">
+                                        <option value="{{$employee[0]->payroll_bank}}">{{$employee[0]->payroll_bank}}</option>
+                                    <option value="">Select Options</option>
+                                    <option value="BDO">BANCO DE ORO</option>                                                              
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_payroll_bank"></p>
+                        </div>
+                        <label for="enrollment_date" class="col-md-2 text-md-center">Enrollment Date :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY" value="{{ \Carbon\Carbon::parse($employee[0]->enrollment_date)->format('m/d/Y')}}"   autofocus>
+                                {{-- <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date" value="{{$employee[0]->enrollment_date}}" autofocus> --}}
+                                </div>
+                            <p class="text-danger text-md-center" id="error_enrollment_date"></p>
+                        </div>
+                </div>
+                <hr>
+                <label class="control-label text-md-center">Contact Information</label>
+                <div class="form-group row mt-4">
+                        <label for="mobile_no" class="col-md-2 text-md-center">Mobile No. :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-phone input-group-text"></span>
+                                </div>
+                                <input id="mobile_no" type="text" maxlength="11" class="form-control" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)" value="{{$employee[0]->mobile_no}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_mobile_no"></p>
+                        </div>
+                        <label for="email_add" class="col-md-2 text-md-center">Email :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-envelope input-group-text"></span>
+                                </div>
+                                <input id="email_add" type="email" class="form-control" name="email_add" placeholder="Email" value="{{$employee[0]->email_add}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_email_add"></p>
+                        </div>
+                </div>
+                <hr>
+                <label class="control-label text-md-center">Government Numbers</label>
+                <div class="form-group row mt-4">
+                        <label for="TIN" class="col-md-2 text-md-center">TIN :</label>            
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="TIN" type="text" class="form-control" name="tin" placeholder="TIN" value="{{$employee[0]->TIN}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_TIN"></p>
+                        </div>
+                        <label for="SSSGSIS" class="col-md-2 text-md-center">SSS/GSIS :</label>       
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS" value="{{$employee[0]->SSSGSIS}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_SSSGSIS"></p>
+                        </div>
+                        <label for="HDMF" class="col-md-2 text-md-center">HDMF :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="HDMF" type="text" class="form-control" name="hdmf" placeholder="HDMF" value="{{$employee[0]->HDMF}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_HDMF"></p>
+                        </div>
+                        <label for="PHIC" class="col-md-2 text-md-center">PHIC :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="PHIC" type="text" class="form-control" name="phic" placeholder="PHIC" value="{{$employee[0]->PHIC}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_PHIC"></p>
+                        </div>
+                        <label for="nid" class="col-md-2 text-md-center">NID :</label>  
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="nid" type="text" class="form-control" name="nid" placeholder="NID" value="{{$employee[0]->NID}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_payroll_schedule"></p>
+                        </div>
+                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" value="{{$employee[0]->account_no}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_account_no"></p>
+                        </div>
+                        
+                </div>
                 <hr>
                 <label class="control-label text-md-center">Present Address</label>
-                <div class="form-group row">
+                <div class="form-group row mt-4">
                         <label for="country" class="col-md-2 text-md-center">Country:</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">

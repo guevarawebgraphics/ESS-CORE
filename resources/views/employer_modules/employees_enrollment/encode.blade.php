@@ -58,6 +58,7 @@
                         </div>
                 </div>
                 {{-- FIRST ROW --}}
+                {{--
                 <div class="form-group row iform" id="iform_employee_no">
                         <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
                         <div class="col-md-4">
@@ -393,7 +394,339 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_zipcode"></p>
                         </div>
-                </div>          
+                </div>     
+                --}}
+             
+                <hr class="iform-label"> 
+                <label class="iform-label"> Personal Information </label>
+                <div class="form-group row mt-4 iform"> 
+                        
+                        <label for="firstname" class="col-md-2 text-md-center">First Name :</label>  
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="firstname" type="text" class="form-control" name="firstname" placeholder="First Name"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_firstname"></p>
+                        </div>
+                        <label for="lastname" class="col-md-2 text-md-center">Last Name :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="lastname" type="text" class="form-control" name="lastname" placeholder="Last Name"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center mb-6" id="error_lastname"></p>
+                        </div>
+                        <label for="middlename" class="col-md-2 text-md-center">Middle Name :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="middlename" type="text" class="form-control" name="middlename" placeholder="Middle Name"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_middlename"></p>
+                        </div>
+                        <label for="gender" class="col-md-2 text-md-center">Gender :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="gender" name="gender">
+                                        <option value="">Select Options</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>                               
+                                    </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_gender"></p>
+                        </div>
+                        <label for="civil_status" class="col-md-2 text-md-center">Civil Status :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="civil_status" name="civil_status">
+                                        <option value="">Select Options</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widow">Widow</option>                                            
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_civil_status"></p>
+                        </div>
+                        <label for="birthdate" class="col-md-2 text-md-center">Birthdate :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="birthdate" type="text" class="form-control datepicker" name="birthdate" placeholder="MM/DD/YYYY"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_birthdate"></p>
+                        </div>
+            
+                </div>  
+                <hr class="iform-label">
+                <label class="iform-label"> Employee Information </label>
+                <div class="form-group row mt-4 iform" id="iform_employee_no"> 
+                        <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
+                        <div class="col-md-4">
+                                
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
+                                </div>
+                                <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center mb-6" id="error_employee_no"></p>
+                        </div>
+                </div>
+                <div class="form-group row iform"> 
+                        <label for="position" class="col-md-2 text-md-center">Position :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="position" type="text" class="form-control" name="position" placeholder="Position"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center mb-6" id="error_position"></p>
+                        </div>
+                        <label for="department" class="col-md-2 text-md-center">Department :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="department" type="text" class="form-control" name="department" placeholder="Department"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center mb-6" id="error_department"></p>
+                        </div> 
+                        <label for="employment_status" class="col-md-2 text-md-center">Employment Status :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="employment_status" name="employment_status">
+                                        <option value="">Select Options</option>
+                                        <option value="Contractual">Contractual</option>
+                                        <option value="Probationary">Probationary</option>
+                                        <option value="Permanent">Permanent</option>
+                                        <option value="Regular">Regular</option>
+                                    </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_employment_status"></p>
+                        </div>
+                        <label for="payroll_schedule" class="col-md-2 text-md-center">Payroll Schedule :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="payroll_schedule" name="payroll_schedule">
+                                        <option value="">Select Options</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="2xMonthly">2x Monthly</option>                                            
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_payroll_schedule"></p>
+                        </div>
+                        <label for="payroll_bank" class="col-md-2 text-md-center">Payroll Bank :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <select class="form-control" id="payroll_bank" name="payroll_bank">
+                                        <option value="">Select Options</option>
+                                        <option value="BDO">BANCO DE ORO</option>                                                              
+                                </select>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_payroll_bank"></p>
+                        </div>
+                        <label for="enrollment_date" class="col-md-2 text-md-center">Enrollment Date :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-calendar input-group-text"></span>
+                                </div>
+                                <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_enrollment_date"></p>
+                        </div>
+                </div>   
+                <hr class="iform-label">
+                <label class="iform-label"> Contact Information </label>
+                <div class="form-group row mt-4 iform">
+                        <label for="mobile_no" class="col-md-2 text-md-center">Mobile No. :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="mobile_no" type="text" maxlength="11" class="form-control" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)"  autofocus>
+                            </div>
+                            <p class="text-danger text-md-center mb-6" id="error_mobile_no"></p>
+                        </div>
+                        <label for="email_add" class="col-md-2 text-md-center">Email :</label>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="email_add" type="email" class="form-control" name="email_add" placeholder="Email"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_email_add"></p>
+                        </div>
+                </div> 
+                <hr class="iform-label">
+                <label class="iform-label"> Goverment Numbers </label>
+                 <div class="form-group row mt-4 iform">
+                        <label for="TIN" class="col-md-2 text-md-center">TIN :</label>     
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="TIN" type="text" class="form-control" name="tin" placeholder="TIN"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_TIN"></p>
+                        </div>
+                        <label for="SSSGSIS" class="col-md-2 text-md-center">SSS/GSIS :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_SSSGSIS"></p>
+                        </div>
+                        <label for="HDMF" class="col-md-2 text-md-center">HDMF :</label> 
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="HDMF" type="text" class="form-control" name="hdmf" placeholder="HDMF" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_HDMF"></p>
+                        </div>
+                        <label for="PHIC" class="col-md-2 text-md-center">PHIC :</label> 
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="PHIC" type="text" class="form-control" name="phic" placeholder="PHIC" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_PHIC"></p>
+                        </div>
+                        <label for="nid" class="col-md-2 text-md-center">NID :</label> 
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="nid" type="text" class="form-control" name="nid" placeholder="NID" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_nid"></p>
+                        </div>
+                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>  
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_account_no"></p>
+                        </div>
+                </div>
+                <hr class="iform-label">
+                <label class="iform-label">Present Address</label>
+                <div class="form-group row mt-4 iform">
+                            <label class="col-md-2 text-md-center">Country:</label>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-address-card input-group-text"></span>
+                                    </div>
+                                    <select id="country" name="country" class="form-control">
+                                            <option value="">Choose Country</option>
+                                            <option value="Phillipines">Philippines</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger text-md-center" id="error_country"></p>
+                            </div>
+                            <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>  
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-user input-group-text"></span>
+                                    </div>
+                                    <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit"  autofocus>
+                                </div>
+                                <p class="text-danger text-md-center" id="error_address_unit"></p>
+                            </div>
+              
+                            <label for="province" class="col-md-2 text-md-center">Province:</label>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-address-card input-group-text"></span>
+                                    </div>
+                                    <select id="province" name="province" class="form-control">
+                                            <option value="" selected>Choose Province</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger text-md-center" id="error_province"></p>
+                            </div>
+                            <label for="citytown" class="col-md-2 text-md-center">City/Town:</label>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-user input-group-text"></span>
+                                    </div>
+                                    <select id="citytown" name="citytown" class="form-control">
+                                            <option value="" selected>Choose City/Town</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger text-md-center" id="error_citytown"></p>
+                            </div>
+                 
+                            <label for="barangay" class="col-md-2 text-md-center">Barangay:</label>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-address-card input-group-text"></span>
+                                    </div>
+                                    <select id="barangay" name="barangay" class="form-control">
+                                            <option value="" selected>Choose Barangay</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger text-md-center" id="error_barangay"></p>
+                            </div>
+                            <label for="zipcode" class="col-md-2 text-md-center">Zipcode:</label> 
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-user input-group-text"></span>
+                                    </div>
+                                    <input id="zipcode" type="text" class="form-control" name="zipcode" placeholder="Address Zipcode"  autofocus>
+                                </div>
+                                <p class="text-danger text-md-center" id="error_zipcode"></p>
+                            </div>
+                  
+                </div>     
             </div>     
                  
         </form>
@@ -597,6 +930,7 @@ $(document).ready(function(){
         {
             $(".essid_field").removeAttr("hidden");
             $('.iform').attr('hidden', true);
+            $('.iform-label').attr('hidden', true);
         }
         else if(shift == "new_employee")
         {
@@ -604,7 +938,9 @@ $(document).ready(function(){
             $('#EmployeeForm')[0].reset();
             $(".essid_field").attr("hidden", true);
             $('.iform').removeAttr('hidden', true);
-            $('#employee_profile').attr('hidden', true)
+            $('.iform-label').removeAttr('hidden');
+            $('#employee_profile').attr('hidden', true) 
+            
         }
     });
     
@@ -1048,7 +1384,7 @@ $(document).ready(function(){
                     * Check if the response is error
                     */
                     if(data == 'error') {
-                        toastr.info('This Employee is your Employee Cannot Be LOL', 'Information')
+                        toastr.info('ESS ID has been enrolled as your employee. Please enter other ESS ID.', 'Information')
                     }
                     else {
                         spinnerTimout(3000);
