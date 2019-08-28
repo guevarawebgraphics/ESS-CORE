@@ -484,8 +484,8 @@ class AccountController extends Controller
 
             //Deleting old sec file after user update
             $query_sec_file = DB::table('employer')->where('id','=',$id)
-            ->select('sec')
-            ->first();
+                        ->select('sec')
+                        ->first();
             
             $old_sec_file = $query_sec_file->sec;
             Storage::delete('public/Documents/sec/'.$old_sec_file);
@@ -564,6 +564,67 @@ class AccountController extends Controller
                                      'phic' => $request->input('phic'),
                                      'hdmf' => $request->input('hdmf'),
                                      'nid' => $request->input('nid'),
+                                     'bir' => $fileNameToStore_bir,
+                                     'expiry_date' => $expiry_date
+             ));
+ 
+             
+ 
+             DB::table('users')->where('id', '=', $id)
+                                 ->update(array(
+                                     'enrollment_date' => $enrollment_date,
+                                     'expiry_date' => $expiry_date,
+                                 ));
+        }
+        elseif($request->hasFile('bir') && $request->hasFile('sec')) {
+             // Get filename with the extension
+             $filenameWithExt_sec = $request->file('sec')->getClientOriginalName();
+             $filenameWithExt_bir = $request->file('bir')->getClientOriginalName();
+             // Get just filename
+             $filename_sec = pathinfo($filenameWithExt_sec, PATHINFO_FILENAME);
+             $filename_bir = pathinfo($filenameWithExt_bir, PATHINFO_FILENAME);
+             // Get just ext
+             $extension_sec = $request->file('sec')->getClientOriginalExtension();
+             $extension_bir = $request->file('bir')->getClientOriginalExtension();
+             // Filename to store
+             $fileNameToStore_sec= $filename_sec.'_'.time().'.'.$extension_sec;
+             $fileNameToStore_bir= $filename_bir.'_'.time().'.'.$extension_bir;
+             // Upload Image
+             $path_sec = $request->file('sec')->storeAs('public/Documents/sec', $fileNameToStore_sec);
+             $path_bir = $request->file('bir')->storeAs('public/Documents/bir', $fileNameToStore_bir);
+             
+             //Deleting old BIR file after user update
+             $query_files = DB::table('employer')->where('id','=',$id)
+                            ->select('bir', 'sec')
+                            ->first();
+
+             $old_bir_file = $query_files->bir;
+             Storage::delete('public/Documents/bir/'.$old_bir_file);
+             $old_sec_file = $query_files->sec;
+            Storage::delete('public/Documents/sec/'.$old_sec_file);
+
+             /*Update Account Employer*/
+             DB::table('employer')->where('id', '=', $id)
+                                 ->update(array(
+                                     'business_name' => $request->input('business_name'),
+                                     'accountname' => $request->input('accountname'),
+                                     'user_type' => $request->input('user_type'),
+                                     'address_unit' => $request->input('address_unit'),
+                                     'address_country' => $request->input('address_country'),
+                                     'address_town' => $request->input('address_town'),
+                                     'address_cityprovince' => $request->input('address_cityprovince'),
+                                     'address_barangay' => $request->input('address_barangay'),
+                                     'address_zipcode' => $request->input('address_zipcode'),
+                                     'contact_person' => $request->input('contact_person'),
+                                     'contact_phone' => $request->input('contact_phone'),   
+                                     'contact_mobile' => $request->input('contact_mobile'),
+                                     'contact_email' => $request->input('contact_email'),
+                                     'tin' =>$request->input('tin'),
+                                     'sss' => $request->input('sss'),
+                                     'phic' => $request->input('phic'),
+                                     'hdmf' => $request->input('hdmf'),
+                                     'nid' => $request->input('nid'),
+                                     'sec' => $fileNameToStore_sec,
                                      'bir' => $fileNameToStore_bir,
                                      'expiry_date' => $expiry_date
              ));
