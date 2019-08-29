@@ -141,7 +141,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-info btn-flat" data-dismiss="modal" id="btn_upload_close">Close</button>
-            <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_upload">Upload <i id="spinner_upload" class=""></button>
+            <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_upload">Upload <i id="spinner_upload" class=""></i></button>
         </div>
     </form>
       </div>
