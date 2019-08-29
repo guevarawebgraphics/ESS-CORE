@@ -87,6 +87,7 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
                         'lastname'  => $row['lastname'],
                         'firstname' => $row['firstname'],
                         'middlename' => $row['middlename'],
+                        'suffix' => $row['suffix'],
                         'TIN' => $row['tin'],
                         'SSSGSIS' => $row['sssgsis'],
                         'PHIC' => $row['phic'],
@@ -159,13 +160,13 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
              * 
              * Create Account User
              */
-            //insert into table user
+            //insert into tablef user
             $user = User::create([
                 'user_type_id' => 4,
                 'user_type_for' => 7,
                 'employer_id' => auth()->user()->employer_id,//Session::get("employer_id"),//$request->input('employer_id'),
                 'employee_id' => $emp_id,
-                'name' => $row['lastname'] . ", " . $row['firstname'] . ", " . $row['middlename'],
+                'name' => $row['lastname'] . ", " . $row['firstname'] . ", " . $row['middlename'] . ", " . $row['suffix'],
                 'username' => $employee_ess_id,
                 'password' => Hash::make($password),
                 'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
@@ -365,6 +366,7 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             'lastname' => 'Last Name',
             'firstname' => 'First Name',
             'middlename' => 'Middle Name',
+            'suffix' => 'Suffix',
             'tin' => 'Tin',
             'sssgsis' => 'SSS/GSIS',
             'phic' => 'Phic',
@@ -396,6 +398,7 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             'lastname' => 'Custom message for :attribute.',
             'firstname' => 'Custom message for :attribute.',
             'middlename' => 'Custom message for :attribute.',
+            'suffix' => 'Custom message for :attribute.',
             'tin' => 'Custom message for :attribute.',
             'sssgsis' => 'Custom message for :attribute.',
             'phic' => 'Custom message for :attribute.',
