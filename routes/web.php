@@ -243,6 +243,9 @@ Route::get('/ewallet', 'EWalletController@index');
 
 //Financial Calendar
 Route::get('/financialcalendar', 'FinancialCalendarController@index'); 
+Route::post('/financialcalendar/save_cash_now', 'FinancialCalendarController@save_cash_now');
+Route::post('/financialcalendar/update_cash_now', 'FinancialCalendarController@update_cash_now');
+Route::get('/financialcalendar/get_events', 'FinancialCalendarController@get_events');
 
 
 //Financial Tips
