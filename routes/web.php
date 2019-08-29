@@ -245,6 +245,9 @@ Route::get('/financialcalendar', 'FinancialCalendarController@index');
 Route::post('/financialcalendar/save_cash_now', 'FinancialCalendarController@save_cash_now');
 Route::post('/financialcalendar/update_cash_now', 'FinancialCalendarController@update_cash_now');
 Route::get('/financialcalendar/get_events', 'FinancialCalendarController@get_events');
+Route::get('/financialcalendar/get_collection', 'FinancialCalendarController@get_collection');
+Route::post('/financialcalendar/save_collection', 'FinancialCalendarController@save_collection');
+Route::post('/financialcalendar/update_collection', 'FinancialCalendarController@update_collection');
 
 
 //Financial Tips

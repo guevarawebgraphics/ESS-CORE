@@ -61,7 +61,7 @@ elseif(Session::get('financial_calendar') == 'delete'){
                     <div class="card-body p-0">
                         <br />
                         <a data-toggle="modal" href="#modal-action-show" class="btn btn-outline-primary btn-flat" id="btn_cash_now" data-toggle="modal" data-target="#cash_now_modal" style="margin-right: 5px;"><i class="fa fa-money"></i><span> CashNow</span></a>
-                        <a data-toggle="modal" href="#modal-action-collection" class="btn btn-outline-secondary btn-flat" id="btn_collection" style="margin-right: 5px;"><i class="fa fa-money"></i><span> Collection</span></a>
+                        <a data-toggle="modal" href="#modal-action-collection" class="btn btn-outline-secondary btn-flat" id="btn_collection" data-toggle="modal" data-target="#collection_modal" style="margin-right: 5px;"><i class="fa fa-money"></i><span> Collection</span></a>
                         <a data-toggle="modal" href="#modal-action-payment" class="btn btn-outline-info btn-flat" id="btn_payment"><i class="fa fa-money"></i><span> Payment</span></a>
                         <!-- THE CALENDAR -->
                         {{-- Calendar --}}
@@ -112,7 +112,7 @@ elseif(Session::get('financial_calendar') == 'delete'){
                 <div class="col-md-12">
                             
                     <div class="input-group mb-3">
-                        <input id="cash_now_date" type="text" class="form-control" name="cash_now_date" placeholder="MM/DD/YYYY">
+                        <input id="cash_now_date" type="text" class="form-control fc-date" name="cash_now_date" placeholder="MM/DD/YYYY">
                     </div>
                     <p class="text-danger" id="error_cash_now_date"></p>
                 </div>
@@ -128,19 +128,69 @@ elseif(Session::get('financial_calendar') == 'delete'){
 </div>
 
 
+<!-- Modal For Add Collection-->
+<div class="modal fade" id="collection_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content card-custom-blue card-outline">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Collection</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="collection_form">
+                @csrf
+                <input type="text" name="collection_event_id" id="collection_event_id" hidden="true">
+                <div class="form-group row">
+                    <label>Cash Source</label>
+                    <div class="col-md-12">
+                                
+                        <div class="input-group mb-3">
+                            <input id="collection_cash_source" type="text" class="form-control" name="collection_cash_source" placeholder="Cash Source">
+                        </div>
+                        <p class="text-danger" id="error_collection_cash_source"></p>
+                    </div>
+                    <label>Collection Amount</label>
+                    <div class="col-md-12">
+                                
+                        <div class="input-group mb-3">
+                            <input id="collection_amount" type="number" class="form-control" name="collection_amount" placeholder="0.00">
+                        </div>
+                        <p class="text-danger" id="error_collection_amount"></p>
+                    </div>
+                    <label>Date</label>
+                    <div class="col-md-12">
+                                
+                        <div class="input-group mb-3">
+                            <input id="collection_date" type="text" class="form-control fc-date" name="collection_date" placeholder="MM/DD/YYYY">
+                        </div>
+                        <p class="text-danger" id="error_collection_date"></p>
+                    </div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-primary btn-flat" id="btn_save_collection">Confirm <i id="spinner_collection" class=""></i></button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(document).ready(function (){
         // Config Restriction for Pass Date
         var date = new Date();
         date.setDate(date.getDate());
-        $('#cash_now_date').datepicker({
+        $('.fc-date').datepicker({
             autoclose: true,
             startDate: date
         });
         // Config Restriction for Pass Date
         var date = new Date();
         date.setDate(date.getDate());
-        $('#cash_now_event_date').datepicker({
+        $('.fc-date').datepicker({
             autoclose: true,
             startDate: date
         });
@@ -197,43 +247,89 @@ elseif(Session::get('financial_calendar') == 'delete'){
                     element.css({ 'background-color': '#0336FF', 'border-color': '#0336FF' });
                 }
             },
-            //Get Events
-            events: function(start, end, timezone, callback){
-                $.ajax({
-                    type: 'GET',
-                    url: '/financialcalendar/get_events',
-                    dataType: 'json',
-                    success: function(data){
-                        //console.log(data);
-                        var events = [];
-                        var i;
-                        for(i=0; i<data.length; i++){
-                            events.push({
-                                event_id: data[i].id,
-                                title: data[i].cash_now_description,
-                                start: data[i].cash_now_date,
-                                end: data[i].cash_now_date,
-                                amount: data[i].cash_now_amount,
-                                backgroundColor: data[i].cash_now_theme_color,
-                                // backgroundColor: '#f56954', //red
-                                borderColor    : data[i].cash_now_theme_color,
-                            });
+            eventSources: [
+
+                // your event source
+                // Get Cash Now
+                {
+                events: function(start, end, timezone, callback) {
+                        $.ajax({
+                        type: 'GET',
+                        url: '/financialcalendar/get_events',
+                        dataType: 'json',
+                        success: function(data){
+                            //console.log(data);
+                            var events = [];
+                            var i;
+                            for(i=0; i<data.length; i++){
+                                events.push({
+                                    event_id: data[i].id,
+                                    title: data[i].cash_now_description,
+                                    start: data[i].cash_now_date,
+                                    end: data[i].cash_now_date,
+                                    amount: data[i].cash_now_amount,
+                                    backgroundColor: data[i].cash_now_theme_color,
+                                    // backgroundColor: '#f56954', //red
+                                    borderColor    : data[i].cash_now_theme_color,
+                                });
+                            }
+                            callback(events);
+                        },
+                        error: function(data){
+                            console.log(data);
                         }
-                        callback(events);
-                    },
-                    error: function(data){
-                        console.log(data);
+                    });
+                }
+                },
+                // Get collection
+                {
+                    events: function(start, end ,timezone, callback) {
+                            $.get('/financialcalendar/get_collection', function(data) {
+                                
+                                var events = [];
+                                var i;
+                                for(i=0; i<data.length; i++){
+                                    events.push({
+                                        event_id: data[i].id,
+                                        title: data[i].collection_cash_source,
+                                        start: data[i].collection_date,
+                                        end: data[i].collection_date,
+                                        amount: data[i].collection_amount,
+                                        backgroundColor: data[i].collection_theme_color,
+                                        // backgroundColor: '#f56954', //red
+                                        borderColor    : data[i].collection_theme_color,
+                                    });
+                                }
+                                callback(events);
+                        }, 'json' );
                     }
-                });
-            },
+                }
+
+                // any other sources...
+
+            ],
+
+
             // Update The Calendar
             eventClick: function (calEvent, jsEvent) {
-                $('#cash_now_modal').modal('show');
-                $('#event_id').val(calEvent.event_id);
-                $('#cash_now_description').val(calEvent.title);
-                $('#cash_now_amount').val(calEvent.amount);
-                $('#cash_now_date').val(moment(calEvent.start).format('MM/DD/YYYY'));
-                $('#cash_now_form').attr('action', '/financialcalendar/update_cash_now');
+                // Get Cash Now
+                if(calEvent.backgroundColor == '#f56954'){
+                    $('#cash_now_modal').modal('show');
+                    $('#event_id').val(calEvent.event_id);
+                    $('#cash_now_description').val(calEvent.title);
+                    $('#cash_now_amount').val(calEvent.amount);
+                    $('#cash_now_date').val(moment(calEvent.start).format('MM/DD/YYYY'));
+                    $('#cash_now_form').attr('action', '/financialcalendar/update_cash_now');
+                }
+                // Get Collection
+                if(calEvent.backgroundColor == '#0336FF'){
+                    $('#collection_modal').modal('show');
+                    $('#collection_event_id').val(calEvent.event_id);
+                    $('#collection_cash_source').val(calEvent.title);
+                    $('#collection_amount').val(calEvent.amount);
+                    $('#collection_date').val(moment(calEvent.start).format('MM/DD/YYYY'));
+                    $('#collection_form').attr('action', '/financialcalendar/update_collection');
+                }
             },
             editable: false,
             droppable: false, // this allows things to be dropped onto the calendar !!!
@@ -338,10 +434,89 @@ elseif(Session::get('financial_calendar') == 'delete'){
             });
         });
 
+
+       /*
+        * @ Add Collection
+        */
+        $('#btn_collection').click(function() {
+            $('#collection_form').attr('action', '/financialcalendar/save_collection');
+        });
+
+
+        /*
+         * @ Save Collection
+         */
+         $('#btn_save_collection').click(function (e) {
+            e.preventDefault();
+            let url = $("#collection_form").attr('action');
+            $("#spinner_collection").addClass('fa fa-refresh fa-spin');
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    id: $('#collection_event_id').val(),
+                    collection_cash_source: $('#collection_cash_source').val(),
+                    collection_amount: $('#collection_amount').val(),
+                    collection_date: $('#collection_date').val()
+                },
+                success: function(data) {
+                    if(data.status == 200){
+                         // Display a success toast, with a title
+                         toastr.success(data.message)
+                        RemoveErrors();
+                        // Modal hide
+                        setTimeout(function (){
+                            $('#collection_modal').modal('hide');
+                            $('#collection_form')[0].reset();
+                        }, 500);
+                        setTimeout(function (){
+                            $("#spinner_collection").removeClass('fa fa-refresh fa-spin');
+                        }, 1500);
+                    }
+                    //Refresh The Full Calendar
+                    $('#calendar').fullCalendar('refetchEvents');
+                },
+                error: function(data) {
+                    if(data.status == 422) {
+                        setTimeout(function (){
+                            $("#spinner_collection").removeClass('fa fa-refresh fa-spin');
+                        }, 100);
+                    }
+                    var errors = $.parseJSON(data.responseText);
+                    $.each(errors, function(i, errors) {
+                        if(errors.collection_cash_source){
+                            $('#error_collection_cash_source').html('Cash Source Field is required');
+                            $('#collection_cash_source').addClass('is-invalid');
+                            $('#error_collection_cash_source').removeAttr('hidden');
+                        }
+                        if(errors.collection_amount){
+                            $('#error_collection_amount').html('Collection Amount Field is required');
+                            $('#collection_amount').addClass('is-invalid');
+                            $('#error_collection_amount').removeAttr('hidden');
+                        }
+                        if(errors.collection_date){
+                            $('#error_collection_date').html('Date Field is required');
+                            $('#collection_date').addClass('is-invalid');
+                            $('#error_collection_date').removeAttr('hidden');
+                        }
+                    });
+                }
+            });
+         });
+         
+
         /*Remove Errors*/
         $('#cash_now_modal').on('hidden.bs.modal', function(e) {
             $('#cash_now_form')[0].reset();
             $('#cash_now_form').removeAttr('action');
+            RemoveErrors();
+        });
+
+        $('#collection_modal').on('hidden.bs.modal', function(e) {
+            $('#collection_form')[0].reset();
+            $('#collection_form').removeAttr('action');
             RemoveErrors();
         });
 
