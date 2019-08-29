@@ -61,6 +61,8 @@
 	{{-- <script src="{{ asset('/ckeditor/ckfinder/core/connector/php/connector') }}"></script> --}}
 	<!--ionic icons-->
 	<link href="{{ asset('Ionicons/ionicons.min.css') }}" rel="stylesheet">
+	{{-- Momentjs --}}
+	<script src="{{ asset('js/moment.min.js') }}"></script> 
 	<!--Scripts-->
 	@if(Auth::check())
 	<script src="{{ asset('js/scripts.js') }}"></script> 

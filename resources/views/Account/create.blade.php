@@ -58,8 +58,8 @@ elseif(Session::get('create_profile') == 'delete'){
             <!-- CSRF Token -->
             @csrf
           <div class="card-body">
-
-                <div class="form-group row">
+                <label>Business Information</label>
+                <div class="form-group row mt-4">
                         <label for="business_name" class="control-label col-md-2 text-md-center">Business Name:</label>
                         <div class="col-md-4">
             
@@ -72,21 +72,6 @@ elseif(Session::get('create_profile') == 'delete'){
                             <p class="text-danger" id="error_business_name"></p>
                             
                         </div>
-                        <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
-                        <div class="col-md-4">
-                            
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="contact_person" type="text" class="form-control" name="contact_person" placeholder="Contact Person"  autofocus>
-                            </div>
-                            <p class="text-danger" id="error_contact_person"></p>
-                            
-                        </div>
-                </div>
-
-                <div class="form-group row">
                         <label for="accountname" class="col-md-2 text-md-center">Account Name:</label>
                         <div class="col-md-4">
                             
@@ -99,7 +84,23 @@ elseif(Session::get('create_profile') == 'delete'){
                             <p class="text-danger" id="error_accountname"></p>
                             
                         </div>
-                        <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
+                        {{-- <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
+                        <div class="col-md-4">
+                            
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="contact_person" type="text" class="form-control" name="contact_person" placeholder="Contact Person"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_contact_person"></p>
+                            
+                        </div> --}}
+                </div>
+
+                <div class="form-group row">
+                       
+                        {{-- <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
                         <div class="col-md-4">
                             
                             <div class="input-group mb-3">
@@ -110,10 +111,13 @@ elseif(Session::get('create_profile') == 'delete'){
                             </div>
                             <p class="text-danger" id="error_contact_phone"></p>
                             
-                        </div>
+                        </div> --}}
                 </div>
-
-                <div class="form-group row">
+                {{-- Business Address Row --}}
+                <hr>
+                <label>Business Address</label>
+                <div class="form-group row mt-4">
+                   
                         <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>
                         <div class="col-md-4">
                             
@@ -126,67 +130,145 @@ elseif(Session::get('create_profile') == 'delete'){
                             <p class="text-danger" id="error_address_unit"></p>
                             
                         </div>
-                        <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
-                        <div class="col-md-4">
-                            
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-phone input-group-text"></span>
-                                </div>
-                                <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" placeholder="Contact Mobile"  autofocus>
-                            </div>
-                            <p class="text-danger" id="error_contact_mobile"></p>
-                            
-                        </div>
-                </div>
 
-                <div class="form-group row">
                         <label for="address_country" class="col-md-2 text-md-center">Country:</label>
+                            <div class="col-md-4">
+                                
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-globe input-group-text"></span>
+                                    </div>
+                                    <select id="address_country" name="address_country" class="form-control">
+                                            {{-- <option value="" selected>Choose Country...</option> --}}
+                                            <option>Philippines</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger" id="error_address_country"></p>
+                                    
+                            </div>
+
+                        <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
+                            <div class="col-md-4">
+                                
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-globe input-group-text"></span>
+                                    </div>
+                                    <select id="address_cityprovince" name="address_cityprovince" class="form-control">
+                                            <option value="" selected>Choose Province...</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger" id="error_address_cityprovince"></p>
+                                    
+                            </div>
+
+                        <label for="address_town" class="col-md-2 text-md-center">City/Town:</label>
+                            <div class="col-md-4">
+                                
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-globe input-group-text"></span>
+                                    </div>
+                                    <select id="address_town" name="address_town" class="form-control">
+                                        <option value="" selected>Choose CityTown...</option>
+                                    </select>
+                                </div>
+                                <p class="text-danger" id="error_address_town"></p>
+                            </div>
+
+
+                        <label for="address_barangay" class="col-md-2 text-md-center">Barangay:</label>
+                            <div class="col-md-4">
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="fa fa-globe input-group-text"></span>
+                                        </div>
+                                        <select id="address_barangay" name="address_barangay" class="form-control">
+                                                <option value="" selected>Choose Barangay...</option>
+                                        </select>
+                                    </div>
+                                    <p class="text-danger" id="error_address_barangay"></p>
+                            </div>
+                         <label for="address_zipcode" class="col-md-2 text-md-center">ZipCode: </label>
+                            <div class="col-md-4">
+                                
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="fa fa-address-card input-group-text"></span>
+                                    </div>
+                                    <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" placeholder="Address Zipcode"  autofocus>
+                                </div>
+                                <p class="text-danger" id="error_address_zipcode"></p>
+                            </div>
+                </div>
+                
+
+                {{-- ----------------------------------------------------------------------------------------------------- --}}
+                {{-- Contact Information Row --}}
+                <hr>
+                <label>Contact Information</label>
+                <div class="form-group row mt-4">
+
+                    <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
+                    <div class="col-md-4">
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="fa fa-phone input-group-text"></span>
+                            </div>
+                            <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" placeholder="Contact Mobile"  autofocus>
+                        </div>
+                        <p class="text-danger" id="error_contact_mobile"></p>
+                        
+                    </div>
+
+                    <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
+                    <div class="col-md-4">
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="fa fa-phone input-group-text"></span>
+                            </div>
+                            <input id="contact_phone" type="text" class="form-control" name="contact_phone" placeholder="Contact Phone"  autofocus>
+                        </div>
+                        <p class="text-danger" id="error_contact_phone"></p>
+                        
+                    </div>
+
+                    <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
+                    <div class="col-md-4">
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="fa fa-envelope input-group-text"></span>
+                            </div>
+                            <input id="contact_email" type="email" class="form-control" name="contact_email" placeholder="Contact Email"  autofocus>
+                        </div>
+                        <p class="text-danger" id="error_contact_email"></p>
+                        
+                    </div>
+
+                    <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
                         <div class="col-md-4">
                             
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="fa fa-globe input-group-text"></span>
+                                    <span class="fa fa-user input-group-text"></span>
                                 </div>
-                                <select id="address_country" name="address_country" class="form-control">
-                                        <option value="" selected>Choose Country...</option>
-                                        <option>Philippines</option>
-                                </select>
+                                <input id="contact_person" type="text" class="form-control" name="contact_person" placeholder="Contact Person"  autofocus>
                             </div>
-                            <p class="text-danger" id="error_address_country"></p>
-                                
+                            <p class="text-danger" id="error_contact_person"></p>
+                            
                         </div>
 
-                        <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
-                        <div class="col-md-4">
-                            
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-envelope input-group-text"></span>
-                                </div>
-                                <input id="contact_email" type="email" class="form-control" name="contact_email" placeholder="Contact Email"  autofocus>
-                            </div>
-                            <p class="text-danger" id="error_contact_email"></p>
-                            
-                        </div>
                 </div>
 
-                <div class="form-group row">
-                        <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
-                        <div class="col-md-4">
-                            
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="address_cityprovince" name="address_cityprovince" class="form-control">
-                                        <option value="" selected>Choose Province...</option>
-                                </select>
-                            </div>
-                            <p class="text-danger" id="error_address_cityprovince"></p>
-                                
-                        </div>
-                        
+                {{-- ----------------------------------------------------------------------------------------------------- --}}
+                {{-- Goverment Numbers Row --}}
+                <hr>
+                <label>Government Number</label>
+                <div class="form-group row mt-4">
                         <label for="tin" class="col-md-2 text-md-center">Tin: </label>
                         <div class="col-md-4">
                             
@@ -199,23 +281,7 @@ elseif(Session::get('create_profile') == 'delete'){
                             </div>
                             <p class="text-danger" id="error_tin"></p>
                         </div>
-                </div>
 
-                <div class="form-group row">
-                        <label for="address_town" class="col-md-2 text-md-center">City/Town:</label>
-                        <div class="col-md-4">
-                            
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="address_town" name="address_town" class="form-control">
-                                    <option value="" selected>Choose CityTown...</option>
-                                </select>
-                            </div>
-                            <p class="text-danger" id="error_address_town"></p>
-                        </div>
-                        
                         <label for="sss" class="col-md-2 text-md-center">SSS/GSIS: </label>
                         <div class="col-md-4">
                             
@@ -227,23 +293,7 @@ elseif(Session::get('create_profile') == 'delete'){
                             </div>
                             <p class="text-danger" id="error_sss"></p>
                         </div>
-                </div>
 
-                <div class="form-group row">
-                        <label for="address_barangay" class="col-md-2 text-md-center">Barangay:</label>
-                        <div class="col-md-4">
-
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="fa fa-globe input-group-text"></span>
-                                    </div>
-                                    <select id="address_barangay" name="address_barangay" class="form-control">
-                                            <option value="" selected>Choose Barangay...</option>
-                                    </select>
-                                </div>
-                                <p class="text-danger" id="error_address_barangay"></p>
-                        </div>
-                        
                         <label for="phic" class="col-md-2 text-md-center">Phic: </label>
                         <div class="col-md-4">
                             
@@ -255,21 +305,7 @@ elseif(Session::get('create_profile') == 'delete'){
                             </div>
                             <p class="text-danger" id="error_phic"></p>
                         </div>
-                </div>
 
-                <div class="form-group row">
-                        <label for="address_zipcode" class="col-md-2 text-md-center">ZipCode: </label>
-                        <div class="col-md-4">
-                            
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" placeholder="Address Zipcode"  autofocus>
-                            </div>
-                            <p class="text-danger" id="error_address_zipcode"></p>
-                        </div>
-                        
                         <label for="hdmf" class="col-md-2 text-md-center">HDMF: </label>
                         <div class="col-md-4">
                             
@@ -281,9 +317,26 @@ elseif(Session::get('create_profile') == 'delete'){
                             </div>
                             <p class="text-danger" id="error_hdmf"></p>
                         </div>
+
+                        <label for="nid" class="col-md-2 text-md-center">NID: </label>
+                        <div class="col-md-4">
+                            
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-address-card input-group-text"></span>
+                                </div>
+                                <input id="nid" type="nid" class="form-control" name="nid" placeholder="Nid"  autofocus>
+                            </div>
+                            <p class="text-danger" id="error_nid"></p>
+                        </div>
                 </div>
 
-                <div class="form-group row">
+
+                {{-- ---------------------------------------------------------------------- --}}
+                {{-- Account Information Row --}}
+                <hr>
+                <label>Account Information</label>
+                <div class="form-group row mt-4">
                         <label for="user_type" class="col-md-2 text-md-center">Account Type:</label>
                         <div class="col-md-4">
                             
@@ -297,21 +350,6 @@ elseif(Session::get('create_profile') == 'delete'){
                                 </div>
                                 <p class="text-danger" id="error_user_type"></p>
                         </div>
-                        
-                        <label for="nid" class="col-md-2 text-md-center">NID: </label>
-                        <div class="col-md-4">
-                            
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="nid" type="nid" class="form-control" name="nid" placeholder="nid"  autofocus>
-                            </div>
-                            <p class="text-danger" id="error_nid"></p>
-                        </div>
-                </div>
-
-                <div class="form-group row">
                         
                         <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
                         <div class="col-md-4">
@@ -347,7 +385,11 @@ elseif(Session::get('create_profile') == 'delete'){
                             </div>
                 </div>
 
-                <div class="form-group row">
+                {{-- ------------------------------------------------------------------- --}}
+                {{-- Account Files Row --}}
+                <hr>
+                <label>Business Files</label>
+                <div class="form-group row mt-4">
                         <label for="accountstatus" class="col-md-2 text-md-center">Select File SEC/DTI:</label>
                         <div class="col-md-4">
                             
