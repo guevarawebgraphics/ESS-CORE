@@ -431,6 +431,16 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_middlename"></p>
                         </div>
+                        <label for="suffix" class="col-md-2 text-md-center">Suffix :</label>   
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="suffix" type="text" class="form-control" name="suffix" placeholder="Suffix"   autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_middlename"></p>
+                        </div>
                         <label for="gender" class="col-md-2 text-md-center">Gender :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -954,6 +964,7 @@ $(document).ready(function(){
         employee_no = $("#employee_no").val();
         position = $("#position").val();
         department = $("#department").val();
+        suffix = $("#suffix").val();
         lastname = $("#lastname").val();
         mobile_no = $("#mobile_no").val();
         firstname = $("#firstname").val();
@@ -1565,7 +1576,7 @@ $(document).ready(function(){
                 $('#employee_profile').removeAttr('hidden');
                 $('#iform_employee_no').removeAttr('hidden');
                 console.log(data.provDesc + ' '+  data.brgyDesc + ' ' + data.citymunDesc);
-                $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname);
+                $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname + ' ' + data.suffix);
                 $('#employee_position').html(data.position);
                 $('#employee_address').html(data.address_unit + ' ' + data.provDesc + ' ' + data.citymunDesc + ' ' + data.brgyDesc);
                 //$('#employee_employeeno').html(data.employee_no);
@@ -1582,6 +1593,7 @@ $(document).ready(function(){
                 $('#employee_hdmf').html(data.HDMF);
                 $('#employee_nid').html(data.NID);
 
+                $("#suffix").val(data.suffix);
                 $("#lastname").val(data.lastname);
                 $("#firstname").val(data.firstname);
                 $("#middlename").val(data.middlename);

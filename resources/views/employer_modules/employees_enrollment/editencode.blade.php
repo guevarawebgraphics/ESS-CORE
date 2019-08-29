@@ -326,6 +326,16 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_lastname"></p>
                         </div> 
+                        <label for="suffix" class="col-md-2 text-md-center">Suffix:</label>     
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="suffix" type="text" class="form-control" name="suffix" placeholder="suffix" value="{{$employee[0]->suffix}}" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_lastname"></p>
+                        </div> 
                         <label for="gender" class="col-md-2 text-md-center">Gender :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
