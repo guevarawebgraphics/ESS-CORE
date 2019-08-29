@@ -124,6 +124,7 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.lastname',
                                     'employee_personal_information.firstname',
                                     'employee_personal_information.middlename',
+                                    'employee_personal_information.suffix',
                                     'employee_personal_information.TIN',
                                     'employee_personal_information.SSSGSIS',
                                     'employee_personal_information.PHIC',
@@ -176,6 +177,7 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.lastname',
                                     'employee_personal_information.firstname',
                                     'employee_personal_information.middlename',
+                                    'employee_personal_information.suffix',
                                     'employee_personal_information.TIN',
                                     'employee_personal_information.SSSGSIS',
                                     'employee_personal_information.PHIC',
@@ -308,6 +310,7 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.lastname',
                                     'employee_personal_information.firstname',
                                     'employee_personal_information.middlename',
+                                    'employee_personal_information.suffix',
                                     'employee_personal_information.TIN',
                                     'employee_personal_information.SSSGSIS',
                                     'employee_personal_information.PHIC',
@@ -347,6 +350,7 @@ class EmployeesEnrollmentController extends Controller
             $lastname = $employee_info[0]->lastname;
             $firstname = $employee_info[0]->firstname;
             $middlename = $employee_info[0]->middlename;
+            $middlename = $employee_info[0]->suffix;
             $TIN = $employee_info[0]->TIN;
             $SSSGSIS = $employee_info[0]->SSSGSIS;
             $PHIC = $employee_info[0]->PHIC;
@@ -392,6 +396,7 @@ class EmployeesEnrollmentController extends Controller
             'lastname'=>$lastname,
             'firstname' => $firstname,
             'middlename' => $middlename,
+            'suffix' => $middlename,
             'TIN' => $TIN,
             'SSSGSIS' => $SSSGSIS,
             'PHIC' => $PHIC,
@@ -496,6 +501,7 @@ class EmployeesEnrollmentController extends Controller
                     'lastname' => $request->input('lastname'),
                     'firstname' => $request->input('firstname'),
                     'middlename' => $request->input('middlename'),
+                    'suffix' => $request->input('suffix'),
                     'mobile_no' => $request->input('mobile_no'),      
                     'email_add' => $request->input('email_add'),
                     'TIN' => $request->input('tin'), 
@@ -556,7 +562,7 @@ class EmployeesEnrollmentController extends Controller
                     'user_type_for' => 7,
                     'employer_id' => auth()->user()->employer_id,//Session::get("employer_id"),//$request->input('employer_id'),
                     'employee_id' => $employee_id,
-                    'name' => $request->input('lastname') . ", " . $request->input('firstname') . ", " . $request->input('middlename'),
+                    'name' => $request->input('lastname') . ", " . $request->input('firstname') . ", " . $request->input('middlename') . ", " . $request->input('suffix'),
                     'username' => $employee_ess_id,
                     'password' => Hash::make($password),
                     'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
@@ -583,8 +589,9 @@ class EmployeesEnrollmentController extends Controller
                     'employer_name' => $get_employer_name[0]->business_name,
                     'username' =>  $employee_ess_id,
                     'firstname' => $request->input('firstname'),
-                    'middlename' => $request->input('middlename'),
-                    'lastname' => $request->input('lastname'),
+                    'middlename' => $request->input('middlename'), 
+                    'lastname' => $request->input('lastname'), 
+                    'suffix' => $request->input('suffix'),
                     'password' => $password,
                     'mobile_no' => $request->input('mobile_no'),
                     'user_activation_id' => $useractivation_id
@@ -826,6 +833,7 @@ class EmployeesEnrollmentController extends Controller
                             'lastname' => $request->input('lastname'),
                             'firstname' => $request->input('firstname'),
                             'middlename' => $request->input('middlename'),
+                            'suffix' => $request->input('suffix'),
                             'mobile_no' => $request->input('mobile_no'),      
                             'email_add' => $request->input('email_add'),
                             'TIN' => $request->input('tin'), 
@@ -933,6 +941,7 @@ class EmployeesEnrollmentController extends Controller
                                 'employee_personal_information.lastname',
                                 'employee_personal_information.firstname',
                                 'employee_personal_information.middlename',
+                                'employee_personal_information.suffix',
                                 'employee_personal_information.TIN',
                                 'employee_personal_information.SSSGSIS',
                                 'employee_personal_information.PHIC',
@@ -1338,6 +1347,7 @@ class EmployeesEnrollmentController extends Controller
                                         'lastname',
                                         'firstname',
                                         'middlename',
+                                        'suffix',
                                         'TIN',
                                         'SSSGSIS',
                                         'PHIC',
@@ -1357,7 +1367,7 @@ class EmployeesEnrollmentController extends Controller
                                         'created_by',
                                         'updated_by',
                                         'created_at',
-                                        'updated_at',
+                                        'updated_at'
                                     )
                                     ->get();
         /**
@@ -1374,6 +1384,7 @@ class EmployeesEnrollmentController extends Controller
                             'lastname' => $employees_preview->lastname,
                             'firstname' => $employees_preview->firstname,
                             'middlename' => $employees_preview->middlename,
+                            'suffix' => $employees_preview->suffix,
                             'TIN' => $employees_preview->TIN,
                             'SSSGSIS' => $employees_preview->SSSGSIS,
                             'PHIC' => $employees_preview->PHIC,
