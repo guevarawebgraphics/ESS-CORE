@@ -49,9 +49,28 @@
                  var check_has = financial_tips.description.includes("img"); 
                  if(check_has){
                      $('#imageviewft img').addClass('img-fluid img-thumbnail');
-                 }
+                 } 
+               
       
-        });
+        });  
+        $('.view-financial-tips').click(function(){  
+            let tips = {
+                title :   $(this).attr('data-title'), 
+                description:  $(this).attr('data-description')
+            } 
+            Swal.fire({
+                position: 'top-end',
+                type: 'info',
+                title: ''+tips.title+'',
+                html: ''+tips.description+'',
+                width:'25rem',
+                showConfirmButton: true,
+              })
+              $('.swal2-confirm').html("close");
+              $('#imageviewft img').addClass('img-fluid img-thumbnail');
+        }); 
+        
+       
 
             $('.carousel').carousel()      
             

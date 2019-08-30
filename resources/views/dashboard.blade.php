@@ -219,8 +219,10 @@
                     {{$financial_tips->financial_tips_title}}
                   </div>
                   <div class="timeline-footer">
-                  <a class="btn btn-warning btn-flat btn-outline-warning btn-sm financial-tips-btn"  data-title="{{$financial_tips->financial_tips_title}}" data-description="<div id='imageviewft'>{{$financial_tips->financial_tips_description}}</div>" data-toggle="modal" data-target="#modal-financial-tips">View Tips</a>
-                  </div>
+              {{--<a class="btn btn-warning btn-flat btn-outline-warning btn-sm financial-tips-btn"  data-title="{{$financial_tips->financial_tips_title}}" data-description="<div id='imageviewft'>{{$financial_tips->financial_tips_description}}</div>" data-toggle="modal" data-target="#modal-financial-tips">View Tips</a>    --}} 
+                  <a href="#" class="btn btn-warning btn-flat btn-outline-warning btn-sm view-financial-tips"  data-title="{{$financial_tips->financial_tips_title}}" data-description="<div id='imageviewft'>{{$financial_tips->financial_tips_description}}</div>"> view </a>
+                    
+                </div>
                 </div>
               </li>
             @endforeach
