@@ -192,7 +192,6 @@ Route::post('/EmployeesEnrollmentController/check_employee_details_exists_in_exc
 Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
 Route::post('/EmployeesEnrollmentController/update_employees_details_preview', 'EmployeesEnrollmentController@update_employees_details_preview');
 Route::post('/EmployeesEnrollmentController/delete_employee_details', 'EmployeesEnrollmentController@delete_employee_details');
-Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
 
 //Employer Content
 
@@ -243,6 +242,12 @@ Route::get('/ewallet', 'EWalletController@index');
 
 //Financial Calendar
 Route::get('/financialcalendar', 'FinancialCalendarController@index'); 
+Route::post('/financialcalendar/save_cash_now', 'FinancialCalendarController@save_cash_now');
+Route::post('/financialcalendar/update_cash_now', 'FinancialCalendarController@update_cash_now');
+Route::get('/financialcalendar/get_events', 'FinancialCalendarController@get_events');
+Route::get('/financialcalendar/get_collection', 'FinancialCalendarController@get_collection');
+Route::post('/financialcalendar/save_collection', 'FinancialCalendarController@save_collection');
+Route::post('/financialcalendar/update_collection', 'FinancialCalendarController@update_collection');
 
 
 //Financial Tips

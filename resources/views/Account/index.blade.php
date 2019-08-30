@@ -135,13 +135,13 @@ elseif(Session::get('create_profile') == 'delete'){
           "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
           "paging": true,
           "pageLength": 10,
-           scrollY: 500,
+           scrollY: 600,
           //  scrollX: true,
           "autoWidth": true,
           lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          //"order": [[4, "asc"]]
+          "order": [[6, "asc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {
