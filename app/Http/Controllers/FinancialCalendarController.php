@@ -93,9 +93,28 @@ class FinancialCalendarController extends Controller
                             'cash_now.cash_now_date',
                             'cash_now.cash_now_theme_color'
                         )
-                        ->where('account_id', '=', auth()->user()->id)
+                        ->where('cash_now.account_id', '=', auth()->user()->id)
                         ->get();
         return Response::json($cash_now);
+    }
+
+    /**
+     * @ Get Collection
+     * */
+    public function get_collection(Request $request){
+        $get_collection = DB::table('financial_calendar_events')
+                            ->join('collection', 'financial_calendar_events.calendar_event_id', '=', 'collection.collection_id')
+                            ->select(
+                                'collection.id',
+                                'collection.collection_amount',
+                                'collection.collection_cash_source',
+                                'collection.collection_amount',
+                                'collection.collection_date',
+                                'collection.collection_theme_color'
+                            )
+                            ->where('collection.account_id', '=', auth()->user()->id)
+                            ->get();
+        return Response::json($get_collection);
     }
 
     /**
@@ -146,8 +165,8 @@ class FinancialCalendarController extends Controller
                             'employee_id' => auth()->user()->employee_id,
                             'cash_now_amount' => $request->cash_now_amount,
                             'cash_now_description' => $request->cash_now_description,
-                            'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second),
-                            'cash_now_theme_color' => '#f56954', // red
+                            'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d'),
+                            'cash_now_theme_color' => '#007BFF', // blue
                             'created_at' => carbon::now(),
                             'updated_at' => carbon::now()
                         ));
@@ -180,14 +199,115 @@ class FinancialCalendarController extends Controller
                     'employee_id' => auth()->user()->employee_id,
                     'cash_now_amount' => $request->cash_now_amount,
                     'cash_now_description' => $request->cash_now_description,
-                    'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second)
+                    'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d')
                     ));
 
 
         return json_encode([
-            'message' => 'Event Updated',
+            'message' => 'Cash Now Updated',
             'status' => 200,
         ]);
+    }
+
+    /**
+     * @ Save Collection
+     * */
+    public function save_collection(Request  $request){
+        /**
+         * @ Custome Error Message
+         * */
+        $cusomMessage = [
+            'required' => 'The :attribute field is required.'
+        ];
+
+        /**
+         * @ Validate Request
+         * */
+        $this->validate($request, [
+            'collection_amount' => 'required',
+            'collection_cash_source' => 'required',
+            'collection_date' => 'required'
+        ]);
+
+        /**
+        * @ Variables 
+        */
+       $current_time = carbon::now();
+       $collection_unique_id = $this->generate_id($table = "collection");
+
+       /**
+        * @ Save financial Calendar events
+        **/
+        $save_financial_calendar_events = DB::table('financial_calendar_events')
+                                            ->insert(array(
+                                                'calendar_event_id' => $collection_unique_id,
+                                                'created_by' => auth()->user()->id,
+                                                'updated_by' => auth()->user()->id,
+                                                'created_at' => carbon::now(),
+                                                'updated_at' => carbon::now()
+                                            ));
+        /**
+         * @ Save collection
+         * */
+        $save_collection = DB::table('collection')
+                            ->insert(array(
+                                'collection_id' => $collection_unique_id,
+                                'account_id' => auth()->user()->id,
+                                'employee_id' => auth()->user()->employee_id,
+                                'collection_cash_source' => $request->collection_cash_source,
+                                'collection_amount' => $request->collection_amount,
+                                'collection_date' => carbon::parse($request->collection_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second),
+                                'collection_theme_color' => '#6C757D', // grey
+                                'created_at' => carbon::now(),
+                                'updated_at' => carbon::now()
+                            ));
+
+
+         return json_encode([
+            'message' => 'Collection Saved',
+            'status' => 200,
+        ]);
+
+
+    }
+
+    /**
+     * @ Update Collection
+     * */
+    public function update_collection(Request $request){
+        /**
+         * @ Validate Request
+         * */
+        $this->validate($request, [
+            'collection_amount' => 'required',
+            'collection_cash_source' => 'required',
+            'collection_date' => 'required'
+        ]);
+
+        /**
+        * @ Variables 
+        */
+       $current_time = carbon::now();
+
+        /**
+         * @ Update collection
+         * */
+        $update_collection = DB::table('collection')
+                            ->where('id', '=', $request->id)
+                            ->update(array(
+                                'employee_id' => auth()->user()->employee_id,
+                                'collection_cash_source' => $request->collection_cash_source,
+                                'collection_amount' => $request->collection_amount,
+                                'collection_date' => carbon::parse($request->collection_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second)
+                            ));
+
+
+         return json_encode([
+            'message' => 'Collection Updated',
+            'status' => 200,
+            'rest' => $update_collection
+        ]);
+
     }
     
 
@@ -214,6 +334,13 @@ class FinancialCalendarController extends Controller
             // Ensure ID does not exist
             // Generate a new one if ID already exists
             while (DB::table('cash_now')->where('id', '=', $unique_id)->count() > 0){
+                $unique_id = $this->generate_unique_id();
+            }
+        }
+        if($table == "collection"){
+            // Ensure ID does not exist
+            // Generate a new one if ID already exists
+            while (DB::table('collection')->where('id', '=', $unique_id)->count() > 0){
                 $unique_id = $this->generate_unique_id();
             }
         }
