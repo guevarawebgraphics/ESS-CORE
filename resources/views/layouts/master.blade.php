@@ -41,12 +41,14 @@
 	<script src="{{ asset('/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
 	<!--Toastr-->
 	<script src="{{ asset('Toastr/toastr.min.js') }}"></script>
-	{{-- SWEET ALERT --}}
+	{{-- SWEET ALERT --}} 
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script> 
 	<link href="{{ asset('sweetalert/sweetalert.css') }}" rel="stylesheet">
 	<script src="{{ asset('sweetalert/sweetalert.js')}}" ></script>
 	<link href="{{ asset('sweetalert/sweetalert.min.css') }}" rel="stylesheet">	
 	<link href="{{ asset('sweetalert/sweetalert.min.css.map') }}">
-	<script src="{{ asset('sweetalert/sweetalert.min.js') }}" ></script>
+	<script src="{{ asset('sweetalert/sweetalert.min.js') }}" ></script> 
+
 	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script> --}}
 	<!-- Socket IO -->
 	<script src="{{ asset('SocketIO/socket.io.dev.js') }}"></script>
@@ -63,6 +65,7 @@
 	<link href="{{ asset('Ionicons/ionicons.min.css') }}" rel="stylesheet">
 	{{-- Momentjs --}}
 	<script src="{{ asset('js/moment.min.js') }}"></script> 
+<!---->
 	<!--Scripts-->
 	@if(Auth::check())
 	<script src="{{ asset('js/scripts.js') }}"></script> 
