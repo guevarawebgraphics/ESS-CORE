@@ -165,8 +165,8 @@ class FinancialCalendarController extends Controller
                             'employee_id' => auth()->user()->employee_id,
                             'cash_now_amount' => $request->cash_now_amount,
                             'cash_now_description' => $request->cash_now_description,
-                            'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second),
-                            'cash_now_theme_color' => '#f56954', // red
+                            'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d'),
+                            'cash_now_theme_color' => '#007BFF', // blue
                             'created_at' => carbon::now(),
                             'updated_at' => carbon::now()
                         ));
@@ -199,12 +199,12 @@ class FinancialCalendarController extends Controller
                     'employee_id' => auth()->user()->employee_id,
                     'cash_now_amount' => $request->cash_now_amount,
                     'cash_now_description' => $request->cash_now_description,
-                    'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second)
+                    'cash_now_date' => carbon::parse($request->cash_now_date)->format('Y-m-d')
                     ));
 
 
         return json_encode([
-            'message' => 'Event Updated',
+            'message' => 'Cash Now Updated',
             'status' => 200,
         ]);
     }
@@ -257,7 +257,7 @@ class FinancialCalendarController extends Controller
                                 'collection_cash_source' => $request->collection_cash_source,
                                 'collection_amount' => $request->collection_amount,
                                 'collection_date' => carbon::parse($request->collection_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second),
-                                'collection_theme_color' => '#0336FF', // blue
+                                'collection_theme_color' => '#6C757D', // grey
                                 'created_at' => carbon::now(),
                                 'updated_at' => carbon::now()
                             ));

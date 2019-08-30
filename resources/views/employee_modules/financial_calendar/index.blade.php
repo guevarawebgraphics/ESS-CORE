@@ -228,6 +228,9 @@ elseif(Session::get('financial_calendar') == 'delete'){
             m = date.getMonth(),
             y = date.getFullYear();
         $('#calendar').fullCalendar({
+            aspectRatio: 2.3,
+            handleWindowResize: true,
+            eventLimit: true,
             plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
             header: {
                 left: 'prev,next today',
@@ -253,13 +256,8 @@ elseif(Session::get('financial_calendar') == 'delete'){
                 // Get Cash Now
                 {
                 events: function(start, end, timezone, callback) {
-                        $.ajax({
-                        type: 'GET',
-                        url: '/financialcalendar/get_events',
-                        dataType: 'json',
-                        success: function(data){
-                            //console.log(data);
-                            var events = [];
+                    $.get('/financialcalendar/get_events', function(data) {
+                        var events = [];
                             var i;
                             for(i=0; i<data.length; i++){
                                 events.push({
@@ -271,21 +269,17 @@ elseif(Session::get('financial_calendar') == 'delete'){
                                     backgroundColor: data[i].cash_now_theme_color,
                                     // backgroundColor: '#f56954', //red
                                     borderColor    : data[i].cash_now_theme_color,
+                                    textColor: '#fff'
                                 });
                             }
                             callback(events);
-                        },
-                        error: function(data){
-                            console.log(data);
-                        }
-                    });
+                    }, 'json');
                 }
                 },
                 // Get collection
                 {
                     events: function(start, end ,timezone, callback) {
                             $.get('/financialcalendar/get_collection', function(data) {
-                                
                                 var events = [];
                                 var i;
                                 for(i=0; i<data.length; i++){
@@ -298,6 +292,7 @@ elseif(Session::get('financial_calendar') == 'delete'){
                                         backgroundColor: data[i].collection_theme_color,
                                         // backgroundColor: '#f56954', //red
                                         borderColor    : data[i].collection_theme_color,
+                                        textColor: '#fff'
                                     });
                                 }
                                 callback(events);
@@ -313,7 +308,7 @@ elseif(Session::get('financial_calendar') == 'delete'){
             // Update The Calendar
             eventClick: function (calEvent, jsEvent) {
                 // Get Cash Now
-                if(calEvent.backgroundColor == '#f56954'){
+                if(calEvent.backgroundColor == '#007BFF'){
                     $('#cash_now_modal').modal('show');
                     $('#event_id').val(calEvent.event_id);
                     $('#cash_now_description').val(calEvent.title);
@@ -322,7 +317,7 @@ elseif(Session::get('financial_calendar') == 'delete'){
                     $('#cash_now_form').attr('action', '/financialcalendar/update_cash_now');
                 }
                 // Get Collection
-                if(calEvent.backgroundColor == '#0336FF'){
+                if(calEvent.backgroundColor == '#6C757D'){
                     $('#collection_modal').modal('show');
                     $('#collection_event_id').val(calEvent.event_id);
                     $('#collection_cash_source').val(calEvent.title);
