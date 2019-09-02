@@ -60,7 +60,6 @@
             } 
             Swal.fire({
                 position: 'top-end',
-                type: 'info',
                 title: ''+tips.title+'',
                 html: ''+tips.description+'',
                 width:'25rem',

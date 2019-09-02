@@ -116,6 +116,21 @@ class FinancialCalendarController extends Controller
                             ->get();
         return Response::json($get_collection);
     }
+    public function get_payment(Request $request){
+        $get_payment = DB::table('financial_calendar_events')
+                            ->join('payment', 'financial_calendar_events.calendar_event_id', '=', 'payment.payment_id')
+                            ->select(
+                                'payment.id',
+                                'payment.payment_amount',
+                                'payment.payment_source',
+                                'payment.payment_amount',
+                                'payment.payment_date',
+                                'payment.payment_theme_color'
+                            )
+                            ->where('payment.account_id', '=', auth()->user()->id)
+                            ->get();
+        return Response::json($get_payment);
+    }
 
     /**
      * @ Save Cash Now 
@@ -308,6 +323,104 @@ class FinancialCalendarController extends Controller
             'rest' => $update_collection
         ]);
 
+    } 
+      /**
+     * @ Update Payment
+     * */
+    public function save_payment(Request $request){
+        /**
+         * @ Custome Error Message
+         * */
+        $cusomMessage = [
+            'required' => 'The :attribute field is required.'
+        ];
+
+        /**
+         * @ Validate Request
+         * */
+        $this->validate($request, [
+            'payment_amount' => 'required',
+            'payment_source' => 'required',
+            'payment_date' => 'required'
+        ]);
+
+        /**
+        * @ Variables 
+        */
+       $current_time = carbon::now();
+       $payment_unique_id = $this->generate_id($table = "payment");
+
+    
+        /**
+        * @ Save financial Calendar events
+        **/
+        $save_financial_calendar_events = DB::table('financial_calendar_events')
+                                            ->insert(array(
+                                                'calendar_event_id' => $payment_unique_id,
+                                                'created_by' => auth()->user()->id,
+                                                'updated_by' => auth()->user()->id,
+                                                'created_at' => carbon::now(),
+                                                'updated_at' => carbon::now()
+                                            ));
+        /**
+         * @ Save collection
+         * */
+        $save_payment = DB::table('payment')
+                            ->insert(array(
+                                'payment_id' => $payment_unique_id,
+                                'account_id' => auth()->user()->id,
+                                'employee_id' => auth()->user()->employee_id,
+                                'payment_source' => $request->payment_source,
+                                'payment_amount' => $request->payment_amount,
+                                'payment_date' => carbon::parse($request->payment_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second),
+                                'payment_theme_color' => '#17A2B8', // cyan
+                                'created_at' => carbon::now(),
+                                'updated_at' => carbon::now()
+                            ));
+
+
+         return json_encode([
+            'message' => 'Payment Saved',
+            'status' => 200,
+        ]);
+
+    }
+      /**
+     * @ Update Payment
+     * */
+    public function update_payment(Request $request){
+        /**
+         * @ Validate Request
+         * */
+        $this->validate($request, [
+            'payment_amount' => 'required',
+            'payment_source' => 'required',
+            'payment_date' => 'required'
+        ]);
+
+        /**
+        * @ Variables 
+        */
+       $current_time = carbon::now();
+
+        /**
+         * @ Update collection
+         * */
+        $update_payment = DB::table('payment')
+                            ->where('id', '=', $request->id)
+                            ->update(array(
+                                'employee_id' => auth()->user()->employee_id,
+                                'payment_source' => $request->payment_source,
+                                'payment_amount' => $request->payment_amount,
+                                'payment_date' => carbon::parse($request->payment_date)->format('Y-m-d', $current_time->hour .':'. $current_time->minute. ':'. $current_time->second)
+                            ));
+
+
+         return json_encode([
+            'message' => 'Payment Updated',
+            'status' => 200,
+            'rest' => $update_payment
+        ]);
     }
     
 
@@ -341,6 +454,13 @@ class FinancialCalendarController extends Controller
             // Ensure ID does not exist
             // Generate a new one if ID already exists
             while (DB::table('collection')->where('id', '=', $unique_id)->count() > 0){
+                $unique_id = $this->generate_unique_id();
+            }
+        }
+        if($table == "payment"){
+            // Ensure ID does not exist
+            // Generate a new one if ID already exists
+            while (DB::table('payment')->where('id', '=', $unique_id)->count() > 0){
                 $unique_id = $this->generate_unique_id();
             }
         }
