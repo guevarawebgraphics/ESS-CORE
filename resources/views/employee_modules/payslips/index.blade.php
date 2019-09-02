@@ -47,7 +47,7 @@
                                     <div class="col">   
                                             <div class="form-group row"> 
                                                     <div class="col-sm-12">
-                                            <button type="button" class="btn btn-outline-info" id="generate">Generate</button>  
+                                            <button type="button" class="btn btn-outline-info btn-flat" id="generate">Generate</button>  
                                                     </div>
                                             </div>
                                     </div>
@@ -114,7 +114,7 @@
                     for(i=0; i<data.length; i++){
                         html +='<tr>'+
                                     '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+
-                                     '<td><a class="btn btn-sm label label-info" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                     '<td><a class="btn btn-sm btn-outline-info btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
                                 '</tr>'; 
                     }   
                         if(i===0)
@@ -185,7 +185,7 @@
                             {
                                 html +='<tr>'+
                                     '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+
-                                     '<td><a class="btn btn-sm label label-info" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                     '<td><a class="btn btn-sm btn-outline-info btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
                                 '</tr>'; 
                                      
 
