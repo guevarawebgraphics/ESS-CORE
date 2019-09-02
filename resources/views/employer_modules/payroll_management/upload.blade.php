@@ -228,7 +228,7 @@ elseif(Session::get('payroll_management') == 'delete'){
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_submit_payroll" data-file=""><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></button>
+		  <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_submit_payroll" data-file=""><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></i></button>
 		</div>
 		</form>
 	  </div>
