@@ -62,7 +62,7 @@ elseif(Session::get('financial_calendar') == 'delete'){
                         <br />
                         <a data-toggle="modal" href="#modal-action-show" class="btn btn-outline-primary btn-flat" id="btn_cash_now" data-toggle="modal" data-target="#cash_now_modal" style="margin-right: 5px;"><i class="fa fa-money"></i><span> CashNow</span></a>
                         <a data-toggle="modal" href="#modal-action-collection" class="btn btn-outline-secondary btn-flat" id="btn_collection" data-toggle="modal" data-target="#collection_modal" style="margin-right: 5px;"><i class="fa fa-money"></i><span> Collection</span></a>
-                        <a data-toggle="modal" href="#modal-action-payment" class="btn btn-outline-info btn-flat" id="btn_payment"><i class="fa fa-money"></i><span> Payment</span></a>
+                        <a data-toggle="modal" href="#modal-action-payment" class="btn btn-outline-info btn-flat" id="btn_payment" data-toggle="modal" data-target="#payment_modal" style="margin-right: 5px;" ><i class="fa fa-money"></i><span> Payment</span></a>
                         <!-- THE CALENDAR -->
                         {{-- Calendar --}}
                         <div id="calendar"></div>
@@ -176,6 +176,56 @@ elseif(Session::get('financial_calendar') == 'delete'){
         </div>
       </div>
     </div>
+</div> 
+
+<!-- Modal For Add Payment-->
+<div class="modal fade" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content card-custom-blue card-outline">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Payment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="payment_form">
+                @csrf
+                <input type="text" name="payment_event_id" id="payment_event_id" hidden="true">
+                <div class="form-group row">
+                    <label>Payment Source</label>
+                    <div class="col-md-12">
+                                
+                        <div class="input-group mb-3">
+                            <input id="payment_source" type="text" class="form-control" name="payment_source" placeholder="Payment Source">
+                        </div>
+                        <p class="text-danger" id="error_payment_source"></p>
+                    </div>
+                    <label>Payment Amount</label>
+                    <div class="col-md-12">
+                                
+                        <div class="input-group mb-3">
+                            <input id="payment_amount" type="number" class="form-control" name="payment_amount" placeholder="0.00">
+                        </div>
+                        <p class="text-danger" id="error_payment_amount"></p>
+                    </div>
+                    <label>Date</label>
+                    <div class="col-md-12">
+                                
+                        <div class="input-group mb-3">
+                            <input id="payment_date" type="text" class="form-control fc-date" name="payment_date" placeholder="MM/DD/YYYY">
+                        </div>
+                        <p class="text-danger" id="error_payment_date"></p>
+                    </div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-primary btn-flat" id="btn_save_payment">Confirm <i id="spinner_payment" class=""></i></button>
+        </div>
+      </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -249,6 +299,10 @@ elseif(Session::get('financial_calendar') == 'delete'){
                 } else if (event.color == 'blue') {
                     element.css({ 'background-color': '#0336FF', 'border-color': '#0336FF' });
                 }
+                else if(event.color =="cyan"){
+                    element.css({ 'background-color': '#17A2B8', 'border-color': '#17A2B8' });
+                }
+               
             },
             eventSources: [
 
@@ -298,7 +352,31 @@ elseif(Session::get('financial_calendar') == 'delete'){
                                 callback(events);
                         }, 'json' );
                     }
-                }
+                }, 
+                // Get collection
+                {
+                    events: function(start, end ,timezone, callback) {
+                            $.get('/financialcalendar/get_payment', function(data) {
+                                var events = [];
+                                var i;
+                                for(i=0; i<data.length; i++){
+                                    events.push({
+                                        event_id: data[i].id,
+                                        title: data[i].payment_source,
+                                        start: data[i].payment_date,
+                                        end: data[i].payment_date,
+                                        amount: data[i].payment_amount,
+                                        backgroundColor: data[i].payment_theme_color,
+                                        // backgroundColor: '#f56954', //red
+                                        borderColor    : data[i].payment_theme_color,
+                                        textColor: '#fff'
+                                    });
+                                }
+                                callback(events);
+                        }, 'json' );
+                    }
+                } 
+           
 
                 // any other sources...
 
@@ -324,6 +402,14 @@ elseif(Session::get('financial_calendar') == 'delete'){
                     $('#collection_amount').val(calEvent.amount);
                     $('#collection_date').val(moment(calEvent.start).format('MM/DD/YYYY'));
                     $('#collection_form').attr('action', '/financialcalendar/update_collection');
+                }
+                if(calEvent.backgroundColor == '#17A2B8'){
+                    $('#payment_modal').modal('show');
+                    $('#payment_event_id').val(calEvent.event_id);
+                    $('#payment_source').val(calEvent.title);
+                    $('#payment_amount').val(calEvent.amount);
+                    $('#payment_date').val(moment(calEvent.start).format('MM/DD/YYYY'));
+                    $('#payment_form').attr('action', '/financialcalendar/update_payment');
                 }
             },
             editable: false,
@@ -501,6 +587,72 @@ elseif(Session::get('financial_calendar') == 'delete'){
             });
          });
          
+              /*
+        * @ Add Collection
+        */
+        $('#btn_payment').click(function() {
+            $('#payment_form').attr('action', '/financialcalendar/save_payment');
+        }); 
+        $('#btn_save_payment').click(function (e) {
+            e.preventDefault();
+            let url = $("#payment_form").attr('action');
+            $("#spinner_payment").addClass('fa fa-refresh fa-spin');
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    id: $('#payment_event_id').val(),
+                    payment_source: $('#payment_source').val(),
+                    payment_amount: $('#payment_amount').val(),
+                    payment_date: $('#payment_date').val()
+                },
+                success: function(data) {
+                    if(data.status == 200){
+                         // Display a success toast, with a title
+                         toastr.success(data.message)
+                        RemoveErrors();
+                        // Modal hide
+                        setTimeout(function (){
+                            $('#payment_modal').modal('hide');
+                            $('#payment_form')[0].reset();
+                        }, 500);
+                        setTimeout(function (){
+                            $("#spinner_payment").removeClass('fa fa-refresh fa-spin');
+                        }, 1500);
+                    }
+                    //Refresh The Full Calendar
+                    $('#calendar').fullCalendar('refetchEvents');
+                },
+                error: function(data) {
+                    if(data.status == 422) {
+                        setTimeout(function (){
+                            $("#spinner_payment").removeClass('fa fa-refresh fa-spin');
+                        }, 100);
+                    }
+                    var errors = $.parseJSON(data.responseText);
+                    $.each(errors, function(i, errors) {
+                        if(errors.payment_source){
+                            $('#error_payment_source').html('Payment Source Field is required');
+                            $('#payment_source').addClass('is-invalid');
+                            $('#error_payment_source').removeAttr('hidden');
+                        }
+                        if(errors.payment_amount){
+                            $('#error_payment_amount').html('Payment Amount Field is required');
+                            $('#payment_amount').addClass('is-invalid');
+                            $('#error_payment_amount').removeAttr('hidden');
+                        }
+                        if(errors.payment_date){
+                            $('#error_payment_date').html('Date Field is required');
+                            $('#payment_date').addClass('is-invalid');
+                            $('#error_payment_date').removeAttr('hidden');
+                        }
+                    });
+                }
+            });
+         });
+
 
         /*Remove Errors*/
         $('#cash_now_modal').on('hidden.bs.modal', function(e) {
@@ -512,6 +664,12 @@ elseif(Session::get('financial_calendar') == 'delete'){
         $('#collection_modal').on('hidden.bs.modal', function(e) {
             $('#collection_form')[0].reset();
             $('#collection_form').removeAttr('action');
+            RemoveErrors();
+        });
+        
+        $('#payment_modal').on('hidden.bs.modal', function(e) {
+            $('#payment_form')[0].reset();
+            $('#payment_form').removeAttr('action');
             RemoveErrors();
         });
 

@@ -1394,8 +1394,12 @@ $(document).ready(function(){
                     /*
                     * Check if the response is error
                     */
-                    if(data == 'error') {
+                    if(data == 'error') { 
+                     
                         toastr.info('ESS ID has been enrolled as your employee. Please enter other ESS ID.', 'Information')
+                        toastr.options = {
+                        "timeOut": "5000",
+                        }
                     }
                     else {
                         spinnerTimout(3000);
