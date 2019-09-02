@@ -112,13 +112,13 @@ class AnnouncementController extends Controller
             $Announcement = DB::table('announcement')
                             ->join('employer', 'employer.id', '=', 'announcement.employer_id')
                             ->select('announcement.id',
-                             'announcement.announcement_title',
-                             'announcement.announcement_description',
-                             'announcement.announcement_status',
-                             'employer.business_name',
-                             '.announcement.created_at')
-                             ->where('announcement.created_by', '=', auth()->user()->id)
-                             ->latest('announcement.created_at')
+                            'announcement.announcement_title',
+                            'announcement.announcement_description',
+                            'announcement.announcement_status',
+                            'announcement.created_at',
+                            'employer.business_name')
+                            ->where('announcement.created_by', '=', auth()->user()->id)
+                            ->latest('announcement.created_at')
                             ->get();
          }
          if(auth()->user()->user_type_id === 3){
@@ -127,12 +127,12 @@ class AnnouncementController extends Controller
                             'announcement.announcement_title',
                             'announcement.announcement_description',
                             'announcement.announcement_status',
-                            '.announcement.created_at')
+                            'announcement.created_at')
                             ->where('announcement.created_by', '=', auth()->user()->id)
                             ->latest('announcement.created_at')
                             ->get();
          }
-         if(auth()->user()->user_type_id){
+         if(auth()->user()->user_type_id != 1){
             $Announcement = DB::table('announcement')
                             ->select('announcement.id',
                             'announcement.announcement_title',
@@ -187,9 +187,23 @@ class AnnouncementController extends Controller
             /**
             *  Spoof a Request
             *  */
-            abort(200);
+            if(!$request->ajax()){
+                abort(500);
+            }
+            else {
+                abort(200);
+            }
         }
-        return json_encode($Announcement1);
+
+        /*Protection for Data View as Json*/
+        if($request->ajax()){
+            //return json_encode($Announcement);
+            return json_encode($Announcement1, 200);
+        }
+        else {
+            abort(404);
+        }
+        
         
     }
 

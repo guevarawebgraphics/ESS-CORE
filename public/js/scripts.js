@@ -2,7 +2,11 @@
       /*
       * @ Announcement Notification Pusher
       */
-    var pusher = new Pusher('3fc4a65760cdcbea6fe6', {
+     /**
+      * @ Pusher Key
+      * */
+    let pusher_key = $('#pusher_key').val();
+    var pusher = new Pusher(pusher_key, {
         cluster: 'ap2',
         forceTLS: true
       });
