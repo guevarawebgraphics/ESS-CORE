@@ -244,11 +244,16 @@ Route::get('/ewallet', 'EWalletController@index');
 Route::get('/financialcalendar', 'FinancialCalendarController@index'); 
 Route::post('/financialcalendar/save_cash_now', 'FinancialCalendarController@save_cash_now');
 Route::post('/financialcalendar/update_cash_now', 'FinancialCalendarController@update_cash_now');
-Route::get('/financialcalendar/get_events', 'FinancialCalendarController@get_events');
+Route::get('/financialcalendar/get_events', 'FinancialCalendarController@get_events'); 
+//Collection
 Route::get('/financialcalendar/get_collection', 'FinancialCalendarController@get_collection');
 Route::post('/financialcalendar/save_collection', 'FinancialCalendarController@save_collection');
 Route::post('/financialcalendar/update_collection', 'FinancialCalendarController@update_collection');
-
+//Payment
+Route::get('/financialcalendar/get_payment', 'FinancialCalendarController@get_payment');
+Route::post('/financialcalendar/save_payment','FinancialCalendarController@save_payment');
+Route::post('/financialcalendar/update_payment','FinancialCalendarController@update_payment');
+/* */
 
 //Financial Tips
 Route::get('/financialtips', 'FinancialTipsController@index');
