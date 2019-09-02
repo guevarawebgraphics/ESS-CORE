@@ -126,10 +126,8 @@
    <hr>
    <div class="row">
       <div class="col-sm-8">
-       
                 <div class="info-box">
                   <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
-      
                   <div class="info-box-content ">
                     <span class="info-box-text">Employer Contents</span>
                     <span class="info-box-number">{{count($content)}}</span>
@@ -137,47 +135,49 @@
                   <!-- /.info-box-content -->
                 </div>
                 <!-- /.info-box -->
-        
-            <ul class="timeline">
+        <ul class="timeline">
                 <!-- timeline time label -->
                 @forelse($content as $contents) 
-                @php 
+                  @php 
                   $get_read_status  = DB::table('employercontent as ec')
                   ->join('read_status as rs','ec.id','=','rs.employer_content_id')
                   ->where('ec.id','=',$contents->id)
                   ->where('rs.employee_id','=',auth()->user()->employee_id)
                   ->get();
-                 @endphp 
-                <li class="time-label" >
-                      <span class="bg-red">
-                          {{ \Carbon\Carbon::parse($contents->created_at)->isoFormat('LL')}}
-                      </span>
-                </li>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                <li>
+                  @endphp 
+                  <li class="time-label" >
+                        <span class="bg-red">
+                            {{ \Carbon\Carbon::parse($contents->created_at)->isoFormat('LL')}}
+                        </span>
+                  </li>
+                  <!-- /.timeline-label -->
+                  <!-- timeline item -->
+                  <li>
                   <i class="fa fa-envelope bg-blue" style="color:#0093F0;background-color:white;"></i>
-    
                   <div class="timeline-item">
                   <span class="time" id="{{$contents->id}}-action">
                     @if(count($get_read_status))
-                    <span class='badge badge-primary'>Read</span>
+                      <span class='badge badge-primary'>Read</span>
                     @else 
-                    <span class='badge badge-light'>Unread</span>
+                      <span class='badge badge-light'>Unread</span>
                     @endif 
                   </span>
-    
-                    <h3 class="timeline-header"><a href="#">Employer</a> sent you a message</h3>
+                    @php 
+                        $employer_name =  DB::table('users')
+                                          ->where('id','=',$contents->account_id)
+                                          ->pluck('name');
+                    @endphp
+                    <h3 class="timeline-header"><a href="#">{{$employer_name[0]}}</a> sent a content</h3>
     
                     <div class="timeline-body">
                         <div class="container-fluid">
-                         
-                      <h4> {{$contents->content_title}} </h4>
-                      <div class="box-body img-thumbnail" id="content-{{$contents->id}}-body" style="display:none;overflow-wrap: break-word;">
-                          {!! $contents->content_description !!}
-                      </div>
+                          <h4> {{$contents->content_title}} </h4>
+                          <div class="box-body img-thumbnail" id="content-{{$contents->id}}-body" style="display:none;overflow-wrap: break-word;">
+                              {!! $contents->content_description !!}
+                          </div>
                         </div>
                     </div>
+
                     <div class="timeline-footer">
                    {{-- <a class="btn btn-info btn-sm text-info showfulldescription btn-outline-info" data-toggle="modal" data-action="{{$contents->id}}" data-title="{{$contents->content_title}}" data-description="<div id='imageview'>{{$contents->content_description}} </div>"  id="{{$contents->id}}" class="showfulldescription" data-target="#modal-lg">Read Content</a>
                     --}}
@@ -185,62 +185,55 @@
                     </div>
                   </div>
                 </li> 
-
                 @endforeach
                 <div class="d-flex justify-content-center"> {{ $content->links() }} </div>  
        
-            </ul>
+          </ul>
                  @if(count($content)===0)
             
                 <div class="justify-content-center info-box text-center mx-auto"> No available contents </div>
-            
+
                  @endif
-       
       </div>
       <div class="col-sm-4"> 
-            <nav aria-label="breadcrumb" >
+              <nav aria-label="breadcrumb" >
                 <ol class="breadcrumb" style="background-color: white">
                   <li class="breadcrumb-item text-black" aria-current="page">Financial Tips</li>
                 </ol>
               </nav>
               <div style="overflow: auto;height:700px;">
-            <ul class="timeline">
-         
-            @foreach($financial as $financial_tips)
-            <li>
-                <i class="fa fa-comments bg-yellow" style="color:#F39C12;background-color:white;"></i>
-
-                <div class="timeline-item">
-                  <span class="time"><i class="fa fa-clock-o"></i>         {{ \Carbon\Carbon::parse($financial_tips->created_at)->isoFormat('LL')}}</span>
-
-                  <h3 class="timeline-header"><a href="#">Employer</a> has a financial tips for you!</h3>
-
-                  <div class="timeline-body">
-                    {{$financial_tips->financial_tips_title}}
-                  </div>
-                  <div class="timeline-footer">
-              {{--<a class="btn btn-warning btn-flat btn-outline-warning btn-sm financial-tips-btn"  data-title="{{$financial_tips->financial_tips_title}}" data-description="<div id='imageviewft'>{{$financial_tips->financial_tips_description}}</div>" data-toggle="modal" data-target="#modal-financial-tips">View Tips</a>    --}} 
-                  <a href="#" class="btn btn-warning btn-flat btn-outline-warning btn-sm view-financial-tips"  data-title="{{$financial_tips->financial_tips_title}}" data-description="<div id='imageviewft'>{{$financial_tips->financial_tips_description}}</div>"> view </a>
-                    
-                </div>
-                </div>
-              </li>
-            @endforeach
-             
-            </ul>
-            @if(count($financial)===0)
-            
-            <div class="justify-content-center text-center mx-auto"> No available financial tips </div>
-        
-             @endif
-          </div>
-
+                  <ul class="timeline">
+                  @foreach($financial as $financial_tips)
+                  @php 
+                  $employer_name_ft =  DB::table('users')
+                                    ->where('id','=',$financial_tips->account_id)
+                                    ->pluck('name');
+                  @endphp
+                    <li>
+                      <i class="fa fa-comments bg-yellow" style="color:#F39C12;background-color:white;"></i>
+                      <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i>{{ \Carbon\Carbon::parse($financial_tips->created_at)->isoFormat('LL')}}</span>
+                        <h3 class="timeline-header"><a href="#">{{$employer_name_ft[0]}}</a> sent a Financial Tips</h3>
+                        <div class="timeline-body">
+                          {{$financial_tips->financial_tips_title}}
+                        </div>
+                        <div class="timeline-footer">
+                    {{--<a class="btn btn-warning btn-flat btn-outline-warning btn-sm financial-tips-btn"  data-title="{{$financial_tips->financial_tips_title}}" data-description="<div id='imageviewft'>{{$financial_tips->financial_tips_description}}</div>" data-toggle="modal" data-target="#modal-financial-tips">View Tips</a>    --}} 
+                        <a href="#" class="btn btn-warning btn-flat btn-outline-warning btn-sm view-financial-tips"  data-title="{{$financial_tips->financial_tips_title}}" data-description="<div id='imageviewft'>{{$financial_tips->financial_tips_description}}</div>"> view </a> 
+                      </div>
+                      </div>
+                    </li>
+                  @endforeach  
+                  </ul>
+                  @if(count($financial)===0)
+                  <div class="justify-content-center text-center mx-auto"> No available financial tips </div>
+                  @endif
+              </div>
       </div>
     </div>
 
     @endif  
      
-      
   </div>  
 
   @if(auth()->user()->user_type_id === 4)
