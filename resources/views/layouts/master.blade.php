@@ -105,6 +105,7 @@
 	<!--IOnicons Script-->
 	{{-- <script src="{{ asset('Ionicons/ionicons.js') }}"></script> --}}
 	{{-- Pusher --}}
+	<input type="text" id="pusher_key" value="{{ env('PUSHER_APP_KEY') }}" hidden="true">
 	<script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     @include('inc/footer')
 	
