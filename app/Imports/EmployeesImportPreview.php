@@ -168,28 +168,28 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
                 'employee_no' => $emp_id,
                 'employee_id' => $emp_id
             ]);
-
+                    ////////////////////////////////
             /**
              * 
              * Create Account User
              */
             //insert into table user
-            $user = User::create([
-                'user_type_id' => 4,
-                'user_type_for' => 7,
-                'employer_id' => auth()->user()->employer_id,//Session::get("employer_id"),//$request->input('employer_id'),
-                'employee_id' => $emp_id,
-                'name' => $row['lastname'] . ", " . $row['firstname'] . ", " . $row['middlename'] . ", " . $row['suffix'],
-                'username' => $employee_ess_id,
-                'password' => Hash::make($password),
-                'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
-                'enrollment_date' => Carbon::now(),
-                'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,
-            ]);
+            // $user = User::create([
+            //     'user_type_id' => 4,
+            //     'user_type_for' => 7,
+            //     'employer_id' => auth()->user()->employer_id,//Session::get("employer_id"),//$request->input('employer_id'),
+            //     'employee_id' => $emp_id,
+            //     'name' => $row['lastname'] . ", " . $row['firstname'] . ", " . $row['middlename'] . ", " . $row['suffix'],
+            //     'username' => $employee_ess_id,
+            //     'password' => Hash::make($password),
+            //     'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
+            //     'enrollment_date' => Carbon::now(),
+            //     'created_by' => auth()->user()->id,
+            //     'updated_by' => auth()->user()->id,
+            // ]);
 
             $UserActivation = UserActivation::create([
-                'account_id' => $user->id,
+                'account_id' => $emp_id, // Temporary For Account ID
                 'activation_code' => $UserActivation,
                 'user_activation_id' => $useractivation_id,
                 'expiration_date' => Carbon::now()->addCentury(), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
@@ -214,7 +214,7 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
             $default_profile = Arr::random($arrayPicture);
     
                     DB::table('user_picture')->insert([
-                        'user_id' => $user->id,
+                        'user_id' => $emp_id, // Temporary For Account ID
                         'employer_id' => auth()->user()->employer_id,
                         'profile_picture' =>  $default_profile,
                         'created_at' => Carbon::now(),
