@@ -29,8 +29,9 @@
                                                     <label for="staticEmail" class="col-sm-4 col-form-label"><p class="float-right"> Month:</p></label>
                                                     <div class="col-sm-8">
                                                                     <select class="custom-select" name="months" id="Months">
-                                                              
-                                                                    </select>
+                                                            
+                                                                    </select> 
+                                                                    <p class="text-danger" id="error_month" hidden>Choose Month</p>
                                                     </div>
                                                 </div>
                                     </div>
@@ -40,14 +41,15 @@
                                                     <div class="col-sm-8">
                                                                     <select class="custom-select" name="years" id="Years">
                                                                    
-                                                                    </select>
+                                                                    </select> 
+                                                                    <p class="text-danger" id="error_year" hidden>Choose Year</p>
                                                     </div>
                                                 </div>
                                     </div> 
                                     <div class="col">   
                                             <div class="form-group row"> 
                                                     <div class="col-sm-12">
-                                            <button type="button" class="btn btn-outline-info btn-flat" id="generate">Generate</button>  
+                                            <button type="button" class="btn btn-outline-info" id="generate">Generate</button>  
                                                     </div>
                                             </div>
                                     </div>
@@ -114,7 +116,7 @@
                     for(i=0; i<data.length; i++){
                         html +='<tr>'+
                                     '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+
-                                     '<td><a class="btn btn-sm btn-outline-info btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                     '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
                                 '</tr>'; 
                     }   
                         if(i===0)
@@ -141,7 +143,7 @@
                     {
                         list+= '<option value="'+month[i]+'">'+month[i]+'</option>';
                     }
-                    $('#Months').html('<option selected disabled> Choose Month</option>'+list);
+                    $('#Months').html('<option selected value=""> Month</option>'+list);
         }
         listYears() 
         function listYears()
@@ -159,12 +161,35 @@
                 list+= '<option value="'+years[i]+'">'+years[i]+'</option>';
             }
             
-           $('#Years').html('<option selected disabled> Choose Year </option>'+list);
+           $('#Years').html('<option selected value=""> Year </option>'+list);
         }
   
     }); 
     $(document).ready(function(){
-        $( "#generate" ).on( "click", function(e){
+        $("#generate" ).on( "click", function(e){ 
+              var filterval = {
+                  month :$('#Months').val(),
+                  year : $('#Years').val()
+              } 
+             
+              if(filterval.month === "") {
+                  $('#error_month').removeAttr('hidden') 
+              }
+              if(filterval.year === ""){
+                  $('#error_year').removeAttr('hidden')
+              }
+              if(filterval.month != "") {
+                  $('#error_month').attr("hidden",true);
+              }
+              if(filterval.year != "") {
+                  $('#error_year').attr("hidden",true);
+              }  
+              
+              if( filterval.month ==="" || filterval.year === ""){ 
+                  $('#showpayslips').html(" <tr> <td colspan='2'>No Available Payslips </td> </tr>");
+                  return false;
+              }
+          
                $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -177,15 +202,19 @@
                      month: $('#Months').val(),
                      year: $('#Years').val()
                   },
+                  beforeSend:function(data){
+                    $('#showpayslips').html("<tr> <td colspan='2'>Loading... </td> </tr>"); 
+                    
+                  },
                   success: function(data){
-   
+                  
                            var html='';
                             var i;
                             for(i=0;i<data.length;i++)
                             {
                                 html +='<tr>'+
                                     '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+
-                                     '<td><a class="btn btn-sm btn-outline-info btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                     '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
                                 '</tr>'; 
                                      
 
@@ -198,6 +227,8 @@
                                 return false
                             }        
                             $('#showpayslips').html(html);
+                            $('#error_year').attr("hidden",true);
+                            $('#error_month').attr("hidden",true);
                  
                   },
               
