@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
  *  */
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Arr;
@@ -461,7 +462,7 @@ class EmployeesEnrollmentController extends Controller
                 'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
             ];
             $this->validate($request, [
-                'employee_no' => ['required','min:5','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                'employee_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
                     return $query
                             ->where('employee_no', '=', $request->employee_no)
                             ->where('employer_id', '=', auth()->user()->employer_id);
@@ -703,7 +704,7 @@ class EmployeesEnrollmentController extends Controller
                 'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
             ];
             $this->validate($request, [
-                'employee_no' => 'required|min:5|unique:employee',
+                'employee_no' => 'required|unique:employee',
                 //'employer_id' => 'required',
                 'position' => 'required|min:2',
                 'department' => 'required|min:2',              
@@ -790,7 +791,7 @@ class EmployeesEnrollmentController extends Controller
             'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
         ];
         $this->validate($request, [
-            'employee_no' => 'required|numeric|min:5|unique:employee,employee_no,'.$request->input('employee_id'),
+            'employee_no' => 'required|numeric|unique:employee,employee_no,'.$request->input('employee_id'),
             'position' => 'required|min:2',
             'department' => 'required|min:2',
             'lastname' => 'required|min:1',
@@ -1341,33 +1342,37 @@ class EmployeesEnrollmentController extends Controller
 
         // Get Preview Employees
         $get_employees_preview = DB::table('employee_personal_information_preview')
-                                    ->where('created_by', '=', auth()->user()->id)
+                                    ->join('employee', 'employee.employee_info', '=', 'employee_personal_information_preview.id')
+                                    ->join('employer_and_employee', 'employer_and_employee.employee_id', '=', 'employee.id')
+                                    ->where('employee_personal_information_preview.created_by', '=', auth()->user()->id)
                                     ->select(
-                                        'id',
-                                        'lastname',
-                                        'firstname',
-                                        'middlename',
-                                        'suffix',
-                                        'TIN',
-                                        'SSSGSIS',
-                                        'PHIC',
-                                        'HDMF',
-                                        'NID',
-                                        'mobile_no',
-                                        'email_add',
-                                        'birthdate',
-                                        'gender',
-                                        'civil_status',
-                                        'country',
-                                        'address_unit',
-                                        'citytown',
-                                        'barangay',
-                                        'province',
-                                        'zipcode',
-                                        'created_by',
-                                        'updated_by',
-                                        'created_at',
-                                        'updated_at'
+                                        'employee_personal_information_preview.id',
+                                        'employee_personal_information_preview.lastname',
+                                        'employee_personal_information_preview.firstname',
+                                        'employee_personal_information_preview.middlename',
+                                        'employee_personal_information_preview.suffix',
+                                        'employee_personal_information_preview.TIN',
+                                        'employee_personal_information_preview.SSSGSIS',
+                                        'employee_personal_information_preview.PHIC',
+                                        'employee_personal_information_preview.HDMF',
+                                        'employee_personal_information_preview.NID',
+                                        'employee_personal_information_preview.mobile_no',
+                                        'employee_personal_information_preview.email_add',
+                                        'employee_personal_information_preview.birthdate',
+                                        'employee_personal_information_preview.gender',
+                                        'employee_personal_information_preview.civil_status',
+                                        'employee_personal_information_preview.country',
+                                        'employee_personal_information_preview.address_unit',
+                                        'employee_personal_information_preview.citytown',
+                                        'employee_personal_information_preview.barangay',
+                                        'employee_personal_information_preview.province',
+                                        'employee_personal_information_preview.zipcode',
+                                        'employee_personal_information_preview.created_by',
+                                        'employee_personal_information_preview.updated_by',
+                                        'employee_personal_information_preview.created_at',
+                                        'employee_personal_information_preview.updated_at',
+                                        'employer_and_employee.ess_id',
+                                        'employee.id as emp_id'
                                     )
                                     ->get();
         /**
@@ -1406,6 +1411,28 @@ class EmployeesEnrollmentController extends Controller
                             'created_at' => $employees_preview->created_at,
                             'updated_at' => $employees_preview->updated_at
                 ]);
+                /**
+                 * 
+                 * Create Account User
+                 */
+                //insert into table user
+                $user = User::create([
+                    'user_type_id' => 4,
+                    'user_type_for' => 7,
+                    'employer_id' => auth()->user()->employer_id,//Session::get("employer_id"),//$request->input('employer_id'),
+                    'employee_id' => $employees_preview->emp_id,
+                    'name' => $employees_preview->lastname . ", " . $employees_preview->firstname . ", " . $employees_preview->middlename . ", " . $employees_preview->suffix,
+                    'username' => $employees_preview->ess_id,
+                    'password' => Hash::make($password),
+                    'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
+                    'enrollment_date' => Carbon::now(),
+                    'created_by' => auth()->user()->id,
+                    'updated_by' => auth()->user()->id,
+                ]);
+
+                
+                UserActivation::where('account_id', '=', $employees_preview->emp_id)->update(array('account_id' => $user->id));
+                DB::table('user_picture')->where('user_id', '=', $employees_preview->emp_id)->update(array('user_id' => $user->id));
 
 
             //Check
@@ -1431,13 +1458,21 @@ class EmployeesEnrollmentController extends Controller
             $employee_details = DB::table('employee')
                                 ->join('users', 'employee.id', '=', 'users.employee_id')
                                 ->join('user_activation', 'users.id', '=', 'user_activation.account_id')
+                                ->join('employee_personal_information_preview', 'employee_personal_information_preview.id', 'employee.employee_info')
+                                ->join('employer_and_employee', 'employer_and_employee.employee_id', '=', 'employee.id')
                                 ->where('employee_info', '=', $employees_preview->id)
                                 ->select('employee.id as emp_id',
                                         'users.id as users_id',
                                         'users.name',
                                         'users.username',
                                         'users.password',
-                                        'user_activation.user_activation_id'
+                                        'user_activation.user_activation_id',
+                                        'employee_personal_information_preview.lastname',
+                                        'employee_personal_information_preview.firstname',
+                                        'employee_personal_information_preview.middlename',
+                                        'employee_personal_information_preview.suffix',
+                                        'employer_and_employee.ess_id'
+                                        
                                 )
                                 ->get();
 
@@ -1494,11 +1529,10 @@ class EmployeesEnrollmentController extends Controller
                 employee_personal_information_preview::where('id', '=', $employees_preview->id)->where('created_by', '=', auth()->user()->id)->delete();
                 
             }
-            return json_encode([
-                'message' => 'OK',
-                'status' => 'true',
-                'rest' => $employee_personal_info
-            ]);
+            // return json_encode([
+            //     'message' => 'OK',
+            //     'status' => 'true'
+            // ]);
             // }
             // else {
             //     return json_encode([
@@ -1506,6 +1540,19 @@ class EmployeesEnrollmentController extends Controller
             //         'status' => 'false',
             //         // 'rest' => $employee_personal_info
             //     ]);
+        }
+
+        if($get_employees_preview->count() > 0){
+            return response()->json([
+                'message' => 'OK',
+                'status' => true
+            ]);
+        }
+        else {
+            return response()->json([
+                'message' => 'Upload Employee First',
+                'status' => false
+            ]);
         }
     }
 

@@ -313,7 +313,7 @@ $delete = 'disabled';
             "paging": true,
             "ordering": false,
             "pageLength": 10,
-            scrollY: 500,
+            scrollY: 600,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -401,7 +401,7 @@ $delete = 'disabled';
                         "paging": true,
                         "pageLength": 10,
                         "ordering": false,
-                        scrollY: 500,
+                        scrollY: 600,
                         //  scrollX: true,
                         "autoWidth": true,
                         lengthChange: false,
@@ -483,14 +483,18 @@ $delete = 'disabled';
             $("#name").val(info[1]);
             $("#txtusername").val(info[2]).attr('disabled', true);
             $("#cmbUser").val(info[3]);
-            $("#cmbEmployer").val(info[4]).attr('disabled', true);
+            $("#cmbEmployer").select2().val(info[4]).attr('disabled', true);
             console.log(info[4]);
             olduserName = $('#txtusername').val();
             //alert(info[0]);
             $("#password_field").attr("hidden", true);
             $("#new_or_exist_field").attr("hidden", true);
 
-            $("#btnRegister").removeAttr("disabled");
+            $("#btnRegister").removeAttr("disabled"); 
+
+            /*  $.get('/manageuser/show/'+info[4], function(response){
+                $('#cmbEmployer').val(`hi ${response[0]} `) 
+            }, 'json');*/
         });
 
         //REGISTER new user
@@ -787,6 +791,7 @@ $delete = 'disabled';
                         }, 550);
                     },
                     error: function (data, e){
+                      console.clear();
                       if(data.status == 500){
                         toastr.error('Error. Please Choose a Option', 'Error!')
                         setTimeout(function (){
