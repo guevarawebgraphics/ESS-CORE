@@ -205,7 +205,7 @@ $(document).ready(function (){
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10,
-            scrollY: 500,
+            scrollY: 600,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -340,7 +340,8 @@ $(document).ready(function (){
                     showAllNotification();
                     InitDatatable();
                 },
-                error: function (data, status){
+                error: function (data, status){ 
+                    console.clear();
                     toastr.error('Error. Please Choose a Option', 'Error!')
                     setTimeout(function (){
                         $("#spinner_add").removeClass('fa fa-refresh fa-spin');
@@ -421,6 +422,7 @@ $(document).ready(function (){
             },
             error: function(){
                 //console.log('Error');
+                console.clear();
             }
         });
     });
@@ -461,7 +463,8 @@ $(document).ready(function (){
                         showAllNotification();
                         InitDatatable();
                     },
-                    error: function(data){
+                    error: function(data){ 
+                        
                         toastr.error('Error Deleting Account')
                     }
                 });

@@ -53,7 +53,7 @@
             "paging": true,
             "pageLength": 22,
             "ordering": false,
-            scrollY: 500,
+            scrollY: 600,
             "autoWidth": true,
             lengthChange: false,
             responsive: true,
