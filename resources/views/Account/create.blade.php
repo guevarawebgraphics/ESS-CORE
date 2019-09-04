@@ -903,6 +903,7 @@ $(document).ready(function (){
                 $('#bir_filename').text('');
             },
             error: function(data, status){
+                console.clear();
                 //console.log("Error");
                 // Display an error toast, with a title
                 toastr.error('Error. Please Complete The Fields', 'Error!')
