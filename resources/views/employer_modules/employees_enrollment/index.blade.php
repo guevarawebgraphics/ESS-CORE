@@ -320,6 +320,7 @@
                         }, 300);
                 },
                 error: function(data, status){
+                    console.clear();
                     setTimeout(function (){
                             $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
                             $('#btn_upload').removeAttr('disabled');

@@ -202,7 +202,7 @@ $(document).ready(function (){
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10,
-            scrollY: 500,
+            scrollY: 600,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -305,6 +305,7 @@ $(document).ready(function (){
                         }, 1500);
                     },
                     error: function(data, status){
+                        console.clear();
                         $("#SaveAnnoucement").removeAttr('disabled');
                         $("#SaveAnnoucement").removeAttr('disabled');
                         toastr.error('Error. Please Complete the fields', 'Error!')
