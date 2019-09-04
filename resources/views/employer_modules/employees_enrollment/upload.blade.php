@@ -205,7 +205,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
             "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
             "paging": true,
             "pageLength": 10,
-            scrollY: 500,
+            scrollY: 600,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -263,6 +263,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     showAllEmployeesDetailsPreview();
                 },
                 error: function(data, status){
+                    console.clear();
                     setTimeout(function (){
                             $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
                             $('#btn_upload').removeAttr('disabled');
@@ -318,6 +319,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                 ////console.log(data);
             },
             error: function(data){
+                console.clear();
                 ////console.log('Could not get data from database');
             }
            });
@@ -351,6 +353,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                         }
                 },
                 error: function(data){
+                    console.clear();
                     ////console.log(data);
                     // Handle Errors
                     var errors = $.parseJSON(data.responseText);
@@ -460,6 +463,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     
                 },
                 error: function(data){
+                    console.clear();
                     ////console.log(data);
                     // Handle Errors
                     var errors = $.parseJSON(data.responseText);
@@ -591,6 +595,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                         },
                         error: function(data){
                             //console.log(data);
+                            console.clear();
                         }
                     });
                 }
