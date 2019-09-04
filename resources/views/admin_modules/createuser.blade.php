@@ -313,7 +313,7 @@ $delete = 'disabled';
             "paging": true,
             "ordering": false,
             "pageLength": 10,
-            scrollY: 500,
+            scrollY: 600,
             //  scrollX: true,
             "autoWidth": true,
             lengthChange: false,
@@ -401,7 +401,7 @@ $delete = 'disabled';
                         "paging": true,
                         "pageLength": 10,
                         "ordering": false,
-                        scrollY: 500,
+                        scrollY: 600,
                         //  scrollX: true,
                         "autoWidth": true,
                         lengthChange: false,
@@ -791,6 +791,7 @@ $delete = 'disabled';
                         }, 550);
                     },
                     error: function (data, e){
+                      console.clear();
                       if(data.status == 500){
                         toastr.error('Error. Please Choose a Option', 'Error!')
                         setTimeout(function (){
