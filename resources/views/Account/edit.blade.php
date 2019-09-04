@@ -657,6 +657,7 @@ $(document).ready(function (){
                     });
                 },
                 error: function(data){
+                    console.clear();
                     //console.log("Error");
                     setTimeout(function (){
                         $("#spinner").removeClass('fa fa-refresh fa-spin');
