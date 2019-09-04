@@ -105,7 +105,7 @@
                         "paging": true,
                         "pageLength": 10,
                         "ordering":false,
-                        scrollY: 500,
+                        scrollY: 600,
                         //  scrollX: true,
                         "autoWidth": true,
                         lengthChange: false,
@@ -208,11 +208,13 @@
 
                         },
                         error:function(data, status)
-                        {
+                        {   
+                            console.clear();
                             toastr.error('Error. Please Complete the fields', 'Error!')
                             /*Add Error Field*/
                             var errors = $.parseJSON(data.responseText);
                             $.each(errors, function(i, errors){
+                              
                                 if(errors.content_title){
                                     $('#content_title').addClass('is-invalid');
                                     $('#error_content_title').html('Content Title is Required');
@@ -251,7 +253,8 @@
                             refreshTable();                                                                  
                         },
                         error:function(data, status)
-                        {
+                        {   
+                            console.clear();
                             toastr.error('Error. Please Complete the fields', 'Error!')
                             /*Add Error Field*/
                             var errors = $.parseJSON(data.responseText);
