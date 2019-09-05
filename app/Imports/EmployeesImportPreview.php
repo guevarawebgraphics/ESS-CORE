@@ -73,6 +73,19 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
         //             'email_add' => 'unique:employee_personal_information_preview',
         //     ]
         // ])->validate();
+        /**
+         * @ Get Address
+         * */
+        $citytown_column = $row['citytown'];
+        $barangay_column = $row['barangay'];
+        $province_column = $row['province'];
+        
+        $cityTown = DB::table('refcitymun')->where('citymunDesc', 'like',  $citytown_column.'%')->first();
+        $barangay = DB::table('refbrgy')->where('brgyDesc', 'like',  $barangay_column.'%')->first();
+        $province = DB::table('refprovince')->where('provDesc', 'like', $province_column.'%')->first();
+
+                        
+                        
 
         /**
          * @
@@ -107,15 +120,15 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
                         'NID' => $row['nid'],
                         'mobile_no' => $row['mobile_no'],
                         'email_add' => $row['email_add'],
-                        'birthdate' => Carbon::now(),
-                        'gender' => 'Male',
-                        'civil_status' => 'Single',
+                        'birthdate' => Carbon::parse($row['birthdate'])->format('Y-m-d'),
+                        'gender' => $row['gender'],
+                        'civil_status' => $row['civil_status'],
                         'country' => 'Philiippines',
-                        'address_unit' => '1',
-                        'citytown' => '031419',
-                        'barangay' => '6191',
-                        'province' => '0314',
-                        'zipcode' => '2245',
+                        'address_unit' => $row['address_unit'],
+                        'citytown' => $cityTown->citymunCode,
+                        'barangay' => $barangay->id,
+                        'province' => $province->provCode,
+                        'zipcode' => $row['zipcode'],
                         'created_by' => auth()->user()->id,
                         'updated_by' => auth()->user()->id,
             ]);
