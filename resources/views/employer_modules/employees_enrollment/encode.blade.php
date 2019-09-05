@@ -1245,6 +1245,7 @@ $(document).ready(function(){
                 $('#employee_position').html(data.position);
                 $('#employee_address').html(data.address_unit + ' ' + data.provDesc + ' ' + data.citymunDesc + ' ' + data.brgyDesc);
                 //$('#employee_employeeno').html(data.employee_no);
+                //console.log
                 $('#employee_department').html(data.department);
                 $('#employee_email').html(data.email_add);
                 $('#employee_mobileno').html(data.mobile_no);
