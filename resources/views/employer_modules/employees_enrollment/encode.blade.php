@@ -157,7 +157,7 @@
                             <p class="text-danger text-md-center mb-6" id="error_employee_no"></p>
                         </div>
                 </div>
-                <div class="form-group row iform"> 
+                <div class="form-group row iform_editablefield"> 
                         <label for="position" class="col-md-2 text-md-center">Position :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -231,6 +231,16 @@
                                 <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_enrollment_date"></p>
+                        </div> 
+                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>  
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_account_no"></p>
                         </div>
                 </div>   
                 <hr class="iform-label">
@@ -310,16 +320,7 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_nid"></p>
                         </div>
-                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>  
-                        <div class="col-md-4">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" autofocus>
-                            </div>
-                            <p class="text-danger text-md-center" id="error_account_no"></p>
-                        </div>
+                     
                 </div>
                 <hr class="iform-label">
                 <label class="iform-label">Present Address</label>
@@ -600,7 +601,8 @@ $(document).ready(function(){
         {
             $(".essid_field").removeAttr("hidden");
             $('.iform').attr('hidden', true);
-            $('.iform-label').attr('hidden', true);
+            $('.iform-label').attr('hidden', true); 
+            $('.iform_editablefield').attr('hidden',true);
         }
         else if(shift == "new_employee")
         {
@@ -1240,6 +1242,7 @@ $(document).ready(function(){
             success: function (data) {
                 $('#employee_profile').removeAttr('hidden');
                 $('#iform_employee_no').removeAttr('hidden');
+                $('.iform_editablefield').attr('hidden',false);
                 console.log(data.provDesc + ' '+  data.brgyDesc + ' ' + data.citymunDesc);
                 $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname + ' ' + data.suffix);
                 $('#employee_position').html(data.position);
@@ -1258,7 +1261,6 @@ $(document).ready(function(){
                 $('#employee_phic').html(data.PHIC);
                 $('#employee_hdmf').html(data.HDMF);
                 $('#employee_nid').html(data.NID);
-
                 $("#suffix").val(data.suffix);
                 $("#lastname").val(data.lastname);
                 $("#firstname").val(data.firstname);

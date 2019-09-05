@@ -52,7 +52,11 @@ elseif(Session::get('employee_enrollment') == 'delete'){
         <div class="card-header">
             <h3 class="card-title"><i class="fa fa-edit"></i> Upload Employees Preview</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body"> 
+                <div class="alert alert-danger alert-dismissible-custom col-md-6" hidden>
+                        <h4><i class="icon fa fa-ban"></i> Important! </h4>
+                        <div class="error-text"> </div>
+                </div>
             <div class="form-group row">
                 <div class="col-md-6">
                     <div class="input-group">
@@ -606,21 +610,37 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                                 //window.location.replace('{{ config('app.url') }}/enrollemployee/upload');
                                }
                                if(data.status == false){
-                                   toastr.info(data.message, 'info')
+                                  // toastr.info(data.message, 'info')
+                                  console.log(data.message);
                                }
+                               
                          
                             //console.log(data);
                         },
                         error: function(data){
+                            if(data.status ===422){
+                                $('.alert-dismissible-custom').attr('hidden',false);
+                                $('.error-text').html("");
+                                var errors = $.parseJSON(data.responseText);
+                                $.each(errors, function (key, value) {
+                                    if($.isPlainObject(value)) {
+                                            $.each(value, function (key, value) {                       
+                                                console.log( " " +value);
+                                                $('.error-text').append(" "+value +"<br>");
+                                            });
+                                        }
+                                    });
+                            }
                             //console.log(data);
                             //console.clear();
-                            var errors = $.parseJSON(data.responseText);
+                           /* var errors = $.parseJSON(data.responseText);
                             $.each(errors, function(i, errors) {
                                 if(errors.employee_no){
                                 $('#error_alert_save_to_main').removeAttr('hidden');
                                 $('#upload_validation_error_message_main').html('<hr><label>' + errors.employee_no +'</label><br>');
                             }
                             });
+                            */
                         }
                     });
                 }
