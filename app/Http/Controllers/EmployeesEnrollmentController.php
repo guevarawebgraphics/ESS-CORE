@@ -1102,6 +1102,7 @@ class EmployeesEnrollmentController extends Controller
         $check_employee_exists_in_excel = DB::table('employee_personal_information_preview')
                                             ->join('employee', 'employee_personal_information_preview.id', '=', 'employee.employee_info')
                                             ->where('employee.employee_no', '=', $request->employee_no)
+                                            ->where('employee.account_no', '=', $request->account_no)
                                             ->orWhere('employee_personal_information_preview.TIN', '=', $request->TIN)
                                             ->orWhere('employee_personal_information_preview.SSSGSIS', '=', $request->SSSGSIS)
                                             ->orWhere('employee_personal_information_preview.PHIC', '=', $request->PHIC)
@@ -1146,6 +1147,12 @@ class EmployeesEnrollmentController extends Controller
                                 ->where('employee_no', '=', $request->employee_no)
                                 ->where('employer_id', '=', auth()->user()->employer_id);
                     }))],
+                    'account_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                        return $query
+                                ->where('account_no', '=', $request->account_no)
+                                ->where('employer_id', '=', auth()->user()->employer_id);
+                    }))],
+                    'account_no' => 'unique:employee,account_no,'.$request->account_no,
                     'TIN' => 'unique:employee_personal_information_preview,TIN,'.$request->id,
                     'SSSGSIS' => 'unique:employee_personal_information_preview,SSSGSIS,'.$request->id,
                     'PHIC' => 'unique:employee_personal_information_preview,PHIC,'.$request->id,
@@ -1213,6 +1220,11 @@ class EmployeesEnrollmentController extends Controller
                         ->where('employee_no', '=', $request->employee_no)
                         ->where('employer_id', '=', auth()->user()->employer_id);
             }))],
+            'account_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                return $query
+                        ->where('account_no', '=', $request->account_no)
+                        ->where('employer_id', '=', auth()->user()->employer_id);
+            }))],
             'TIN' => 'required|unique:employee_personal_information,TIN,'.$request->employee_preview_id,
             'SSSGSIS' => 'required|unique:employee_personal_information,SSSGSIS,'.$request->employee_preview_id,
             'PHIC' => 'required|unique:employee_personal_information,PHIC,'.$request->employee_preview_id,
@@ -1225,7 +1237,8 @@ class EmployeesEnrollmentController extends Controller
         $update_employee = DB::table('employee')
                             ->where('employee_info', '=', $request->employee_preview_id)
                             ->update(array(
-                                'employee_no' => $request->employee_no
+                                'employee_no' => $request->employee_no,
+                                'account_no' => $request->account_no
                             ));
 
         $update_details = DB::table('employee_personal_information_preview')
@@ -1372,7 +1385,9 @@ class EmployeesEnrollmentController extends Controller
                                         'employee_personal_information_preview.created_at',
                                         'employee_personal_information_preview.updated_at',
                                         'employer_and_employee.ess_id',
-                                        'employee.id as emp_id'
+                                        'employee.id as emp_id',
+                                        'employee.account_no',
+                                        'employee.employee_no'
                                     )
                                     ->get();
         /**

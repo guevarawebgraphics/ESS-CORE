@@ -68,6 +68,12 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                             <div id="upload_validation_error_message"></div>
                         </ul>
                     </div>
+                    <div class="alert alert-danger" id="error_alert_save_to_main" hidden="true">
+                        <span><i class="fa fa-exclamation-circle"></i> <b>Errors</b></span>
+                    <ul>
+                        <div id="upload_validation_error_message_main"></div>
+                    </ul>
+                </div>
                 </div>
                 
                 <div class="col-md-6">
@@ -82,6 +88,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     <thead>
                         <tr>
                             <th>Employee No</th>
+                            <th>Account No</th>
                             <th>TIN</th>
                             <th>SSSGSIS</th>
                             <th>PHIC</th>
@@ -263,7 +270,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     showAllEmployeesDetailsPreview();
                 },
                 error: function(data, status){
-                    console.clear();
+                    //console.clear();
                     setTimeout(function (){
                             $("#spinner_upload").removeClass('fa fa-refresh fa-spin');
                             $('#btn_upload').removeAttr('disabled');
@@ -298,9 +305,10 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                 var html = '';
                 var i;
                 for(i=0; i<data.length; i++){
-                    check_employee_exists_in_excel(data[i].id, data[i].employee_no, data[i].TIN, data[i].SSSGSIS, data[i].PHIC, data[i].HDMF, data[i].NID, data[i].mobile_no, data[i].email_add);
+                    check_employee_exists_in_excel(data[i].id, data[i].employee_no, data[i].account_no, data[i].TIN, data[i].SSSGSIS, data[i].PHIC, data[i].HDMF, data[i].NID, data[i].mobile_no, data[i].email_add);
                     html += '<tr>'+
                                 '<td>'+data[i].employee_no+'</td>'+
+                                '<td>'+data[i].account_no+'</td>'+
                                 '<td>'+data[i].TIN+'</td>'+
                                 '<td>'+data[i].SSSGSIS+'</td>'+
                                 '<td>'+data[i].PHIC+'</td>'+
@@ -309,7 +317,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                                 '<td>'+data[i].mobile_no+'</td>'+
                                 '<td>'+data[i].email_add+'</td>'+
                                 '<td>' +
-                                    '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat btn_Edit_Employees_Preview" data-id="'+data[i].id+'" data-employee_no="'+data[i].employee_no+'" data-tin="'+data[i].TIN+'" data-sssgsis="'+data[i].SSSGSIS+'" '+
+                                    '<a href="javascript:;" class="btn btn-sm btn-outline-info btn-flat btn_Edit_Employees_Preview" data-id="'+data[i].id+'" data-employee_no="'+data[i].employee_no+'" data-account_no="'+data[i].account_no+'" data-tin="'+data[i].TIN+'" data-sssgsis="'+data[i].SSSGSIS+'" '+
                                     ' data-phic="'+data[i].PHIC+'" data-hdmf="'+data[i].HDMF+'" data-nid="'+data[i].NID+'" data-mobile_no="'+data[i].mobile_no+'" data-email_add="'+data[i].email_add+'" data-toggle="modal" data-target="#edit_employees_details"><i class="fa fa-edit"></i> Edit</a> ' +
                                     '<a href="javascript:;" class="Delete btn-sm btn btn-outline-danger btn-flat btn_delete_employee_preview" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].id+'" {{$delete}}><i class="fa fa-trash"></i> Delete</a>' +
                                 '</td>'+
@@ -327,7 +335,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
 
 
         /*Check for Duplicate Entry*/
-        function check_employee_exists_in_excel(id, employee_no, TIN, SSSGSIS, PHIC, HDMF, NID, mobile_no, email_add)
+        function check_employee_exists_in_excel(id, employee_no, account_no, TIN, SSSGSIS, PHIC, HDMF, NID, mobile_no, email_add)
         {
             $.ajax({
                 type: 'POST',
@@ -336,6 +344,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     '_token': $('input[name=_token]').val(),
                     id: id,
                     employee_no: employee_no,
+                    account_no: account_no,
                     TIN: TIN,
                     SSSGSIS: SSSGSIS,
                     PHIC: PHIC,
@@ -362,6 +371,10 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                         if(errors.employee_no){
                             $('#error_alert').removeAttr('hidden');
                             $('#upload_validation_error_message').append('<hr><label>Employee No Duplicate Entry: ' + employee_no +'</label><br>');
+                        }
+                        if(errors.account_no){
+                            $('#error_alert').removeAttr('hidden');
+                            $('#upload_validation_error_message').append('<hr><label>Account No Duplicate Entry: ' + account_no +'</label><br>');
                         }
                         if(errors.TIN){
                             $('#error_alert').removeAttr('hidden');
@@ -400,6 +413,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
             /*Get All Employee Details*/
             let employee_details = {
                 employee_no: $(this).attr('data-employee_no'),
+                account_no: $(this).attr('data-account_no'),
                 TIN: $(this).attr('data-tin'),
                 SSSGSIS: $(this).attr('data-sssgsis'),
                 PHIC: $(this).attr('data-phic'),
@@ -480,6 +494,10 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                             if(errors.employee_no){
                                 $('#error_alert_upodate').removeAttr('hidden');
                                 $('#update_validation_error_message').html('<hr><label>' + errors.employee_no +'</label><br>');
+                            }
+                            if(errors.account_no){
+                                $('#error_alert_upodate').removeAttr('hidden');
+                                $('#update_validation_error_message').html('<hr><label>' + errors.account_no +'</label><br>');
                             }
                             if(errors.TIN){
                                 $('#error_alert_upodate').removeAttr('hidden');
@@ -595,7 +613,14 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                         },
                         error: function(data){
                             //console.log(data);
-                            console.clear();
+                            //console.clear();
+                            var errors = $.parseJSON(data.responseText);
+                            $.each(errors, function(i, errors) {
+                                if(errors.employee_no){
+                                $('#error_alert_save_to_main').removeAttr('hidden');
+                                $('#upload_validation_error_message_main').html('<hr><label>' + errors.employee_no +'</label><br>');
+                            }
+                            });
                         }
                     });
                 }
