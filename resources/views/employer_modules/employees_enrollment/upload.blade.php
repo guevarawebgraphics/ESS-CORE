@@ -626,7 +626,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                                     if($.isPlainObject(value)) {
                                             $.each(value, function (key, value) {                       
                                                 console.log( " " +value);
-                                                $('.error-text').append(" "+value +"<br>");
+                                                $('.error-text').append(" "+value +" <br>");
                                             });
                                         }
                                     });
