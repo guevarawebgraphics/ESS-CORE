@@ -54,8 +54,8 @@ elseif(Session::get('employee_enrollment') == 'delete'){
         </div>
         <div class="card-body"> 
                 <div class="alert alert-danger alert-dismissible-custom col-md-6" hidden>
-                        <h4><i class="icon fa fa-ban"></i> Important! </h4>
-                        <div class="error-text"> </div>
+                        <h4><i class="icon fa fa-ban"></i> Cannot Save Employee Details </h4>
+                        <div > <ul class="error-text" style="list-style: none;"> </ul></div>
                 </div>
             <div class="form-group row">
                 <div class="col-md-6">
@@ -623,12 +623,13 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                                 $('.error-text').html("");
                                 var errors = $.parseJSON(data.responseText);
                                 $.each(errors, function (key, value) {
-                                    if($.isPlainObject(value)) {
+                                   if($.isPlainObject(value)) {
                                             $.each(value, function (key, value) {                       
-                                                console.log( " " +value);
-                                                $('.error-text').append(" "+value +" <br>");
+                                                console.log( " " +value[0]);
+                                                $('.error-text').append(" "+ "<li>"+value[0] +"</li>");
                                             });
-                                        }
+                                        } 
+                                      
                                     });
                             }
                             //console.log(data);
