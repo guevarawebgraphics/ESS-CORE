@@ -297,3 +297,47 @@ Route::get('/Testsocket', function() {
 Route::get('/ckeditor/ckfinder/ckfinder.html', function() {
  
 });
+
+/**
+ * Error Pages
+ * */
+Route::middleware('auth')->group(function (){
+    /**
+     * 403 Error 
+     **/
+    Route::get('/403', function(Request $request){
+    
+        $http_response = $request->session()->pull('code');
+        if ($http_response == '403') {
+            return view('errors.403');
+        }
+        else {
+            return redirect('404');
+        }
+       
+    });
+
+    /**
+     * 404 Error 
+     **/
+    Route::get('/404', function(){
+        return view('errors.404');
+    });
+    
+    /**
+     * 500 Error 
+     **/
+    Route::get('/500', function(Request $request){
+
+        $http_response = $request->session()->pull('code'); 
+        if($http_response == '500'){
+            return view('errors.500');
+        }
+        else {
+            return redirect('404');
+        }
+        
+    });
+    
+    
+});

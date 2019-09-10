@@ -62,7 +62,13 @@ class FinancialCalendarController extends Controller
         $this->middleware(function($request, $next){
             if(Session::get("financial_calendar") == "none")
             {
-                return redirect('error')->send();
+                /**
+                 * UnAuthorized Access 
+                 * With Temporary Session Flash
+                 **/
+                // Via a request instance...
+                $request->session()->flash('code', '403');
+                return redirect('403')->send();
             }
             else
             {
