@@ -67,6 +67,41 @@ li a p {
   width: 75%;
 }
 
+/*
+.input-group-prepend {
+    display:none !important;
+}
+.form-control  {
+  border: 0.5px solid rgb(98, 97, 97) !important;
+  border-radius: 0 !important;
+
+}
+.form-control::placeholder{
+    font-size: 15px;
+    color:black;
+}
+label {
+    text-decoration: none !important;
+}
+*/
+
+/**
+* Error Pages
+**/
+
+.error-page-message {
+  margin-right: 25px;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  color: #129D9E;
+}
+
+.error-page-status {
+  margin-right: 25px;
+  font-family: "Nunito", sans-serif;
+  font-size: 60px;
+}
+
 /*Custom input for table in Payroll Management*/
 
 .custom-table-input {
