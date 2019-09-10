@@ -12,5 +12,6 @@ class EmployeePersonalInfo extends Model
     // Primary Key
     public $primaryKey = 'id';
     // Timestamps
-    public $timestamps = true;
+    public $timestamps = true; 
+  
 }
