@@ -566,7 +566,7 @@ class EmployeesEnrollmentController extends Controller
                     'name' => $request->input('lastname') . ", " . $request->input('firstname') . ", " . $request->input('middlename') . ", " . $request->input('suffix'),
                     'username' => $employee_ess_id,
                     'password' => Hash::make($password),
-                    'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
+                    'expiry_date' => Carbon::now()->addDays(14), // Default for 1 Century
                     'enrollment_date' => $enrollment_date,
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,
@@ -1394,8 +1394,46 @@ class EmployeesEnrollmentController extends Controller
          * @ Check if there is a pending Employee in Preview Table
          * */
        if($get_employees_preview->count() > 0){
-            foreach($get_employees_preview as $employees_preview){
+            foreach($get_employees_preview as $employees_preview){ 
+                $employee_no = $employees_preview->employee_no;
+                $array = [
+                    'TIN' => $employees_preview->TIN,
+                    'SSSGSIS' => $employees_preview->SSSGSIS,
+                    'HDMF' => $employees_preview->HDMF,
+                    'PHIC' => $employees_preview->HDMF,
+                    'NID' => $employees_preview->NID,
+                    'mobile_no' =>$employees_preview->mobile_no,
+                    'email_add' =>$employees_preview->email_add,
+                    'employee_no' =>$employees_preview->employee_no,
+                    ];
+                
+                    validator::make($array, [
+                    'TIN' => 'required|unique:employee_personal_information',
+                    'HDMF' => 'required|unique:employee_personal_information',
+                    'SSSGSIS' => 'required|unique:employee_personal_information',
+                    'PHIC' => 'required|unique:employee_personal_information',
+                    'NID' => 'required|unique:employee_personal_information',
+                    'mobile_no' => 'required|unique:employee_personal_information',
+                    'email_add' => 'required|unique:employee_personal_information',
+                    'employee_no' => ['required', Rule::unique('employee')->where((function ($query) use ($employee_no){
+                        return $query
+                                ->where('employee_no', '=',$employee_no)
+                                ->where('employer_id', '=', auth()->user()->employer_id);
+                    }))]
+                    
+                    ],
+                    //hii
+                    [
+                     'TIN.unique' => 'The TIN of Employee No: '.$employees_preview->employee_no.' has already been taken.',
+                     'HDMF.unique' => 'The HDMF of Employee No: '.$employees_preview->employee_no.' has already been taken.',
+                     'SSSGSIS.unique' => 'The SSSGSIS of Employee No: '.$employees_preview->employee_no.' has already been taken.',
+                     'PHIC.unique' => 'The PHIC of Employee No: '.$employees_preview->employee_no.' has already been taken.',
+                     'NID.unique' => 'The NID of Employee No: '.$employees_preview->employee_no.' has already been taken.',
+                     'mobile_no.unique' => 'The mobile_no of Employee No: '.$employees_preview->employee_no.' has already been taken.',
+                     'email_add.unique' => 'The email_add of Employee No: '.$employees_preview->employee_no.' has already been taken.'
+                    ])->validate(); 
 
+                  
                 /**
                  * @ Insert to the Main Table
                  * */
@@ -1439,7 +1477,7 @@ class EmployeesEnrollmentController extends Controller
                     'name' => $employees_preview->lastname . ", " . $employees_preview->firstname . ", " . $employees_preview->middlename . ", " . $employees_preview->suffix,
                     'username' => $employees_preview->ess_id,
                     'password' => Hash::make($password),
-                    'expiry_date' => Carbon::now()->addCentury(), // Default for 1 Century
+                    'expiry_date' => Carbon::now()->addDays(14), // Default for 1 Century
                     'enrollment_date' => Carbon::now(),
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id,

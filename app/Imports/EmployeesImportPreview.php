@@ -205,7 +205,7 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
                 'account_id' => $emp_id, // Temporary For Account ID
                 'activation_code' => $UserActivation,
                 'user_activation_id' => $useractivation_id,
-                'expiration_date' => Carbon::now()->addCentury(), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
+                'expiration_date' => Carbon::now()->addDays(14), // Default for 1 Century 5,//this means 5 minutes or according to sir meo
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id
             ]);

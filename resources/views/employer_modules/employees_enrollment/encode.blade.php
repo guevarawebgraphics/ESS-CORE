@@ -157,7 +157,7 @@
                             <p class="text-danger text-md-center mb-6" id="error_employee_no"></p>
                         </div>
                 </div>
-                <div class="form-group row iform"> 
+                <div class="form-group row iform_editablefield"> 
                         <label for="position" class="col-md-2 text-md-center">Position :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -231,6 +231,16 @@
                                 <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_enrollment_date"></p>
+                        </div> 
+                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>  
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="fa fa-user input-group-text"></span>
+                                </div>
+                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" autofocus>
+                            </div>
+                            <p class="text-danger text-md-center" id="error_account_no"></p>
                         </div>
                 </div>   
                 <hr class="iform-label">
@@ -310,16 +320,7 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_nid"></p>
                         </div>
-                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>  
-                        <div class="col-md-4">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" autofocus>
-                            </div>
-                            <p class="text-danger text-md-center" id="error_account_no"></p>
-                        </div>
+                     
                 </div>
                 <hr class="iform-label">
                 <label class="iform-label">Present Address</label>
@@ -331,8 +332,8 @@
                                         <span class="fa fa-address-card input-group-text"></span>
                                     </div>
                                     <select id="country" name="country" class="form-control">
-                                            <option value="">Choose Country</option>
-                                            <option value="Phillipines">Philippines</option>
+                                            {{--<option value="">Choose Country</option> --}}
+                                            <option value="Phillipines" selected>Philippines</option>
                                     </select>
                                 </div>
                                 <p class="text-danger text-md-center" id="error_country"></p>
@@ -600,7 +601,8 @@ $(document).ready(function(){
         {
             $(".essid_field").removeAttr("hidden");
             $('.iform').attr('hidden', true);
-            $('.iform-label').attr('hidden', true);
+            $('.iform-label').attr('hidden', true); 
+            $('.iform_editablefield').attr('hidden',true);
         }
         else if(shift == "new_employee")
         {
@@ -1064,6 +1066,10 @@ $(document).ready(function(){
                     else {
                         spinnerTimout(3000);
                         toastr.success('Employee Enrolled Successfully', 'Success')
+                        setTimeout(() => {
+                            window.location.href = "{{URL::to('/enrollemployee')}}"
+                        }, 1000);
+                      
                         $('#EmployeeForm')[0].reset();
                     }
                 },
@@ -1240,16 +1246,14 @@ $(document).ready(function(){
             success: function (data) {
                 $('#employee_profile').removeAttr('hidden');
                 $('#iform_employee_no').removeAttr('hidden');
+                $('.iform_editablefield').attr('hidden',false);
                 console.log(data.provDesc + ' '+  data.brgyDesc + ' ' + data.citymunDesc);
                 $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname + ' ' + data.suffix);
-                $('#employee_position').html(data.position);
                 $('#employee_address').html(data.address_unit + ' ' + data.provDesc + ' ' + data.citymunDesc + ' ' + data.brgyDesc);
-                //$('#employee_employeeno').html(data.employee_no);
+                //
                 //console.log
-                $('#employee_department').html(data.department);
                 $('#employee_email').html(data.email_add);
                 $('#employee_mobileno').html(data.mobile_no);
-                $('#employee_accountno').html(data.account_no);
                 $('#employee_birthdate').html(data.birthdate);
                 $('#employee_gender').html(data.gender);
                 $('#employee_civilstatus').html(data.civil_status);
@@ -1258,7 +1262,6 @@ $(document).ready(function(){
                 $('#employee_phic').html(data.PHIC);
                 $('#employee_hdmf').html(data.HDMF);
                 $('#employee_nid').html(data.NID);
-
                 $("#suffix").val(data.suffix);
                 $("#lastname").val(data.lastname);
                 $("#firstname").val(data.firstname);
@@ -1288,7 +1291,83 @@ $(document).ready(function(){
                 $('#payroll_schedule').val(data.payroll_schedule);
                 $('#payroll_bank').val(data.payroll_bank);
                 $('#account_no').val(data.account_no);
-                $('#position').val(data.position);
+                $('#position').val(data.position); 
+
+                // Displays on the panel 
+                $('#employee_position').html(data.position);
+                $('#employee_enrollmentdate').html(data.enrollment_date); 
+                $('#employee_employeeno').html(""); 
+                $('#employee_accountno').html(data.account_no);
+                $('#employee_department').html(data.department);
+
+                /******** Copies the actual value for displaying */
+                $('#enrollment_date').on("change",function(){
+                setTimeout(changevalue_enrollmentdate,0); 
+                });
+
+                var display_enrollment_date = $('#employee_enrollmentdate').text();
+                var changevalue_enrollmentdate = () => {
+                    var enrollment_date = $('#enrollment_date').val();
+                    if (enrollment_date != display_enrollment_date){
+                        $('#employee_enrollmentdate').html(enrollment_date);
+                        enrollment_date = display_enrollment_date;
+                    }
+                }; 
+                /// 
+
+                $('#employee_no').on('keydown',function(){
+                    setTimeout(changevalue_employeeno,0); 
+                });  
+
+                var display_employee_no = $('#employee_employeeno').text();
+                var changevalue_employeeno = () => {
+                    var employee_no = $('#employee_no').val();
+                    if(employee_no != display_employee_no){
+                        $('#employee_employeeno').html(employee_no); 
+                        employee_no =  display_employee_no;
+                    }
+                }
+                //  
+              
+                $('#account_no').on('keydown', function(){
+                    setTimeout(changevalue_accountno,0); 
+                });
+                var display_accountno = $('#employee_accountno').text();
+                var changevalue_accountno = () => {
+                    var account_no = $('#account_no').val();
+                    if(account_no !=  display_accountno ){
+                        $('#employee_accountno').html(account_no); 
+                        account_no =  display_accountno;
+                    }
+                } 
+                //
+                $('#department').on('keydown',function(){
+                    setTimeout(changevalue_department,0);
+                });
+                var display_department = $('#employee_department');
+                var changevalue_department = () => {
+                    var department = $('#department').val();
+                    if(display_department !=  department){
+                        $('#employee_department').html(department);
+                         department = display_department; 
+                    }
+                }
+
+                $('#position').on('keydown', function(){
+                    setTimeout(changevalue_position,0);
+                });
+
+                var display_position = $('#position');
+                var changevalue_position = () => {
+                    var position = $('#position').val();
+                    if(display_position != position){
+                        $('#employee_position').html(position);
+                            department = display_position;
+                    }
+                }
+
+
+                
                 /*
                  * @ Check if the User has a Profile Picture or Null
                  */
