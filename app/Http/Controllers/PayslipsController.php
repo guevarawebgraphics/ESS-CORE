@@ -61,6 +61,7 @@ class PayslipsController extends Controller
                             ->Join('payroll_register_details as prd','prd.employee_no','=','e.employee_no')
                             ->join('payrollregister as pr','pr.id','=','prd.PayRegisterId')
                             ->where('u.employee_id','=',auth()->user()->employee_id)
+                            ->where('pr.employer_id','=',auth()->user()->employer_id)
                             ->where('pr.account_status','=',1)
                             ->latest('prd.created_at')
                             ->select('prd.employee_no','prd.id','prd.payroll_release_date')
