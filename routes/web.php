@@ -225,6 +225,9 @@ Route::get('/payrollmanagement/PayrollExport/{payregister_id}', function(Request
     $filename = DB::table('payrollregister')->where('id', '=', $request->payregister_id)->select('payroll_file')->get();
     return Excel::download(new PayrollExport($request->payregister_id), $filename[0]->payroll_file .'.csv');
 });
+// Check for Payroll Schedule
+Route::post('/payrollmanagement/check_payroll_schedule', 'PayrollManagementController@check_payroll_schedule');
+Route::post('/payrollmanagement/save_preview', 'PayrollManagementController@save_preview');
 
 
 /**Upload Profile Picture */
@@ -339,5 +342,18 @@ Route::middleware('auth')->group(function (){
         
     });
     
+
+    /**
+     *@ 503 Error Maintenance 
+     **/
+    Route::get('/503', function(Request $request) {
+        $http_response = $request->session()->pull('code'); 
+        if($http_response == '503'){
+            return view('errors.503');
+        }
+        else {
+            return redirect('404');
+        }
+    });
     
 });
