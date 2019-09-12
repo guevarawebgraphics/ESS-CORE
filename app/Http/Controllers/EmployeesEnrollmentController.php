@@ -1343,7 +1343,181 @@ class EmployeesEnrollmentController extends Controller
             ]);
         }
     }
-
+    public function validate_all_fields(){ 
+        $employee_no = DB::table('employee_details_preview')->pluck('employee_no');  
+    
+        $count_employee_no = count($employee_no); 
+        $data_employee_no=array();
+        $validations_employee_no = array();
+        for($i = 0 ; $i < $count_employee_no; $i++){
+            array_push($data_employee_no,"".$employee_no[$i]."");
+            $employee_no_table = DB::table("employee")
+                            ->where('employee_no','=',$data_employee_no[$i])
+                            ->where('employer_id','=',auth()->user()->employer_id)
+                            ->first();
+                         
+            if($employee_no_table) {
+                array_push($validations_employee_no,"The Employee Number : ".$employee_no[$i]."  has been taken");
+            }            
+            
+        }
+        //TIN Validation
+        $TINS = DB::table('employee_personal_information_preview')->pluck('TIN');  
+    
+        $count_tin = count($TINS); 
+        $data_tin=array();
+        $validations_tin = array();
+        for($i = 0 ; $i < $count_tin; $i++){
+            array_push($data_tin,"".$TINS[$i]."");
+            $TIN_table = DB::table("employee_personal_information")
+                            ->where('TIN','=',$data_tin[$i])
+                            ->first();
+                            $employe_identify = DB::table('employee_personal_information_preview')
+                                            ->join('employee_details_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                            ->where('employee_personal_information_preview.TIN','=',$data_tin[$i])
+                                            ->first();
+            if($TIN_table) {
+                array_push($validations_tin,"The TIN : ".$TINS[$i]." with Employee No :".$employe_identify->employee_no." has been taken");
+            }            
+            
+        }
+        //SSSGSIS Validation
+        $SSSGSIS = DB::table('employee_personal_information_preview')->pluck('SSSGSIS');  
+    
+        $count_SSSGSIS = count($SSSGSIS); 
+        $data_SSSGSIS=array();
+        $validations_SSSGSIS = array();
+        for($j = 0 ; $j < $count_SSSGSIS; $j++){
+            array_push($data_SSSGSIS,"".$SSSGSIS[$j]."");
+           $SSSGSIS_table = DB::table("employee_personal_information")
+                                ->where('SSSGSIS','=',$data_SSSGSIS[$j])
+                                ->first();
+                                $employe_identify = DB::table('employee_personal_information_preview')
+                                                ->join('employee_details_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                                ->where('employee_personal_information_preview.SSSGSIS','=',$data_SSSGSIS[$j])
+                                                ->first();
+               if($SSSGSIS_table) {
+                array_push($validations_SSSGSIS,"The SSSGSIS: ".$SSSGSIS[$j]." with Employee No :".$employe_identify->employee_no." has been taken");
+               }   
+                   
+            
+        }  
+          //PHIC Validation
+        $PHIC = DB::table('employee_personal_information_preview')->pluck('PHIC');  
+    
+        $count_PHIC = count($PHIC); 
+        $data_PHIC=array();
+        $validations_PHIC = array();
+        for($j = 0 ; $j < $count_PHIC; $j++){
+            array_push($data_PHIC,"".$PHIC[$j]."");
+           $PHIC_table = DB::table("employee_personal_information")
+                                ->where('SSSGSIS','=',$data_PHIC[$j])
+                                ->first();
+                                $employe_identify = DB::table('employee_personal_information_preview')
+                                                ->join('employee_details_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                                ->where('employee_personal_information_preview.PHIC','=',$data_PHIC[$j])
+                                                ->first();
+               if($PHIC_table) {
+                array_push($validations_PHIC,"The PHIC: ".$PHIC[$j]." with Employee No :".$employe_identify->employee_no." has been taken");
+               }   
+                   
+            
+        }
+            //HDMF Validation
+        $HDMF = DB::table('employee_personal_information_preview')->pluck('HDMF');  
+    
+        $count_HDMF = count($HDMF); 
+        $data_HDMF=array();
+        $validations_HDMF = array();
+        for($j = 0 ; $j <$count_HDMF; $j++){
+            array_push($data_HDMF,"".$HDMF[$j]."");
+           $HDMF_table = DB::table("employee_personal_information")
+                                ->where('HDMF','=',$data_HDMF[$j])
+                                ->first();
+                                $employe_identify = DB::table('employee_personal_information_preview')
+                                                ->join('employee_details_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                                ->where('employee_personal_information_preview.HDMF','=',$data_HDMF[$j])
+                                                ->first();
+               if($HDMF_table) {
+                array_push($validations_HDMF,"The HDMF: ".$HDMF[$j]." with Employee No :".$employe_identify->employee_no." has been taken");
+               }   
+                   
+        }
+        $NID = DB::table('employee_personal_information_preview')->pluck('NID');  
+    
+        $count_NID = count($NID); 
+        $data_NID=array();
+        $validations_NID = array();
+        for($j = 0 ; $j <$count_NID; $j++){
+            array_push($data_NID,"".$NID[$j]."");
+            $NID_table = DB::table("employee_personal_information")
+                                ->where('NID','=',$data_NID[$j])
+                                ->first();
+                                $employe_identify = DB::table('employee_personal_information_preview')
+                                                ->join('employee_details_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                                ->where('employee_personal_information_preview.NID','=',$data_NID[$j])
+                                                ->first();
+               if($NID_table) {
+                array_push($validations_NID,"The NID: ".$NID[$j]." with Employee No :".$employe_identify->employee_no." has been taken");
+               }   
+                   
+        }
+        $mobile_no = DB::table('employee_personal_information_preview')->pluck('mobile_no');  
+    
+        $count_mobile_no = count($mobile_no); 
+        $data_mobile_no=array();
+        $validations_mobile_no = array();
+        for($j = 0 ; $j <$count_mobile_no; $j++){
+            array_push($data_mobile_no,"".$mobile_no[$j]."");
+            $mobile_no_table = DB::table("employee_personal_information")
+                                ->where('mobile_no','=',$data_mobile_no[$j])
+                                ->first();
+                                $employe_identify = DB::table('employee_personal_information_preview')
+                                                ->join('employee_details_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                                ->where('employee_personal_information_preview.mobile_no','=',$data_mobile_no[$j])
+                                                ->first();
+               if($mobile_no_table) {
+                array_push($validations_mobile_no,"The mobile_no: ".$mobile_no[$j]." with Employee No :".$employe_identify->employee_no." has been taken");
+               }   
+                   
+        }
+        $email_add = DB::table('employee_personal_information_preview')->pluck('email_add');  
+    
+        $count_email_add = count($email_add); 
+        $data_email_add=array();
+        $validations_email_add = array();
+        for($j = 0 ; $j <$count_email_add; $j++){
+            array_push($data_email_add,"".$email_add[$j]."");
+            $email_add_table = DB::table("employee_personal_information")
+                                ->where('email_add','=',$email_add[$j])
+                                ->first();
+                                $employe_identify = DB::table('employee_personal_information_preview')
+                                                ->join('employee_details_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                                ->where('employee_personal_information_preview.email_add','=',$data_email_add[$j])
+                                                ->first();
+               if($email_add_table) {
+                array_push($validations_email_add,"The email_add: ".$email_add[$j]." with Employee No :".$employe_identify->employee_no." has been taken");
+               }   
+                   
+        }
+      
+        $dataarray = [
+            $validations_employee_no,
+            $validations_tin,
+            $validations_SSSGSIS,
+            $validations_PHIC,
+            $validations_HDMF,
+            $validations_NID,
+            $validations_mobile_no,
+            $validations_email_add
+        ]; 
+       /* if(sizeof($dataarray[0]) === 0 ){
+           
+        } 
+       */
+      
+        return json_encode($dataarray);
+    } 
 
     /**
      * @ Save Employees Preview
@@ -1410,7 +1584,7 @@ class EmployeesEnrollmentController extends Controller
             foreach($get_employees_preview as $employees_preview){  
                 $password = Keygen::alphanum(10)->generate();
                 $employee_no = $employees_preview->employee_no;
-                
+               // $i = count($get_employees_preview);
                 
          
               //for($y = 0 ; $y <= $i; $y++){ 
@@ -1426,8 +1600,8 @@ class EmployeesEnrollmentController extends Controller
                         );
                         */
                 // mag push ng another instances sa validation at lagyan ng employee no
-                $array = [
-                    'TIN' => $employees_preview->TIN,
+                /*   $array = [
+                 'TIN' => $employees_preview->TIN,
                     'SSSGSIS' => $employees_preview->SSSGSIS,
                     'HDMF' => $employees_preview->HDMF,
                     'PHIC' => $employees_preview->HDMF,
@@ -1435,10 +1609,9 @@ class EmployeesEnrollmentController extends Controller
                     'mobile_no' =>$employees_preview->mobile_no,
                     'email_add' =>$employees_preview->email_add,
                     'employee_no' =>$employees_preview->employee_no,
-                  
-                ]; 
-                $array2 =  [
-                    'TIN' => 'required|unique:employee_personal_information,TIN,'.$employees_preview->TIN,
+                        ]; 
+                 /*  $array2 =  [
+                'TIN' => 'required|unique:employee_personal_information,TIN,'.$employees_preview->TIN,
                     'HDMF' => 'required|unique:employee_personal_information,HDMF,'.$employees_preview->HDMF,
                     'SSSGSIS' => 'required|unique:employee_personal_information,SSSGSIS,',$employees_preview->SSSGSIS,
                     'PHIC' => 'required|unique:employee_personal_information,PHIC',$employees_preview->PHIC,
@@ -1452,16 +1625,48 @@ class EmployeesEnrollmentController extends Controller
                     }))],
                     
                 ]; 
-              
-           /*     $validation =[];
-               for($y = 1 ; $y <= $i; $y++){ 
-                $array = Arr::prepend($array, ''.$employees_preview->TIN.'','TIN:'.$y.'');
-                $array2 = Arr::prepend($array2, 'required|unique:employee_personal_information,TIN,'.$employees_preview->TIN.'','TIN:'.$y.''); 
+              */
+               /*     $validation =[];
+                $TIN = DB::table('employee_personal_information_preview')->orderBy('id', 'ASC')->pluck('TIN'); 
+                $SSSGSIS = DB::table('employee_personal_information_preview')->orderBy('id', 'ASC')->pluck('SSSGSIS'); 
                 
+                $employee_no = DB::table('employee_details_preview')->orderBy('id', 'DESC')->pluck('employee_no');
+                for($y = 0 ; $y < $i; $y++){ 
+          
+               // $array = Arr::prepend($array, ''.$employees_preview->TIN.'','TIN:'.$y.'');
+              //  $array2 = Arr::prepend($array2, 'required|unique:employee_personal_information,TIN,'.$employees_preview->TIN.'','TIN:'.$y.''); 
+                $table_tin =  DB::table('employee_details_preview')
+                                ->join('employee_personal_information_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                ->where('employee_personal_information_preview.TIN','=',$TIN[$y])
+                                ->first(); 
+                $table_sssgsis =  DB::table('employee_details_preview')
+                                ->join('employee_personal_information_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                ->where('employee_personal_information_preview.SSSGSIS','=',$SSSGSIS[$y])
+                                ->first(); 
+
+                $table_employeeno = DB::table('employee_details_preview')
+                                    ->join('employee_personal_information_preview','employee_personal_information_preview.id','=','employee_details_preview.employee_info')
+                                    ->where('employee_details_preview.employee_no','=',$employee_no[$y])
+                                    ->first();
+     
+                $array = Arr::prepend($array, 
+                ''.$table_tin->TIN.'','TIN'.$y.'',
+                ''.$table_sssgsis->SSSGSIS.'','SSSGSIS'.$y.''
+
+                );
+                $array2 = Arr::prepend($array2, 
+                'required|unique:employee_personal_information,TIN,'.$table_tin->TIN.'','TIN'.$y.'',
+                'required|unique:employee_personal_information,SSSGSIS,'.$table_sssgsis->SSSGSIS.'','SSSGSIS'.$y.''
+                
+                ); 
+                $validation = Arr::prepend($validation,
+                'The TIN : '.$table_tin->TIN.' of Employee No: '.$table_employeeno->employee_no.' has already been taken.','TIN'.$y.'.unique', 
+                'The SSSGSIS : '.$table_sssgsis->SSSGSIS.' of Employee No: '.$table_employeeno->employee_no.' has already been taken.','SSSGSIS'.$y.'.unique'
+                );
                // 
       
-                }*/
-               $validation = [ 
+                }
+             /*  $validation = [ 
                     'TIN.unique' => 'The TIN of Employee No: '.$employees_preview->employee_no.' has already been taken.',
                     'HDMF.unique' => 'The HDMF of Employee No: '.$employees_preview->employee_no.' has already been taken.',
                     'SSSGSIS.unique' => 'The SSSGSIS of Employee No: '.$employees_preview->employee_no.' has already been taken.',
@@ -1471,9 +1676,10 @@ class EmployeesEnrollmentController extends Controller
                     'email_add.unique' => 'The email_add of Employee No: '.$employees_preview->employee_no.' has already been taken.',
                     'employee_no.unique' => 'The employee no : '.$employee_no.' has already been taken'
                                 ];
-           
+           */
                             
-                        validator::make($array,$array2,$validation/*,
+           
+                   /*         validator::make($array,$array2,$validation/*,
                         [
                          'TIN.unique' => 'The TIN of Employee No: '.$employees_preview->employee_no.' has already been taken.',
                          'HDMF.unique' => 'The HDMF of Employee No: '.$employees_preview->employee_no.' has already been taken.',
@@ -1483,7 +1689,8 @@ class EmployeesEnrollmentController extends Controller
                          'mobile_no.unique' => 'The mobile_no of Employee No: '.$employees_preview->employee_no.' has already been taken.',
                          'email_add.unique' => 'The email_add of Employee No: '.$employees_preview->employee_no.' has already been taken.',
                          'employee_no.unique' => 'The employee no : '.$employee_no.' has already been taken'
-                        ]*/)->validate(); 
+                        ])->validate(); */
+                        
            
                   //  }
 
