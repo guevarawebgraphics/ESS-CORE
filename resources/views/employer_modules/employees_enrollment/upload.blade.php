@@ -54,8 +54,9 @@ elseif(Session::get('employee_enrollment') == 'delete'){
         </div>
         <div class="card-body"> 
                 <div class="alert alert-danger alert-dismissible-custom col-md-6" hidden>
-                        <h4><i class="icon fa fa-ban"></i> Important! </h4>
-                        <div class="error-text"> </div>
+                        <h4><i class="icon fa fa-ban"></i> Cannot Save Employee Details </h4>
+                      <!--  <div > <ul class="error-text" style="list-style: none;"> </ul></div>  -->
+                      <div> <ul class="error-text" style="list-style: none"> </ul>  </div> 
                 </div>
             <div class="form-group row">
                 <div class="col-md-6">
@@ -83,10 +84,14 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                 <div class="col-md-6">
                     {{-- <a href="/enrollemployee/encode" class="btn btn-outline-primary btn-flat float-md-right mr-4" id="btnCreateEmployee"><i class="fa fa-plus-square" ></i> Encode Employee</a> --}}
                     <a href="#upload" class="btn btn-outline-info btn-flat float-md-right mr-4" id="btnUploadEmployee"><i class="fa fa-upload" ></i> Upload Employee</a>
-                    <a href="#saveemployees" class="btn btn-outline-primary btn-flat float-md-right mr-4" id="btnSaveEmployees"><i class="fa fa-save" ></i> Save Employees</a>
+                    <a href="#saveemployees" class="btn btn-outline-primary btn-flat float-md-right mr-4" id="btnSaveEmployees" hidden><i class="fa fa-save" ></i> Save Employees</a>
+                    <div id="savecontainer">
+                    <form id="formvalidate"> @csrf<button type="button" class="btn btn-outline-primary btn-flat float-md-right mr-4 validateHidden"><i class="fa fa-save" ></i> Save Employees</button></form>
+                    </div> 
                 </div>
             </div>
-
+            <div id="hidden_fields">
+            </div>
             <div class="table-responsive">
                 <table id="upload_employees_preview_table" class="table table-bordered table-striped">
                     <thead>
@@ -106,6 +111,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     <tbody id="preview_employee_details">
                         {{-- Showdata --}}
                     </tbody>
+
                 </table>
             </div>
 
@@ -243,7 +249,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
         $('#UploadEmployees').on('hidden.bs.modal', function (e) {
             $('#ttttt').remove();
         });
-
+        //hi
         $('#upload_employees_form').submit(function (e){
             $("#spinner_upload").addClass('fa fa-refresh fa-spin');
             e.preventDefault();
@@ -307,6 +313,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
             dataType: 'json',
             success: function(data){
                 var html = '';
+                var hidden_fields ='';
                 var i;
                 for(i=0; i<data.length; i++){
                     check_employee_exists_in_excel(data[i].id, data[i].employee_no, data[i].account_no, data[i].TIN, data[i].SSSGSIS, data[i].PHIC, data[i].HDMF, data[i].NID, data[i].mobile_no, data[i].email_add);
@@ -325,9 +332,10 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                                     ' data-phic="'+data[i].PHIC+'" data-hdmf="'+data[i].HDMF+'" data-nid="'+data[i].NID+'" data-mobile_no="'+data[i].mobile_no+'" data-email_add="'+data[i].email_add+'" data-toggle="modal" data-target="#edit_employees_details"><i class="fa fa-edit"></i> Edit</a> ' +
                                     '<a href="javascript:;" class="Delete btn-sm btn btn-outline-danger btn-flat btn_delete_employee_preview" id="delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="'+data[i].id+'" {{$delete}}><i class="fa fa-trash"></i> Delete</a>' +
                                 '</td>'+
-                            '</tr>';
+                            '</tr>';    
                 }
                 $('#preview_employee_details').html(html);
+              
                 ////console.log(data);
             },
             error: function(data){
@@ -336,7 +344,57 @@ elseif(Session::get('employee_enrollment') == 'delete'){
             }
            });
        }
-
+       
+        $('.validateHidden').on('click', function (){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/EmployeesEnrollmentController/validate_fields',
+                method: 'POST',
+                dataType: 'json',
+                data: $('#formvalidate').serialize(),
+                success: function(data){ 
+                     $('.alert-dismissible-custom').attr('hidden',false);
+                                $('.error-text').html(""); 
+                                console.log(data);
+                                var a = data;
+                                if(a[0].length === 0 &&
+                                     a[1].length === 0 &&
+                                         a[2].length === 0 &&
+                                             a[3].length === 0 &&
+                                                 a[4].length === 0 &&
+                                                     a[5].length === 0 &&
+                                                         a[6].length === 0 &&
+                                                            a[7].length === 0 ) 
+                                    {
+                                        $('.alert-dismissible-custom').attr('hidden',true);  
+                                        SaveEmployees();
+                                    }
+                                else {
+                                    for (var i in a) 
+                                    {
+                                        for (var j in a[i]) 
+                                            { 
+                                            
+                                           // console.log(" " + a[i][j]);
+                                            $('.error-text').append('<li><label class="">'+a[i][j]+'</label></li>');
+                                        
+                                            }
+                                        }
+                                }
+                            
+                                 
+                               
+               
+                    
+                }
+            });
+            
+       });  
+        
 
         /*Check for Duplicate Entry*/
         function check_employee_exists_in_excel(id, employee_no, account_no, TIN, SSSGSIS, PHIC, HDMF, NID, mobile_no, email_add)
@@ -408,7 +466,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                 }
             });
         }
-
+        
 
         /*Edit Employees Upload Preview*/
         $('#preview_employee_details').on('click', '.btn_Edit_Employees_Preview', function (){
@@ -581,8 +639,9 @@ elseif(Session::get('employee_enrollment') == 'delete'){
         });
 
         // Save Employee Preview
-        $('#btnSaveEmployees').click(function (e){
-            e.preventDefault();
+        function SaveEmployees(){
+     //   $('#btnSaveEmployees').click(function (e){
+           // e.preventDefault();
             toastr.remove()
             // Remove current toasts using animation
             toastr.clear()
@@ -610,7 +669,7 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                                 //window.location.replace('{{ config('app.url') }}/enrollemployee/upload');
                                }
                                if(data.status == false){
-                                  // toastr.info(data.message, 'info')
+                                  toastr.info(data.message, 'info')
                                   console.log(data.message);
                                }
                                
@@ -623,12 +682,13 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                                 $('.error-text').html("");
                                 var errors = $.parseJSON(data.responseText);
                                 $.each(errors, function (key, value) {
-                                    if($.isPlainObject(value)) {
+                                   if($.isPlainObject(value)) {
                                             $.each(value, function (key, value) {                       
-                                                console.log( " " +value);
-                                                $('.error-text').append(" "+value +" <br>");
+                                                console.log( " " +value[0]);
+                                                $('.error-text').append(" "+ "<li>"+value[0] +"</li>");
                                             });
-                                        }
+                                        } 
+                                      
                                     });
                             }
                             //console.log(data);
@@ -645,7 +705,8 @@ elseif(Session::get('employee_enrollment') == 'delete'){
                     });
                 }
             );
-        });
+      //  }); 
+                            }
 
 
     });

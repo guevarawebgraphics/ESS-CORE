@@ -18,6 +18,7 @@ use App\ESSBase;
 use App\EmployerEmployee;
 use App\EmployeeEnrollment;
 use App\EmployeePersonalInfo;
+use App\EmployeeDetailsPreview;
 use App\UserActivation;
 use App\employee_personal_information_preview;
 
@@ -137,7 +138,7 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
              * @ Create Employee Enrollment
              **/
             $emppid = $Employee_personal_info->id;
-            $employee = EmployeeEnrollment::create([
+            $employee = EmployeeDetailsPreview::create([
                     'id' => $employee_id,
                     'employee_info' => $emppid,
                     'employee_no' => $row['employee_no'],
