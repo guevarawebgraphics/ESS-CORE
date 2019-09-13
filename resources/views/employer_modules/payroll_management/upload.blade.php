@@ -191,6 +191,7 @@ elseif(Session::get('payroll_management') == 'delete'){
 		</div>
 		<div class="modal-body">
         <div class="alert alert-danger" id="save_payroll_errors" hidden="true">
+            <input type="text" id="check_validation" name="check_validation" hidden="true"> 
                 <span><i class="fa fa-exclamation-circle"></i> <b>Errors</b></span>
             <ul>
                 <div id="save_validation_error_message"></div>
@@ -228,8 +229,9 @@ elseif(Session::get('payroll_management') == 'delete'){
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_submit_payroll" data-file=""><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></i></button>
-		</div>
+		  <button type="submit" class="btn btn-outline-primary btn-flat btn-save" id="btn_submit_payroll" data-file=""><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></i></button>
+          {{-- <button type="submit" class="btn btn-outline-primary btn-flat btn-save" id="btn_save_preview"><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></i></button> --}}
+        </div>
 		</form>
 	  </div>
 	</div>
@@ -347,16 +349,25 @@ elseif(Session::get('payroll_management') == 'delete'){
                 processData: false,
                 global: false,
                 beforeSend: function(){
+                    NProgress.start();
+                    NProgress.set(0.0);     // Sorta same as .start()
+                    NProgress.configure({ easing: 'ease', speed: 500 });
+                    NProgress.configure({ showSpinner: false });//Turn off loading 
                     $("#spinner_upload_payroll").addClass('fa fa-refresh fa-spin'); 
                     $('.btn-payroll-upload').removeAttr('type');
                 },
+                ajaxSend: function(){
+                    NProgress.set(0.4);
+                },
                 complete: function() {
+                    NProgress.done(true);
                     setTimeout(function (){
                             $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
                     }, 250);
                     $('#Upload').removeAttr('disabled');
                 },
                 success: function(data) {
+                    NProgress.done(true);
                     toastr.success('Payroll Register Uploaded!')
                     //console.log("Success");
                     $("#payroll_register_table").DataTable().destroy();
@@ -375,6 +386,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                     window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
                 },
                 error: function(data, status){
+                    NProgress.done(true);
                     $('.btn-payroll-upload').removeAttr('disabled');
                     setTimeout(function (){
                                 $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
@@ -576,13 +588,25 @@ elseif(Session::get('payroll_management') == 'delete'){
                         cache: false,
                         contentType: false,
                         processData: false,
+                        global: false,
+                        beforeSend: function() {
+                            NProgress.configure({ easing: 'ease', speed: 500 });
+                            NProgress.start();
+                            NProgress.configure({ showSpinner: false });//Turn off loading 
+                        },
                         success: function(data){
+                            NProgress.done(true);
+                            //console.log(data);
                             if(data.status == 'false'){
-                                // Display a success toast, with a title
-                                toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
-                                console.log(data);
-                                $('#save_payroll_errors').removeAttr('hidden');
-                                $('#save_validation_error_message').html('<label>'+ data.message +'</label><br>');
+                                let array = data.result;
+                                for(let i = 0; i < array.length; i++){
+                                    var data1 = {
+                                        'employee_no': array[i].employee_no
+                                    };
+                                    //console.log(array[i]);
+                                    check_payroll_schedule(array[i].employee_no, array[i].payroll_schedule, $('#payroll_schedule').val())
+                                }
+                                
                             }
                             else if(data.status == 'failed'){
                                 // Display a success toast, with a title
@@ -602,7 +626,8 @@ elseif(Session::get('payroll_management') == 'delete'){
                             }
                         },
                         error: function(data, status){
-                            // Catch Erros
+                            NProgress.done(true);
+                            // Catch Errors
                             if(data.status === 422){
                                 var errors = $.parseJSON(data.responseText);
                                 $.each(errors, function(i, errors){
@@ -630,6 +655,137 @@ elseif(Session::get('payroll_management') == 'delete'){
             );
             
         });
+
+        $('#btn_save_preview').click(function(e) {
+            console.log('asdf');
+            e.preventDefault();
+            if($('#save_payroll_errors').hasClass('errors')){
+                console.log('test');
+            }
+            else {
+            toastr.remove()
+            e.preventDefault();
+            var data = new FormData($('#save_payroll_form')[0]);
+            swal({
+                title: "Do you wanna Save This Payroll Register Details?",
+                type: "warning",
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                showCancelButton: true,
+                closeOnConfirm: true,
+            },
+                function(){
+                     /*AjaxSetup*/
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: "{{ url('/payrollmanagement/save_preview') }}",
+                        method: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        data: data,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        global: false,
+                        beforeSend: function() {
+                            NProgress.configure({ easing: 'ease', speed: 500 });
+                            NProgress.start();
+                            NProgress.configure({ showSpinner: false });//Turn off loading 
+                        },
+                        success: function(data){
+                            NProgress.done(true);
+                            //console.log(data);
+                            if(data.status == 'false'){
+                                
+                            }
+                            else if(data.status == 'failed'){
+                                // Display a success toast, with a title
+                                toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
+                                console.log(data);
+                                $('#save_payroll_errors').removeAttr('hidden');
+                                $('#save_validation_error_message').html('<label>'+ data.message +'</label><br>');
+                            }
+                            else {
+                            // Display a success toast, with a title
+                            toastr.success('Pay Register Details Successfully Posted', 'Success')
+                            $('#error_alert').attr('hidden', true);
+                            showAllPayRegister();
+                            console.log(data);
+                            $('#save_payroll_register_modal').modal('hide');
+                            $('#save_payroll_form')[0].reset();
+                            }
+                        },
+                        error: function(data, status){
+                            NProgress.done(true);
+                            // Catch Erros
+                            if(data.status === 422){
+                                var errors = $.parseJSON(data.responseText);
+                                $.each(errors, function(i, errors){
+                                    if(errors.batch_no){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.batch_no +'</label><br>');
+                                    }
+                                    if(errors.period_from){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.period_from +'</label><br>');
+                                    }
+                                    if(errors.period_to){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.period_to +'</label><br>');
+                                    }
+                                    if(errors.payroll_schedule){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.payroll_schedule +'</label><br>');
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            );
+            }
+        });
+            
+
+        function check_payroll_schedule(employee_no, payroll_schedule, ps){
+            $.ajax({
+                type: 'POST',
+                url: '/payrollmanagement/check_payroll_schedule',
+                data: { '_token': $('input[name=_token]').val(), employee_no: employee_no, payroll_schedule: payroll_schedule, ps: ps},
+                async: true,
+                dataType: 'json',
+                success: function(data){
+                    //console.log(data);
+                },
+                error: function(data){
+                    console.clear();
+                    $('#btn_save_preview').removeAttr('hidden');
+                    $('#btn_submit_payroll').attr('hidden', true);
+                    $('#save_payroll_errors').addClass('errors');
+                    //console.log(data.responseText);
+                    toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
+                    if(data.status === 422){
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(i, errors){
+                            if($.isPlainObject(errors)) {
+                            $.each(errors, function (key, errors) {                       
+                                //console.log(errors.payroll_schedule);
+                                // Display a success toast, with a title
+                                $('#save_payroll_errors').removeAttr('hidden');
+                                $('#save_validation_error_message').append('<label>'+ errors +'</label><br>');
+                            });
+                            }
+                            
+                            
+                        });
+                    }
+                }
+            });
+        }
 
         /*Date Configuration*/
         var date = new Date();
