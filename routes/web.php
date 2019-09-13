@@ -192,7 +192,7 @@ Route::post('/EmployeesEnrollmentController/check_employee_details_exists_in_exc
 Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
 Route::post('/EmployeesEnrollmentController/update_employees_details_preview', 'EmployeesEnrollmentController@update_employees_details_preview');
 Route::post('/EmployeesEnrollmentController/delete_employee_details', 'EmployeesEnrollmentController@delete_employee_details');
-
+Route::post('/EmployeesEnrollmentController/validate_fields','EmployeesEnrollmentController@validate_all_fields');
 //Employer Content
 
 Route::get('/employercontent/manage', 'EmployerContentController@manage');
