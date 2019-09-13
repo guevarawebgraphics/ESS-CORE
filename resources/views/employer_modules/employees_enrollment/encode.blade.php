@@ -1248,7 +1248,15 @@ $(document).ready(function(){
                 $('#iform_employee_no').removeAttr('hidden');
                 $('.iform_editablefield').attr('hidden',false);
                 console.log(data.provDesc + ' '+  data.brgyDesc + ' ' + data.citymunDesc);
-                $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname + ' ' + data.suffix);
+
+                let name =  {
+                        firstname : data.firstname ,
+                        middlename: data.middlename || '',
+                        lastname : data.lastname ,
+                        suffix : data.suffix  || ''
+                }
+                $('#employee_name').html(name.firstname + ' ' +name.middlename + ' ' + name.lastname + ' ' + name.suffix);
+
                 $('#employee_address').html(data.address_unit + ' ' + data.provDesc + ' ' + data.citymunDesc + ' ' + data.brgyDesc);
                 //
                 //console.log
@@ -1283,22 +1291,23 @@ $(document).ready(function(){
                 // $("#province").val(data.province);
                 $("#zipcode").val(data.zipcode);
                 $("#hidden_personalinfo_id").val(data.id);
+                // auto complete fields
                 $("#hidden_essid").val(data.ess_id);
                 //$('#employee_no').val(data.employee_no);
-                $('#enrollment_date').val(data.enrollment_date);
-                $('#department').val(data.department);
-                $('#employment_status').val(data.employment_status);
-                $('#payroll_schedule').val(data.payroll_schedule);
-                $('#payroll_bank').val(data.payroll_bank);
-                $('#account_no').val(data.account_no);
-                $('#position').val(data.position); 
-
+               // $('#enrollment_date').val(data.enrollment_date);
+               // $('#department').val(data.department);
+                //$('#employment_status').val(data.employment_status);
+               // $('#payroll_schedule').val(data.payroll_schedule);
+               // $('#payroll_bank').val(data.payroll_bank);
+               // $('#account_no').val(data.account_no);
+                //$('#position').val(data.position); 
+                // 
                 // Displays on the panel 
-                $('#employee_position').html(data.position);
-                $('#employee_enrollmentdate').html(data.enrollment_date); 
-                $('#employee_employeeno').html(""); 
-                $('#employee_accountno').html(data.account_no);
-                $('#employee_department').html(data.department);
+                //$('#employee_position').html(data.position);
+               // $('#employee_enrollmentdate').html(data.enrollment_date); 
+               // $('#employee_employeeno').html(""); 
+               // $('#employee_accountno').html(data.account_no);
+               // $('#employee_department').html(data.department);
 
                 /******** Copies the actual value for displaying */
                 $('#enrollment_date').on("change",function(){
