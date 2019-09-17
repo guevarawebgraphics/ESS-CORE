@@ -118,7 +118,7 @@
                             '<div class="media-body">'+
                             '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger" id="unread_notifcation"></span></h3>'+
                             // '<p class="text-sm">'+data[i].announcement_description+'</p>'+
-                            '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+ ' <span class="badge badge-primary">'+(read[0] == false ?  'undread' : '')+'</span>'+'</p>'+
+                            '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+ ' <span class="badge badge-primary">'+(read[0] == false ?  'unread' : '')+'</span>'+'</p>'+
                             '</div>'+
                             '</div><!-- Message End --></a>'+
                             '<div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->';
