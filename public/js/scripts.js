@@ -58,6 +58,7 @@
         $.ajax({
             type: 'POST',
             url: '/Announcement/update_notification_show',
+            async: false,
             data: {
                 notification_id: announcement_id,
                 '_token': $('input[name=_token]').val(),
@@ -111,13 +112,13 @@
                         }
                     });
                     var announcement_des_strip = data[i].announcement_description.replace(/"/g, "'");
-                    html += '<a class="dropdown-item show_announcement_notification" style="'+(read[0] == false ? 'background-color: #8C8C8C; opacity: 1.5;' : null)+'" class="show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'"><!-- Message Start -->'+
+                    html += '<a class="dropdown-item show_announcement_notification" class="show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'"><!-- Message Start -->'+
                             '<div class="media">'+
                             '<img alt="User Avatar" style="heigth: 50px; width: 50px;" class="img-size-50 mr-3 img-circle" src="/storage/profile_picture/'+data[i].profile_picture+'">'+
                             '<div class="media-body">'+
                             '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger" id="unread_notifcation"></span></h3>'+
                             // '<p class="text-sm">'+data[i].announcement_description+'</p>'+
-                            '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+'</p>'+
+                            '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+ ' <span class="badge badge-primary">'+(read[0] == false ?  'undread' : '')+'</span>'+'</p>'+
                             '</div>'+
                             '</div><!-- Message End --></a>'+
                             '<div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->';
