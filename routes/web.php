@@ -192,7 +192,7 @@ Route::post('/EmployeesEnrollmentController/check_employee_details_exists_in_exc
 Route::post('/EmployeesEnrollmentController/save_employees_preview', 'EmployeesEnrollmentController@save_employees_preview');
 Route::post('/EmployeesEnrollmentController/update_employees_details_preview', 'EmployeesEnrollmentController@update_employees_details_preview');
 Route::post('/EmployeesEnrollmentController/delete_employee_details', 'EmployeesEnrollmentController@delete_employee_details');
-
+Route::post('/EmployeesEnrollmentController/validate_fields','EmployeesEnrollmentController@validate_all_fields');
 //Employer Content
 
 Route::get('/employercontent/manage', 'EmployerContentController@manage');
@@ -225,6 +225,9 @@ Route::get('/payrollmanagement/PayrollExport/{payregister_id}', function(Request
     $filename = DB::table('payrollregister')->where('id', '=', $request->payregister_id)->select('payroll_file')->get();
     return Excel::download(new PayrollExport($request->payregister_id), $filename[0]->payroll_file .'.csv');
 });
+// Check for Payroll Schedule
+Route::post('/payrollmanagement/check_payroll_schedule', 'PayrollManagementController@check_payroll_schedule');
+Route::post('/payrollmanagement/save_preview', 'PayrollManagementController@save_preview');
 
 
 /**Upload Profile Picture */
@@ -339,5 +342,18 @@ Route::middleware('auth')->group(function (){
         
     });
     
+
+    /**
+     *@ 503 Error Maintenance 
+     **/
+    Route::get('/503', function(Request $request) {
+        $http_response = $request->session()->pull('code'); 
+        if($http_response == '503'){
+            return view('errors.503');
+        }
+        else {
+            return redirect('404');
+        }
+    });
     
 });
