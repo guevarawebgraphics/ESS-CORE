@@ -357,3 +357,9 @@ Route::middleware('auth')->group(function (){
     });
     
 });
+
+
+Route::get('/generatekey', function() {
+
+    return Keygen::length(64)->alphanum()->generate();
+});
