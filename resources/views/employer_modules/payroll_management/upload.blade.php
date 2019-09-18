@@ -209,11 +209,11 @@ elseif(Session::get('payroll_management') == 'delete'){
                     </div>  
                     <div class="col-md-6"> 
                             <label for="Period From">Period From:</label>
-                            <input class="form-control datepicker" type="text" name="period_from" id="period_from" placeholder="YYYY-MM-DD" autocomplete="off">
+                            <input class="form-control datepicker" type="text" name="period_from" id="period_from" placeholder="MM-DD-YYYY" autocomplete="off">
                     </div>
                     <div class="col-md-6"> 
                             <label for="Period To">Period To:</label>
-                            <input class="form-control datepicker" type="text" name="period_to" id="period_to" placeholder="YYYY-MM-DD" autocomplete="off">
+                            <input class="form-control datepicker" type="text" name="period_to" id="period_to" placeholder="MM-DD-YYYY" autocomplete="off">
                     </div>
                     <label for="batch_no">Payroll Schedule:</label>
                     <div class="col-md-12">
