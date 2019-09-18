@@ -1293,6 +1293,7 @@ $(document).ready(function(){
                 $("#hidden_personalinfo_id").val(data.id);
                 // auto complete fields
                 $("#hidden_essid").val(data.ess_id);
+                // Displays on the text fields
                 //$('#employee_no').val(data.employee_no);
                // $('#enrollment_date').val(data.enrollment_date);
                // $('#department').val(data.department);
@@ -1310,6 +1311,7 @@ $(document).ready(function(){
                // $('#employee_department').html(data.department);
 
                 /******** Copies the actual value for displaying */
+
                 $('#enrollment_date').on("change",function(){
                 setTimeout(changevalue_enrollmentdate,0); 
                 });
@@ -1374,8 +1376,6 @@ $(document).ready(function(){
                             department = display_position;
                     }
                 }
-
-
                 
                 /*
                  * @ Check if the User has a Profile Picture or Null
@@ -1385,7 +1385,7 @@ $(document).ready(function(){
                     $('#employee_profile_picture').attr('src', '/storage/pic.jpg');
                 }
                 else {
-                    $('#employee_profile_picture').attr('src', '/storage/profile_picture/' + data.profifle_picture);
+                    $('#employee_profile_picture').attr('src', '/storage/profile_picture/ESS_DEFAULT_PICTURE/' + data.profifle_picture);
                 }
                 
                 

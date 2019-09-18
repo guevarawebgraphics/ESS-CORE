@@ -107,21 +107,20 @@ class EmployeesEnrollmentController extends Controller
     //show the index page
     public function index()
     {
-
         $employee_info = DB::table('employer_and_employee')
-                            ->join('employee_details_preview', 'employer_and_employee.employee_id', 'employee_details_preview.id')
-                            ->join('employee_personal_information', 'employee_details_preview.employee_info', '=', 'employee_personal_information.id')
+                            ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
+                            ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
                             ->select('employer_and_employee.id as eneid',
-                                    'employee_details_preview.id as emp_id',
-                                    'employee_details_preview.employee_no',
-                                    'employee_details_preview.enrollment_date',
-                                    'employee_details_preview.department',
-                                    'employee_details_preview.employment_status',
-                                    'employee_details_preview.payroll_schedule',
-                                    'employee_details_preview.payroll_bank',
-                                    'employee_details_preview.account_no',
-                                    'employee_details_preview.AccountStatus as AccountStatus',
-                                    'employee_details_preview.position',
+                                    'employee.id as emp_id',
+                                    'employee.employee_no',
+                                    'employee.enrollment_date',
+                                    'employee.department',
+                                    'employee.employment_status',
+                                    'employee.payroll_schedule',
+                                    'employee.payroll_bank',
+                                    'employee.account_no',
+                                    'employee.AccountStatus as AccountStatus',
+                                    'employee.position',
                                     'employee_personal_information.id',
                                     'employee_personal_information.lastname',
                                     'employee_personal_information.firstname',
