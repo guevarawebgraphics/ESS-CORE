@@ -14,66 +14,8 @@
       var channel = pusher.subscribe('channel1');
       channel.bind('Announcement', function(data) {
         // Show Notification
-            $.ajax({
-                type: 'ajax',
-                method: 'get',
-                url: '/Announcement/get_all_announcement_to_notification',
-                async: false,
-                dataType: 'json',
-                success: function (data) {
-                    // socket.emit('my other event', { my: 'data' });
-                    var html = '';
-                    var i;
-                    var count = 1;
-                    var check_my_notification = get_show_announcement_notification_toggle();
-                    var check_user_employer = [];
-                    for(i=0; i<data.length; i++){
-                        check_user_employer.push(data[i].employer_id);
-                        var status = (data[i].announcement_status == 1 ? 'Posted' : data[i].announcement_status == 0 ? 'Pending' : null);
-                        const date = new Date(data[i].updated_at);
-                        // if(check_my_notification == 1){
-                        //     session_notification = false;
-                        // }
-                        // if(check_my_notification == 0){
-                        //     $('#notif').html(count++);
-                        // }
-                        $('#notif').html(count++);
-                        html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+data[i].announcement_description+'"><!-- Message Start -->'+
-                                '<div class="media">'+
-                                '<img alt="User Avatar" class="img-size-50 mr-3 img-circle" src="../dist/img/user3-128x128.jpg">'+
-                                '<div class="media-body">'+
-                                '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger"></span></h3>'+
-                                // '<p class="text-sm">'+data[i].announcement_description+'</p>'+
-                                '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+'</p>'+
-                                '</div>'+
-                                '</div><!-- Message End --></a>'+
-                                '<div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->';
-                    }
-                    if(status == 'Posted'){
-                        toastr.success('You have new Announcement')
-                        $('#announcementdesc').html(html);
-                        /**
-                         * @ Check if the User is Employee
-                         * */
-                        $.get('/Announcement/check_user', {id: check_user_employer[0]}, function(data) {
-                            if(data == 4)
-                            {
-                                
-                            }
-                        });
-                        
-                        
-                    }
-                    else if(status == 'Pending'){
-                        $('#announcementdesc').html('No Announcement Found');
-                    }
-                    
-                    //console.log("success");
-                },
-                error: function (response) {
-                    
-                }
-            });
+        toastr.success('You have new Announcement')
+        showAllAnnouncementToNotification();
       });
      /*Listen To The port then the emit message*/
      /**
@@ -106,13 +48,6 @@
         var title = $(this).attr('data-title');
         var description = $(this).attr('data-description');     
         var employer_name = $(this).attr('data-business_name');
-        // swal({
-        //         title: title,
-        //         text: jQuery(description).text(), // Strip Tag
-        //         showCancelButton: true,
-        //     },
-        // );
-       // var announcement_des = jQuery(description).text();
         var announcement_des = description;
         $('#Announcement_to_notification_modal').modal('show');
         $('#Announcement_to_notification_modal').find('#title_modal').text('Employer' + ' ' + 'Announcement');
@@ -123,6 +58,7 @@
         $.ajax({
             type: 'POST',
             url: '/Announcement/update_notification_show',
+            async: false,
             data: {
                 notification_id: announcement_id,
                 '_token': $('input[name=_token]').val(),
@@ -134,54 +70,10 @@
                 // console.log("Err");
             }
         });
-        get_show_announcement_notification_toggle();
+        // /get_show_announcement_notification_toggle();
         
     });
 
-
-    /*Announcement Notification Toggle*/
-    function get_show_announcement_notification_toggle(){
-        $.ajax({
-            type: 'GET',
-            url: '/Announcement/get_notification_show',
-            async: false,
-            dataType: 'json',
-            success: function (data){
-                //console.log(data);
-            }
-        })
-    }
-
- //   get_profile_picture()
-      /**
-       * @ Get Profile Picture
-       * */
-    /*  
-        function get_profile_picture(){
-        $.ajax({
-          type: 'GET',
-          url: '/ProfilePicture/get_profile_picture',
-          async: false,
-          dataType: 'json',
-          success: function(data){
-       //     $('#user_profile_picture').attr('src', '/storage/profile_picture/' + data);
-               if (data=="essfemale.png" || data=="essmale.png") 
-                 {
-                     $('#data_to_do').val("add");
-                 }
-                 else
-                 {
-                     $('#data_to_do').val("update");
-                 }
-            
-           },
-          error: function(data){
-
-          }
-        });
-      }
-
-    */
     function showAllAnnouncementToNotification(){
         // Show Notification
         $.ajax({
@@ -195,25 +87,38 @@
                 var footer = '';
                 var i;
                 var count = 1;
-                var check_my_notification = get_show_announcement_notification_toggle();
+                
                 for(i=0; i<data.length; i++){
+                    //var check_my_notification = get_show_announcement_notification_toggle(data[i].id);
                     var status = (data[i].announcement_status == 1 ? 'Posted' : data[i].announcement_status == 0 ? 'Pending' : null);
                     const date = new Date(data[i].updated_at);
-                    if(check_my_notification == 1){
-                        
-                    }
-                    if(session_notification = false){
-                        $('#notif').html(count++);
-                    }
-                    //$('#notif').html(count++); 
+                    let read = [];
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Announcement/get_notification_show',
+                        async: false,
+                        dataType: 'json',
+                        data: {
+                            '_token': $('input[name=_token]').val(), 
+                            announcement_id : data[i].id
+                        },
+                        success: function (data){
+                            //console.log(data);
+                            read.push(data);
+                            if(data == false){
+                                $('#notif').html(count++); 
+                                //console.log(read);
+                            }
+                        }
+                    });
                     var announcement_des_strip = data[i].announcement_description.replace(/"/g, "'");
-                    html += '<a class="dropdown-item show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'"><!-- Message Start -->'+
+                    html += '<a class="dropdown-item show_announcement_notification" class="show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'"><!-- Message Start -->'+
                             '<div class="media">'+
                             '<img alt="User Avatar" style="heigth: 50px; width: 50px;" class="img-size-50 mr-3 img-circle" src="/storage/profile_picture/'+data[i].profile_picture+'">'+
                             '<div class="media-body">'+
-                            '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger"></span></h3>'+
+                            '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger" id="unread_notifcation"></span></h3>'+
                             // '<p class="text-sm">'+data[i].announcement_description+'</p>'+
-                            '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+'</p>'+
+                            '<p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>'+date.toDateString()+ ' <span class="badge badge-primary">'+(read[0] == false ?  'unread' : '')+'</span>'+'</p>'+
                             '</div>'+
                             '</div><!-- Message End --></a>'+
                             '<div class="dropdown-divider"></div><a class="dropdown-item" href="#"><!-- Message Start -->';
@@ -240,7 +145,4 @@
         });
     }
 
-    // function toggle_notification(){
-    //     $.
-    // }
  });

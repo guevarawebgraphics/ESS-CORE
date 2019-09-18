@@ -430,17 +430,11 @@ class AnnouncementController extends Controller
     public function get_notification_show(Request $request){
         $read_notification = DB::table('notification_show')
                                 ->where('user_id', '=', auth()->user()->id)
-                                ->select('read')
-                                ->first();
-        if($read_notification){
-            $tmp = $read_notification->read;
-        }
-        else {
-            $tmp = 0;
-        }
+                                ->where('notification_id', '=', $request->announcement_id)
+                                ->count() > 0;
         
 
-        return Response::json($tmp);
+        return Response::json($read_notification);
     }
 
      public function destroy_announcement(Request $request){
