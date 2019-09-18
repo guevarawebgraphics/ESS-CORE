@@ -4,6 +4,7 @@
 /public/ckfinder/userfiles/files
 /storage/*.key
 /vendor
+/public/ckfinder/userfiles/files
 .env
 .phpunit.result.cache
 Homestead.json

@@ -180,7 +180,7 @@ Route::post('/Announcement/update_announcement/{id}', 'AnnouncementController@up
 Route::post('/Announcement/destroy_announcement', 'AnnouncementController@destroy_announcement');
 Route::post('/Announcement/update_announcement_status', 'AnnouncementController@update_announcement_status');
 Route::post('/Announcement/update_notification_show', 'AnnouncementController@update_notification_show');
-Route::get('/Announcement/get_notification_show', 'AnnouncementController@get_notification_show');
+Route::POST('/Announcement/get_notification_show', 'AnnouncementController@get_notification_show');
 Route::get('/Announcement/check_user', 'AnnouncementController@check_user');
 
 
@@ -371,4 +371,10 @@ Route::middleware('auth')->group(function (){
         }
     });
     
+});
+
+
+Route::get('/generatekey', function() {
+
+    return Keygen::length(64)->alphanum()->generate();
 });
