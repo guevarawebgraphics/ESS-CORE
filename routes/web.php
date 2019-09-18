@@ -42,12 +42,26 @@ Route::get('/', function () { // root if the user is login
                     $employers = DB::table('employer')->count();
                     return view('dashboard', compact('employers')); 
                 }
+           
                 $content_status ="1"; // content_status 
                 $content = DB::table('employercontent')   //for showing employer's content
-                                ->orderBy('created_at')
+                                ->orderBy('created_at','DESC')
                                 ->where('employer_id','=',auth()->user()->employer_id)
                                 ->where('content_status','=',$content_status)
-                                ->paginate(5, ['*'], 'content_page'); 
+                                ->paginate(5, ['*'], 'content_page');  
+                if(auth()->user()->user_type_id ===4) {
+                                   /* $count_read = DB::table('read_status')
+                                                    ->where('employee_id','=',auth()->user()->employee_id)
+                                                    ->count();
+                                    $unread_min = count($content) -$count_read;
+                                    if($unread_min < 0) {
+                                        $unread = 0;
+                                    }
+                                    else {
+                                        $unread = $unread_min;
+                                    }*/
+                                                                      
+                }
                 $financial_tips_status ="1"; // content_status 
                 $financial = DB::table('financial_tips')   //for showing employer's content
                                 ->orderBy('created_at')
@@ -204,6 +218,7 @@ Route::post('/employercontent/delete', 'EmployerContentController@delete_content
 Route::post('/employercontent/post_content', 'EmployerContentController@post_content')->name('postemployercontent');
 //For adding status read
 Route::get('/employercontent/change_action','ProfilePictureController@change_action_taken');
+Route::post('/employercontent/linkpreview_show','EmployerContentController@linkpreview')->name('linkpreview');
 
 
 //Payroll Management
