@@ -16,7 +16,7 @@
         </div>      
         <div class="col-md-5">
             <div class="card card-outline shadow p-3 mb-5 bg-white rounded">
-                <div class="card-header text-center text-black" id="ess_login_text" style="font-family: poppins,arial,helvetica neue,sans-serif; font-weight: bold;"><!--{{ __('Login') }}--> <h3>LOGIN</h3></div>
+                <div class="card-header text-center text-black" id="ess_login_text" style="font-family: poppins,arial,helvetica neue,sans-serif; font-weight: bold;"><!--{{ __('Login') }}--> <h3>ESS LOGIN</h3></div>
                 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
