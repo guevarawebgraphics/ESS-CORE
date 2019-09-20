@@ -62,16 +62,16 @@
                 <input type="hidden" id="action" value="">
                 <input type="hidden" id="hidden_id" name="hidden_id" value="">
                 <div class="form-group row">
-                    <label for="content_title" class="control-label col-md-4 text-md-center">Content Title:</label>     
+                    <label for="content_title" class="control-label col-md-4 text-md-center custom-flat-label">Content Title:</label>     
                         <div class="col-md-6">    
-                            <input id="content_title" type="text" class="form-control" name="content_title" placeholder="Content Title"   autofocus>
+                            <input id="content_title" type="text" class="form-control custom-flat-input-modal" name="content_title" placeholder="Content Title"   autofocus>
                             <p class="text-danger" id="error_content_title"></p>
                         </div>        
                 </div>
                 <div class="form-group row">
-                    <label for="content_description" class="control-label col-md-4 text-md-center">Content Description:</label>
+                    <label for="content_description" class="control-label col-md-4 text-md-center custom-flat-label">Content Description:</label>
                         <div class="col-md-12">
-                                <textarea type="text" id="content_description" class="form-control" name="content_description" placeholder="Content Description" autofocus></textarea>
+                                <textarea type="text" id="content_description" class="form-control  custom-flat-input-modal" name="content_description" placeholder="Content Description" autofocus></textarea>
                                 <p class="text-danger" id="error_content_description"></p>
                         </div>
                         <div class="linkpreview-scan" hidden> 
