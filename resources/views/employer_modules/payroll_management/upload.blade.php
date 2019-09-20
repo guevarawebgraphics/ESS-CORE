@@ -153,14 +153,14 @@ elseif(Session::get('payroll_management') == 'delete'){
             <a href="/storage/Documents/templates/{{$employees_template->document_file}}" download>{{$employees_template->document_code}}<div class="float-left mr-3"><i class="fa fa-download"></i></div></a>
             <input type="hidden" id="defaultfile" value="{{$employees_template->document_file}}">
         @endforeach
-        <form class="payroll_form" id="upload_payroll" runat="server">
+        <form class="payroll_form mt-3" id="upload_payroll" runat="server">
             @csrf
 			<div class="col-md-12">
 				<div class="input-group mb-3">
-					<div class="input-group-prepend">
+					{{-- <div class="input-group-prepend">
 						<span class="fa fa-folder input-group-text"></span>
-					</div>
-					<div class="custom-file">
+					</div> --}}
+					<div class="custom-file custom-flat-file">
 						<input type="file" class="custom-file-input" id="payroll_file" name="file" multiple onchange="processSelectedFilesPayrollFile(this)">
 						<label class="custom-file-label" for="validatedCustomFile" id="payroll_filename">Choose file...</label>
 					</div>
@@ -202,22 +202,22 @@ elseif(Session::get('payroll_management') == 'delete'){
             <input type="hidden" id="save_payroll_form_key" name="save_payroll_form_key">
               <div class="col-md-12">
                 <div class="input-group">
-                    <label for="batch_no">Batch No:</label>
+                    <label class="custom-flat-label" for="batch_no">Batch No:</label>
 					<div class="col-md-12"> 
                         
-                        <input class="form-control " type="text" name="batch_no" id="batch_no" placeholder="Batch No">
+                        <input class="form-control custom-flat-input-modal" type="text" name="batch_no" id="batch_no" placeholder="Batch No">
                     </div>  
                     <div class="col-md-6"> 
-                            <label for="Period From">Period From:</label>
-                            <input class="form-control datepicker" type="text" name="period_from" id="period_from" placeholder="MM-DD-YYYY" autocomplete="off">
+                            <label class="custom-flat-label" for="Period From">Period From:</label>
+                            <input class="form-control datepicker custom-flat-input-modal" type="text" name="period_from" id="period_from" placeholder="MM-DD-YYYY" autocomplete="off">
                     </div>
                     <div class="col-md-6"> 
                             <label for="Period To">Period To:</label>
-                            <input class="form-control datepicker" type="text" name="period_to" id="period_to" placeholder="MM-DD-YYYY" autocomplete="off">
+                            <input class="form-control datepicker custom-flat-input-modal" type="text" name="period_to" id="period_to" placeholder="MM-DD-YYYY" autocomplete="off">
                     </div>
-                    <label for="batch_no">Payroll Schedule:</label>
+                    <label class="custom-flat-label" for="batch_no">Payroll Schedule:</label>
                     <div class="col-md-12">
-                        <select class="form-control " id="payroll_schedule" name="payroll_schedule">
+                        <select class="form-control custom-flat-select" id="payroll_schedule" name="payroll_schedule">
                             <option value="">Select Options</option>
                                 <option value="Weekly">Weekly</option>
                                 <option value="Monthly">Monthly</option>
@@ -948,7 +948,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                 <input type="text" name="id" value="`+id+`" hidden="true">
                     <div class="col-md-12">
                         <label for="batch_no" style="font-family: Poppins !important;">`+key.charAt(0).toUpperCase() + key.slice(1)+`:</label>
-                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_1+`" class="form-control" placeholder="`+key+` ">
+                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_1+`" class="form-control custom-flat-input-modal" placeholder="`+key+` ">
                     </div>
                 </div>
                 `);
@@ -959,7 +959,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                 <div class="input-group input-group-sm mb-3">
                     <div class="col-md-12">
                         <label for="batch_no" style="font-family: Poppins !important;">`+key.charAt(0).toUpperCase() + key.slice(1)+`:</label>
-                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_2+`" class="form-control" placeholder="`+key+` ">
+                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_2+`" class="form-control custom-flat-input-modal" placeholder="`+key+` ">
                     </div>
                 </div>
                 `);
