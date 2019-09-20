@@ -1,10 +1,10 @@
 /node_modules
 /public/hot
 /public/storage 
-/public/ckfinder/userfiles/files
 /storage/*.key
 /vendor
 /public/ckfinder/userfiles/files
+/public/ckfinder/userfiles
 .env
 .phpunit.result.cache
 Homestead.json

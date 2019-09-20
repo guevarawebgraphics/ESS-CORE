@@ -55,24 +55,24 @@ elseif(Session::get('my_profile') == 'delete'){
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label for="txtcurpass" class="col-form-label col-md-2">Current Password</label>
+                <label for="txtcurpass" class="col-form-label col-md-2 custom-flat-label">Current Password</label>
                 <div class="col-md-6">
-                    <input type="password" id="txtcurpass" class="form-control" name="curpass">
+                    <input type="password" id="txtcurpass" class="form-control custom-flat-input" name="curpass">
                     <p class="text-danger" id="error-no-cur" hidden>* Field is Required</p>            
                 </div>
             </div>   
             <div class="form-group row">
-                <label for="txtnewpass" class="col-form-label col-md-2">New Password</label>
+                <label for="txtnewpass" class="col-form-label col-md-2 custom-flat-label">New Password</label>
                 <div class="col-md-6">
-                    <input type="password" id="txtnewpass" class="form-control" name="newpass">
+                    <input type="password" id="txtnewpass" class="form-control custom-flat-input" name="newpass">
                     <p class="text-danger" id="error-no-new" hidden></p>
                     {{-- <p class="text-danger" id="error-length" hidden>* Maximum of 6 characters</p> --}}
                 </div>
             </div>  
             <div class="form-group row">
-                <label for="txtconpass" class="col-form-label col-md-2">Confirm Password</label>
+                <label for="txtconpass" class="col-form-label col-md-2 custom-flat-label">Confirm Password</label>
                 <div class="col-md-6">
-                    <input type="password" id="txtconpass" class="form-control" name="conpass">
+                    <input type="password" id="txtconpass" class="form-control custom-flat-input" name="conpass">
                     <p class="text-danger" id="error-no-newcon" hidden></p> 
                     {{-- <p class="text-danger" id="error-notmatch" hidden>* Confirm Password not match</p> --}}
                 </div>

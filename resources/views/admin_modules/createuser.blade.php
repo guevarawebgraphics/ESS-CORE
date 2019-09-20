@@ -94,43 +94,45 @@ $delete = 'disabled';
                     @csrf
 
                     <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                        <label for="name" class="col-md-6 col-form-label text-md-left custom-flat-label">{{ __('Name') }}</label>
                         <input type="hidden" id="hidden_id">
                         <input type="hidden" id="action" value="add">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                                </div> --}}
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }} custom-flat-input-modal" placeholder="Name" name="name" value="{{ old('name') }}" required autofocus>
                             </div>
                             <p class="text-danger" id="error-no-name" hidden>* Field is Required</p>
                         </div>
                     </div>
                     @if(auth()->user()->user_type_id == 1)
                     <div class="form-group row">
-                        <label for="user_type" class="col-md-4 col-form-label text-md-right">Employer</label>
-                        <div class="col-md-6">
+                        
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
+                                </div> --}}
+                                <label for="user_type" class="col-md-6 col-form-label text-md-left custom-flat-label">Employer</label>
                                 <input type="hidden" name = "hidden_account_id" id = "hidden_account_id" >
-                                <select id="cmbEmployer" class="form-control employer-select" name="cmbEmployer" style="display:none !important;width:90%;"></select>
+                                <select id="cmbEmployer" class="form-control employer-select " name="cmbEmployer" style="display:none !important;width:100%;"></select>
                             </div>
                             <p class="text-danger" id="error-no-employer" hidden>* Select an Employer</p>
                         </div>
                     </div>
                     @endif
                     <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('User ID / ESS ID') }}</label>
+                        
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="txtusername" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('email') }}" required>
+                                </div> --}}
+                                <label for="email" class="col-md-6 col-form-label text-md-left custom-flat-label">{{ __('User ID / ESS ID') }}</label>
+                                <input id="txtusername" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }} custom-flat-input-modal" name="username" value="{{ old('email') }}" required>
                             </div>
                             <p class="text-danger" id="error-taken" hidden>* Username already taken</p>
                             <p class="text-danger" id="error-no-username" hidden>* Field is Required</p>
@@ -143,28 +145,30 @@ $delete = 'disabled';
                     </div>                 
 
                     <div class="form-group row">
-                        <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type</label>
-                        <div class="col-md-6">
+                        
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select id="cmbUser" class="form-control" name="cmbUser_type"></select>
+                                </div> --}}
+                                <label for="user_type" class="col-md-6 col-form-label text-md-left custom-flat-label">User Type</label>
+                                <select id="cmbUser" class="form-control custom-flat-select" name="cmbUser_type"></select>
                             </div>
                         </div>
                     </div>
 
                     <div id="password_field">
                         <div class="form-group row">
-                            <label for="password"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            
 
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-lock input-group-text"></span>
-                                    </div>
-                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                    </div> --}}
+                                    <label for="password"
+                                class="col-md-6 col-form-label text-md-left custom-flat-label">{{ __('Password') }}</label>
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} custom-flat-input-modal" placeholder="Password" name="password" required>
                                 </div>
                                 <p class="text-danger" id="error-no-pass" hidden>* Field is Required | Password must be 9 characters</p>
                                 @if ($errors->has('password'))
@@ -176,15 +180,16 @@ $delete = 'disabled';
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm"
-                                class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            
 
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-lock input-group-text"></span>
-                                    </div>
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                    </div> --}}
+                                    <label for="password-confirm"
+                                class="col-md-6 col-form-label text-md-left custom-flat-label">{{ __('Confirm Password') }}</label>
+                                    <input id="password-confirm" type="password" class="form-control custom-flat-input-modal" name="password_confirmation" placeholder="Confirm Password" required>
                                 </div>
                                 <p class="text-danger" id="error-no-repass" hidden>* Field is Required | Must be same as Password</p>
                             </div>
@@ -216,23 +221,24 @@ $delete = 'disabled';
                     <input type="hidden" id="hidden_id_password">
 
                     <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('User ID / ESS ID') }}</label>
+                        <label for="password" class="col-md-4 col-form-label text-md-left custom-flat-label">{{ __('User ID / ESS ID') }}</label>
 
                         <div class="col-md-6">
-                            <input id="username" type="text" class="form-control" name="username" required disabled>
+                            <input id="username" type="text" class="form-control custom-flat-input-modal-disabled" name="username" required disabled>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="password"
-                            class="col-md-4 col-form-label text-md-right">{{ __('New Password') }}</label>
+                        
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-lock input-group-text"></span>
-                                </div>
-                                <input id="newpassword" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                </div> --}}
+                                <label for="password"
+                            class="col-md-6 col-form-label text-md-left custom-flat-label">{{ __('New Password') }}</label>
+                                <input id="newpassword" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} custom-flat-input-modal" name="password" autofocus required>
                             </div>
                             <p class="text-danger" id="error-no-pass-reset" hidden>
                                 <ul id="no-pass-reset" class="text-danger">
@@ -248,15 +254,16 @@ $delete = 'disabled';
                     </div>
 
                     <div class="form-group row">
-                        <label for="password-confirm"
-                            class="col-md-4 col-form-label text-md-right">{{ __('Confirm New Password') }}</label>
+                        
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-lock input-group-text"></span>
-                                </div>
-                                <input id="newpassword-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                </div> --}}
+                                <label for="password-confirm"
+                            class="col-md-6 col-form-label text-md-left custom-flat-label">{{ __('Confirm New Password') }}</label>
+                                <input id="newpassword-confirm" type="password" class="form-control custom-flat-input-modal" name="password_confirmation" required>
                             </div>
                             <p class="text-danger" id="error-no-repass-reset" hidden>
                                     <ul id="no-repass-reset" class="text-danger">
@@ -286,7 +293,7 @@ $delete = 'disabled';
         </div>
         <div class="modal-body">
           <input type="text" id="account_id" hidden>
-          <select class="form-control col-md-4" name="AccountStatus" id="AccountStatus">
+          <select class="form-control col-md-12 custom-flat-select" name="AccountStatus" id="AccountStatus">
             <option value="" selected>Changed Status</option>
             <option value="1">Active</option>
             <option value="2">In-Active</option>
@@ -447,12 +454,17 @@ $delete = 'disabled';
             $('#error-no-employer').attr("hidden", true);
         });
 
+        $('#createUserModal').on('hidden.bs.modal', function (e) {
+            $('#txtusername').addClass('custom-flat-input');
+            $('#txtusername').removeClass('custom-flat-input-disabled');
+        });
         //EDIT USER TYPE
         var info;
         var olduserName;
         $(document).on("click", "#edit_user", function () {
             var id = $(this).data("add");
-
+            $('#txtusername').removeClass('custom-flat-input');
+            $('#txtusername').addClass('custom-flat-input-disabled');
             $('#name').val("");
             $('#txtusername').val("");
             $('#password').val("");

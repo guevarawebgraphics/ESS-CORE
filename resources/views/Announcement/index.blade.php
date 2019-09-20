@@ -100,17 +100,17 @@ elseif(Session::get('send_announcement') == 'delete'){
             {{-- CSRF --}}
                 @csrf
                 <div class="form-group row">
-                <label for="announcement_title" class="control-label col-md-4 text-md-center">Announcement Title:</label>
-                    <div class="col-md-6">
-                        
-                        <input id="announcement_title" type="text" class="form-control" name="announcement_title" placeholder="Announcement Title"   autofocus>
+                
+                    <div class="col-md-12">
+                        <label for="announcement_title" class="control-label col-md-6 text-md-left custom-flat-label">Announcement Title:</label>
+                        <input id="announcement_title" type="text" class="form-control custom-flat-input-modal" name="announcement_title" placeholder="Announcement Title"   autofocus>
                                 <p class="text-danger" id="error_announcement_title"></p>
                     </div>
                 </div>
                 <div class="form-group row">
-                <label for="announcement_description" class="control-label col-md-4 text-md-center">Announcement Description:</label>
+                
                     <div class="col-md-12">
-                        
+                            <label for="announcement_description" class="control-label col-md-4 text-md-left custom-flat-label">Announcement Description:</label>
                         <textarea id="announcement_description" type="text" class="form-control" name="announcement_description" placeholder="Announcement Description" autofocus></textarea>
                                 <p class="text-danger" id="error_annoucement_description"></p>
                     </div>
@@ -120,9 +120,10 @@ elseif(Session::get('send_announcement') == 'delete'){
                 </div>
                 
                     <div class="form-group row">
-                            <label for="employer_id" class="control-label col-md-4 text-md-center">Select Employer:</label>
+                            
 
-                                <div class="col-md-8">
+                                <div class="col-md-12">
+                                        <label for="employer_id" class="control-label col-md-4 text-md-left custom-flat-label">Select Employer:</label>
                                     <select class="form-control select2" multiple="multiple" data-placeholder="Select a Employers" style="width: 100%;" name="employer_id[]" id="employer_id">
                                         @foreach($employers as $employer)
                                             <option value="{{$employer->id}}">{{$employer->business_name}}</option>
