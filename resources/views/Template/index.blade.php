@@ -102,25 +102,25 @@ elseif(Session::get('manage_docs') == 'delete'){
                 {{-- CSRF --}}
                     @csrf
                     <div class="form-group row">
-                    <label for="document_code" class="control-label col-md-4 text-md-center">Document Code:</label>
+                    <label for="document_code" class="control-label col-md-4 text-md-center custom-flat-label">Document Code:</label>
                         <div class="col-md-6">
                             
-                            <input id="document_code" type="text" class="form-control" name="document_code" placeholder="Document Code"   autofocus>
+                            <input id="document_code" type="text" class="form-control custom-flat-input" name="document_code" placeholder="Document Code"   autofocus>
                                     <p class="text-danger" id="error_document_code"></p>
                         </div>
                     </div>
                     <div class="form-group row">
-                    <label for="document_description" class="control-label col-md-4 text-md-center">Document Description:</label>
+                    <label for="document_description" class="control-label col-md-4 text-md-center custom-flat-label">Document Description:</label>
                         <div class="col-md-6">
                             
-                            <textarea id="document_description" type="text" class="form-control" name="document_description" placeholder="Document Description" autofocus></textarea>
+                            <textarea id="document_description" type="text" class="form-control custom-flat-input" name="document_description" placeholder="Document Description" autofocus></textarea>
                                     <p class="text-danger" id="error_document_description"></p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="employer" class="col-md-4 text-md-center">Select Employer</label>
+                        <label for="employer" class="col-md-4 text-md-center custom-flat-label">Select Employer</label>
                         <div class="col-md-6">
-                            <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
+                            <select class="form-control select2 custom-flat-select" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
                                 <option selected value="0">--Select Employer</option>
                                     @foreach($employers as $employer)
                                         <option value="{{$employer->id}}">{{$employer->business_name}}</option>
@@ -130,11 +130,11 @@ elseif(Session::get('manage_docs') == 'delete'){
                         </div>
                     </div>
                     <div class="form-group row">
-                            <label for="document_file" class="col-md-4 text-md-center">Upload Document Template:</label>
+                            <label for="document_file" class="col-md-4 text-md-center custom-flat-label">Upload Document Template:</label>
                             <div class="col-md-6">
                                 
                                     <div class="custom-file">
-                                        <input type="file" class="form-control-file" id="document_file" name="document_file">
+                                        <input type="file" class="form-control-file custom-flat-file" id="document_file" name="document_file">
                                     </div>
                                     <input type="text" class="form-control disabled" id="document_file_name" name="document_file_name" hidden="true" disabled="true">
                             </div>
