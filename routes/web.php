@@ -370,6 +370,21 @@ Route::middleware('auth')->group(function (){
             return redirect('404');
         }
     });
+
+
+    /**
+     * @ Under Construction Page
+     * */
+    Route::get('/underconstruction', function(Request $request) {
+        $http_response = $request->session()->pull('code');
+        if($http_response == 'under_construction'){
+            return view('errors.under_construction');
+        }
+        else {
+            return redirect('404');
+        }
+        
+    });
     
 });
 

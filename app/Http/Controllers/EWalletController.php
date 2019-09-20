@@ -22,8 +22,10 @@ class EWalletController extends Controller
         });     
     }
     //show index 
-    public function index()
+    public function index(Request $request)
     {          
-        return view('employee_modules.ewallet.index');
+        $request->session()->flash('code', 'under_construction');
+        return redirect('underconstruction')->send();
+        //return view('employee_modules.ewallet.index');
     }
 }

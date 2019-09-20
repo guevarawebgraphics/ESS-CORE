@@ -1,4 +1,13 @@
  $(document).ready(function (){
+     /*
+     *@ NProgress Loading
+     **/
+    NProgress.start();
+    NProgress.set(0.6);     // Sorta same as .start()
+    NProgress.configure({ easing: 'ease', speed: 600 });
+    NProgress.configure({ showSpinner: false });//Turn off loading 
+    NProgress.set(0.8);
+    NProgress.done(true);
       /*
       * @ Announcement Notification Pusher
       */
@@ -112,9 +121,10 @@
                         }
                     });
                     var announcement_des_strip = data[i].announcement_description.replace(/"/g, "'");
+                    var profile_picture = data[i].profile_picture;
                     html += '<a class="dropdown-item show_announcement_notification" class="show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'"><!-- Message Start -->'+
                             '<div class="media">'+
-                            '<img alt="User Avatar" style="heigth: 50px; width: 50px;" class="img-size-50 mr-3 img-circle" src="/storage/profile_picture/'+data[i].profile_picture+'">'+
+                            '<img alt="User Avatar" style="heigth: 50px; width: 50px;" class="img-size-50 mr-3 img-circle" src="'+(profile_picture.includes("ESS_male1.png") ? '/storage/profile_picture/ESS_DEFAULT_PICTURE/'+data[i].profile_picture : '/storage/profile_picture/'+data[i].profile_picture)+'">'+
                             '<div class="media-body">'+
                             '<h3 class="dropdown-item-title">'+data[i].announcement_title+'<span class="float-right text-sm text-danger" id="unread_notifcation"></span></h3>'+
                             // '<p class="text-sm">'+data[i].announcement_description+'</p>'+

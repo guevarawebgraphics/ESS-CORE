@@ -63,7 +63,7 @@
 	{{-- <script src="{{ asset('/ckeditor/ckfinder/core/connector/php/connector') }}"></script> --}}
 	<!--ionic icons-->
 	<link href="{{ asset('Ionicons/ionicons.min.css') }}" rel="stylesheet">
-	<link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+	<link rel="stylesheet" href="{{ asset('/nprogress/nprogress.css') }}">
 	{{-- Momentjs --}}
 	<script src="{{ asset('js/moment.min.js') }}"></script> 
 <!---->
@@ -71,7 +71,7 @@
 	@if(Auth::check())
 	<script src="{{ asset('js/scripts.js') }}"></script> 
 	<script src="{{ asset('js/scripts-j.js') }}"></script>
-	<script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+	<script src="{{ asset('/nprogress/nprogress.js') }}"></script>
 	<!--Upload Image-->
 	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
 	@endif
