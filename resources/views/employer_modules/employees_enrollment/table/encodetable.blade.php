@@ -2,7 +2,8 @@
 <table class="table table-bordered table-striped" id="employee_table">
         <thead>
             <tr>
-                <th>Employee No</th>
+                <th>Employee No</th> 
+                <th>ESS ID</th>
                 <th>Employee Name</th>
                 <th>Department</th>
                 <th>Position</th>
@@ -15,7 +16,8 @@
             @if(count($employee_info) > 0)
                 @foreach($employee_info as $info)
                 <tr>
-                    <td>{{$info->employee_no}}</td>
+                    <td>{{$info->employee_no}}</td> 
+                    <td>{{$info->ess_id}}</td>
                     <td>{{ucfirst($info->lastname) . ", " . ucfirst($info->firstname) . " " . ucfirst($info->middlename)}}</td>
                     <td>{{ucfirst($info->department)}}</td>
                     <td>{{ucfirst($info->position)}}</td>

@@ -144,9 +144,8 @@
 
         //Save content 
         var editortwo = CKEDITOR.replace('content_description');
-        CKFinder.setupCKEditor( editortwo );  
-        editortwo.on("instanceReady", function(){                    
-            this.document.on("keyup", function(){
+        CKFinder.setupCKEditor( editortwo );    
+        editortwo.on('change',function(){ 
             $.ajax({
                         headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         url: "{{ route('linkpreview') }}",
@@ -176,8 +175,8 @@
                         }
                     });              
         });
-        }); 
         $(document).on("click", "#add_link", function(){ 
+               toastr.remove()
                var values  = {
                    title :  $('#title_preview').html(),
                    des:  $('#des_preview').html(),
@@ -191,8 +190,10 @@
                                           <p class="card-text" id="des_preview_show">${values.des}</p>
                                           <a href="${values.link}" class="card-link" id="link_preview_show">Learn More</a> 
                                         </div>
-                                </div>`); 
-               $('.linkpreview-scan').attr('hidden',true);
+                                </div>`);  
+                                toastr.success(`Link Preview Added`, 'Success')
+              // $('.linkpreview-scan').attr('hidden',true); 
+             
         });
   
         $(document).on("click", "#SaveContent", function(){ 

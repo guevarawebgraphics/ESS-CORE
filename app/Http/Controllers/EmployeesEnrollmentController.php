@@ -141,7 +141,8 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.citytown',
                                     'employee_personal_information.barangay',
                                     'employee_personal_information.province',
-                                    'employee_personal_information.zipcode')
+                                    'employee_personal_information.zipcode',
+                                    'employer_and_employee.ess_id')
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->latest('employer_and_employee.created_at')
                             ->get();
@@ -194,7 +195,8 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.citytown',
                                     'employee_personal_information.barangay',
                                     'employee_personal_information.province',
-                                    'employee_personal_information.zipcode')
+                                    'employee_personal_information.zipcode',
+                                    'employer_and_employee.ess_id')
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->latest('employer_and_employee.created_at')
                             ->get();
