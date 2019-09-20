@@ -105,7 +105,7 @@ elseif(Session::get('manage_docs') == 'delete'){
                     <label for="document_code" class="control-label col-md-4 text-md-center custom-flat-label">Document Code:</label>
                         <div class="col-md-6">
                             
-                            <input id="document_code" type="text" class="form-control custom-flat-input" name="document_code" placeholder="Document Code"   autofocus>
+                            <input id="document_code" type="text" class="form-control custom-flat-input-modal" name="document_code" placeholder="Document Code"   autofocus>
                                     <p class="text-danger" id="error_document_code"></p>
                         </div>
                     </div>
@@ -113,7 +113,7 @@ elseif(Session::get('manage_docs') == 'delete'){
                     <label for="document_description" class="control-label col-md-4 text-md-center custom-flat-label">Document Description:</label>
                         <div class="col-md-6">
                             
-                            <textarea id="document_description" type="text" class="form-control custom-flat-input" name="document_description" placeholder="Document Description" autofocus></textarea>
+                            <textarea id="document_description" type="text" class="form-control custom-flat-input-modal" name="document_description" placeholder="Document Description" autofocus></textarea>
                                     <p class="text-danger" id="error_document_description"></p>
                         </div>
                     </div>
