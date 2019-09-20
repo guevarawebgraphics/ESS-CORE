@@ -104,7 +104,7 @@
         </div>
         <div class="modal-body">
           <input type="text" id="account_id" hidden>
-          <select class="form-control col-md-4" name="AccountStatus" id="AccountStatus">
+          <select class="form-control col-md-4 custom-flat-select" name="AccountStatus" id="AccountStatus">
             <option value="" selected>Changed Status</option>
             <option value="1">Active</option>
             <option value="2">In-Active</option>
