@@ -87,7 +87,8 @@ elseif(Session::get('manage_docs') == 'delete'){
     </div>
 </div>
 
-<!-- Add System Notification -->
+<!-- Add System Notification --> 
+<!-- -->
 <div class="modal fade" id="AddTemplateModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content card-custom-blue card-outline">
