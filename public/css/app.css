@@ -109,6 +109,78 @@ label {
   background-color: transparent !important;
 }
 
+/**
+* @ Custom Flat Design Design
+**/
+
+.custom-flat-input {
+  outline: 0 !important;
+  background: #f2f2f2 !important;
+  width: 100% !important;
+  border: 0 !important;
+  margin: 0 0 5px !important;
+  padding: 15px !important;
+  box-sizing: border-box !important;
+  font-size: 14px !important;
+  line-height: 1.2;
+}
+
+.custom-flat-select {
+  outline: 0 !important;
+  background: #f2f2f2 !important;
+  width: 100% !important;
+  height: 50px !important;
+  border: 0 !important;
+  margin: 0px 0 12px 0 !important;
+  box-sizing: border-box !important;
+  font-size: 14px !important;
+  line-height: 1.2;
+}
+
+.custom-flat-file {
+  outline: 0 !important;
+  background: #f2f2f2 !important;
+  width: 100% !important;
+  height: 50px !important;
+  border: 0 !important;
+  margin: 0px 0 12px 0 !important;
+  box-sizing: border-box !important;
+  font-size: 14px !important;
+  line-height: 1.2;
+}
+
+.custom-flat-input-error {
+  border: 1 !important;
+  border-color: 1px solid #e3342f !important;
+}
+
+.btn-custom-flat {
+  margin-top: -25px;
+  border-radius: 3px !important;
+}
+
+.custom-flat-label {
+  font-size: 16px !important;
+  color: #555 !important;
+  text-transform: capitalize !important;
+}
+
+/**
+* @ NProgress
+**/
+
+#nprogress .bar {
+  height: 4px !important;
+}
+
+#nprogress .bar {
+  background: #129D9E !important;
+}
+
+#nprogress .spinner-icon {
+  display: none !important;
+}
+
 @-webkit-keyframes half-circle-spinner-animation {
   0% {
     -webkit-transform: rotate(0deg);
