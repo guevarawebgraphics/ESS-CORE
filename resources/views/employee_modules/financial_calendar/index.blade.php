@@ -92,27 +92,30 @@ elseif(Session::get('financial_calendar') == 'delete'){
                 @csrf
                 <input type="text" name="event_id" id="event_id" hidden="true">
                 <div class="form-group row">
-                <label>Description</label>
+                
                 <div class="col-md-12">
                             
                     <div class="input-group mb-3">
-                        <input id="cash_now_description" type="text" class="form-control" name="cash_now_description" placeholder="Description">
+                        <label class="custom-flat-label">Description</label>
+                        <input id="cash_now_description" type="text" class="form-control custom-flat-input-modal" name="cash_now_description" placeholder="Description">
                     </div>
                     <p class="text-danger" id="error_cash_now_description"></p>
                 </div>
-                <label>Amount</label>
+                
                 <div class="col-md-12">
                             
                     <div class="input-group mb-3">
-                        <input id="cash_now_amount" type="number" class="form-control" name="cash_now_amount" placeholder="0.00">
+                        <label class="custom-flat-label">Amount</label>
+                        <input id="cash_now_amount" type="number" class="form-control custom-flat-input-modal" name="cash_now_amount" placeholder="0.00">
                     </div>
                     <p class="text-danger" id="error_cash_now_amount"></p>
                 </div>
-                <label>Date</label>
+                
                 <div class="col-md-12">
                             
                     <div class="input-group mb-3">
-                        <input id="cash_now_date" type="text" class="form-control fc-date" name="cash_now_date" placeholder="MM/DD/YYYY">
+                        <label class="custom-flat-label">Date</label>
+                        <input id="cash_now_date" type="text" class="form-control fc-date custom-flat-input-modal" name="cash_now_date" placeholder="MM/DD/YYYY">
                     </div>
                     <p class="text-danger" id="error_cash_now_date"></p>
                 </div>
@@ -143,27 +146,28 @@ elseif(Session::get('financial_calendar') == 'delete'){
                 @csrf
                 <input type="text" name="collection_event_id" id="collection_event_id" hidden="true">
                 <div class="form-group row">
-                    <label>Cash Source</label>
+                    
                     <div class="col-md-12">
                                 
                         <div class="input-group mb-3">
-                            <input id="collection_cash_source" type="text" class="form-control" name="collection_cash_source" placeholder="Cash Source">
+                            <label class="custom-flat-label">Cash Source</label>
+                            <input id="collection_cash_source" type="text" class="form-control custom-flat-input-modal" name="collection_cash_source" placeholder="Cash Source">
                         </div>
                         <p class="text-danger" id="error_collection_cash_source"></p>
                     </div>
-                    <label>Collection Amount</label>
+                    
                     <div class="col-md-12">
-                                
+                        <label class="custom-flat-label">Collection Amount</label>     
                         <div class="input-group mb-3">
-                            <input id="collection_amount" type="number" class="form-control" name="collection_amount" placeholder="0.00">
+                            <input id="collection_amount" type="number" class="form-control custom-flat-input-modal" name="collection_amount" placeholder="0.00">
                         </div>
                         <p class="text-danger" id="error_collection_amount"></p>
                     </div>
-                    <label>Date</label>
+                    
                     <div class="col-md-12">
-                                
+                        <label class="custom-flat-label">Date</label>            
                         <div class="input-group mb-3">
-                            <input id="collection_date" type="text" class="form-control fc-date" name="collection_date" placeholder="MM/DD/YYYY">
+                            <input id="collection_date" type="text" class="form-control fc-date custom-flat-input-modal" name="collection_date" placeholder="MM/DD/YYYY">
                         </div>
                         <p class="text-danger" id="error_collection_date"></p>
                     </div>
@@ -193,27 +197,27 @@ elseif(Session::get('financial_calendar') == 'delete'){
                 @csrf
                 <input type="text" name="payment_event_id" id="payment_event_id" hidden="true">
                 <div class="form-group row">
-                    <label>Payment Source</label>
+                    
                     <div class="col-md-12">
-                                
+                        <label>Payment Source</label>            
                         <div class="input-group mb-3">
-                            <input id="payment_source" type="text" class="form-control" name="payment_source" placeholder="Payment Source">
+                            <input id="payment_source" type="text" class="form-control custom-flat-input-modal" name="payment_source" placeholder="Payment Source">
                         </div>
                         <p class="text-danger" id="error_payment_source"></p>
                     </div>
-                    <label>Payment Amount</label>
+                    
                     <div class="col-md-12">
-                                
+                        <label>Payment Amount</label>                     
                         <div class="input-group mb-3">
-                            <input id="payment_amount" type="number" class="form-control" name="payment_amount" placeholder="0.00">
+                            <input id="payment_amount" type="number" class="form-control custom-flat-input-modal" name="payment_amount" placeholder="0.00">
                         </div>
                         <p class="text-danger" id="error_payment_amount"></p>
                     </div>
-                    <label>Date</label>
+                    
                     <div class="col-md-12">
-                                
+                        <label>Date</label>        
                         <div class="input-group mb-3">
-                            <input id="payment_date" type="text" class="form-control fc-date" name="payment_date" placeholder="MM/DD/YYYY">
+                            <input id="payment_date" type="text" class="form-control fc-date custom-flat-input-modal" name="payment_date" placeholder="MM/DD/YYYY">
                         </div>
                         <p class="text-danger" id="error_payment_date"></p>
                     </div>

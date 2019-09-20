@@ -97,7 +97,7 @@ Route::get('/', function () { // root if the user is login
 Auth::routes();
 /*Guard route*/
 Route::get('/logout', function(){
-    return abort(404);
+    return view('auth.login');
 });
 //Route::get('/home', 'HomeController@index')->name('home');
 
