@@ -142,7 +142,7 @@ elseif(Session::get('create_profile') == 'delete'){
                                         <span class="fa fa-globe input-group-text"></span>
                                     </div> --}}
                                     <label for="address_country" class="col-md-12 text-md-left custom-flat-label">Country:</label>
-                                    <select id="address_country" name="address_country" class="form-control custom-flat-select" disabled>
+                                    <select id="address_country" name="address_country" class="form-control custom-flat-select">
                                             {{-- <option value="" selected>Choose Country...</option> --}}
                                             <option>Philippines</option>
                                     </select>
