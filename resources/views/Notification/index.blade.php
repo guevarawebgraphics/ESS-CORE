@@ -105,14 +105,14 @@ elseif(Session::get('system_notifications') == 'delete'){
                     <label for="notification_title" class="control-label col-md-4 text-md-center custom-flat-label">Notification Title:</label>
                         <div class="col-md-6">
                             
-                            <input id="notification_title" type="text" class="form-control custom-flat-input" name="notification_title" placeholder="Notification Title"   autofocus>
+                            <input id="notification_title" type="text" class="form-control custom-flat-input-modal" name="notification_title" placeholder="Notification Title"   autofocus>
                                     <p class="text-danger" id="error_notification_title"></p>
                         </div>
                     </div>
                     <div class="form-group">
                     <label for="notification_description" class="control-label col-md-4 text-md-center">Notification Description:</label>
                         <div class="col-md-12">
-                               <textarea id="notification_message" class="form-control custom-flat-input" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>
+                               <textarea id="notification_message" class="form-control custom-flat-input-modal" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>
                                     <p class="text-danger" id="error_notification_message"></p>
                         </div>
                     </div>
