@@ -232,7 +232,8 @@ $(document).ready(function (){
     });
 
 
-    $('#btn_addannouncement').click(function (){
+    $('#btn_addannouncement').click(function (){ 
+        $('.cke_button__html5video').css("display","none"); 
         $('#annoucement_form')[0].reset();
         $('#annoucement_form').attr('action', '/Announcement/store_announcement');
         $('#AddAnnouncementModal').find('#title_modal').text('Add Announcement');
