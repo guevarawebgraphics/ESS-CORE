@@ -129,8 +129,11 @@
                 <div class="info-box">
                   <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
                   <div class="info-box-content ">
-                    <span class="info-box-text">Employer Contents</span>
-                    <span class="info-box-number">{{count($content)}}</span>
+                    <span class="info-box-text">Employer Contents 
+                     {{-- <span class="badge badge-light" id="unread-indicator">{{$unread}}</span> --}}
+                    </span> 
+                    <span class="info-box-number">{{count($content)}}</span> 
+           
                   </div>
                   <!-- /.info-box-content -->
                 </div>
@@ -173,7 +176,8 @@
                         <div class="container-fluid">
                           <h4> {{$contents->content_title}} </h4>
                           <div class="box-body img-thumbnail" id="content-{{$contents->id}}-body" style="display:none;overflow-wrap: break-word;">
-                              {!! $contents->content_description !!}
+                              {!! $contents->content_description !!} 
+                        
                           </div>
                         </div>
                     </div>
