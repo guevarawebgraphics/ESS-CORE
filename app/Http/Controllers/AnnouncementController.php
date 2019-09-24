@@ -183,7 +183,8 @@ class AnnouncementController extends Controller
             //                     ->latest()
             //                     //->take(6)
             //                     ->get();
-            $Announcement1 = DB::table('announcement')
+            $Announcement1 = DB::table('employer_and_employee')
+                            ->join('announcement', 'announcement.employer_id', '=',  'employer_and_employee.employer_id')
                             ->join('employer', 'employer.id', '=', 'announcement.employer_id')
                             ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
                             ->select('announcement.id',
@@ -193,9 +194,11 @@ class AnnouncementController extends Controller
                             'announcement.created_at',
                             'announcement.updated_at',
                             'user_picture.profile_picture')
-                            ->where('announcement.employer_id', '=', auth()->user()->employer_id)
+                            //->where('announcement.employer_id', '=', auth()->user()->employer_id)
                             ->where('announcement.announcement_status', '=', '1')
                             ->where('announcement.announcement_type', '=', '3')
+                            ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+                            ->latest()
                             ->get();
         }
         else{

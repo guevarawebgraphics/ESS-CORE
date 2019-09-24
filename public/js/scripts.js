@@ -67,7 +67,7 @@
         $.ajax({
             type: 'POST',
             url: '/Announcement/update_notification_show',
-            //async: false,
+            async: false,
             data: {
                 notification_id: announcement_id,
                 '_token': $('input[name=_token]').val(),
@@ -105,7 +105,7 @@
                     $.ajax({
                         type: 'POST',
                         url: '/Announcement/get_notification_show',
-                        //async: false,
+                        async: false,
                         dataType: 'json',
                         data: {
                             '_token': $('input[name=_token]').val(), 
