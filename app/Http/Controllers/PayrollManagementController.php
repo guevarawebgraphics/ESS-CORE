@@ -656,7 +656,8 @@ class PayrollManagementController extends Controller
                                     ->join('employee', 'payroll_register_details.employee_no', '=', 'employee.employee_no')
                                     ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
                                     ->join('payrollregister', 'payroll_register_details.PayRegisterId', '=', 'payrollregister.id')
-                                    ->where('payroll_register_details.PayRegisterId', '=', $request->input('id'))
+                                    ->where('payroll_register_details.PayRegisterId', '=', $request->id)
+                                    ->where('employee.created_by', '=', auth()->user()->id)
                                     ->select('employee_personal_information.email_add',
                                             'employee_personal_information.lastname',
                                             'employee_personal_information.firstname',
