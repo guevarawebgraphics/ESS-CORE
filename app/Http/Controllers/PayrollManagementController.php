@@ -334,7 +334,7 @@ class PayrollManagementController extends Controller
         // ]);
 
         $get_payroll_register_details_preview = DB::table('payroll_register_details_preview')
-                            ->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
+                            //->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
                             ->where('payroll_register_details_preview.created_by', '=', auth()->user()->id)
                             ->select('payroll_register_details_preview.id',
                                     'payroll_register_details_preview.employee_no',
@@ -374,7 +374,8 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
                                     'payroll_register_details_preview.account_status_datetime',
-                                    'employee.payroll_schedule')
+                                    //'employee.payroll_schedule'
+                                    )
                                     ->get();
          return response()->json([
                         'status' => 'false',
@@ -395,7 +396,7 @@ class PayrollManagementController extends Controller
             'period_to' => 'required'
         ]);
         $get_payroll_register_details_preview = DB::table('payroll_register_details_preview')
-                            ->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
+                            //->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
                             ->where('payroll_register_details_preview.created_by', '=', auth()->user()->id)
                             ->select('payroll_register_details_preview.id',
                                     'payroll_register_details_preview.employee_no',
@@ -435,7 +436,8 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
                                     'payroll_register_details_preview.account_status_datetime',
-                                    'employee.payroll_schedule')
+                                    //'employee.payroll_schedule'
+                                    )
                                     ->get();
 
          if($get_payroll_register_details_preview->count() > 0){
