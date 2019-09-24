@@ -58,28 +58,30 @@ elseif(Session::get('create_profile') == 'delete'){
             <!-- CSRF Token -->
             @csrf
           <div class="card-body">
-                <label>Business Information</label>
+                <label class="custom-flat-label">Business Information</label>
                 <div class="form-group row mt-4">
-                        <label for="business_name" class="control-label col-md-2 text-md-center">Business Name:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="business_name" type="text" class="form-control" name="business_name" placeholder="Business Name"   autofocus>
+                                </div> --}}
+                                <label for="business_name" class="control-label col-md-12 text-md-left custom-flat-label">Business Name:</label>
+                                <input id="business_name" type="text" class="form-control custom-flat-input " name="business_name" placeholder="Business Name"   autofocus>
                             </div>
                             <p class="text-danger" id="error_business_name"></p>
                             
                         </div>
-                        <label for="accountname" class="col-md-2 text-md-center">Account Name:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="accountname" type="text" class="form-control" name="accountname" placeholder="Account Name"  autofocus>
+                                </div> --}}
+                                <label for="accountname" class="col-md-12 text-md-left custom-flat-label">Account Name:</label>
+                                <input id="accountname" type="text" class="form-control custom-flat-input" name="accountname" placeholder="Account Name"  autofocus>
                             </div>
                             <p class="text-danger" id="error_accountname"></p>
                             
@@ -115,30 +117,32 @@ elseif(Session::get('create_profile') == 'delete'){
                 </div>
                 {{-- Business Address Row --}}
                 <hr>
-                <label>Business Address</label>
+                <label class="custom-flat-label">Business Address</label>
                 <div class="form-group row mt-4">
                    
-                        <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit"  autofocus>
+                                </div> --}}
+                                <label for="address_unit" class="col-md-12 text-md-left custom-flat-label">Unit:</label>
+                                <input id="address_unit" type="text" class="form-control custom-flat-input" name="address_unit" placeholder="Address Unit"  autofocus>
                             </div>
                             <p class="text-danger" id="error_address_unit"></p>
                             
                         </div>
 
-                        <label for="address_country" class="col-md-2 text-md-center">Country:</label>
-                            <div class="col-md-4">
+                        
+                            <div class="col-md-5">
                                 
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-globe input-group-text"></span>
-                                    </div>
-                                    <select id="address_country" name="address_country" class="form-control">
+                                    </div> --}}
+                                    <label for="address_country" class="col-md-12 text-md-left custom-flat-label">Country:</label>
+                                    <select id="address_country" name="address_country" class="form-control custom-flat-select">
                                             {{-- <option value="" selected>Choose Country...</option> --}}
                                             <option>Philippines</option>
                                     </select>
@@ -147,14 +151,15 @@ elseif(Session::get('create_profile') == 'delete'){
                                     
                             </div>
 
-                        <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
-                            <div class="col-md-4">
+                        
+                            <div class="col-md-5">
                                 
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-globe input-group-text"></span>
-                                    </div>
-                                    <select id="address_cityprovince" name="address_cityprovince" class="form-control">
+                                    </div> --}}
+                                    <label for="address_cityprovince" class="col-md-12 text-md-left custom-flat-label">Province:</label>
+                                    <select id="address_cityprovince" name="address_cityprovince" class="form-control custom-flat-select">
                                             <option value="" selected>Choose Province...</option>
                                     </select>
                                 </div>
@@ -162,14 +167,15 @@ elseif(Session::get('create_profile') == 'delete'){
                                     
                             </div>
 
-                        <label for="address_town" class="col-md-2 text-md-center">City/Town:</label>
-                            <div class="col-md-4">
+                        
+                            <div class="col-md-5">
                                 
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-globe input-group-text"></span>
-                                    </div>
-                                    <select id="address_town" name="address_town" class="form-control">
+                                    </div> --}}
+                                    <label for="address_town" class="col-md-12 text-md-left custom-flat-label">City/Town:</label>
+                                    <select id="address_town" name="address_town" class="form-control custom-flat-select">
                                         <option value="" selected>Choose CityTown...</option>
                                     </select>
                                 </div>
@@ -177,27 +183,29 @@ elseif(Session::get('create_profile') == 'delete'){
                             </div>
 
 
-                        <label for="address_barangay" class="col-md-2 text-md-center">Barangay:</label>
-                            <div class="col-md-4">
+                        
+                            <div class="col-md-5">
 
                                     <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
+                                        {{-- <div class="input-group-prepend">
                                             <span class="fa fa-globe input-group-text"></span>
-                                        </div>
-                                        <select id="address_barangay" name="address_barangay" class="form-control">
+                                        </div> --}}
+                                        <label for="address_barangay" class="col-md-12 text-md-left custom-flat-label">Barangay:</label>
+                                        <select id="address_barangay" name="address_barangay" class="form-control custom-flat-select">
                                                 <option value="" selected>Choose Barangay...</option>
                                         </select>
                                     </div>
                                     <p class="text-danger" id="error_address_barangay"></p>
                             </div>
-                         <label for="address_zipcode" class="col-md-2 text-md-center">ZipCode: </label>
-                            <div class="col-md-4">
+                         
+                            <div class="col-md-5">
                                 
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-address-card input-group-text"></span>
-                                    </div>
-                                    <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" placeholder="Address Zipcode"  autofocus>
+                                    </div> --}}
+                                    <label for="address_zipcode" class="col-md-12 text-md-left custom-flat-label">ZipCode: </label>
+                                    <input id="address_zipcode" type="text" class="form-control custom-flat-input" name="address_zipcode" placeholder="Address Zipcode"  autofocus>
                                 </div>
                                 <p class="text-danger" id="error_address_zipcode"></p>
                             </div>
@@ -207,56 +215,60 @@ elseif(Session::get('create_profile') == 'delete'){
                 {{-- ----------------------------------------------------------------------------------------------------- --}}
                 {{-- Contact Information Row --}}
                 <hr>
-                <label>Contact Information</label>
+                <label class="custom-flat-label">Contact Information</label>
                 <div class="form-group row mt-4">
 
-                    <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
-                    <div class="col-md-4">
+                    
+                    <div class="col-md-5">
                         
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
+                            {{-- <div class="input-group-prepend">
                                 <span class="fa fa-phone input-group-text"></span>
-                            </div>
-                            <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" placeholder="Contact Mobile"  autofocus>
+                            </div> --}}
+                            <label for="contact_mobile" class="col-md-12 text-md-left custom-flat-label">Mobile: </label>
+                            <input id="contact_mobile" type="text" class="form-control custom-flat-input" name="contact_mobile" placeholder="Contact Mobile"  autofocus>
                         </div>
                         <p class="text-danger" id="error_contact_mobile"></p>
                         
                     </div>
 
-                    <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
-                    <div class="col-md-4">
+                   
+                    <div class="col-md-5">
                         
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
+                            {{-- <div class="input-group-prepend">
                                 <span class="fa fa-phone input-group-text"></span>
-                            </div>
-                            <input id="contact_phone" type="text" class="form-control" name="contact_phone" placeholder="Contact Phone"  autofocus>
+                            </div> --}}
+                            <label for="contact_phone" class="col-md-12 text-md-left custom-flat-label">Phone: </label>
+                            <input id="contact_phone" type="text" class="form-control custom-flat-input" name="contact_phone" placeholder="Contact Phone"  autofocus>
                         </div>
                         <p class="text-danger" id="error_contact_phone"></p>
                         
                     </div>
 
-                    <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
-                    <div class="col-md-4">
+                    
+                    <div class="col-md-5">
                         
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
+                            {{-- <div class="input-group-prepend">
                                 <span class="fa fa-envelope input-group-text"></span>
-                            </div>
-                            <input id="contact_email" type="email" class="form-control" name="contact_email" placeholder="Contact Email"  autofocus>
+                            </div> --}}
+                            <label for="contact_email" class="col-md-12 text-md-left custom-flat-label">Email: </label>
+                            <input id="contact_email" type="email" class="form-control custom-flat-input" name="contact_email" placeholder="Contact Email"  autofocus>
                         </div>
                         <p class="text-danger" id="error_contact_email"></p>
                         
                     </div>
 
-                    <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
-                        <div class="col-md-4">
+                    
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="contact_person" type="text" class="form-control" name="contact_person" placeholder="Contact Person"  autofocus>
+                                </div> --}}
+                                <label for="contactperson" class="col-md-12 text-md-left custom-flat-label">Contact Person: </label>
+                                <input id="contact_person" type="text" class="form-control custom-flat-input" name="contact_person" placeholder="Contact Person"  autofocus>
                             </div>
                             <p class="text-danger" id="error_contact_person"></p>
                             
@@ -267,65 +279,70 @@ elseif(Session::get('create_profile') == 'delete'){
                 {{-- ----------------------------------------------------------------------------------------------------- --}}
                 {{-- Goverment Numbers Row --}}
                 <hr>
-                <label>Government Number</label>
+                <label class="custom-flat-label">Government Number</label>
                 <div class="form-group row mt-4">
-                        <label for="tin" class="col-md-2 text-md-center">Tin: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
 
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <div class="span fa fa-address-card input-group-text"></div>
-                                </div>
-                                <input id="tin" type="text" class="form-control" name="tin" placeholder="Tin" autofocus>
+                                </div> --}}
+                                <label for="tin" class="col-md-12 text-md-left custom-flat-label">Tin: </label>
+                                <input id="tin" type="text" class="form-control custom-flat-input" name="tin" placeholder="Tin" autofocus>
                             </div>
                             <p class="text-danger" id="error_tin"></p>
                         </div>
 
-                        <label for="sss" class="col-md-2 text-md-center">SSS/GSIS: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="sss" type="text" class="form-control" name="sss" placeholder="SSS"  autofocus>
+                                </div> --}}
+                                <label for="sss" class="col-md-12 text-md-left custom-flat-label">SSS/GSIS: </label>
+                                <input id="sss" type="text" class="form-control custom-flat-input" name="sss" placeholder="SSS"  autofocus>
                             </div>
                             <p class="text-danger" id="error_sss"></p>
                         </div>
 
-                        <label for="phic" class="col-md-2 text-md-center">Phic: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="phic" type="text" class="form-control" name="phic" placeholder="Phic"  autofocus>
+                                </div> --}}
+                                <label for="phic" class="col-md-12 text-md-left custom-flat-label">Phic: </label>
+                                <input id="phic" type="text" class="form-control custom-flat-input" name="phic" placeholder="Phic"  autofocus>
                             </div>
                             <p class="text-danger" id="error_phic"></p>
                         </div>
 
-                        <label for="hdmf" class="col-md-2 text-md-center">HDMF: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="hdmf" type="text" class="form-control" name="hdmf" placeholder="Hdmf"  autofocus>
+                                </div> --}}
+                                <label for="hdmf" class="col-md-12 text-md-left custom-flat-label">HDMF: </label>
+                                <input id="hdmf" type="text" class="form-control custom-flat-input" name="hdmf" placeholder="Hdmf"  autofocus>
                             </div>
                             <p class="text-danger" id="error_hdmf"></p>
                         </div>
 
-                        <label for="nid" class="col-md-2 text-md-center">NID: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="nid" type="nid" class="form-control" name="nid" placeholder="Nid"  autofocus>
+                                </div> --}}
+                                <label for="nid" class="col-md-12 text-md-left custom-flat-label">NID: </label>
+                                <input id="nid" type="nid" class="form-control custom-flat-input" name="nid" placeholder="Nid"  autofocus>
                             </div>
                             <p class="text-danger" id="error_nid"></p>
                         </div>
@@ -335,30 +352,32 @@ elseif(Session::get('create_profile') == 'delete'){
                 {{-- ---------------------------------------------------------------------- --}}
                 {{-- Account Information Row --}}
                 <hr>
-                <label>Account Information</label>
+                <label class="custom-flat-label">Account Information</label>
                 <div class="form-group row mt-4">
-                        <label for="user_type" class="col-md-2 text-md-center">Account Type:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-user input-group-text"></span>
-                                    </div>
-                                    <select id="user_type" name="user_type" class="form-control">
+                                    </div> --}}
+                                    <label for="user_type" class="col-md-12 text-md-left custom-flat-label">Account Type:</label>
+                                    <select id="user_type" name="user_type" class="form-control custom-flat-select">
                                             <option value="" selected>Choose Account Type...</option>
                                     </select>
                                 </div>
                                 <p class="text-danger" id="error_user_type"></p>
                         </div>
                         
-                        <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="enrollmentdate" type="date" class="form-control datepicker" name="enrollmentdate" disabled="true"  autofocus>
+                                </div> --}}
+                                <label for="enrollmentdate" class="col-md-12 text-md-left custom-flat-label">Enrollment Date: </label>
+                                <input id="enrollmentdate" type="date" class="form-control datepicker custom-flat-input" name="enrollmentdate" disabled="true"  style="background-color: #c4c0c0 !important;">
                             </div>
                             @if ($errors->has('enrollmentdate'))
                                 <span class="invalid-feedback" role="alert">
@@ -367,14 +386,15 @@ elseif(Session::get('create_profile') == 'delete'){
                             @endif
                         </div>
 
-                        <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="expirydate" type="text" class="form-control" name="expirydate" placeholder="MM/DD/YYYY"  autofocus>
+                                </div> --}}
+                                <label for="expirydate" class="col-md-12 text-md-left custom-flat-label">Expiry Date:</label>
+                                <input id="expirydate" type="text" class="form-control custom-flat-input" name="expirydate" placeholder="MM/DD/YYYY"  autofocus>
                             </div>
                             <p class="text-danger" id="error_expirydate"></p>
                                 @if ($errors->has('expirydate'))
@@ -388,16 +408,17 @@ elseif(Session::get('create_profile') == 'delete'){
                 {{-- ------------------------------------------------------------------- --}}
                 {{-- Account Files Row --}}
                 <hr>
-                <label>Business Files</label>
+                <label class="customf-flat-label">Business Files</label>
                 <div class="form-group row mt-4">
-                        <label for="accountstatus" class="col-md-2 text-md-center">Select File SEC/DTI:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-folder input-group-text"></span>
-                                </div>
-                                <div class="custom-file">
+                                </div> --}}
+                                <label for="accountstatus" class="col-md-12 text-md-left custom-flat-label">Select File SEC/DTI:</label>
+                                <div class="custom-file custom-flat-file">
                                     <input type="file" class="custom-file-input" id="sec" name="sec" multiple onchange="processSelectedFilesSec(this)">
                                     <label class="custom-file-label" for="validatedCustomFile" id="sec_filename">Choose file...</label>
                                 </div>
@@ -405,14 +426,15 @@ elseif(Session::get('create_profile') == 'delete'){
                                 
                         </div>
                         
-                        <label for="accountstatus" class="col-md-2 text-md-center">Select File BIR COR:</label>
-                        <div class="col-md-4">
+                       
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-folder input-group-text"></span>
-                                </div>
-                                <div class="custom-file">
+                                </div> --}}
+                                <label for="accountstatus" class="col-md-12 text-md-left custom-flat-label">Select File BIR COR:</label>
+                                <div class="custom-file custom-flat-file">
                                     <input type="file" class="custom-file-input" id="bir" name="bir" multiple onchange="processSelectedFilesBir(this)">
                                     <label class="custom-file-label" for="validatedCustomFile" id="bir_filename">Choose file...</label>
                                 </div>

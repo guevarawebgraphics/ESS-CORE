@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Session;
 use Response;
 use DB;
-
 /**
  *  Insert Models Here
  * */
@@ -182,6 +181,44 @@ class EmployerContentController extends Controller
         $inserlog->account_id = auth()->user()->id;
         $inserlog->log_event = $event;
         $inserlog->save();
+    }
+    public function linkpreview(Request $request){
+        $search = "href.";
+        if(preg_match("/{$search}/i",$request->content)) {
+         //   echo 'true'; 
+            $link = ''.$request->content.'';
+            preg_match_all('/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', $link, $result);
+    
+
+            if (!empty($result)) {
+          
+                $str =  file_get_contents("".$result['href'][0]."");
+                if(strlen($str)>0){
+                $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
+                preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case 
+                preg_match("/\<p\>(.*)\<\/p\>/i",$str,$description);
+                preg_match("/\<p\>(.*)\<\/p\>/i",$str,$description);
+                if(empty($description[1])){
+                    $des = ["","No Description Available On This Website"];
+                }
+                if(!empty($description[1])) 
+                {   
+                    $des = ["","".$description[1].""]; 
+                    $des  = str_limit($description[1],100); 
+                }
+        
+
+                $title_real = str_limit($title[1],100);
+                $link_real = $result['href'][0];
+                $values =  array( $title_real, $des, $link_real);
+                        
+              }
+              return response()->json($values);
+            } 
+         
+          } 
+        
+           
     }
  
 

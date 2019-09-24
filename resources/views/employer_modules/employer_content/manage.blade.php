@@ -62,18 +62,29 @@
                 <input type="hidden" id="action" value="">
                 <input type="hidden" id="hidden_id" name="hidden_id" value="">
                 <div class="form-group row">
-                    <label for="content_title" class="control-label col-md-4 text-md-center">Content Title:</label>     
+                    <label for="content_title" class="control-label col-md-4 text-md-center custom-flat-label">Content Title:</label>     
                         <div class="col-md-6">    
-                            <input id="content_title" type="text" class="form-control" name="content_title" placeholder="Content Title"   autofocus>
+                            <input id="content_title" type="text" class="form-control custom-flat-input-modal" name="content_title" placeholder="Content Title"   autofocus>
                             <p class="text-danger" id="error_content_title"></p>
                         </div>        
                 </div>
                 <div class="form-group row">
-                    <label for="content_description" class="control-label col-md-4 text-md-center">Content Description:</label>
+                    <label for="content_description" class="control-label col-md-4 text-md-center custom-flat-label">Content Description:</label>
                         <div class="col-md-12">
-                                <textarea type="text" id="content_description" class="form-control" name="content_description" placeholder="Content Description" autofocus></textarea>
+                                <textarea type="text" id="content_description" class="form-control  custom-flat-input-modal" name="content_description" placeholder="Content Description" autofocus></textarea>
                                 <p class="text-danger" id="error_content_description"></p>
                         </div>
+                        <div class="linkpreview-scan" hidden> 
+                                <div class="card" style="width: 100%;">
+                                        <div class="card-body">
+                                          <h5 class="card-title" id="title_preview"></h5>
+                                          <p class="card-text" id="des_preview"></p>
+                                          <a href="" class="card-link" id="link_preview">Learn More</a> 
+                                          <a href="#" class="card-link" id="add_link">Add this link preview</a> 
+                                        </div>
+                                </div>
+                        </div> 
+                        
                 </div>
             </form>
         
@@ -128,14 +139,63 @@
           lengthChange: false,
           responsive: true
         });
-     
+      
         
-
-     
 
         //Save content 
         var editortwo = CKEDITOR.replace('content_description');
-        CKFinder.setupCKEditor( editortwo );
+        CKFinder.setupCKEditor( editortwo );    
+        editortwo.on('change',function(){ 
+            $.ajax({
+                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: "{{ route('linkpreview') }}",
+                        method: "POST",
+                        data: {
+                        _token:     '{{ csrf_token() }}',
+                        content:  CKEDITOR.instances.content_description.getData()
+                        },           
+                        success:function(data)
+                        {        
+                      
+                            if(data.length === 0)
+                            {
+                                $('.linkpreview-scan').attr('hidden',true);
+                            }
+                            else {
+                                $('.linkpreview-scan').attr('hidden',false);
+                                $('#title_preview').html(data[0]); 
+                                $('#des_preview').html(data[1]); 
+                                $('#link_preview').attr("href",""+data[2]+"");  
+                                /*var div = $('.linkpreview-scan').clone();
+                                CKEDITOR.instances['content_description'].insertHtml(``);*/ 
+                               
+                            }
+                                     
+                           
+                        }
+                    });              
+        });
+        $(document).on("click", "#add_link", function(){ 
+               toastr.remove()
+               var values  = {
+                   title :  $('#title_preview').html(),
+                   des:  $('#des_preview').html(),
+                   link:  $('#link_preview').attr("href")
+               }
+      
+               CKEDITOR.instances['content_description'].insertHtml(`  
+                                <div class="card border border-light" style="width: 100%;">
+                                        <div class="card-body">
+                                          <h5 class="card-title" id="title_preview_show">${values.title}</h5>
+                                          <p class="card-text" id="des_preview_show">${values.des}</p>
+                                          <a href="${values.link}" class="card-link" id="link_preview_show">Learn More</a> 
+                                        </div>
+                                </div>`);  
+                                toastr.success(`Link Preview Added`, 'Success')
+              // $('.linkpreview-scan').attr('hidden',true); 
+             
+        });
+  
         $(document).on("click", "#SaveContent", function(){ 
             action_to_do = $("#action").val(); 
             $('#SaveContent').attr('disabled',true);
