@@ -58,13 +58,14 @@ class PayslipsController extends Controller
             ->get();*/
               $payslip = DB::Table('employee as e')
                             ->Join('users as u','u.employee_id','=','e.id')
-                            ->Join('payroll_register_details as prd','prd.employee_no','=','e.employee_no')
+                            ->Join('payroll_register_details as prd','prd.employee_no','=','e.employee_no') 
                             ->join('payrollregister as pr','pr.id','=','prd.PayRegisterId')
+                            ->join('employer as er','er.id','=','pr.employer_id')
                             ->where('u.employee_id','=',auth()->user()->employee_id)
                             ->where('pr.employer_id','=',auth()->user()->employer_id)
                             ->where('pr.account_status','=',1)
                             ->latest('prd.created_at')
-                            ->select('prd.employee_no','prd.id','prd.payroll_release_date')
+                            ->select('prd.employee_no','prd.id','prd.payroll_release_date','er.business_name','pr.period_from','pr.period_to','prd.net_pay')
                             ->get();
            
             if($Request->ajax()){ 
@@ -231,13 +232,14 @@ class PayslipsController extends Controller
             $payslip = DB::Table('employee as e')
             ->Join('users as u','u.employee_id','=','e.id')
             ->Join('payroll_register_details as prd','prd.employee_no','=','e.employee_no')
-            ->join('payrollregister as pr','prd.PayRegisterId','=','pr.id')
+            ->join('payrollregister as pr','prd.PayRegisterId','=','pr.id') 
+            ->join('employer as er','er.id','=','pr.employer_id')
             ->where('pr.account_status','=',1)
             ->where('u.employee_id','=',auth()->user()->employee_id)
             ->whereMonth('prd.payroll_release_date', '=', $month)
             ->whereYear('prd.payroll_release_date', '=', $Request->year) 
             ->orderBy('prd.payroll_release_date', 'desc')
-            ->select('prd.employee_no','prd.id','prd.payroll_release_date')
+            ->select('prd.employee_no','prd.id','prd.payroll_release_date','er.business_name','pr.period_from','pr.period_to','prd.net_pay')
             ->get();
            
             if($Request->ajax()){ 

@@ -63,8 +63,11 @@
             <div class="container">
                 <table class="table table-light" id="payslip_table">
                 <thead>
-                    <tr>
-                        <th>Date Released</th>
+                    <tr> 
+                        <th>Employer Name</th>
+                        <th>Date Released</th> 
+                        <th>Period Covered</th> 
+                        <th>Net Pay</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -114,10 +117,14 @@
                 var html = '';
                 var i;
                     for(i=0; i<data.length; i++){
-                        html +='<tr>'+
-                                    '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+
-                                     '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
-                                '</tr>'; 
+                        html +='<tr>'+ 
+                                    '<td>'+data[i].business_name+' </td>'+
+                                    '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+ 
+                                    '<td> '+moment(data[i].period_from).format('MMMM DD')+'-'+moment(data[i].period_to).format('MMMM DD')+'</td>'+ 
+                                    '<td> '+data[i].net_pay+'</td>'+
+                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                '</tr>';  
+                                console.log(data);
                     }   
                         if(i===0)
                         {
@@ -186,7 +193,7 @@
               }  
               
               if( filterval.month ==="" || filterval.year === ""){ 
-                  $('#showpayslips').html(" <tr> <td colspan='2'>No Available Payslips </td> </tr>");
+                  $('#showpayslips').html(" <tr> <td colspan='5'>No Available Payslips </td> </tr>");
                   return false;
               }
           
@@ -203,7 +210,7 @@
                      year: $('#Years').val()
                   },
                   beforeSend:function(data){
-                    $('#showpayslips').html("<tr> <td colspan='2'>Loading... </td> </tr>"); 
+                    $('#showpayslips').html("<tr> <td colspan='5'>Loading... </td> </tr>"); 
                     
                   },
                   success: function(data){
@@ -212,10 +219,13 @@
                             var i;
                             for(i=0;i<data.length;i++)
                             {
-                                html +='<tr>'+
-                                    '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+
-                                     '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
-                                '</tr>'; 
+                                html +='<tr>'+ 
+                                    '<td>'+data[i].business_name+' </td>'+
+                                    '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+ 
+                                    '<td> '+moment(data[i].period_from).format('MMMM DD')+'-'+moment(data[i].period_to).format('MMMM DD')+'</td>'+ 
+                                    '<td> '+data[i].net_pay+'</td>'+
+                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                '</tr>';  
                                      
 
                             }
@@ -223,7 +233,7 @@
                             if(i===0)
                             {
 
-                                $('#showpayslips').html(" <tr> <td colspan='2'>No Available Payslips </td> </tr>");
+                                $('#showpayslips').html(" <tr> <td colspan='5'>No Available Payslips </td> </tr>");
                                 return false
                             }        
                             $('#showpayslips').html(html);
