@@ -121,13 +121,14 @@ elseif(Session::get('manage_users') == 'delete'){
                         @csrf
 
                         <div class="form-group row" id="user_type_for_field">
-                            <label for="user_type" class="col-md-4 col-form-label text-md-right">User Type for</label>
-                            <div class="col-md-6">
+                            
+                            <div class="col-md-12">
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-user input-group-text"></span>
-                                    </div>
-                                    <select id="userTypeFor" class="form-control" name="cmb_userTypeFor">  
+                                    </div> --}}
+                                    <label for="user_type" class="col-md-6 col-form-label text-md-left custom-flat-label">User Type for</label>
+                                    <select id="userTypeFor" class="form-control custom-flat-select" name="cmb_userTypeFor">  
                                             <option selected disabled>Choose User Type</option>                                  
                                             <option value="2">Lender</option>
                                             <option value="4">Employer</option>   
@@ -139,33 +140,36 @@ elseif(Session::get('manage_users') == 'delete'){
 
                         @if(auth()->user()->user_type_id == 1)
                         <div class="form-group row" id="employer_field" hidden>
-                            <label for="user_type" class="col-md-4 col-form-label text-md-right user_type"></label>
-                            <div class="col-md-6">
-                                <select id="employer" class="form-control usertype-for-search" name="cmb_Employe"  style="width: 100%;">                                                                 
+                            
+                            <div class="col-md-12">
+                                    <label for="user_type" class="col-md-6 col-form-label text-md-left custom-flat-label user_type"></label>
+                                <select id="employer" class="form-control custom-flat-select usertype-for-search" name="cmb_Employe"  style="width: 100%;">                                                                 
                             </select>
                             </div>                   
                         </div>
                         @endif
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">User Type Name</label>
-                            <div id="typename"  class="col-md-6">
+                            
+                            <div id="typename"  class="col-md-12">
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-user input-group-text"></span>
-                                    </div>
+                                    </div> --}}
+                                    <label for="name" class="col-md-6 col-form-label text-md-left custom-flat-label">User Type Name</label>
                                     <input type="hidden" id="hidden_id_usertype">
                                     <input type="hidden" id="action" value="add">
-                                    <input id="name" type="text" class="form-control" name="type_name" value="">      
+                                    <input id="name" type="text" class="form-control custom-flat-input-modal" name="type_name" value="">      
                                 </div>             
                                 <p class="text-danger" id="error-no-type" hidden>* Field is Required</p>             
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">Type Description</label>
-                            <div class="col-md-6">
-                                <textarea rows="3" id="desc" class="form-control" name="type_desc" value=""></textarea>     
+                            
+                            <div class="col-md-12">
+                                <label for="email" class="col-md-6 col-form-label text-md-left custom-flat-label">Type Description</label>
+                                <textarea rows="3" id="desc" class="form-control custom-flat-textarea" name="type_desc" value=""></textarea>     
                                 <p class="text-danger" id="error-no-desc" hidden>* Field is Required</p>                
                             </div>
                            

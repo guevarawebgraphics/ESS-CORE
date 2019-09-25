@@ -42,12 +42,26 @@ Route::get('/', function () { // root if the user is login
                     $employers = DB::table('employer')->count();
                     return view('dashboard', compact('employers')); 
                 }
+           
                 $content_status ="1"; // content_status 
                 $content = DB::table('employercontent')   //for showing employer's content
-                                ->orderBy('created_at')
+                                ->orderBy('created_at','DESC')
                                 ->where('employer_id','=',auth()->user()->employer_id)
                                 ->where('content_status','=',$content_status)
-                                ->paginate(5, ['*'], 'content_page'); 
+                                ->paginate(5, ['*'], 'content_page');  
+                if(auth()->user()->user_type_id ===4) {
+                                   /* $count_read = DB::table('read_status')
+                                                    ->where('employee_id','=',auth()->user()->employee_id)
+                                                    ->count();
+                                    $unread_min = count($content) -$count_read;
+                                    if($unread_min < 0) {
+                                        $unread = 0;
+                                    }
+                                    else {
+                                        $unread = $unread_min;
+                                    }*/
+                                                                      
+                }
                 $financial_tips_status ="1"; // content_status 
                 $financial = DB::table('financial_tips')   //for showing employer's content
                                 ->orderBy('created_at')
@@ -83,7 +97,7 @@ Route::get('/', function () { // root if the user is login
 Auth::routes();
 /*Guard route*/
 Route::get('/logout', function(){
-    return abort(404);
+    return view('auth.login');
 });
 //Route::get('/home', 'HomeController@index')->name('home');
 
@@ -166,7 +180,7 @@ Route::post('/Announcement/update_announcement/{id}', 'AnnouncementController@up
 Route::post('/Announcement/destroy_announcement', 'AnnouncementController@destroy_announcement');
 Route::post('/Announcement/update_announcement_status', 'AnnouncementController@update_announcement_status');
 Route::post('/Announcement/update_notification_show', 'AnnouncementController@update_notification_show');
-Route::get('/Announcement/get_notification_show', 'AnnouncementController@get_notification_show');
+Route::POST('/Announcement/get_notification_show', 'AnnouncementController@get_notification_show');
 Route::get('/Announcement/check_user', 'AnnouncementController@check_user');
 
 
@@ -204,6 +218,7 @@ Route::post('/employercontent/delete', 'EmployerContentController@delete_content
 Route::post('/employercontent/post_content', 'EmployerContentController@post_content')->name('postemployercontent');
 //For adding status read
 Route::get('/employercontent/change_action','ProfilePictureController@change_action_taken');
+Route::post('/employercontent/linkpreview_show','EmployerContentController@linkpreview')->name('linkpreview');
 
 
 //Payroll Management
@@ -355,5 +370,26 @@ Route::middleware('auth')->group(function (){
             return redirect('404');
         }
     });
+
+
+    /**
+     * @ Under Construction Page
+     * */
+    Route::get('/underconstruction', function(Request $request) {
+        $http_response = $request->session()->pull('code');
+        if($http_response == 'under_construction'){
+            return view('errors.under_construction');
+        }
+        else {
+            return redirect('404');
+        }
+        
+    });
     
+});
+
+
+Route::get('/generatekey', function() {
+
+    return Keygen::length(64)->alphanum()->generate();
 });

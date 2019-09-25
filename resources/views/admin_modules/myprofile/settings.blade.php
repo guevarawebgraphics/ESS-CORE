@@ -149,19 +149,19 @@ elseif(Session::get('my_profile') == 'delete'){
                     <div class="form-group row">
                         {{-- Hidden ID --}}
                         <input type="hidden" id="hidden_id" />
-                        <label for="txtusername" class="col-form-label col-md-2">Username</label>
+                        <label for="txtusername" class="col-form-label col-md-2 custom-flat-label">Username</label>
                         <div class="col-md-6">
-                            <input type="text" id="txtusername" class="form-control" name="username" disabled value="{{auth()->user()->username}}">            
+                            <input type="text" id="txtusername" class="form-control custom-flat-input" name="username" disabled value="{{auth()->user()->username}}">            
                         </div>
                     </div>   
                     <div class="form-group row">
-                        <label for="txtmobile" class="col-form-label col-md-2">Mobile Number</label>
+                        <label for="txtmobile" class="col-form-label col-md-2 custom-flat-label">Mobile Number</label>
                         <div class="col-md-6">                       
                             <div id="mobile"></div>
                         </div>
                     </div>  
                     <div class="form-group row">
-                        <label for="txtemail" class="col-form-label col-md-2">Email @if(auth()->user()->email_verified_at != "")<span data-toggle="tooltip" data-placement="right" title="Verified"><i class="fa fa-check-circle text-primary"></i></span>@endif</label>
+                        <label for="txtemail" class="col-form-label col-md-2 custom-flat-label">Email @if(auth()->user()->email_verified_at != "")<span data-toggle="tooltip" data-placement="right" title="Verified"><i class="fa fa-check-circle text-primary"></i></span>@endif</label>
                         <div class="col-md-6">
                             <div id="email"></div>                                   
                         </div>
@@ -270,20 +270,20 @@ elseif(Session::get('my_profile') == 'delete'){
                 
                 if(data.email == null)
                 {
-                    $("#email").html('<input type="text" id="txtemail" class="form-control" name="email" value="-" disabled>');
+                    $("#email").html('<input type="text" id="txtemail" class="form-control custom-flat-input" name="email" value="-" disabled>');
                 }
                 else
                 {
-                    $("#email").html('<input type="text" id="txtemail" class="form-control" name="email" value="'+ data.email +'" >');
+                    $("#email").html('<input type="text" id="txtemail" class="form-control custom-flat-input" name="email" value="'+ data.email +'" >');
                 }
 
                 if(data.contact == null)
                 {
-                    $("#mobile").html('<input type="text" id="txtmobile" class="form-control" name="mobile" value="-" disabled>');
+                    $("#mobile").html('<input type="text" id="txtmobile" class="form-control custom-flat-input" name="mobile" value="-" disabled>');
                 }
                 else
                 {
-                    $("#mobile").html('<input type="text" id="txtmobile" class="form-control" name="mobile" value="'+ data.contact +'" >');
+                    $("#mobile").html('<input type="text" id="txtmobile" class="form-control custom-flat-input" name="mobile" value="'+ data.contact +'" >');
                 }
 
                 if(data.tin == null)

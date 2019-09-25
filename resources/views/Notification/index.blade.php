@@ -102,26 +102,26 @@ elseif(Session::get('system_notifications') == 'delete'){
                 <form id="notification_form">
                     @csrf
                     <div class="form-group row">
-                    <label for="notification_title" class="control-label col-md-4 text-md-center">Notification Title:</label>
+                    <label for="notification_title" class="control-label col-md-4 text-md-center custom-flat-label">Notification Title:</label>
                         <div class="col-md-6">
                             
-                            <input id="notification_title" type="text" class="form-control" name="notification_title" placeholder="Notification Title"   autofocus>
+                            <input id="notification_title" type="text" class="form-control custom-flat-input-modal" name="notification_title" placeholder="Notification Title"   autofocus>
                                     <p class="text-danger" id="error_notification_title"></p>
                         </div>
                     </div>
                     <div class="form-group">
                     <label for="notification_description" class="control-label col-md-4 text-md-center">Notification Description:</label>
                         <div class="col-md-12">
-                               <textarea id="notification_message" class="form-control" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>
+                               <textarea id="notification_message" class="form-control custom-flat-input-modal" name="notification_message" rows="10" placeholder="Notification Message"   autofocus></textarea>
                                     <p class="text-danger" id="error_notification_message"></p>
                         </div>
                     </div>
                     @if(auth()->user()->user_type_id == 1)
                     <div class="form-group row">
-                            <label for="employer_id" class="control-label col-md-4 text-md-center">Select Employer:</label>
+                            <label for="employer_id" class="control-label col-md-4 text-md-center custom-flat-label">Select Employer:</label>
 
                                 <div class="col-md-8">
-                                    <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
+                                    <select class="form-control select2 custom-flat-select" style="width: 67%; padding-right: 250px !important;" name="employer_id" id="employer_id">
                                         <option selected value="">--Select Employer</option>
                                         @foreach($employers as $employer)
                                             <option value="{{$employer->id}}">{{$employer->business_name}}</option>
@@ -132,9 +132,9 @@ elseif(Session::get('system_notifications') == 'delete'){
                     </div>
                     @endif
                     <div class="form-group row">
-                        <label for="message_type_id" class="control-label col-md-4 text-md-center">Message Type:</label>
+                        <label for="message_type_id" class="control-label col-md-4 text-md-center custom-flat-label">Message Type:</label>
                         <div class="col-md-8">
-                            <select class="form-control select2" style="width: 67%; padding-right: 250px !important;" name="message_type_id" id="message_type_id">
+                            <select class="form-control select2 custom-flat-select" style="width: 67%; padding-right: 250px !important;" name="message_type_id" id="message_type_id">
                                 <option selected value="">--Select Message Type</option>
                                 @foreach($notification_message_type as $notification_message_types)
                                     <option value="{{$notification_message_types->id}}">{{$notification_message_types->message_type}}</option>
@@ -144,9 +144,9 @@ elseif(Session::get('system_notifications') == 'delete'){
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="notification_type" class="control-label col-md-4 text-md-center">Notification Type:</label>
+                        <label for="notification_type" class="control-label col-md-4 text-md-center custom-flat-label">Notification Type:</label>
                         <div class="col-md-8">
-                            <select class="form-control col-md-8" name="notification_type" id="notification_type">
+                            <select class="form-control col-md-8 custom-flat-select" name="notification_type" id="notification_type">
                                 <option value="" selected>Select Notification Type</option>
                                 <option value="1">Email</option>
                                 <option value="2">SMS</option>

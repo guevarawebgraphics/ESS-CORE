@@ -9,7 +9,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.uiColor = '#AADC6E'; 
 	config.removeButtons = 'Copy,Cut,Paste,Undo,Redo,Print,Form,TextField,Textarea,Button,SelectAll,NumberedList,BulletedList,CreateDiv,Table,PasteText,PasteFromWord,Select,HiddenField,Link,Image,SpellChecker';
 	config.allowedContent = true;
-	//config.extraPlugins = 'dragresize';
+	config.extraPlugins = 'html5video';
 	
 };
 CKFinder.setupCKEditor();

@@ -58,16 +58,16 @@
                     <input type="hidden" id="action" value="">
                     <input type="hidden" id="hidden_id" name="hidden_id" value="">
                     <div class="form-group row">
-                        <label for="ft_title" class="control-label col-md-4 text-md-center">Financial Tips Title:</label>     
+                        <label for="ft_title" class="control-label col-md-4 text-md-center custom-flat-label">Financial Tips Title:</label>     
                             <div class="col-md-6">    
-                                <input id="financial_tips_title" type="text" class="form-control" name="financialtips_title" placeholder="Financial Tips Title" autofocus>
+                                <input id="financial_tips_title" type="text" class="form-control custom-flat-input-modal" name="financialtips_title" placeholder="Financial Tips Title" autofocus>
                                 <p class="text-danger" id="error_financialtips_title"></p>
                             </div>        
                     </div>
                     <div class="form-group row">
-                        <label for="ft_description" class="control-label col-md-4 text-md-center">Financial Tips Description:</label>
+                        <label for="ft_description" class="control-label col-md-4 text-md-center custom-flat-label">Financial Tips Description:</label>
                             <div class="col-md-12">
-                                    <textarea type="text" id="financialtips_description" class="form-control" name="financialtips_description" placeholder="Financial Tips Description" autofocus></textarea>
+                                    <textarea type="text" id="financialtips_description" class="form-control custom-flat-input-modal" name="financialtips_description" placeholder="Financial Tips Description" autofocus></textarea>
                                     <p class="text-danger" id="error_financialtips_description"></p>
                                     <input type="hidden" id="action_to_do" value="">
                             </div>  
