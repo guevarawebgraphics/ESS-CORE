@@ -24,6 +24,7 @@ use App\Announcement;
  *  */
 use DB;
 use Mail;
+use Auth;
 use Session;
 use Response;
 
@@ -160,28 +161,45 @@ class AnnouncementController extends Controller
         /**
         * @ If User is Employee
          * */
-        if(auth()->user()->user_type_id == 4){
-            $Announcement1 = DB::table('announcement')
-                                ->join('employer', 'employer.id', '=', 'announcement.employer_id')
-                                ->join('employer_and_employee', 'announcement.employer_id', '=', 'employer_and_employee.employer_id')
-                                ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
-                                ->select('announcement.id',
-                                'announcement.announcement_title',
-                                'announcement.announcement_description',
-                                'announcement.announcement_status',
-                                'announcement.employer_id',
-                                'employer.business_name',
-                                'announcement.created_at',
-                                'announcement.updated_at',
-                                'user_picture.profile_picture')
-                                //->orderBy('announcement.created_at','desc')
-                                ->where('announcement.employer_id', '=', auth()->user()->employer_id)
-                                ->where('announcement.announcement_status', '=', '1')
-                                ->where('announcement.announcement_type', '=', '3')
-                                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
-                                ->latest()
-                                //->take(6)
-                                ->get();
+        if(Auth::check()){
+            // $Announcement1 = DB::table('announcement')
+            //                    // ->join('employer', 'employer.id', '=', 'announcement.employer_id')
+            //                     ->join('employer_and_employee', 'announcement.employer_id', '=', 'employer_and_employee.employer_id')
+            //                     ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
+            //                     ->select('announcement.id',
+            //                     'announcement.announcement_title',
+            //                     'announcement.announcement_description',
+            //                     'announcement.announcement_status',
+            //                     'announcement.employer_id',
+            //                     //'employer.business_name',
+            //                     'announcement.created_at',
+            //                     'announcement.updated_at',
+            //                     'user_picture.profile_picture')
+            //                     //->orderBy('announcement.created_at','desc')
+            //                     //->where('announcement.employer_id', '=', auth()->user()->employer_id)
+            //                     ->where('announcement.announcement_status', '=', '1')
+            //                     ->where('announcement.announcement_type', '=', '3')
+            //                     ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+            //                     ->latest()
+            //                     //->take(6)
+            //                     ->get();
+            $Announcement1 = DB::table('employer_and_employee')
+                            ->join('announcement', 'announcement.employer_id', '=',  'employer_and_employee.employer_id')
+                            ->join('employer', 'employer.id', '=', 'announcement.employer_id')
+                            ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
+                            ->select('announcement.id',
+                            'announcement.announcement_title',
+                            'announcement.announcement_description',
+                            'announcement.announcement_status',
+                            'announcement.created_at',
+                            'announcement.updated_at',
+                            'user_picture.profile_picture')
+                            //->where('announcement.employer_id', '=', auth()->user()->employer_id)
+                            ->where('announcement.announcement_status', '=', '1')
+                            ->where('announcement.announcement_type', '=', '3')
+                            ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+                            ->latest()
+                            ->get();
         }
         else{
             /**
