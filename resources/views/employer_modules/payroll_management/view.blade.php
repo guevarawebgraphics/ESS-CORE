@@ -191,7 +191,7 @@ elseif(Session::get('payroll_management') == 'delete'){
           lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [[4, "desc"]]
+          "order": [[6, "desc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {

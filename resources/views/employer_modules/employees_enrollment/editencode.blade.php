@@ -27,59 +27,60 @@
             <div class="card-body">
             <input type="hidden" id="employee_info_id" name="employee_info_id" value="{{ $employee[0]->employee_info_id }}">
             <input type="hidden" id="employee_id" name="employee_id" value="{{ $employee[0]->employee_id }}">
+            <input type="hidden" id="user_id" name="user_id" value="{{ $employee[0]->user_id }}">
                 {{-- HIDDEN INPUT FIELD FOR EMPLOYEE PERSONAL INFO ID--}}
                 <input type="hidden" id="hidden_personalinfo_id" name="hidden_personalinfo_id">
                 <input type="hidden" id="hidden_essid" name="hidden_essid">
                 <hr>
                 <label class="control-label text-md-center">Personal Information</label>
                 <div class="form-group row mt-4">
-                        <label for="firstname" class="col-md-2 text-md-center">First Name :</label>        
+                        <label for="firstname" class="col-md-2 text-md-center custom-flat-label">First Name :</label>        
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                             {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="firstname" type="text" class="form-control" name="firstname" placeholder="First Name" value="{{$employee[0]->firstname}}" autofocus>
+                                </div>--}}
+                                <input id="firstname" type="text" class="form-control custom-flat-input" name="firstname" placeholder="First Name" value="{{$employee[0]->firstname}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_firstname"></p>
                         </div>
-                        <label for="middlename" class="col-md-2 text-md-center">Middle Name :</label>            
+                        <label for="middlename" class="col-md-2 text-md-center custom-flat-label">Middle Name :</label>            
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                             {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="middlename" type="text" class="form-control" name="middlename" placeholder="Middle Name" value="{{$employee[0]->middlename}}" autofocus>
+                                 </div>--}}
+                                <input id="middlename" type="text" class="form-control custom-flat-input" name="middlename" placeholder="Middle Name" value="{{$employee[0]->middlename}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_middlename"></p>
                         </div>
-                        <label for="lastname" class="col-md-2 text-md-center">Last Name :</label>     
+                        <label for="lastname" class="col-md-2 text-md-center custom-flat-label">Last Name :</label>     
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="lastname" type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{$employee[0]->lastname}}" autofocus>
+                                </div>--}}
+                                <input id="lastname" type="text" class="form-control custom-flat-input" name="lastname" placeholder="Last Name" value="{{$employee[0]->lastname}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_lastname"></p>
                         </div> 
-                        <label for="suffix" class="col-md-2 text-md-center">Suffix:</label>     
+                        <label for="suffix" class="col-md-2 text-md-center custom-flat-label">Suffix:</label>     
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="suffix" type="text" class="form-control" name="suffix" placeholder="suffix" value="{{$employee[0]->suffix}}" autofocus>
+                                </div>--}}
+                                <input id="suffix" type="text" class="form-control custom-flat-input" name="suffix" placeholder="suffix" value="{{$employee[0]->suffix}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_lastname"></p>
                         </div> 
-                        <label for="gender" class="col-md-2 text-md-center">Gender :</label>
+                        <label for="gender" class="col-md-2 text-md-center custom-flat-label">Gender :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="gender" name="gender">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="gender" name="gender">
                                         <option value="{{$employee[0]->gender}}">{{$employee[0]->gender}}</option>
                                         <option value="">Select Options</option>
                                         <option value="Male">Male</option>
@@ -88,13 +89,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_gender"></p>
                         </div>
-                        <label for="civil_status" class="col-md-2 text-md-center">Civil Status :</label>
+                        <label for="civil_status" class="col-md-2 text-md-center custom-flat-label">Civil Status :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="civil_status" name="civil_status">                              
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="civil_status" name="civil_status">                              
                                         <option value="{{$employee[0]->civil_status}}">{{$employee[0]->civil_status}}</option>
                                         <option value="">Select Options</option>
                                         <option value="Single">Single</option>
@@ -104,13 +105,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_civil_status"></p>
                         </div>
-                        <label for="birthdate" class="col-md-2 text-md-center">Birthdate :</label>
+                        <label for="birthdate" class="col-md-2 text-md-center custom-flat-label">Birthdate :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="birthdate" type="text" class="form-control datepicker" name="birthdate" value="{{$employee[0]->birthdate}}" placeholder="MM/DD/YYYY"   autofocus>
+                                </div>--}}
+                                <input id="birthdate" type="text" class="form-control datepicker custom-flat-input" name="birthdate" value="{{$employee[0]->birthdate}}" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_birthdate"></p>
                         </div>
@@ -118,43 +119,43 @@
                 <hr>
                 <label class="control-label text-md-center">Employee Information</label>
                 <div class="form-group row mt-4">
-                        <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
+                        <label for="employee_no" class="col-md-2 text-md-center custom-flat-label">Employee No. </label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No" value="{{$employee[0]->employee_no}}" autofocus>
+                                </div>--}}
+                                <input id="employee_no" type="text" class="form-control custom-flat-input" name="employee_no" placeholder="Employee No" value="{{$employee[0]->employee_no}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_employee_no"></p>
                         </div>
-                        <label for="position" class="col-md-2 text-md-center">Position :</label>    
+                        <label for="position" class="col-md-2 text-md-center custom-flat-label">Position :</label>    
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="position" type="text" class="form-control" name="position" placeholder="Position" value="{{$employee[0]->position}}" autofocus>
+                                </div>--}}
+                                <input id="position" type="text" class="form-control custom-flat-input" name="position" placeholder="Position" value="{{$employee[0]->position}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_position"></p>
                         </div>
-                        <label for="department" class="col-md-2 text-md-center">Department :</label>
+                        <label for="department" class="col-md-2 text-md-center custom-flat-label">Department :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="department" type="text" class="form-control" name="department" placeholder="Department" value="{{$employee[0]->department}}" autofocus>
+                                </div>--}}
+                                <input id="department" type="text" class="form-control custom-flat-input" name="department" placeholder="Department" value="{{$employee[0]->department}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_department"></p>
                         </div>
-                        <label for="employment_status" class="col-md-2 text-md-center">Employment Status :</label>
+                        <label for="employment_status" class="col-md-2 text-md-center custom-flat-label">Employment Status :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="employment_status" name="employment_status">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="employment_status" name="employment_status">
                                         <option value="{{$employee[0]->employment_status}}">{{$employee[0]->employment_status}}</option>                        
                                         <option value="">Select Options</option>
                                         <option value="Contractual">Contractual</option>
@@ -165,13 +166,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_employment_status"></p>
                         </div>
-                        <label for="payroll_schedule" class="col-md-2 text-md-center">Payroll Schedule :</label>
+                        <label for="payroll_schedule" class="col-md-2 text-md-center custom-flat-label">Payroll Schedule :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="payroll_schedule" name="payroll_schedule">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="payroll_schedule" name="payroll_schedule">
                                         <option value="{{$employee[0]->payroll_schedule}}">{{$employee[0]->payroll_schedule}}</option>
                                         <option value="">Select Options</option>
                                         <option value="Week">Weekly</option>
@@ -181,13 +182,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_civil_status"></p>
                         </div>
-                        <label for="payroll_bank" class="col-md-2 text-md-center">Payroll Bank :</label> 
+                        <label for="payroll_bank" class="col-md-2 text-md-center custom-flat-label">Payroll Bank :</label> 
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="payroll_bank" name="payroll_bank">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="payroll_bank" name="payroll_bank">
                                         <option value="{{$employee[0]->payroll_bank}}">{{$employee[0]->payroll_bank}}</option>
                                     <option value="">Select Options</option>
                                     <option value="BDO">BANCO DE ORO</option>                                                              
@@ -195,13 +196,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_payroll_bank"></p>
                         </div>
-                        <label for="enrollment_date" class="col-md-2 text-md-center">Enrollment Date :</label>
+                        <label for="enrollment_date" class="col-md-2 text-md-center custom-flat-label">Enrollment Date :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY" value="{{ \Carbon\Carbon::parse($employee[0]->enrollment_date)->format('m/d/Y')}}"   autofocus>
+                                </div>--}}
+                                <input id="enrollment_date" type="text" class="form-control datepicker custom-flat-input" name="enrollment_date" placeholder="MM/DD/YYYY" value="{{ \Carbon\Carbon::parse($employee[0]->enrollment_date)->format('m/d/Y')}}"   autofocus>
                                 {{-- <input id="enrollment_date" type="date" class="form-control" name="enrollment_date" placeholder="Enrollment Date" value="{{$employee[0]->enrollment_date}}" autofocus> --}}
                                 </div>
                             <p class="text-danger text-md-center" id="error_enrollment_date"></p>
@@ -210,87 +211,91 @@
                 <hr>
                 <label class="control-label text-md-center">Contact Information</label>
                 <div class="form-group row mt-4">
-                        <label for="mobile_no" class="col-md-2 text-md-center">Mobile No. :</label>
+                        <label for="mobile_no" class="col-md-2 text-md-center custom-flat-label">Mobile No. :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-phone input-group-text"></span>
-                                </div>
-                                <input id="mobile_no" type="text" maxlength="11" class="form-control" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)" value="{{$employee[0]->mobile_no}}" autofocus>
+                                </div>--}}
+                                <input id="mobile_no" type="text" maxlength="11" class="form-control custom-flat-input" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)" value="{{$employee[0]->mobile_no}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_mobile_no"></p>
                         </div>
-                        <label for="email_add" class="col-md-2 text-md-center">Email :</label>
+                        <label for="email_add" class="col-md-2 text-md-center custom-flat-label">Email :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-envelope input-group-text"></span>
-                                </div>
-                                <input id="email_add" type="email" class="form-control" name="email_add" placeholder="Email" value="{{$employee[0]->email_add}}" autofocus>
+                                </div>--}}
+                                <input id="email_add" type="email" class="form-control custom-flat-input" name="email_add" placeholder="Email" value="{{$employee[0]->email_add}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_email_add"></p>
+                            {{--Check if the Account Status is 1 else Resend Email--}}
+                            @if($employee[0]->email_verified_at == null)
+                                <a href="#resendEmail" id="resend_email">Didn't Receive Email?</a>
+                            @endif
                         </div>
                 </div>
                 <hr>
                 <label class="control-label text-md-center">Government Numbers</label>
                 <div class="form-group row mt-4">
-                        <label for="TIN" class="col-md-2 text-md-center">TIN :</label>            
+                        <label for="TIN" class="col-md-2 text-md-center custom-flat-label">TIN :</label>            
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="TIN" type="text" class="form-control" name="tin" placeholder="TIN" value="{{$employee[0]->TIN}}" autofocus>
+                                </div>--}}
+                                <input id="TIN" type="text" class="form-control custom-flat-input" name="tin" placeholder="TIN" value="{{$employee[0]->TIN}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_TIN"></p>
                         </div>
-                        <label for="SSSGSIS" class="col-md-2 text-md-center">SSS/GSIS :</label>       
+                        <label for="SSSGSIS" class="col-md-2 text-md-center custom-flat-label">SSS/GSIS :</label>       
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS" value="{{$employee[0]->SSSGSIS}}" autofocus>
+                                </div>--}}
+                                <input id="SSSGSIS" type="text" class="form-control custom-flat-input" name="sssgsis" placeholder="SSS/GSIS" value="{{$employee[0]->SSSGSIS}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_SSSGSIS"></p>
                         </div>
-                        <label for="HDMF" class="col-md-2 text-md-center">HDMF :</label>   
+                        <label for="HDMF" class="col-md-2 text-md-center custom-flat-label">HDMF :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="HDMF" type="text" class="form-control" name="hdmf" placeholder="HDMF" value="{{$employee[0]->HDMF}}" autofocus>
+                                </div>--}}
+                                <input id="HDMF" type="text" class="form-control custom-flat-input" name="hdmf" placeholder="HDMF" value="{{$employee[0]->HDMF}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_HDMF"></p>
                         </div>
-                        <label for="PHIC" class="col-md-2 text-md-center">PHIC :</label>   
+                        <label for="PHIC" class="col-md-2 text-md-center custom-flat-label">PHIC :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="PHIC" type="text" class="form-control" name="phic" placeholder="PHIC" value="{{$employee[0]->PHIC}}" autofocus>
+                                </div>--}}
+                                <input id="PHIC" type="text" class="form-control custom-flat-input" name="phic" placeholder="PHIC" value="{{$employee[0]->PHIC}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_PHIC"></p>
                         </div>
-                        <label for="nid" class="col-md-2 text-md-center">NID :</label>  
+                        <label for="nid" class="col-md-2 text-md-center custom-flat-label">NID :</label>  
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="nid" type="text" class="form-control" name="nid" placeholder="NID" value="{{$employee[0]->NID}}" autofocus>
+                                </div>--}}
+                                <input id="nid" type="text" class="form-control custom-flat-input" name="nid" placeholder="NID" value="{{$employee[0]->NID}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_payroll_schedule"></p>
                         </div>
-                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>   
+                        <label for="account_no" class="col-md-2 text-md-center custom-flat-label">Account No. :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" value="{{$employee[0]->account_no}}" autofocus>
+                                </div>--}}
+                                <input id="account_no" type="text" class="form-control custom-flat-input" name="account_no" placeholder="Account Number" value="{{$employee[0]->account_no}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_account_no"></p>
                         </div>
@@ -299,13 +304,13 @@
                 <hr>
                 <label class="control-label text-md-center">Present Address</label>
                 <div class="form-group row mt-4">
-                        <label for="country" class="col-md-2 text-md-center">Country:</label>
+                        <label for="country" class="col-md-2 text-md-center custom-flat-label">Country:</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="country" name="country" class="form-control">
+                                </div>--}}
+                                <select id="country" name="country" class="form-control custom-flat-select">
                                         <option value="{{$employee[0]->country}}" selected>{{$employee[0]->country}}</option>
                                         <option value="">Choose Country</option>
                                         <option value="Phillipines">Philippines</option>
@@ -313,37 +318,37 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_country"></p>
                         </div>
-                        <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>   
+                        <label for="address_unit" class="col-md-2 text-md-center custom-flat-label">Unit:</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit" value={{$employee[0]->address_unit}}  autofocus>
+                                </div>--}}
+                                <input id="address_unit" type="text" class="form-control custom-flat-input" name="address_unit" placeholder="Address Unit" value={{$employee[0]->address_unit}}  autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_address_unit"></p>
                         </div>
                 </div>
                 <div class="form-group row">
-                        <label for="province" class="col-md-2 text-md-center">Province:</label>
+                        <label for="province" class="col-md-2 text-md-center custom-flat-label">Province:</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="province" name="province" class="form-control">
+                                </div>--}}
+                                <select id="province" name="province" class="form-control custom-flat-select">
                                         <option value="{{$employee[0]->provCode}}" selected>{{$employee[0]->provDesc}}</option>
                                 </select>
                             </div>
                             <p class="text-danger text-md-center" id="error_province"></p>
                         </div>
-                        <label for="citytown" class="col-md-2 text-md-center">City/Town:</label>   
+                        <label for="citytown" class="col-md-2 text-md-center custom-flat-label">City/Town:</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="citytown" name="citytown" class="form-control">
+                                </div> --}}
+                                <select id="citytown" name="citytown" class="form-control custom-flat-select">
                                         <option value="{{$employee[0]->citymunCode}}" selected>{{$employee[0]->citymunDesc}}</option>
                                 </select>
                             </div>
@@ -352,25 +357,25 @@
                 </div>
                 
                 <div class="form-group row">
-                        <label for="barangay" class="col-md-2 text-md-center">Barangay:</label>
+                        <label for="barangay" class="col-md-2 text-md-center custom-flat-label">Barangay:</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="barangay" name="barangay" class="form-control">
+                                </div>--}}
+                                <select id="barangay" name="barangay" class="form-control custom-flat-select">
                                         <option value="{{$employee[0]->refbrgy_id}}" selected>{{$employee[0]->brgyDesc}}</option>
                                 </select>
                             </div>
                             <p class="text-danger text-md-center" id="error_barangay"></p>
                         </div>
-                        <label for="zipcode" class="col-md-2 text-md-center">Zipcode:</label>   
+                        <label for="zipcode" class="col-md-2 text-md-center custom-flat-label">Zipcode:</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <input id="zipcode" type="text" class="form-control" name="zipcode" placeholder="Address Zipcode" value="{{$employee[0]->zipcode}}" autofocus>
+                                </div>--}}
+                                <input id="zipcode" type="text" class="form-control custom-flat-input" name="zipcode" placeholder="Address Zipcode" value="{{$employee[0]->zipcode}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_zipcode"></p>
                         </div>
@@ -479,6 +484,55 @@ $(document).ready(function(){
             console.log("wala textbox");
             $(".essid_field").attr("hidden", true)
         }
+    });
+
+    /*Resend Email*/
+    $('#resend_email').click(function(){
+        let employee_info_id = $('#employee_info_id').val();
+        let user_id = $('#user_id').val();
+        swal({
+                title: "Do you wanna Resend Email?",
+                type: "info",
+                confirmButtonClass: "btn-info",
+                confirmButtonText: "Send",
+                showCancelButton: true,
+                closeOnConfirm: true,
+        },
+            function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/EmployeesEnrollmentController/resend_email',
+                    data: {
+                        employee_info_id: employee_info_id,
+                        user_id: user_id,
+                        '_token': $('input[name=_token]').val(),
+                    },
+                    global: false,
+                    beforeSend: function(){
+                        /*
+                        *@ NProgress Loading
+                        **/
+                        NProgress.start();
+                        NProgress.set(0.2);     // Sorta same as .start()
+                        NProgress.configure({ easing: 'ease', speed: 600 });
+                        NProgress.configure({ showSpinner: false });//Turn off loading 
+                    },
+                    ajaxSend: function(){
+                        NProgress.set(0.6);
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        swal("Email Sent!");
+                        NProgress.set(0.8);
+                        NProgress.done(true);
+                    },
+                    error: function() {
+                        NProgress.set(0.8);
+                        NProgress.done(true);
+                    }
+                });
+            }
+        );
     });
     
 

@@ -13,29 +13,31 @@
             @csrf
           <div class="card-body">
             {{-- Business Information Row --}}
-          <label>Business Information</label>
+          <label class="custom-flat-label">Business Information</label>
           <input type="hidden" id="EmployerId" value="{{ $Account[0]->id }}">
                 <div class="form-group row">
-                        <label for="business_name" class="control-label col-md-2 text-md-center">Business Name:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="business_name" type="text" class="form-control" name="business_name" value="{{ $Account[0]->business_name }}"  autofocus>
+                                </div> --}}
+                                <label for="business_name" class="control-label col-md-12 text-md-left custom-flat-label">Business Name:</label>
+                                <input id="business_name" type="text" class="form-control custom-flat-input" name="business_name" value="{{ $Account[0]->business_name }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_business_name"></p>
                         </div>
 
-                        <label for="accountname" class="col-md-2 text-md-center">Account Name:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="accountname" type="text" class="form-control" name="accountname" value="{{ $Account[0]->accountname }}"  autofocus>
+                                </div> --}}
+                                <label for="accountname" class="col-md-12 text-md-left custom-flat-label">Account Name:</label>
+                                <input id="accountname" type="text" class="form-control custom-flat-input" name="accountname" value="{{ $Account[0]->accountname }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_accountname"></p>
                         </div>
@@ -53,84 +55,90 @@
                 </div>
                 {{-- Business Address Row --}}
                 <hr>
-                <label>Bsuiness Address</label>
+                <label class="custom-flat-label">Bsuiness Address</label>
                 <div class="form-group row mt-4">
-                        <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="address_unit" type="text" class="form-control" name="address_unit" value="{{ $Account[0]->address_unit }}"  autofocus>
+                                </div> --}}
+                                <label for="address_unit" class="col-md-12 text-md-left custom-flat-label">Unit:</label>
+                                <input id="address_unit" type="text" class="form-control custom-flat-input" name="address_unit" value="{{ $Account[0]->address_unit }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_address_unit"></p>
                         </div>
 
-                        <label for="address_country" class="col-md-2 text-md-center">Country:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
 
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="address_country" name="address_country" class="form-control">
+                                </div> --}}
+                                <label for="address_country" class="col-md-12 text-md-left custom-flat-label">Country:</label>
+                                <select id="address_country" name="address_country" class="form-control custom-flat-select">
                                     <option>Philippines</option>
                                 </select>
                             </div>
                             <p class="text-danger" id="error_address_country"></p>
                         </div>
 
-                        <label for="address_cityprovince" class="col-md-2 text-md-center">Province:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
 
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="address_cityprovince" name="address_cityprovince" class="form-control">
+                                </div> --}}
+                                <label for="address_cityprovince" class="col-md-12 text-md-left customf-flat-label">Province:</label>
+                                <select id="address_cityprovince" name="address_cityprovince" class="form-control custom-flat-select">
                                         <option value="{{ $Account[0]->provCode}}" selected>{{ $Account[0]->provDesc}}</option>
                                 </select>
                             </div>
                             <p class="text-danger" id="error_address_cityprovince"></p>
                         </div>
 
-                        <label for="address_town" class="col-md-2 text-md-center">City/Town:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="address_town" name="address_town" class="form-control{{ $errors->has('address_town') ? ' is-invalid' : '' }}">
+                                </div> --}}
+                                <label for="address_town" class="col-md-12 text-md-left custom-flat-label">City/Town:</label>
+                                <select id="address_town" name="address_town" class="form-control{{ $errors->has('address_town') ? ' is-invalid' : '' }} custom-flat-select">
                                         <option value="{{ $Account[0]->citymunCode}}" selected>{{ $Account[0]->citymunDesc}}</option>
                                 </select>
                             </div>
                              <p class="text-danger" id="error_address_town"></p>
                         </div>
 
-                        <label for="address_barangay" class="col-md-2 text-md-center">Barangay:</label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-globe input-group-text"></span>
-                                </div>
-                                <select id="address_barangay" name="address_barangay" class="form-control">
+                                </div> --}}
+                                <label for="address_barangay" class="col-md-12 text-md-left custom-flat-label">Barangay:</label>
+                                <select id="address_barangay" name="address_barangay" class="form-control custom-flat-select">
                                         <option value="{{ $Account[0]->refbrgy_id}}">{{ $Account[0]->brgyDesc}}</option>
                                 </select>
                             </div>
                             <p class="text-danger" id="error_address_barangay"></p>
                         </div>
 
-                        <label for="address_zipcode" class="col-md-2 text-md-center">ZipCode: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="address_zipcode" type="text" class="form-control" name="address_zipcode" value="{{ $Account[0]->address_zipcode }}"  autofocus>
+                                </div> --}}
+                                <label for="address_zipcode" class="col-md-12 text-md-left custom-flat-label">ZipCode: </label>
+                                <input id="address_zipcode" type="text" class="form-control custom-flat-input" name="address_zipcode" value="{{ $Account[0]->address_zipcode }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_address_zipcode"></p>
                         </div>
@@ -141,52 +149,56 @@
                 {{-- ------------------------------------------------------------ --}}
                 {{-- Contact Information --}}
                 <hr>
-                <label>Contact Information</label>
+                <label class="custom-flat-label">Contact Information</label>
                 <div class="form-group row mt-4">
-                        <label for="contact_mobile" class="col-md-2 text-md-center">Mobile: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-phone input-group-text"></span>
-                                </div>
-                                <input id="contact_mobile" type="text" class="form-control" name="contact_mobile" value="{{ $Account[0]->contact_mobile }}"  autofocus>
+                                </div> --}}
+                                <label for="contact_mobile" class="col-md-12 text-md-left custom-flat-label">Mobile: </label>
+                                <input id="contact_mobile" type="text" class="form-control custom-flat-input" name="contact_mobile" value="{{ $Account[0]->contact_mobile }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_contact_mobile"></p>
                         </div>
 
-                        <label for="contact_phone" class="col-md-2 text-md-center">Phone: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-phone input-group-text"></span>
-                                </div>
-                                <input id="contact_phone" type="text" class="form-control" name="contact_phone" value="{{ $Account[0]->contact_phone }}"  autofocus>
+                                </div> --}}
+                                <label for="contact_phone" class="col-md-12 text-md-left customf-lat-label">Phone: </label>
+                                <input id="contact_phone" type="text" class="form-control custom-flat-input" name="contact_phone" value="{{ $Account[0]->contact_phone }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_contact_phone"></p>
                         </div>
 
-                        <label for="contact_email" class="col-md-2 text-md-center">Email: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-envelope input-group-text"></span>
-                                </div>
-                                <input id="contact_email" type="contact_email" class="form-control" name="contact_email" value="{{ $Account[0]->contact_email }}"  autofocus>
+                                </div> --}}
+                                <label for="contact_email" class="col-md-12 text-md-left custom-flat-label">Email: </label>
+                                <input id="contact_email" type="contact_email" class="form-control custom-flat-input" name="contact_email" value="{{ $Account[0]->contact_email }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_contact_email"></p>
                         </div>
 
-                        <label for="contactperson" class="col-md-2 text-md-center">Contact Person: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="contact_person" type="text" class="form-control" name="contact_person" value="{{ $Account[0]->contact_person }}"  autofocus>
+                                </div> --}}
+                                <label for="contactperson" class="col-md-12 text-md-left custom-flat-label">Contact Person: </label>
+                                <input id="contact_person" type="text" class="form-control custom-flat-input" name="contact_person" value="{{ $Account[0]->contact_person }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_contact_person"></p>
                         </div>
@@ -198,66 +210,71 @@
                 {{-- ----------------------------------------------------------------- --}}
                 {{-- Gorvernment Number Row --}}
                 <hr>
-                <label>Goverment Number</label>
+                <label class="custom-flat-label">Goverment Number</label>
                 <div class="form-group row mt-4">
                     
-                        <label for="tin" class="col-md-2 text-md-center">Tin: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="tin" type="text" class="form-control" name="tin" value="{{ $Account[0]->tin }}"  autofocus>
+                                </div> --}}
+                                <label for="tin" class="col-md-12 text-md-left custom-flat-label">Tin: </label>
+                                <input id="tin" type="text" class="form-control custom-flat-input" name="tin" value="{{ $Account[0]->tin }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_tin"></p>
                         </div>
 
-                        <label for="sss" class="col-md-2 text-md-center">SSS/GSIS: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="sss" type="text" class="form-control" name="sss" value="{{ $Account[0]->sss }}"  autofocus>
+                                </div> --}}
+                                <label for="sss" class="col-md-12 text-md-left custom-flat-label">SSS/GSIS: </label>
+                                <input id="sss" type="text" class="form-control custom-flat-input" name="sss" value="{{ $Account[0]->sss }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_sss"></p>
                         </div>
 
-                        <label for="phic" class="col-md-2 text-md-center">Phic: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="phic" type="text" class="form-control" name="phic" value="{{ $Account[0]->phic }}"  autofocus>
+                                </div> --}}
+                                <label for="phic" class="col-md-12 text-md-left custom-flat-label">Phic: </label>
+                                <input id="phic" type="text" class="form-control custom-flat-input" name="phic" value="{{ $Account[0]->phic }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_phic"></p>
                         </div>
 
-                        <label for="hdmf" class="col-md-2 text-md-center">HDMF: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="hdmf" type="text" class="form-control" name="hdmf" value="{{ $Account[0]->hdmf }}"  autofocus>
+                                </div> --}}
+                                <label for="hdmf" class="col-md-12 text-md-left custom-flat-label">HDMF: </label>
+                                <input id="hdmf" type="text" class="form-control custom-flat-input" name="hdmf" value="{{ $Account[0]->hdmf }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_hdmf"></p>
 
                         </div>
 
-                        <label for="nid" class="col-md-2 text-md-center">NID: </label>
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-5">
 
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="nid" type="nid" class="form-control" name="nid" value="{{ $Account[0]->nid }}"  autofocus>
+                                </div> --}}
+                                <label for="nid" class="col-md-12 text-md-left custom-flat-label">NID: </label>
+                                <input id="nid" type="nid" class="form-control custom-flat-input" name="nid" value="{{ $Account[0]->nid }}"  autofocus>
                             </div>
                             <p class="text-danger" id="error_nid"></p>
                         </div>
@@ -267,31 +284,33 @@
                 {{-- -------------------------------------------- --}}
                 {{-- Account Information Row --}}
                 <hr>
-                <label>Account Information</label>
+                <label class="custom-flat-label">Account Information</label>
                 <div class="form-group row mt-4">
 
-                    <label for="user_type" class="col-md-2 text-md-center">Account Type:</label>
-                        <div class="col-md-4">
+                    
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select id="user_type" name="user_type" class="form-control">
+                                </div> --}}
+                                <label for="user_type" class="col-md-12 text-md-left custom-flat-label">Account Type:</label>
+                                <select id="user_type" name="user_type" class="form-control custom-flat-select">
                                         <option value="" selected>Choose Account Type...</option>
                                         <option value="{{ $Account[0]->user_type_id }}" selected>{{ $Account[0]->type_name }}</option>
                                 </select>
                             </div>
                             <p class="text-danger" id="error_user_type"></p>
                         </div>
-                    <label for="enrollmentdate" class="col-md-2 text-md-center">Enrollment Date: </label>
-                        <div class="col-md-4">
+                    
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="enrollmentdate" type="text" class="form-control" name="enrollmentdate" value="{{ \Carbon\Carbon::parse($Account[0]->enrollment_date)->format('m/d/Y')}}" placeholder="MM/DD/YYYY" disabled="true"  autofocus>
+                                </div> --}}
+                                <label for="enrollmentdate" class="col-md-12 text-md-left custom-flat-label">Enrollment Date: </label>
+                                <input id="enrollmentdate" type="text" class="form-control custom-flat-input" name="enrollmentdate" value="{{ \Carbon\Carbon::parse($Account[0]->enrollment_date)->format('m/d/Y')}}" placeholder="MM/DD/YYYY" disabled="true"  autofocus>
                             </div>
                             @if ($errors->has('enrollmentdate'))
                                 <span class="invalid-feedback" role="alert">
@@ -300,14 +319,15 @@
                             @endif
                     </div>
 
-                    <label for="expirydate" class="col-md-2 text-md-center">Expiry Date:</label>
-                        <div class="col-md-4">
+                    
+                        <div class="col-md-5">
                             
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="expirydate" type="text" class="form-control" name="expirydate" value="{{ \Carbon\Carbon::parse($Account[0]->expiry_date)->format('m/d/Y') }}" placeholder="MM/DD/YYYY"   autofocus>
+                                </div> --}}
+                                <label for="expirydate" class="col-md-12 text-md-left custom-flat-label">Expiry Date:</label>
+                                <input id="expirydate" type="text" class="form-control custom-flat-input" name="expirydate" value="{{ \Carbon\Carbon::parse($Account[0]->expiry_date)->format('m/d/Y') }}" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
                             @if ($errors->has('expirydate'))
                                 <span class="invalid-feedback" role="alert">
@@ -321,16 +341,17 @@
                 {{-- ---------------------------------------------------------- --}}
                 {{-- Business Files row --}}
                 <hr>
-                <label>Business Files</label>
+                <label class="custom-flat-label">Business Files</label>
                 <div class="form-group row mt-4">
 
-                    <label for="accountstatus" class="col-md-2 text-md-center">Select File SEC/DTI:</label>
-                    <div class="col-md-4">
+                    
+                    <div class="col-md-5">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{-- <div class="input-group-prepend">
                                     <span class="fa fa-folder input-group-text"></span>
-                                </div>
-                                <div class="custom-file">
+                                </div> --}}
+                                <label for="accountstatus" class="col-md-12 text-md-left custom-flat-label">Select File SEC/DTI:</label>
+                                <div class="custom-file custom-flat-file">
                                     <input type="file" class="custom-file-input" id="sec" name="sec" multiple onchange="processSelectedFilesSec(this)">
                                     <label class="custom-file-label" for="validatedCustomFile" id="sec_filename">{{ substr($Account[0]->sec, 0, 10) }}</label>
                                 </div>
@@ -338,14 +359,15 @@
                             
                     </div>
                     
-                    <label for="accountstatus" class="col-md-2 text-md-center">Select File BIR COR:</label>
-                    <div class="col-md-4">
+                   
+                    <div class="col-md-5">
 
                             <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="fa fa-folder input-group-text"></span>
-                                    </div>
-                                    <div class="custom-file">
+                                    </div> --}}
+                                    <label for="accountstatus" class="col-md-12 text-md-left custom-flat-label">Select File BIR COR:</label>
+                                    <div class="custom-file custom-flat-file">
                                         <input type="file" class="custom-file-input" id="bir" name="bir" multiple onchange="processSelectedFilesBir(this)">
                                         <label class="custom-file-label" for="validatedCustomFile" id="bir_filename">{{ substr($Account[0]->bir, 0, 10) }}</label>
                                     </div>

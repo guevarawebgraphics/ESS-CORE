@@ -43,13 +43,13 @@
                     </div>
                 </div>   
                 <div class="form-group row essid_field" hidden>
-                        <label for="essid_search" class="col-md-2 text-md-center">ESS ID / User ID</label>
+                        <label for="essid_search" class="col-md-2 text-md-center custom-flat-label">ESS ID / User ID</label>
                         <div class="col-md-8">
                                 
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                                {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
-                                </div>
+                                </div>--}}
                                 <input id="essid_search" type="text" class="form-control" name="essid_search" placeholder="ESS ID / User ID" autofocus>&nbsp;&nbsp;
                                 <input type="button" class="btn btn-outline-primary btn-flat" id="btn_search" value="Search">
                             </div>
@@ -61,53 +61,53 @@
                 <label class="iform-label"> Personal Information </label>
                 <div class="form-group row mt-4 iform"> 
                         
-                        <label for="firstname" class="col-md-2 text-md-center">First Name :</label>  
+                        <label for="firstname" class="col-md-2 text-md-center custom-flat-label">First Name :</label>  
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="firstname" type="text" class="form-control" name="firstname" placeholder="First Name"   autofocus>
+                                </div> --}}
+                                <input id="firstname" type="text" class="form-control custom-flat-input" name="firstname" placeholder="First Name"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_firstname"></p>
                         </div>
-                        <label for="lastname" class="col-md-2 text-md-center">Last Name :</label>   
+                        <label for="lastname" class="col-md-2 text-md-center custom-flat-label">Last Name :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="lastname" type="text" class="form-control" name="lastname" placeholder="Last Name"   autofocus>
+                                </div>--}}
+                                <input id="lastname" type="text" class="form-control custom-flat-input" name="lastname" placeholder="Last Name"   autofocus>
                             </div>
                             <p class="text-danger text-md-center mb-6" id="error_lastname"></p>
                         </div>
-                        <label for="middlename" class="col-md-2 text-md-center">Middle Name :</label>   
+                        <label for="middlename" class="col-md-2 text-md-center custom-flat-label">Middle Name :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="middlename" type="text" class="form-control" name="middlename" placeholder="Middle Name"   autofocus>
+                                </div> --}} 
+                                <input id="middlename" type="text" class="form-control custom-flat-input" name="middlename" placeholder="Middle Name"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_middlename"></p>
                         </div>
-                        <label for="suffix" class="col-md-2 text-md-center">Suffix :</label>   
+                        <label for="suffix" class="col-md-2 text-md-center custom-flat-label">Suffix :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="suffix" type="text" class="form-control" name="suffix" placeholder="Suffix"   autofocus>
+                                </div> --}}
+                                <input id="suffix" type="text" class="form-control custom-flat-input" name="suffix" placeholder="Suffix"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_middlename"></p>
                         </div>
-                        <label for="gender" class="col-md-2 text-md-center">Gender :</label>
+                        <label for="gender" class="col-md-2 text-md-center custom-flat-label">Gender :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="gender" name="gender">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="gender" name="gender">
                                         <option value="">Select Options</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>                               
@@ -115,13 +115,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_gender"></p>
                         </div>
-                        <label for="civil_status" class="col-md-2 text-md-center">Civil Status :</label>
+                        <label for="civil_status" class="col-md-2 text-md-center custom-flat-label">Civil Status :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--  <div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="civil_status" name="civil_status">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="civil_status" name="civil_status">
                                         <option value="">Select Options</option>
                                         <option value="Single">Single</option>
                                         <option value="Married">Married</option>
@@ -130,13 +130,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_civil_status"></p>
                         </div>
-                        <label for="birthdate" class="col-md-2 text-md-center">Birthdate :</label>
+                        <label for="birthdate" class="col-md-2 text-md-center custom-flat-label">Birthdate :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="birthdate" type="text" class="form-control datepicker" name="birthdate" placeholder="MM/DD/YYYY"   autofocus>
+                                </div>--}}
+                                <input id="birthdate" type="text" class="form-control datepicker custom-flat-input" name="birthdate" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_birthdate"></p>
                         </div>
@@ -145,46 +145,46 @@
                 <hr class="iform-label">
                 <label class="iform-label"> Employee Information </label>
                 <div class="form-group row mt-4 iform" id="iform_employee_no"> 
-                        <label for="employee_no" class="col-md-2 text-md-center">Employee No. </label>
+                        <label for="employee_no" class="col-md-2 text-md-center custom-flat-label">Employee No. </label>
                         <div class="col-md-4">
                                 
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
-                                </div>
-                                <input id="employee_no" type="text" class="form-control" name="employee_no" placeholder="Employee No"   autofocus>
+                                </div>--}}
+                                <input id="employee_no" type="text" class="form-control custom-flat-input" name="employee_no" placeholder="Employee No"   autofocus>
                             </div>
                             <p class="text-danger text-md-center mb-6" id="error_employee_no"></p>
                         </div>
                 </div>
                 <div class="form-group row iform_editablefield"> 
-                        <label for="position" class="col-md-2 text-md-center">Position :</label>
+                        <label for="position" class="col-md-2 text-md-center custom-flat-label">Position :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="position" type="text" class="form-control" name="position" placeholder="Position"   autofocus>
+                                </div>--}}
+                                <input id="position" type="text" class="form-control custom-flat-input" name="position" placeholder="Position"   autofocus>
                             </div>
                             <p class="text-danger text-md-center mb-6" id="error_position"></p>
                         </div>
-                        <label for="department" class="col-md-2 text-md-center">Department :</label>
+                        <label for="department" class="col-md-2 text-md-center custom-flat-label">Department :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="department" type="text" class="form-control" name="department" placeholder="Department"   autofocus>
+                                </div>--}}
+                                <input id="department" type="text" class="form-control custom-flat-input" name="department" placeholder="Department"   autofocus>
                             </div>
                             <p class="text-danger text-md-center mb-6" id="error_department"></p>
                         </div> 
-                        <label for="employment_status" class="col-md-2 text-md-center">Employment Status :</label>
+                        <label for="employment_status" class="col-md-2 text-md-center custom-flat-label">Employment Status :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="employment_status" name="employment_status">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="employment_status" name="employment_status">
                                         <option value="">Select Options</option>
                                         <option value="Contractual">Contractual</option>
                                         <option value="Probationary">Probationary</option>
@@ -194,13 +194,13 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_employment_status"></p>
                         </div>
-                        <label for="payroll_schedule" class="col-md-2 text-md-center">Payroll Schedule :</label>
+                        <label for="payroll_schedule" class="col-md-2 text-md-center custom-flat-label">Payroll Schedule :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="payroll_schedule" name="payroll_schedule">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="payroll_schedule" name="payroll_schedule">
                                         <option value="">Select Options</option>
                                         <option value="Weekly">Weekly</option>
                                         <option value="Monthly">Monthly</option>
@@ -209,36 +209,36 @@
                             </div>
                             <p class="text-danger text-md-center" id="error_payroll_schedule"></p>
                         </div>
-                        <label for="payroll_bank" class="col-md-2 text-md-center">Payroll Bank :</label>
+                        <label for="payroll_bank" class="col-md-2 text-md-center custom-flat-label">Payroll Bank :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <select class="form-control" id="payroll_bank" name="payroll_bank">
+                                </div>--}}
+                                <select class="form-control custom-flat-select" id="payroll_bank" name="payroll_bank">
                                         <option value="">Select Options</option>
                                         <option value="BDO">BANCO DE ORO</option>                                                              
                                 </select>
                             </div>
                             <p class="text-danger text-md-center" id="error_payroll_bank"></p>
                         </div>
-                        <label for="enrollment_date" class="col-md-2 text-md-center">Enrollment Date :</label>
+                        <label for="enrollment_date" class="col-md-2 text-md-center custom-flat-label">Enrollment Date :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-calendar input-group-text"></span>
-                                </div>
-                                <input id="enrollment_date" type="text" class="form-control datepicker" name="enrollment_date" placeholder="MM/DD/YYYY"   autofocus>
+                                </div>--}}
+                                <input id="enrollment_date" type="text" class="form-control datepicker custom-flat-input" name="enrollment_date" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
-                            <p class="text-danger text-md-center" id="error_enrollment_date"></p>
+                            <p class="text-danger text-md-center" id="error_enrollment_date "></p>
                         </div> 
-                        <label for="account_no" class="col-md-2 text-md-center">Account No. :</label>  
+                        <label for="account_no" class="col-md-2 text-md-center custom-flat-label">Account No. :</label>  
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="account_no" type="text" class="form-control" name="account_no" placeholder="Account Number" autofocus>
+                                </div>--}}
+                                <input id="account_no" type="text" class="form-control custom-flat-input" name="account_no" placeholder="Account Number" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_account_no"></p>
                         </div>
@@ -246,23 +246,23 @@
                 <hr class="iform-label">
                 <label class="iform-label"> Contact Information </label>
                 <div class="form-group row mt-4 iform">
-                        <label for="mobile_no" class="col-md-2 text-md-center">Mobile No. :</label>
+                        <label for="mobile_no" class="col-md-2 text-md-center custom-flat-label">Mobile No. :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="mobile_no" type="text" maxlength="11" class="form-control" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)"  autofocus>
+                                </div>--}}
+                                <input id="mobile_no" type="text" maxlength="11" class="form-control custom-flat-input" name="mobile_no" placeholder="Mobile No." onKeyPress="return checknumber(event)"  autofocus>
                             </div>
                             <p class="text-danger text-md-center mb-6" id="error_mobile_no"></p>
                         </div>
-                        <label for="email_add" class="col-md-2 text-md-center">Email :</label>
+                        <label for="email_add" class="col-md-2 text-md-center custom-flat-label">Email :</label>
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-user input-group-text"></span>
-                                </div>
-                                <input id="email_add" type="email" class="form-control" name="email_add" placeholder="Email"   autofocus>
+                                </div>--}}
+                                <input id="email_add" type="email" class="form-control custom-flat-input" name="email_add" placeholder="Email"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_email_add"></p>
                         </div>
@@ -270,53 +270,53 @@
                 <hr class="iform-label">
                 <label class="iform-label"> Goverment Numbers </label>
                  <div class="form-group row mt-4 iform">
-                        <label for="TIN" class="col-md-2 text-md-center">TIN :</label>     
+                        <label for="TIN" class="col-md-2 text-md-center custom-flat-label">TIN :</label>     
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="TIN" type="text" class="form-control" name="tin" placeholder="TIN"   autofocus>
+                                </div>--}}
+                                <input id="TIN" type="text" class="form-control custom-flat-input" name="tin" placeholder="TIN"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_TIN"></p>
                         </div>
-                        <label for="SSSGSIS" class="col-md-2 text-md-center">SSS/GSIS :</label>   
+                        <label for="SSSGSIS" class="col-md-2 text-md-center custom-flat-label">SSS/GSIS :</label>   
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="SSSGSIS" type="text" class="form-control" name="sssgsis" placeholder="SSS/GSIS"   autofocus>
+                                </div>--}}
+                                <input id="SSSGSIS" type="text" class="form-control custom-flat-input" name="sssgsis" placeholder="SSS/GSIS"   autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_SSSGSIS"></p>
                         </div>
-                        <label for="HDMF" class="col-md-2 text-md-center">HDMF :</label> 
+                        <label for="HDMF" class="col-md-2 text-md-center custom-flat-label">HDMF :</label> 
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="HDMF" type="text" class="form-control" name="hdmf" placeholder="HDMF" autofocus>
+                                </div>--}}
+                                <input id="HDMF" type="text" class="form-control custom-flat-input" name="hdmf" placeholder="HDMF" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_HDMF"></p>
                         </div>
-                        <label for="PHIC" class="col-md-2 text-md-center">PHIC :</label> 
+                        <label for="PHIC" class="col-md-2 text-md-center custom-flat-label">PHIC :</label> 
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="PHIC" type="text" class="form-control" name="phic" placeholder="PHIC" autofocus>
+                                </div>--}}
+                                <input id="PHIC" type="text" class="form-control custom-flat-input" name="phic" placeholder="PHIC" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_PHIC"></p>
                         </div>
-                        <label for="nid" class="col-md-2 text-md-center">NID :</label> 
+                        <label for="nid" class="col-md-2 text-md-center custom-flat-label">NID :</label> 
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            {{--<div class="input-group-prepend">
                                     <span class="fa fa-address-card input-group-text"></span>
-                                </div>
-                                <input id="nid" type="text" class="form-control" name="nid" placeholder="NID" autofocus>
+                                </div>--}}
+                                <input id="nid" type="text" class="form-control custom-flat-input" name="nid" placeholder="NID" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_nid"></p>
                         </div>
@@ -325,74 +325,74 @@
                 <hr class="iform-label">
                 <label class="iform-label">Present Address</label>
                 <div class="form-group row mt-4 iform">
-                            <label class="col-md-2 text-md-center">Country:</label>
+                            <label class="col-md-2 text-md-center custom-flat-label">Country:</label>
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                {{--<div class="input-group-prepend">
                                         <span class="fa fa-address-card input-group-text"></span>
-                                    </div>
-                                    <select id="country" name="country" class="form-control">
+                                    </div>--}}
+                                    <select id="country" name="country" class="form-control custom-flat-select">
                                             {{--<option value="">Choose Country</option> --}}
                                             <option value="Phillipines" selected>Philippines</option>
                                     </select>
                                 </div>
                                 <p class="text-danger text-md-center" id="error_country"></p>
                             </div>
-                            <label for="address_unit" class="col-md-2 text-md-center">Unit:</label>  
+                            <label for="address_unit" class="col-md-2 text-md-center custom-flat-label">Unit:</label>  
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                {{--<div class="input-group-prepend">
                                         <span class="fa fa-user input-group-text"></span>
-                                    </div>
-                                    <input id="address_unit" type="text" class="form-control" name="address_unit" placeholder="Address Unit"  autofocus>
+                                    </div>--}}
+                                    <input id="address_unit" type="text" class="form-control custom-flat-input" name="address_unit" placeholder="Address Unit"  autofocus>
                                 </div>
                                 <p class="text-danger text-md-center" id="error_address_unit"></p>
                             </div>
               
-                            <label for="province" class="col-md-2 text-md-center">Province:</label>
+                            <label for="province" class="col-md-2 text-md-center custom-flat-label">Province:</label>
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                 {{--<div class="input-group-prepend">
                                         <span class="fa fa-address-card input-group-text"></span>
-                                    </div>
-                                    <select id="province" name="province" class="form-control">
+                                    </div>--}}
+                                    <select id="province" name="province" class="form-control custom-flat-select">
                                             <option value="" selected>Choose Province</option>
                                     </select>
                                 </div>
                                 <p class="text-danger text-md-center" id="error_province"></p>
                             </div>
-                            <label for="citytown" class="col-md-2 text-md-center">City/Town:</label>
+                            <label for="citytown" class="col-md-2 text-md-center custom-flat-label">City/Town:</label>
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                {{--<div class="input-group-prepend">
                                         <span class="fa fa-user input-group-text"></span>
-                                    </div>
-                                    <select id="citytown" name="citytown" class="form-control">
+                                    </div>--}}
+                                    <select id="citytown" name="citytown" class="form-control custom-flat-select">
                                             <option value="" selected>Choose City/Town</option>
                                     </select>
                                 </div>
                                 <p class="text-danger text-md-center" id="error_citytown"></p>
                             </div>
                  
-                            <label for="barangay" class="col-md-2 text-md-center">Barangay:</label>
+                            <label for="barangay" class="col-md-2 text-md-center custom-flat-label">Barangay:</label>
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                {{--<div class="input-group-prepend">
                                         <span class="fa fa-address-card input-group-text"></span>
-                                    </div>
-                                    <select id="barangay" name="barangay" class="form-control">
+                                    </div>--}}
+                                    <select id="barangay" name="barangay" class="form-control custom-flat-select">
                                             <option value="" selected>Choose Barangay</option>
                                     </select>
                                 </div>
                                 <p class="text-danger text-md-center" id="error_barangay"></p>
                             </div>
-                            <label for="zipcode" class="col-md-2 text-md-center">Zipcode:</label> 
+                            <label for="zipcode" class="col-md-2 text-md-center custom-flat-label">Zipcode:</label> 
                             <div class="col-md-4">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
+                                {{--<div class="input-group-prepend">
                                         <span class="fa fa-user input-group-text"></span>
-                                    </div>
-                                    <input id="zipcode" type="text" class="form-control" name="zipcode" placeholder="Address Zipcode"  autofocus>
+                                    </div>--}}
+                                    <input id="zipcode" type="text" class="form-control custom-flat-input" name="zipcode" placeholder="Address Zipcode"  autofocus>
                                 </div>
                                 <p class="text-danger text-md-center" id="error_zipcode"></p>
                             </div>
@@ -1248,7 +1248,15 @@ $(document).ready(function(){
                 $('#iform_employee_no').removeAttr('hidden');
                 $('.iform_editablefield').attr('hidden',false);
                 console.log(data.provDesc + ' '+  data.brgyDesc + ' ' + data.citymunDesc);
-                $('#employee_name').html(data.firstname + ' ' +data.middlename + ' ' + data.lastname + ' ' + data.suffix);
+
+                let name =  {
+                        firstname : data.firstname ,
+                        middlename: data.middlename || '',
+                        lastname : data.lastname ,
+                        suffix : data.suffix  || ''
+                }
+                $('#employee_name').html(name.firstname + ' ' +name.middlename + ' ' + name.lastname + ' ' + name.suffix);
+
                 $('#employee_address').html(data.address_unit + ' ' + data.provDesc + ' ' + data.citymunDesc + ' ' + data.brgyDesc);
                 //
                 //console.log
@@ -1283,24 +1291,27 @@ $(document).ready(function(){
                 // $("#province").val(data.province);
                 $("#zipcode").val(data.zipcode);
                 $("#hidden_personalinfo_id").val(data.id);
+                // auto complete fields
                 $("#hidden_essid").val(data.ess_id);
+                // Displays on the text fields
                 //$('#employee_no').val(data.employee_no);
-                $('#enrollment_date').val(data.enrollment_date);
-                $('#department').val(data.department);
-                $('#employment_status').val(data.employment_status);
-                $('#payroll_schedule').val(data.payroll_schedule);
-                $('#payroll_bank').val(data.payroll_bank);
-                $('#account_no').val(data.account_no);
-                $('#position').val(data.position); 
-
+               // $('#enrollment_date').val(data.enrollment_date);
+               // $('#department').val(data.department);
+                //$('#employment_status').val(data.employment_status);
+               // $('#payroll_schedule').val(data.payroll_schedule);
+               // $('#payroll_bank').val(data.payroll_bank);
+               // $('#account_no').val(data.account_no);
+                //$('#position').val(data.position); 
+                // 
                 // Displays on the panel 
-                $('#employee_position').html(data.position);
-                $('#employee_enrollmentdate').html(data.enrollment_date); 
-                $('#employee_employeeno').html(""); 
-                $('#employee_accountno').html(data.account_no);
-                $('#employee_department').html(data.department);
+                //$('#employee_position').html(data.position);
+               // $('#employee_enrollmentdate').html(data.enrollment_date); 
+               // $('#employee_employeeno').html(""); 
+               // $('#employee_accountno').html(data.account_no);
+               // $('#employee_department').html(data.department);
 
                 /******** Copies the actual value for displaying */
+
                 $('#enrollment_date').on("change",function(){
                 setTimeout(changevalue_enrollmentdate,0); 
                 });
@@ -1365,8 +1376,6 @@ $(document).ready(function(){
                             department = display_position;
                     }
                 }
-
-
                 
                 /*
                  * @ Check if the User has a Profile Picture or Null
@@ -1376,7 +1385,7 @@ $(document).ready(function(){
                     $('#employee_profile_picture').attr('src', '/storage/pic.jpg');
                 }
                 else {
-                    $('#employee_profile_picture').attr('src', '/storage/profile_picture/' + data.profifle_picture);
+                    $('#employee_profile_picture').attr('src', '/storage/profile_picture/ESS_DEFAULT_PICTURE/' + data.profifle_picture);
                 }
                 
                 

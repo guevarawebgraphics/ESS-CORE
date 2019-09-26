@@ -62,7 +62,8 @@
         <!-- /.info-box-content -->
       </div>
       <!-- /.info-box -->
-    </div>
+    </div> 
+  
     <!-- /.col -->
     <div class="col-md-3 col-sm-6 col-xs-12">
       <div class="info-box">
@@ -80,7 +81,43 @@
   </div>
   <!-- /.row -->
     
-</section> 
+</section>  
+
+@if(auth()->user()->user_type_id === 4)
+{{--CAROUSEL --}} 
+{{-- <div class="container">
+    <div id="carouselExampleIndicators" class="carousel slide"data-ride="carousel">
+          <ol class="carousel-indicators">
+            @foreach($banner as $contents) 
+            <li data-target="#carouselExampleIndicators" >
+            </li>   
+            @endforeach 
+          </ol>
+          <div class="carousel-inner">
+            @foreach($banner->take(2) as $contents)
+            <div class="carousel-item @if($loop->first) active @endif ">
+            <img class="d-block w-100 h-100" src="/Storage/Documents/banner_image/{{ $contents->media_file_banner}}" alt="{{$contents->title_banner}}"> 
+            <div class="carousel-caption d-none d-md-block">
+                <h5>{{$contents->title_banner}}</h5>
+                <p>{{strip_tags($contents->description_banner)}}</p> 
+             
+              </div>
+            </div> 
+            @endforeach
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+</div>
+  @else 
+--}}
+  @endif 
   @if(auth()->user()->user_type_id === 4)
     <!-- Content List -->
   {{--  <div class="container-fluid border-secondary" style="background:white;border-radius:5px;padding:30px;"> 
@@ -129,8 +166,11 @@
                 <div class="info-box">
                   <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
                   <div class="info-box-content ">
-                    <span class="info-box-text">Employer Contents</span>
-                    <span class="info-box-number">{{count($content)}}</span>
+                    <span class="info-box-text">Employer Contents 
+                     {{-- <span class="badge badge-light" id="unread-indicator">{{$unread}}</span> --}}
+                    </span> 
+                    <span class="info-box-number">{{count($content)}}</span> 
+           
                   </div>
                   <!-- /.info-box-content -->
                 </div>
@@ -173,7 +213,8 @@
                         <div class="container-fluid">
                           <h4> {{$contents->content_title}} </h4>
                           <div class="box-body img-thumbnail" id="content-{{$contents->id}}-body" style="display:none;overflow-wrap: break-word;">
-                              {!! $contents->content_description !!}
+                              {!! $contents->content_description !!} 
+                        
                           </div>
                         </div>
                     </div>
@@ -236,41 +277,6 @@
      
   </div>  
 
-  @if(auth()->user()->user_type_id === 4)
-{{--CAROUSEL --}} 
-   {{-- <div class="container">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-            @foreach($content as $contents) 
-            <li data-target="#carouselExampleIndicators" >
-            </li>   
-            @endforeach 
-          </ol>
-          <div class="carousel-inner">
-            @foreach($content->take($count) as $contents)
-            <div class="carousel-item @if($loop->first) active @endif ">
-            <img class="d-block w-100" src="https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png" alt="{{$contents->content_title}}"> 
-            <div class="carousel-caption d-none d-md-block">
-                <h5>{{$contents->content_title}}</h5>
-                <p>{{strip_tags($contents->content_description)}}</p> 
-             
-              </div>
-            </div> 
-            @endforeach
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-    </div>
-  @else 
---}}
-  @endif
 {{--modal  for description --}} 
  <div class="modal fade" id="modal-lg">
         <div class="modal-dialog modal-lg">

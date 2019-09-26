@@ -16,7 +16,7 @@
         </div>      
         <div class="col-md-5">
             <div class="card card-outline shadow p-3 mb-5 bg-white rounded">
-                <div class="card-header text-center text-black" id="ess_login_text"><!--{{ __('Login') }}--> ESS LOGIN</div>
+                <div class="card-header text-center text-black" id="ess_login_text" style="font-family: poppins,arial,helvetica neue,sans-serif; font-weight: bold;"><!--{{ __('Login') }}--> <h3>ESS LOGIN</h3></div>
                 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -28,7 +28,7 @@
                                     {{-- <div class="input-group-append">
                                         <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
                                     </div> --}}
-                                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Username / ESSID" required autofocus>
+                                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }} custom-flat-input" name="username" value="{{ old('username') }}" placeholder="Username / ESSID" required autofocus>
                                 </div>
                                 
                                 @if ($errors->has('username'))
@@ -45,7 +45,7 @@
                                     {{-- <div class="input-group-append">
                                         <span class="fa fa-lock input-group-text" style="background-color: #fff;"></span>
                                     </div> --}}
-                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} custom-flat-input" name="password" placeholder="Password" required>
                                 </div>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
@@ -98,8 +98,8 @@
                             </div> --}}
 
                             <div class="col-md-8 offset-md-2">
-                                <button type="submit" class="btn btn-login btn-block btn-flat">
-                                    {{ __('Login') }}
+                                <button type="submit" class="btn btn-login btn-block btn-flat btn-custom-flat">
+                                    {{ __('LOGIN') }}
                                     {{-- <ion-icon name="log-in"></ion-icon> --}}
                                     <i class="icon ion-md-log-in"></i>
                                 </button>                                

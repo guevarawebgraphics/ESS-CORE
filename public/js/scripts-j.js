@@ -86,7 +86,12 @@
                 $( "#content-"+id+"-body" ).toggle( "slow", function() {
                         $("#content-"+id+"-body img").addClass('img-fluid img-thumbnail');
                 });
-
+                // for showing number of unread
+               /* var count =  $('#unread-indicator').html(); 
+                var unread_min = count - 1; 
+                unread_min < 0 ? unread = 0 : unread = unread_min;
+                $('#unread-indicator').html(unread);*/
+           
                 $.ajax({
                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type: "get",

@@ -52,8 +52,10 @@
 	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script> --}}
 	<!-- Socket IO -->
 	<script src="{{ asset('SocketIO/socket.io.dev.js') }}"></script>
-	{{-- <script src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script> --}}
+	{{-- <script src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script> --}} 
+	
 	<!-- CKEDITOR 4 -->
+	<script src="https://cdn.ckeditor.com/4.12.1/standard-all/ckeditor.js"></script>
 	<script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 	<script src="{{ asset('/ckeditor/adapters/jquery.js') }}"></script>
 	<script src="{{ asset('/ckeditor/ckfinder/ckfinder.js') }}"></script> 
@@ -63,6 +65,7 @@
 	{{-- <script src="{{ asset('/ckeditor/ckfinder/core/connector/php/connector') }}"></script> --}}
 	<!--ionic icons-->
 	<link href="{{ asset('Ionicons/ionicons.min.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('/nprogress/nprogress.css') }}">
 	{{-- Momentjs --}}
 	<script src="{{ asset('js/moment.min.js') }}"></script> 
 <!---->
@@ -70,6 +73,7 @@
 	@if(Auth::check())
 	<script src="{{ asset('js/scripts.js') }}"></script> 
 	<script src="{{ asset('js/scripts-j.js') }}"></script>
+	<script src="{{ asset('/nprogress/nprogress.js') }}"></script>
 	<!--Upload Image-->
 	<script src="{{ asset('js/uploadprofile_image.js') }}"></script>
 	@endif

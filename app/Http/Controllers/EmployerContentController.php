@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 /**
  *  Packages Facades
  * */
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
+use Illuminate\Support\Facades\Storage; 
 
 use Session;
 use Response;
 use DB;
-
 /**
  *  Insert Models Here
  * */
 use App\EmployerContent;
-use App\Logs;
+use App\Logs; 
+use App\BannerContent; 
+
 
 class EmployerContentController extends Controller
 {
@@ -75,6 +77,70 @@ class EmployerContentController extends Controller
     {   
         $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent ORDER BY created_at DESC");   
         return view('employer_modules.employer_content.manage')->with('employer_content', $employer_content);
+    }
+    public function manage_banner()
+    {   
+        $banner_content = DB::table('banner')->get();
+        return view('employer_modules.employer_content.banner')->with('banner_content', $banner_content);
+    }
+    public function refresh_banner()
+    {   
+        $banner_content = DB::table('banner')->get();
+        return view('employer_modules.employer_content.tablebanner')->with('banner_content', $banner_content);
+    }  
+    public function create_banner(Request $request) { 
+        $this->validate($request, [
+            'media_title' => 'required',
+            'media_description' => 'required', 
+            'banner_file' => 'required'
+        ]);
+
+        $filenameWithExt_banner_file = $request->file('banner_file')->getClientOriginalName();
+
+        // Get just filename
+        $filename_banner_file = pathinfo($filenameWithExt_banner_file, PATHINFO_FILENAME);
+
+        // Get just ext
+        $extension_banner_file = $request->file('banner_file')->getClientOriginalExtension();
+
+        // Filename to store
+        $fileNameToStore_banner_file = $filename_banner_file.'_'.time().'_'.'banner_file'.'.'.$extension_banner_file;
+
+        // Upload Image
+        $path_banner_file = $request->file('banner_file')->storeAs('public/Documents/banner_image', $fileNameToStore_banner_file); 
+        $banner = BannerContent::create([
+            'account_id' => auth()->user()->id, //Employer_ID
+            'employer_id' => auth()->user()->employer_id, 
+            'title_banner' => $request->input('media_title'),
+            'description_banner' => $request->input('media_description'), 
+            'media_file_banner' => $fileNameToStore_banner_file,
+            'banner_status' => 0, //0 Means Pending Staus
+            'created_by' => auth()->user()->id,
+            'updated_by' => auth()->user()->id,
+
+        ]); 
+        return response()->json("hi");
+
+    } 
+    public function delete_banner(Request $request){
+        $this->getaccount();
+        $id = $request->id;
+        $banner_title = $request->title;
+        /*Delete Banner*/ 
+        $old_filename = BannerContent::where('id','=',$id)->pluck('media_file_banner');
+        Storage::delete('public/Documents/banner_image/'.$old_filename[0]); //delete file inside the storage
+        $content = BannerContent::where('id', '=', $id)->delete();
+        $message = 'Successfully Deleted';
+        $this->insert_log("Deleted Employer Content '" . $banner_title . "'");
+        return response()->json($message);    
+    }
+    public function post_banner(Request $request) {
+
+        $update_banner = DB::table('banner')->where('id', '=', $request->id)
+        ->update(array(
+            'banner_status' => 1
+        ));
+
     }
     //refresh manage content
     public function refresh_manage()
@@ -182,6 +248,44 @@ class EmployerContentController extends Controller
         $inserlog->account_id = auth()->user()->id;
         $inserlog->log_event = $event;
         $inserlog->save();
+    }
+    public function linkpreview(Request $request){
+        $search = "href.";
+        if(preg_match("/{$search}/i",$request->content)) {
+         //   echo 'true'; 
+            $link = ''.$request->content.'';
+            preg_match_all('/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', $link, $result);
+    
+
+            if (!empty($result)) {
+          
+                $str =  file_get_contents("".$result['href'][0]."");
+                if(strlen($str)>0){
+                $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
+                preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case 
+                preg_match("/\<p\>(.*)\<\/p\>/i",$str,$description);
+                preg_match("/\<p\>(.*)\<\/p\>/i",$str,$description);
+                if(empty($description[1])){
+                    $des = ["","No Description Available On This Website"];
+                }
+                if(!empty($description[1])) 
+                {   
+                    $des = ["","".$description[1].""]; 
+                    $des  = str_limit($description[1],100); 
+                }
+        
+
+                $title_real = str_limit($title[1],100);
+                $link_real = $result['href'][0];
+                $values =  array( $title_real, $des, $link_real);
+                        
+              }
+              return response()->json($values);
+            } 
+         
+          } 
+        
+           
     }
  
 

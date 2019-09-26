@@ -153,14 +153,14 @@ elseif(Session::get('payroll_management') == 'delete'){
             <a href="/storage/Documents/templates/{{$employees_template->document_file}}" download>{{$employees_template->document_code}}<div class="float-left mr-3"><i class="fa fa-download"></i></div></a>
             <input type="hidden" id="defaultfile" value="{{$employees_template->document_file}}">
         @endforeach
-        <form class="payroll_form" id="upload_payroll" runat="server">
+        <form class="payroll_form mt-3" id="upload_payroll" runat="server">
             @csrf
 			<div class="col-md-12">
 				<div class="input-group mb-3">
-					<div class="input-group-prepend">
+					{{-- <div class="input-group-prepend">
 						<span class="fa fa-folder input-group-text"></span>
-					</div>
-					<div class="custom-file">
+					</div> --}}
+					<div class="custom-file custom-flat-file">
 						<input type="file" class="custom-file-input" id="payroll_file" name="file" multiple onchange="processSelectedFilesPayrollFile(this)">
 						<label class="custom-file-label" for="validatedCustomFile" id="payroll_filename">Choose file...</label>
 					</div>
@@ -191,31 +191,33 @@ elseif(Session::get('payroll_management') == 'delete'){
 		</div>
 		<div class="modal-body">
         <div class="alert alert-danger" id="save_payroll_errors" hidden="true">
+            <input type="text" id="check_validation" name="check_validation" hidden="true"> 
                 <span><i class="fa fa-exclamation-circle"></i> <b>Errors</b></span>
             <ul>
-                <div id="save_validation_error_message"></div>
+                <li style="list-style-type: none;"><div id="save_validation_error_message"></div></li>
             </ul>
         </div>         
         <form id="save_payroll_form">
             @csrf
+            <input type="hidden" id="save_payroll_form_key" name="save_payroll_form_key">
               <div class="col-md-12">
                 <div class="input-group">
-                    <label for="batch_no">Batch No:</label>
+                    <label class="custom-flat-label" for="batch_no">Batch No:</label>
 					<div class="col-md-12"> 
                         
-                        <input class="form-control " type="text" name="batch_no" id="batch_no" placeholder="Batch No">
+                        <input class="form-control custom-flat-input-modal" type="text" name="batch_no" id="batch_no" placeholder="Batch No">
                     </div>  
                     <div class="col-md-6"> 
-                            <label for="Period From">Period From:</label>
-                            <input class="form-control datepicker" type="text" name="period_from" id="period_from" placeholder="YYYY-MM-DD" autocomplete="off">
+                            <label class="custom-flat-label" for="Period From">Period From:</label>
+                            <input class="form-control datepicker custom-flat-input-modal" type="text" name="period_from" id="period_from" placeholder="MM-DD-YYYY" autocomplete="off">
                     </div>
                     <div class="col-md-6"> 
                             <label for="Period To">Period To:</label>
-                            <input class="form-control datepicker" type="text" name="period_to" id="period_to" placeholder="YYYY-MM-DD" autocomplete="off">
+                            <input class="form-control datepicker custom-flat-input-modal" type="text" name="period_to" id="period_to" placeholder="MM-DD-YYYY" autocomplete="off">
                     </div>
-                    <label for="batch_no">Payroll Schedule:</label>
+                    <label class="custom-flat-label" for="batch_no">Payroll Schedule:</label>
                     <div class="col-md-12">
-                        <select class="form-control " id="payroll_schedule" name="payroll_schedule">
+                        <select class="form-control custom-flat-select" id="payroll_schedule" name="payroll_schedule">
                             <option value="">Select Options</option>
                                 <option value="Weekly">Weekly</option>
                                 <option value="Monthly">Monthly</option>
@@ -228,8 +230,9 @@ elseif(Session::get('payroll_management') == 'delete'){
 		</div>
 		<div class="modal-footer">
 		  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-		  <button type="submit" class="btn btn-outline-primary btn-flat" id="btn_submit_payroll" data-file=""><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></i></button>
-		</div>
+		  <button type="submit" class="btn btn-outline-primary btn-flat btn-save" id="btn_save_preview" data-file="" disabled="true"><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></i></button>
+          {{-- <button type="submit" class="btn btn-outline-primary btn-flat btn-save" id="btn_save_preview"><span><i class="fa fa-upload"></i></span> Save <i id="spinner_save_payroll" class=""></i></button> --}}
+        </div>
 		</form>
 	  </div>
 	</div>
@@ -303,7 +306,7 @@ elseif(Session::get('payroll_management') == 'delete'){
           lengthChange: false,
           responsive: true,
           fixedColumns: true,
-          "order": [[4, "desc"]]
+          "order": [[6, "asc"]]
         }); 
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {
@@ -347,16 +350,25 @@ elseif(Session::get('payroll_management') == 'delete'){
                 processData: false,
                 global: false,
                 beforeSend: function(){
+                    NProgress.start();
+                    NProgress.set(0.0);     // Sorta same as .start()
+                    NProgress.configure({ easing: 'ease', speed: 500 });
+                    NProgress.configure({ showSpinner: false });//Turn off loading 
                     $("#spinner_upload_payroll").addClass('fa fa-refresh fa-spin'); 
                     $('.btn-payroll-upload').removeAttr('type');
                 },
+                ajaxSend: function(){
+                    NProgress.set(0.4);
+                },
                 complete: function() {
+                    NProgress.done(true);
                     setTimeout(function (){
                             $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
                     }, 250);
                     $('#Upload').removeAttr('disabled');
                 },
                 success: function(data) {
+                    NProgress.done(true);
                     toastr.success('Payroll Register Uploaded!')
                     //console.log("Success");
                     $("#payroll_register_table").DataTable().destroy();
@@ -375,6 +387,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                     window.location.replace('{{ config('app.url') }}/payrollmanagement/upload');
                 },
                 error: function(data, status){
+                    NProgress.done(true);
                     $('.btn-payroll-upload').removeAttr('disabled');
                     setTimeout(function (){
                                 $("#spinner_upload_payroll").removeClass('fa fa-refresh fa-spin');
@@ -547,8 +560,124 @@ elseif(Session::get('payroll_management') == 'delete'){
             //console.log("TEST");
             $('#save_payroll_register_modal').modal('show');
         });
+        var error_arrays = [];
+        /**@argument
+        * On Change Validation
+        **/
+        $('#payroll_schedule').change(function (e){
+            toastr.remove()
+            e.preventDefault();
+            //var check_errors = $('#err_msg').hasClass('errors_message');
+            var check_errors = $('.errors_message')[0];
+            if(check_errors == false){
+                
+                $('#btn_save_preview').attr('disabled', true);
+                
+            }
+            else{
+                $('#btn_save_preview').removeAttr('disabled');
+                $('#save_payroll_errors').attr('hidden', true);
+            }
+            //console.log(check_errors);
+            var data = new FormData($('#save_payroll_form')[0]);
+            // swal({
+            //     title: "Do you wanna Save This Payroll Register Details?",
+            //     type: "warning",
+            //     confirmButtonClass: "btn-danger",
+            //     confirmButtonText: "Yes",
+            //     showCancelButton: true,
+            //     closeOnConfirm: true,
+            // },
+            //     function(){
+                     /*AjaxSetup*/
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: "{{ url('/payrollmanagement/submit_payroll_register_details') }}",
+                        method: 'POST',
+                        async: false,
+                        dataType: 'json',
+                        data: data,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        global: false,
+                        beforeSend: function() {
+                            NProgress.configure({ easing: 'ease', speed: 500 });
+                            NProgress.start();
+                            NProgress.configure({ showSpinner: false });//Turn off loading 
+                        },
+                        success: function(data){
+                            NProgress.done(true);
+                            //console.log(data);
+                            if(data.status == 'false'){
+                                let array = data.result;
+                                $('.errors_message').remove();
+                                $("br").remove();
+                                for(let i = 0; i < array.length; i++){
+                                    check_payroll_schedule(array[i].employee_no, array[i].payroll_schedule, $('#payroll_schedule').val())
+                                }
+                                
+                            }
+                            else if(data.status == 'failed'){
+                                // Display a success toast, with a title
+                                toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
+                                console.log(data);
+                                $('#save_payroll_errors').removeAttr('hidden');
+                                $('#save_validation_error_message').html('<label>'+ data.message +'</label><br>');
+                            }
+                            else {
+                                // Display a success toast, with a title
+                                toastr.success('Pay Register Details Successfully Posted', 'Success')
+                                $('#error_alert').attr('hidden', true);
+                                showAllPayRegister();
+                                console.log(data);
+                                $('#save_payroll_register_modal').modal('hide');
+                                $('#save_payroll_form')[0].reset();
+                            }
+                        },
+                        error: function(data, status){
+                            console.clear();
+                            NProgress.done(true);
+                            // Catch Errors
+                            if(data.status === 422){
+                                var errors = $.parseJSON(data.responseText);
+                                $.each(errors, function(i, errors){
+                                    if(errors.batch_no){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.batch_no +'</label><br>');
+                                    }
+                                    if(errors.period_from){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.period_from +'</label><br>');
+                                    }
+                                    if(errors.period_to){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.period_to +'</label><br>');
+                                    }
+                                    if(errors.payroll_schedule){
+                                        $('#save_payroll_errors').removeAttr('hidden');
+                                        $('#save_validation_error_message').append('<label>'+ errors.payroll_schedule +'</label><br>');
+                                    }
+                                });
+                            }
+                        }
+                    });
+                //}
+            // );
+            
+        });
 
-        $('#btn_submit_payroll').click(function (e){
+        $('#btn_save_preview').click(function(e) {
+            //console.log('asdf');
+            e.preventDefault();
+            if($('#save_payroll_errors').hasClass('errors')){
+                //console.log('test');
+            }
+            else {
             toastr.remove()
             e.preventDefault();
             var data = new FormData($('#save_payroll_form')[0]);
@@ -568,7 +697,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                         }
                     });
                     $.ajax({
-                        url: "{{ url('/payrollmanagement/submit_payroll_register_details') }}",
+                        url: "{{ url('/payrollmanagement/save_preview') }}",
                         method: 'POST',
                         async: false,
                         dataType: 'json',
@@ -576,18 +705,22 @@ elseif(Session::get('payroll_management') == 'delete'){
                         cache: false,
                         contentType: false,
                         processData: false,
+                        global: false,
+                        beforeSend: function() {
+                            NProgress.configure({ easing: 'ease', speed: 500 });
+                            NProgress.start();
+                            NProgress.configure({ showSpinner: false });//Turn off loading 
+                        },
                         success: function(data){
+                            NProgress.done(true);
+                            //console.log(data);
                             if(data.status == 'false'){
-                                // Display a success toast, with a title
-                                toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
-                                console.log(data);
-                                $('#save_payroll_errors').removeAttr('hidden');
-                                $('#save_validation_error_message').html('<label>'+ data.message +'</label><br>');
+                                
                             }
                             else if(data.status == 'failed'){
                                 // Display a success toast, with a title
                                 toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
-                                console.log(data);
+                                //console.log(data);
                                 $('#save_payroll_errors').removeAttr('hidden');
                                 $('#save_validation_error_message').html('<label>'+ data.message +'</label><br>');
                             }
@@ -596,12 +729,14 @@ elseif(Session::get('payroll_management') == 'delete'){
                             toastr.success('Pay Register Details Successfully Posted', 'Success')
                             $('#error_alert').attr('hidden', true);
                             showAllPayRegister();
-                            console.log(data);
+                            //console.log(data);
                             $('#save_payroll_register_modal').modal('hide');
                             $('#save_payroll_form')[0].reset();
                             }
                         },
                         error: function(data, status){
+                            console.clear();
+                            NProgress.done(true);
                             // Catch Erros
                             if(data.status === 422){
                                 var errors = $.parseJSON(data.responseText);
@@ -628,8 +763,125 @@ elseif(Session::get('payroll_management') == 'delete'){
                     });
                 }
             );
-            
+            }
         });
+            
+
+        function check_payroll_schedule(employee_no, payroll_schedule, ps){
+            var data = new FormData($('#save_payroll_form')[0]);
+            $.ajax({
+                type: 'POST',
+                url: '/payrollmanagement/check_payroll_schedule',
+                data: { 
+                 '_token': $('input[name=_token]').val(),
+                 employee_no: employee_no, 
+                 payroll_schedule: payroll_schedule, 
+                 ps: ps},
+                async: false,
+                dataType: 'json',
+                success: function(data){
+                    if(data.status == 'FAILED'){
+                        //console.log(data);
+                        
+                        if($('#save_payroll_errors').hasClass('has-errors')){
+                            //console.log('has-errors');
+                        }
+                        $('#save_payroll_form_key').val('vf9ZP3D161Yu5Bg9sXux5O7zLz21Jo8Cn2dSKq7zsMs5B0LS08FP4U6I4QUhah2p');
+                        $('#save_validation_error_message').fadeIn('fast').append('<label id="err_msg" class="errors_message">'+ data.message +'</label><br>');
+                        //console.log($('.has-errors').length);
+                        let error_length = $('.has-errors').length;
+                        error_arrays.push(error_length);
+                        //console.log(error_arrays);
+
+                        function check_if_0(number) {
+                            return number === 0;
+                        }
+                        for (let errors of error_arrays){
+                            if(errors == 0){
+                                //console.log('disabled')
+                                $('#btn_save_preview').attr('disabled', true);
+                                $('#save_payroll_errors').removeAttr('hidden');
+                                $('#save_payroll_errors').addClass('has-errors');
+                            }
+                            if(data.status == 'SUCCESS') {
+                                //console.log('ENEBLED')
+                                    $('#btn_save_preview').removeAttr('disabled');
+                                    $('#save_payroll_errors').fadeOut('fast').attr('hidden', true);
+                                    $('#save_payroll_errors').fadeOut('fast').removeClass('has-errors');
+                                    $('#btn_save_preview').removeAttr('disabled');
+                            }
+                            var err_test = error_arrays.every(check_if_0);
+                        }
+                        
+                    }
+                    // if(data.status == 'SUCCESS'){
+                    //     error_arrays = [];
+                    //     if(!error_arrays.length){
+                    //         for (let errors of error_arrays){
+                    //             if(errors == 1){
+                    //                 console.log('disabled')
+                    //                 $('#btn_submit_payroll').attr('disabled', true);
+                    //             }
+                    //             else {
+                    //                 console.log('ENEBLED')
+                    //                 $('#btn_submit_payroll').removeAttr('disabled');
+                    //                 $('#save_payroll_errors').fadeOut('fast').attr('hidden', true);
+                    //                 $('#save_payroll_errors').fadeOut('fast').removeClass('has-errors');
+                    //                 $('#btn_submit_payroll').removeAttr('disabled');
+                    //             }
+                    //         }
+                    //         if(error_arrays.length){
+                    //             for (let errors of error_arrays){
+                    //             if(errors){
+                    //                 console.log('disabled')
+                    //                 $('#btn_submit_payroll').attr('disabled', true);
+                    //             }
+                    //             else {
+                    //                 console.log('ENEBLED')
+                    //                 $('#btn_submit_payroll').removeAttr('disabled');
+                    //                 $('#save_payroll_errors').fadeOut('fast').attr('hidden', true);
+                    //                 $('#save_payroll_errors').fadeOut('fast').removeClass('has-errors');
+                    //                 $('#btn_submit_payroll').removeAttr('disabled');
+                    //             }
+                    //         }
+                    //             $('#btn_submit_payroll').removeAttr('disabled');
+                    //             $('#save_payroll_errors').fadeOut('fast').attr('hidden', true);
+                    //             $('#save_payroll_errors').fadeOut('fast').removeClass('has-errors');
+                    //             $('#btn_submit_payroll').removeAttr('disabled');
+                    //         }
+                           
+
+                       // }
+                    //     $('#save_payroll_errors').attr('hidden', true);
+                    //     $('#btn_submit_payroll').removeAttr('disabled');
+                    // }
+                },
+                error: function(data){
+                    //console.log('data');
+                     console.clear();
+                    // $('#btn_save_preview').removeAttr('hidden');
+                    // $('#btn_submit_payroll').attr('hidden', true);
+                    // $('#save_payroll_errors').addClass('errors');
+                    //console.log(data.responseText);
+                    toastr.error('Pay Register Details Please Check your Employees Payroll Schedules')
+                    if(data.status === 'FAILED'){
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(i, errors){
+                            if($.isPlainObject(errors)) {
+                            $.each(errors, function (key, errors) {                       
+                                //console.log(errors.payroll_schedule);
+                                // Display a success toast, with a title
+                                $('#save_payroll_errors').removeAttr('hidden');
+                                $('#save_validation_error_message').append('<label>'+ errors +'</label><br>');
+                            });
+                            }
+                            
+                            
+                        });
+                    }
+                }
+            });
+        }
 
         /*Date Configuration*/
         var date = new Date();
@@ -698,7 +950,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                 <input type="text" name="id" value="`+id+`" hidden="true">
                     <div class="col-md-12">
                         <label for="batch_no" style="font-family: Poppins !important;">`+key.charAt(0).toUpperCase() + key.slice(1)+`:</label>
-                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_1+`" class="form-control" placeholder="`+key+` ">
+                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_1+`" class="form-control custom-flat-input-modal" placeholder="`+key+` ">
                     </div>
                 </div>
                 `);
@@ -709,7 +961,7 @@ elseif(Session::get('payroll_management') == 'delete'){
                 <div class="input-group input-group-sm mb-3">
                     <div class="col-md-12">
                         <label for="batch_no" style="font-family: Poppins !important;">`+key.charAt(0).toUpperCase() + key.slice(1)+`:</label>
-                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_2+`" class="form-control" placeholder="`+key+` ">
+                        <input type="number" name="`+key+`" id="`+key+`" value="`+edit_details_col_2+`" class="form-control custom-flat-input-modal" placeholder="`+key+` ">
                     </div>
                 </div>
                 `);
