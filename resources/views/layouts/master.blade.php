@@ -52,8 +52,10 @@
 	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script> --}}
 	<!-- Socket IO -->
 	<script src="{{ asset('SocketIO/socket.io.dev.js') }}"></script>
-	{{-- <script src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script> --}}
+	{{-- <script src="http://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script> --}} 
+	
 	<!-- CKEDITOR 4 -->
+	<script src="https://cdn.ckeditor.com/4.12.1/standard-all/ckeditor.js"></script>
 	<script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 	<script src="{{ asset('/ckeditor/adapters/jquery.js') }}"></script>
 	<script src="{{ asset('/ckeditor/ckfinder/ckfinder.js') }}"></script> 
