@@ -56,7 +56,12 @@
                     @if(count($employee_info) > 0)
                         @foreach($employee_info as $info)
                         <tr>
-                            <td>{{$info->employee_no}}</td> 
+                            <td>
+                                @if($info->email_verified_at != null)
+                                    <span><i class="fa fa-check-circle text-primary" data-toggle="popover" title="Verified"></i></span>
+                                @endif
+                                {{$info->employee_no}}
+                            </td> 
                             <td>{{$info->ess_id}}</td>
                             <td>{{ucfirst($info->lastname) . ", " . ucfirst($info->firstname) . " " . ucfirst($info->middlename)}}</td>
                             <td>{{ucfirst($info->department)}}</td>
@@ -104,7 +109,7 @@
         </div>
         <div class="modal-body">
           <input type="text" id="account_id" hidden>
-          <select class="form-control col-md-4 custom-flat-select" name="AccountStatus" id="AccountStatus">
+          <select class="form-control col-md-12 custom-flat-select" name="AccountStatus" id="AccountStatus">
             <option value="" selected>Changed Status</option>
             <option value="1">Active</option>
             <option value="2">In-Active</option>
