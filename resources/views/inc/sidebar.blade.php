@@ -53,6 +53,7 @@
 					$employercontent_tree = "";
 					$create_employercontent = "";
 					$manage_employercontent = "";
+					$manage_banner = "";
 					//employee enrollment
 					$employee_enrollment = "";
 					$employee_enrollment_tree = "";
@@ -186,6 +187,10 @@
 						if(Request::segment(2) == 'manage')
 						{
 							$manage_employercontent = "active";
+						}	
+						if(Request::segment(2) == 'manage_banner')
+						{
+							$manage_banner = "active";
 						}					
 					}
 					else if(Request::segment(1) == 'financialtips')
@@ -461,7 +466,11 @@
 						<li class="nav-item">
 							<a class="nav-link {{$manage_employercontent}}" href="/employercontent/manage"><i class="fa fa-circle-o nav-icon"></i>
 							<p>Manage Content</p></a>
-						</li>
+						</li> 
+						<li class="nav-item">
+								<a class="nav-link {{$manage_banner}}" href="/employercontent/manage_banner"><i class="fa fa-circle-o nav-icon"></i>
+								<p>Manage Banner</p></a>
+							</li>
 					</ul>
 				</li>					
 				@else							
