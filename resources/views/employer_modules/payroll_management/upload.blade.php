@@ -567,16 +567,18 @@ elseif(Session::get('payroll_management') == 'delete'){
         $('#payroll_schedule').change(function (e){
             toastr.remove()
             e.preventDefault();
-            var check_errors = $('#err_msg').hasClass('errors_message');
-            if(check_errors == true){
-                $('#btn_save_preview').removeAttr('disabled');
-                $('#save_payroll_errors').attr('hidden', true);
+            //var check_errors = $('#err_msg').hasClass('errors_message');
+            var check_errors = $('.errors_message')[0];
+            if(check_errors == false){
+                
+                $('#btn_save_preview').attr('disabled', true);
                 
             }
-            if(check_errors == false){
-                $('#btn_save_preview').attr('disabled', true);
+            else{
+                $('#btn_save_preview').removeAttr('disabled');
+                $('#save_payroll_errors').attr('hidden', true);
             }
-            console.log(check_errors);
+            //console.log(check_errors);
             var data = new FormData($('#save_payroll_form')[0]);
             // swal({
             //     title: "Do you wanna Save This Payroll Register Details?",
