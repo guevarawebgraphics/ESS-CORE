@@ -110,6 +110,7 @@ class EmployeesEnrollmentController extends Controller
         $employee_info = DB::table('employer_and_employee')
                             ->join('employee', 'employer_and_employee.employee_id', 'employee.id')
                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+                            ->join('users', 'employer_and_employee.ess_id', '=', 'users.username')
                             ->select('employer_and_employee.id as eneid',
                                     'employee.id as emp_id',
                                     'employee.employee_no',
@@ -142,7 +143,8 @@ class EmployeesEnrollmentController extends Controller
                                     'employee_personal_information.barangay',
                                     'employee_personal_information.province',
                                     'employee_personal_information.zipcode',
-                                    'employer_and_employee.ess_id')
+                                    'employer_and_employee.ess_id',
+                                    'users.email_verified_at')
                             ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->latest('employer_and_employee.created_at')
                             ->get();
@@ -579,7 +581,7 @@ class EmployeesEnrollmentController extends Controller
                 $insert_employee->ess_id = $employee_ess_id;
                 $insert_employee->employee_id = $employee_id;
                 $insert_employee->employer_id = auth()->user()->employer_id;//Session::get("employer_id");
-                $insert_employee->employee_no = $employee_id;
+                $insert_employee->employee_no = $request->employee_no;
                 $insert_employee->save();
 
                 //get employer name
@@ -760,7 +762,7 @@ class EmployeesEnrollmentController extends Controller
             $insert_employee->ess_id = $request->input('hidden_essid');
             $insert_employee->employer_id = auth()->user()->employer_id;//Session::get("employer_id");
             $insert_employee->employee_id = $employee_id;
-            $insert_employee->employee_no = $employee_id;
+            $insert_employee->employee_no = $request->employee_no;
             $insert_employee->save();           
 
             //insert into ess base table
@@ -939,6 +941,7 @@ class EmployeesEnrollmentController extends Controller
                             ->join('refbrgy', 'employee_personal_information.barangay', '=', 'refbrgy.id')
                             ->join('refcitymun', 'employee_personal_information.citytown', '=', 'refcitymun.citymunCode')
                             ->join('refprovince', 'employee_personal_information.province', '=', 'refprovince.provCode')
+                            ->join('users', 'employer_and_employee.ess_id', '=', 'users.username')
                             ->select('employer_and_employee.id as eneid',
                                 'employee_personal_information.id as employee_info_id',
                                 'employee_personal_information.lastname',
@@ -975,12 +978,22 @@ class EmployeesEnrollmentController extends Controller
                                 'refcitymun.citymunDesc',
                                 'refcitymun.citymunCode',
                                 'refbrgy.brgyDesc',
-                                'refbrgy.id as refbrgy_id'
+                                'refbrgy.id as refbrgy_id',
+                                'users.email_verified_at',
+                                'users.id as user_id',
+                                'employer_and_employee.employer_id'
                             )
                             ->where('employer_and_employee.id', '=', $id)
                             ->get();
+            // Security if Employee is not the Employer
+            if($employee[0]->employer_id != auth()->user()->employer_id){
+                return redirect('/404');
+            }
+            else {
+                return view('employer_modules.employees_enrollment.editencode')->with('employee', $employee);
+            }
 
-            return view('employer_modules.employees_enrollment.editencode')->with('employee', $employee);
+            
         }
     }
 
@@ -1866,25 +1879,26 @@ class EmployeesEnrollmentController extends Controller
                  * 
                  * Create into ESSBase Table
                  */
-                ESSBase::create([
+               /* ESSBase::create([
                     'account_id' => $emp_id, // Change column to employee_id
                     'ess_id' => $employee_ess_id,
                     'employee_info' => $emppid,
                     'user_type_id' => 4,
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id
-                ]);
+                ]);*/
                 
                 /**
                  * 
                  * Employer And Employee Relationship
                  */
-                EmployerEmployee::create([
+              /*  EmployerEmployee::create([
                     'ess_id' => $employee_ess_id,
                     'employer_id' => auth()->user()->employer_id,
                     'employee_no' => $emp_id,
                     'employee_id' => $emp_id
                 ]);
+               */
                         ////////////////////////////////
                 /**
                  * 
@@ -2052,5 +2066,84 @@ class EmployeesEnrollmentController extends Controller
         $import = Excel::import(new EmployeesImportPreview, $path);
 
         return Response::json();
+    }
+
+    /**
+     * Resend Employee Email
+     **/
+    public function resend_email(Request $request) {
+        /**
+         * Generate A New Password
+         **/
+        $password = Keygen::alphanum(10)->generate();
+        $update_password = User::where('id', '=', $request->user_id)
+                        ->update(array(
+                            'password' => Hash::make($password),
+                        ));
+        $get_employee_info = EmployeePersonalInfo::where('id', '=', $request->employee_info_id)
+                            ->select(
+                                'email_add',
+                                'mobile_no'
+                            )
+                            ->first();
+        $get_user = User::where('id', '=', $request->user_id)
+                            ->select(
+                                'name',
+                                'username'
+                            )
+                            ->first();
+        $get_user_activation = UserActivation::where('account_id', '=', $request->user_id)
+                                ->where('created_by', '=', auth()->user()->id)
+                                ->select(
+                                    'activation_code',
+                                    'user_activation_id'
+                                )
+                                ->first();
+        // return json_encode($password);
+        // // //Check
+            $check_notification = DB::table('notification')
+                    //->where('employee_no', '=', $request->employee_no)
+                    ->where('employer_id', '=', auth()->user()->employer_id)
+                    ->count() > 0;
+            if($check_notification == true){
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    ->where('employer_id', auth()->user()->employer_id)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }
+            if($check_notification == false){
+            /*Email Template*/
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    //->where('employer_id', auth()->user()->employer_id)
+                    ->where('id', '=', 31)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }  
+            
+            // Enviroment Variable
+            $enviroment = config('app.url');
+
+
+            $activation_link = $enviroment."/Account/Activation/".$get_user_activation->user_activation_id;
+
+
+            // Replace All The String in the Notification Message
+            $search = ["name", "userid", "mobile", "url", "password"];
+            $replace = [$get_user->name, $get_user->username, $get_employee_info->mobile_no, "<a href=".$activation_link.">Click Here</a>", $password];                
+            $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+                             
+
+            /*Send Mail */
+            $data = array('username' => $get_user->name, "password" => $password, "template" => $template_result);
+
+            Mail::send('Email.mail', $data, function($message) use($get_employee_info, $mail_template){
+                $message->to($get_employee_info->email_add)
+                        ->subject("ESS Successfully Registered ");
+                $message->from('esssample@gmail.com', "ESS");
+            });
     }
 }

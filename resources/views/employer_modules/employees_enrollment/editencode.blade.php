@@ -27,6 +27,7 @@
             <div class="card-body">
             <input type="hidden" id="employee_info_id" name="employee_info_id" value="{{ $employee[0]->employee_info_id }}">
             <input type="hidden" id="employee_id" name="employee_id" value="{{ $employee[0]->employee_id }}">
+            <input type="hidden" id="user_id" name="user_id" value="{{ $employee[0]->user_id }}">
                 {{-- HIDDEN INPUT FIELD FOR EMPLOYEE PERSONAL INFO ID--}}
                 <input type="hidden" id="hidden_personalinfo_id" name="hidden_personalinfo_id">
                 <input type="hidden" id="hidden_essid" name="hidden_essid">
@@ -229,6 +230,10 @@
                                 <input id="email_add" type="email" class="form-control custom-flat-input" name="email_add" placeholder="Email" value="{{$employee[0]->email_add}}" autofocus>
                             </div>
                             <p class="text-danger text-md-center" id="error_email_add"></p>
+                            {{--Check if the Account Status is 1 else Resend Email--}}
+                            @if($employee[0]->email_verified_at == null)
+                                <a href="#resendEmail" id="resend_email">Didn't Receive Email?</a>
+                            @endif
                         </div>
                 </div>
                 <hr>
@@ -479,6 +484,55 @@ $(document).ready(function(){
             console.log("wala textbox");
             $(".essid_field").attr("hidden", true)
         }
+    });
+
+    /*Resend Email*/
+    $('#resend_email').click(function(){
+        let employee_info_id = $('#employee_info_id').val();
+        let user_id = $('#user_id').val();
+        swal({
+                title: "Do you wanna Resend Email?",
+                type: "info",
+                confirmButtonClass: "btn-info",
+                confirmButtonText: "Send",
+                showCancelButton: true,
+                closeOnConfirm: true,
+        },
+            function(){
+                $.ajax({
+                    type: 'POST',
+                    url: '/EmployeesEnrollmentController/resend_email',
+                    data: {
+                        employee_info_id: employee_info_id,
+                        user_id: user_id,
+                        '_token': $('input[name=_token]').val(),
+                    },
+                    global: false,
+                    beforeSend: function(){
+                        /*
+                        *@ NProgress Loading
+                        **/
+                        NProgress.start();
+                        NProgress.set(0.2);     // Sorta same as .start()
+                        NProgress.configure({ easing: 'ease', speed: 600 });
+                        NProgress.configure({ showSpinner: false });//Turn off loading 
+                    },
+                    ajaxSend: function(){
+                        NProgress.set(0.6);
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        swal("Email Sent!");
+                        NProgress.set(0.8);
+                        NProgress.done(true);
+                    },
+                    error: function() {
+                        NProgress.set(0.8);
+                        NProgress.done(true);
+                    }
+                });
+            }
+        );
     });
     
 

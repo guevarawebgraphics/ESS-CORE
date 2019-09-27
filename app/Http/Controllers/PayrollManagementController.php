@@ -334,7 +334,7 @@ class PayrollManagementController extends Controller
         // ]);
 
         $get_payroll_register_details_preview = DB::table('payroll_register_details_preview')
-                            ->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
+                            //->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
                             ->where('payroll_register_details_preview.created_by', '=', auth()->user()->id)
                             ->select('payroll_register_details_preview.id',
                                     'payroll_register_details_preview.employee_no',
@@ -373,8 +373,9 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.overtime_hours',
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
-                                    'payroll_register_details_preview.account_status_datetime',
-                                    'employee.payroll_schedule')
+                                    'payroll_register_details_preview.account_status_datetime'
+                                    //'employee.payroll_schedule'
+                                    )
                                     ->get();
          return response()->json([
                         'status' => 'false',
@@ -395,7 +396,7 @@ class PayrollManagementController extends Controller
             'period_to' => 'required'
         ]);
         $get_payroll_register_details_preview = DB::table('payroll_register_details_preview')
-                            ->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
+                            //->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
                             ->where('payroll_register_details_preview.created_by', '=', auth()->user()->id)
                             ->select('payroll_register_details_preview.id',
                                     'payroll_register_details_preview.employee_no',
@@ -434,8 +435,9 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.overtime_hours',
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
-                                    'payroll_register_details_preview.account_status_datetime',
-                                    'employee.payroll_schedule')
+                                    'payroll_register_details_preview.account_status_datetime'
+                                    //'employee.payroll_schedule'
+                                    )
                                     ->get();
 
          if($get_payroll_register_details_preview->count() > 0){
@@ -654,7 +656,8 @@ class PayrollManagementController extends Controller
                                     ->join('employee', 'payroll_register_details.employee_no', '=', 'employee.employee_no')
                                     ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
                                     ->join('payrollregister', 'payroll_register_details.PayRegisterId', '=', 'payrollregister.id')
-                                    ->where('payroll_register_details.PayRegisterId', '=', $request->input('id'))
+                                    ->where('payroll_register_details.PayRegisterId', '=', $request->id)
+                                    ->where('employee.created_by', '=', auth()->user()->id)
                                     ->select('employee_personal_information.email_add',
                                             'employee_personal_information.lastname',
                                             'employee_personal_information.firstname',
