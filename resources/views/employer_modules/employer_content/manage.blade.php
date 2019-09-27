@@ -144,7 +144,7 @@
 
         //Save content 
           //var editortwo = CKEDITOR.replace('content_description');
-          var editortwo = CKEDITOR.replace('content_description', {
+        var editortwo = CKEDITOR.replace('content_description', {
             extraPlugins: 'embed,autoembed',
             height: 500,
 
