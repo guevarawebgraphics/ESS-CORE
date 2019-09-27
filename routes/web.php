@@ -70,20 +70,38 @@ Route::get('/', function () { // root if the user is login
                                                                       
                 }
                 $financial_tips_status ="1"; // content_status 
-                $financial = DB::table('financial_tips')   //for showing employer's content
-                                ->orderBy('created_at')
-                                ->where('employer_id','=',auth()->user()->employer_id)
-                                ->where('status','=',$financial_tips_status)
+                $financial = DB::table('employer_and_employee') //for showing banner
+                                ->join('financial_tips', 'financial_tips.employer_id','=','employer_and_employee.employer_id')
+                                ->select('financial_tips.id',
+                                'financial_tips.account_id', 
+                                'financial_tips.employer_id',
+                                'financial_tips.financial_tips_title', 
+                                'financial_tips.financial_tips_description',
+                                'financial_tips.status',
+                                'financial_tips.created_at')
+                                ->where('financial_tips.status','=',$financial_tips_status)
+                                ->orderBy('financial_tips.created_at','DESC')
+                                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
-                $banner = DB::table('banner') 
-                                ->where('employer_id','=',auth()->user()->employer_id) 
-                                ->where('banner_status','=',1) 
+                                $banner_status = "1";
+                $banner = DB::table('employer_and_employee') //for showing banner
+                                ->join('banner', 'banner.employer_id','=','employer_and_employee.employer_id')
+                                ->select('banner.id',
+                                'banner.account_id', 
+                                'banner.employer_id',
+                                'banner.title_banner', 
+                                'banner.description_banner',
+                                'banner.media_file_banner',
+                                'banner.banner_status',
+                                'banner.created_at')
+                                ->where('banner_status','=',$banner_status)
+                                ->orderBy('banner.created_at','DESC')
+                                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
                                 
                 // count number of content posted
                 $count = DB::table('employercontent')
-                                ->where('account_id','=',auth()->user()
-                                ->employer_id)
+                                ->where('account_id','=',auth()->user() ->employer_id)
                                 ->count();  
 
                 // count number of employees

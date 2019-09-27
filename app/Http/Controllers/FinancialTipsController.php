@@ -31,12 +31,15 @@ class FinancialTipsController extends Controller
     } 
     public function manage()
     { 
-        $FinancialTipsTable = DB::table('financial_tips')->latest('created_at')->get();
+        $FinancialTipsTable = DB::table('financial_tips')
+                                ->where('created_by','=',auth()->user()->employer_id)
+                                ->latest('created_at')
+                                ->get();
         return view('employer_modules.financial_tips.manage',compact(['FinancialTipsTable']));
     }
     public function FinancialTipsTableManage()
     {   
-        $FinancialTipsTable = DB::table('financial_tips')->latest('created_at')->get();
+        $FinancialTipsTable = DB::table('financial_tips')->where('created_by','=',auth()->user()->id)->latest('created_at')->get();
         return view('employer_modules.financial_tips.tablemanage',compact(['FinancialTipsTable']));
     }
     public function post_financial_tips(request $Request)
@@ -58,7 +61,7 @@ class FinancialTipsController extends Controller
     }
     public function refreshmanage()
     {
-        $FinancialTipsTable = DB::table('financial_tips')->get();
+        $FinancialTipsTable = DB::table('financial_tips')->where('created_by','=',auth()->user()->id)->get();
         return view('employer_modules.financial_tips.tablemanage',compact(['FinancialTipsTable']));
   
     }
