@@ -119,15 +119,20 @@ class PayslipsController extends Controller
                                     ->where('id','=',auth()->user()->employee_id)
                                     ->where('employee_no','=',$employee_no)
                                     ->get();*/
-                        /* $check = DB::Table('payroll_register_details as prd')
+                       /*  $check = DB::Table('payroll_register_details as prd')
                                         ->Join('employee as e','e.employee_no','=','prd.employee_no')
                                         ->Join('payrollregister as pr','prd.PayRegisterId','=','pr.id')
                                         ->where('prd.id','=',$id)
                                         ->where('pr.employer_id','=',auth()->user()->employer_id)
                                         ->where('e.id','=',auth()->user()->employee_id)
-                                        ->get();*/
-                      //  if(count($check))
-                       // {
+                                        ->get();*/ 
+                        
+                        $check = DB::table('employer_and_employee')
+                                        ->where('employer_and_employee.employee_no','=',$employee_no)
+                                        ->where('employer_and_employee.ess_id','=',auth()->user()->username)
+                                        ->get();    
+                        if(count($check))
+                            {
                             $viewpayslips = DB::Table('payroll_register_details as prd') 
                             ->Join('employee as e','prd.employee_no','=','e.employee_no')
                             ->Join('employee_personal_information as epi','e.employee_info','=','epi.id')
@@ -169,12 +174,12 @@ class PayslipsController extends Controller
                              return view('employee_modules.payslips.view')
                                 ->with('information',$viewpayslips);
                             //   return $viewpayslips;
-                    //    }
-                     /*   else 
+                       }
+                        else 
                         {
                             return abort(404);
                         }
-                    */
+                    
                                                
     }
     public function filter(Request $Request) //for generating table
