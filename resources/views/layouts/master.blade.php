@@ -110,6 +110,7 @@
 	{{-- <script src="{{ asset('Ionicons/ionicons.js') }}"></script> --}}
 	{{-- Pusher --}}
 	<input type="text" id="pusher_key" value="{{ env('PUSHER_APP_KEY') }}" hidden="true">
+	<input type="text" id="ua" value="{{ (Auth::check()) ? Auth()->user()->user_type_id : '' }}" hidden="true">
 	<script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     @include('inc/footer')
 	
