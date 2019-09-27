@@ -209,7 +209,9 @@
                     @if(count($get_read_status))
                       <span class='badge badge-primary'>Read</span>
                     @else 
-                      <span class='badge badge-light'>Unread</span>
+                      @if( strlen($contents->content_description) > 1000)
+                        <span class='badge badge-light'>Unread</span>
+                      @endif
                     @endif 
                   </span>
                     @php 
