@@ -76,17 +76,21 @@ class EmployerContentController extends Controller
     //show manage content
     public function manage()
     {   
-        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent ORDER BY created_at DESC");   
+        $employer_content = DB::table('employercontent')
+                                ->where('created_by','=',auth()->user()->id)
+                                ->get();    
         return view('employer_modules.employer_content.manage')->with('employer_content', $employer_content);
     }
     public function manage_banner()
     {   
-        $banner_content = DB::table('banner')->get();
+        $banner_content = DB::table('banner')
+                                ->where('created_by','=',auth()->user()->id)
+                                ->get();
         return view('employer_modules.employer_content.banner')->with('banner_content', $banner_content);
     }
     public function refresh_banner()
     {   
-        $banner_content = DB::table('banner')->get();
+        $banner_content = DB::table('banner')->where('created_by','=',auth()->user()->id)->get();
         return view('employer_modules.employer_content.tablebanner')->with('banner_content', $banner_content);
     }  
     public function create_banner(Request $request) { 
@@ -189,7 +193,9 @@ class EmployerContentController extends Controller
     //refresh manage content
     public function refresh_manage()
     {
-        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent ORDER BY created_at DESC");
+        $employer_content = DB::Table('employercontent')
+                                ->where('created_by','=',auth()->user()->id)
+                                ->get();
         return view('employer_modules.employer_content.tablemanage')->with('employer_content', $employer_content);
     }
     //create employer content
