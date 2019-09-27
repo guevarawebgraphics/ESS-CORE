@@ -84,14 +84,14 @@ elseif(Session::get('my_profile') == 'delete'){
 
                     <h6 class="card-title"><strong>Notes</strong></h6>
                      <p class="card-text"></p> 
-                    @if(auth()->user()->user_type_id ===4) 
+                   {{-- @if(auth()->user()->user_type_id ===4) 
                     @php 
                       $employee_no = DB::table('employee')->where('id','=',auth()->user()->employee_id)->first();
                       $employee_value_no = $employee_no->employee_no;
                     @endphp
                     <h6 class="card-title"><strong>Employee No</strong></h6>
                     <p class="card-text">{{$employee_value_no}}</p>
-                    @endif  
+                    @endif   --}}
                 </div>
             </div>
             @if(auth()->user()->user_type_id != 1)
