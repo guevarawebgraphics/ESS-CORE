@@ -144,7 +144,7 @@
 
         //Save content 
           //var editortwo = CKEDITOR.replace('content_description');
-          var editortwo = CKEDITOR.replace('content_description', {
+        var editortwo = CKEDITOR.replace('content_description', {
             extraPlugins: 'embed,autoembed',
             height: 500,
 
@@ -158,36 +158,36 @@
             image2_disableResizer: true
         });
         CKFinder.setupCKEditor( editortwo );    
-        editortwo.on('change',function(){ 
-            $.ajax({
-                        headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        url: "{{ route('linkpreview') }}",
-                        method: "POST",
-                        data: {
-                        _token:     '{{ csrf_token() }}',
-                        content:  CKEDITOR.instances.content_description.getData()
-                        },           
-                        success:function(data)
-                        {        
+        // editortwo.on('change',function(){ 
+        //     $.ajax({
+        //                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        //                 url: "{{ route('linkpreview') }}",
+        //                 method: "POST",
+        //                 data: {
+        //                 _token:     '{{ csrf_token() }}',
+        //                 content:  CKEDITOR.instances.content_description.getData()
+        //                 },           
+        //                 success:function(data)
+        //                 {        
                       
-                            if(data.length === 0)
-                            {
-                                $('.linkpreview-scan').attr('hidden',true);
-                            }
-                            else {
-                                $('.linkpreview-scan').attr('hidden',false);
-                                $('#title_preview').html(data[0]); 
-                                $('#des_preview').html(data[1]); 
-                                $('#link_preview').attr("href",""+data[2]+"");  
-                                /*var div = $('.linkpreview-scan').clone();
-                                CKEDITOR.instances['content_description'].insertHtml(``);*/ 
+        //                     if(data.length === 0)
+        //                     {
+        //                         $('.linkpreview-scan').attr('hidden',true);
+        //                     }
+        //                     else {
+        //                         $('.linkpreview-scan').attr('hidden',false);
+        //                         $('#title_preview').html(data[0]); 
+        //                         $('#des_preview').html(data[1]); 
+        //                         $('#link_preview').attr("href",""+data[2]+"");  
+        //                         /*var div = $('.linkpreview-scan').clone();
+        //                         CKEDITOR.instances['content_description'].insertHtml(``);*/ 
                                
-                            }
+        //                     }
                                      
                            
-                        }
-                    });              
-        });
+        //                 }
+        //             });              
+        // });
         $(document).on("click", "#add_link", function(){ 
                toastr.remove()
                var values  = {

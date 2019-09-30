@@ -7,10 +7,12 @@ namespace App\Http\Controllers;
  * */
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Storage; 
+use Image;
 
 use Session;
 use Response;
 use DB;
+use Carbon\Carbon;
 /**
  *  Insert Models Here
  * */
@@ -75,44 +77,57 @@ class EmployerContentController extends Controller
     //show manage content
     public function manage()
     {   
-        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent ORDER BY created_at DESC");   
+        $employer_content = DB::table('employercontent')
+                                ->where('created_by','=',auth()->user()->id)
+                                ->get();    
         return view('employer_modules.employer_content.manage')->with('employer_content', $employer_content);
     }
     public function manage_banner()
     {   
-        $banner_content = DB::table('banner')->get();
+        $banner_content = DB::table('banner')
+                                ->where('created_by','=',auth()->user()->id)
+                                ->get();
         return view('employer_modules.employer_content.banner')->with('banner_content', $banner_content);
     }
     public function refresh_banner()
     {   
-        $banner_content = DB::table('banner')->get();
+        $banner_content = DB::table('banner')->where('created_by','=',auth()->user()->id)->get();
         return view('employer_modules.employer_content.tablebanner')->with('banner_content', $banner_content);
     }  
     public function create_banner(Request $request) { 
         $this->validate($request, [
-            'media_title' => 'required',
-            'media_description' => 'required', 
-            'banner_file' => 'required'
+            'title_banner' => 'required',
+            'description_banner' => 'required', 
+            'media_banner_file' => 'mimes:mp4,jpeg,png,jpg|required'
         ]);
 
-        $filenameWithExt_banner_file = $request->file('banner_file')->getClientOriginalName();
+        $filenameWithExt_banner_file = $request->file('media_banner_file')->getClientOriginalName();
 
         // Get just filename
         $filename_banner_file = pathinfo($filenameWithExt_banner_file, PATHINFO_FILENAME);
 
         // Get just ext
-        $extension_banner_file = $request->file('banner_file')->getClientOriginalExtension();
+        $extension_banner_file = $request->file('media_banner_file')->getClientOriginalExtension();
 
         // Filename to store
-        $fileNameToStore_banner_file = $filename_banner_file.'_'.time().'_'.'banner_file'.'.'.$extension_banner_file;
-
+        $fileNameToStore_banner_file = $filename_banner_file.'_'.time().'_'.'media_banner_file'.'.'.$extension_banner_file;
         // Upload Image
-        $path_banner_file = $request->file('banner_file')->storeAs('public/Documents/banner_image', $fileNameToStore_banner_file); 
+        $path_banner_file = $request->file('media_banner_file')->storeAs('public/Documents/banner_image', $fileNameToStore_banner_file); 
+        /**
+         * Resize Image For Carousel 
+         **/
+        $extensions = ['jpg', 'jpeg', 'png'];
+        if(in_array($extension_banner_file, $extensions)){
+            $thumbnailpath = public_path('storage/Documents/banner_image/'. $fileNameToStore_banner_file);
+            $img = Image::make($thumbnailpath)->fit(1105, 607);
+            $img->save($thumbnailpath);
+        }
+        
         $banner = BannerContent::create([
             'account_id' => auth()->user()->id, //Employer_ID
             'employer_id' => auth()->user()->employer_id, 
-            'title_banner' => $request->input('media_title'),
-            'description_banner' => $request->input('media_description'), 
+            'title_banner' => $request->input('title_banner'),
+            'description_banner' => $request->input('description_banner'), 
             'media_file_banner' => $fileNameToStore_banner_file,
             'banner_status' => 0, //0 Means Pending Staus
             'created_by' => auth()->user()->id,
@@ -122,6 +137,49 @@ class EmployerContentController extends Controller
         return response()->json("hi");
 
     } 
+    public function update_banner(Request $request){ 
+        $this->validate($request, [
+            'title_banner' => 'required',
+            'description_banner' => 'required', 
+            'media_banner_file' => 'mimes:mp4,jpeg,png,jpg'
+        ]);
+        $filename = DB::table('banner')->where('id', '=', $request->input('hidden_id'))->first();
+        $old_filename  = $filename->media_file_banner;  
+        if($old_filename != $request->input('hidden_file_name')) 
+        {
+            Storage::delete('public/Documents/banner_image/'.$old_filename);
+            $filenameWithExt_banner_file = $request->file('media_banner_file')->getClientOriginalName();
+
+            // Get just filename
+            $filename_banner_file = pathinfo($filenameWithExt_banner_file, PATHINFO_FILENAME);
+    
+            // Get just ext
+            $extension_banner_file = $request->file('media_banner_file')->getClientOriginalExtension();
+    
+            // Filename to store
+            $fileNameToStore_banner_file = $filename_banner_file.'_'.time().'_'.'media_banner_file'.'.'.$extension_banner_file;
+    
+            // Upload Image
+            $path_banner_file = $request->file('media_banner_file')->storeAs('public/Documents/banner_image', $fileNameToStore_banner_file); 
+        }
+        else {
+            $fileNameToStore_banner_file = $old_filename;
+        }
+   
+
+        $update_banner = DB::table('banner')->where('id', '=', $request->input('hidden_id'))
+        ->update(array(
+            'account_id' =>  auth()->user()->id, // Employer ID
+            'employer_id' =>  auth()->user()->employer_id,
+            'title_banner' =>  $request->input('title_banner'),  
+            'description_banner' =>  $request->input('description_banner'), 
+            'media_file_banner' => $fileNameToStore_banner_file,
+            'banner_status' => 0,
+            'updated_by' =>auth()->user()->id ,
+            'updated_at'=>  Carbon::now()
+        )); 
+        return response()->json("Successfull");
+    }
     public function delete_banner(Request $request){
         $this->getaccount();
         $id = $request->id;
@@ -145,7 +203,9 @@ class EmployerContentController extends Controller
     //refresh manage content
     public function refresh_manage()
     {
-        $employer_content = DB::connection('mysql')->select("SELECT * FROM employercontent ORDER BY created_at DESC");
+        $employer_content = DB::Table('employercontent')
+                                ->where('created_by','=',auth()->user()->id)
+                                ->get();
         return view('employer_modules.employer_content.tablemanage')->with('employer_content', $employer_content);
     }
     //create employer content

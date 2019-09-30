@@ -83,40 +83,50 @@
     
 </section>  
 
-@if(auth()->user()->user_type_id === 4)
-{{--CAROUSEL --}} 
-{{-- <div class="container">
-    <div id="carouselExampleIndicators" class="carousel slide"data-ride="carousel">
-          <ol class="carousel-indicators">
-            @foreach($banner as $contents) 
-            <li data-target="#carouselExampleIndicators" >
-            </li>   
-            @endforeach 
-          </ol>
-          <div class="carousel-inner">
-            @foreach($banner->take(2) as $contents)
-            <div class="carousel-item @if($loop->first) active @endif ">
-            <img class="d-block w-100 h-100" src="/Storage/Documents/banner_image/{{ $contents->media_file_banner}}" alt="{{$contents->title_banner}}"> 
-            <div class="carousel-caption d-none d-md-block">
-                <h5>{{$contents->title_banner}}</h5>
-                <p>{{strip_tags($contents->description_banner)}}</p> 
-             
+@if(auth()->user()->user_type_id === 4) 
+    @if(count($banner))
+    {{--CAROUSEL --}} 
+    <div class="container">
+        <div id="carouselExampleIndicators" class="carousel slide"data-ride="carousel">
+              <ol class="carousel-indicators">
+                @foreach($banner as $contents) 
+              {{-- <li data-target="#carouselExampleIndicators" >
+                </li> --}}   
+                @endforeach 
+              </ol>
+              <div class="carousel-inner">
+                @foreach($banner->take(count($banner)) as $contents)
+                <div class="carousel-item @if($loop->first) active @endif "> 
+                  @php 
+                  $path_info = pathinfo('/Documents/banner_image/'.$contents->media_file_banner.'');
+                  $extension = $path_info['extension']; 
+                  @endphp 
+                  @if($extension =="jpg")
+                  <img class="d-block w-100 h-100" src="/Storage/Documents/banner_image/{{$contents->media_file_banner}}" alt="{{$contents->title_banner}}"> 
+                  @else 
+                  <video class="d-block w-100 h-100" autoplay muted loop>
+                    <source src="/Storage/Documents/banner_image/{{ $contents->media_file_banner}}" type="video/mp4">
+                  </video>
+                  @endif
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{$contents->title_banner}}</h5>
+                    <p>{{strip_tags($contents->description_banner)}}</p> 
+                  </div>
+                </div> 
+                @endforeach
               </div>
-            </div> 
-            @endforeach
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-</div>
-  @else 
---}}
+              <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+    </div>
+      @else 
+      @endif 
   @endif 
   @if(auth()->user()->user_type_id === 4)
     <!-- Content List -->
@@ -161,7 +171,7 @@
     @else 
    --}} 
    <hr>
-   <div class="row">
+   <div class="row" @if(count($banner)) style="margin-top:250px !important;" @else @endif>
       <div class="col-sm-8">
                 <div class="info-box">
                   <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
@@ -199,7 +209,9 @@
                     @if(count($get_read_status))
                       <span class='badge badge-primary'>Read</span>
                     @else 
-                      <span class='badge badge-light'>Unread</span>
+                      @if( strlen($contents->content_description) > 1000)
+                        <span class='badge badge-light'>Unread</span>
+                      @endif
                     @endif 
                   </span>
                     @php 
@@ -207,23 +219,27 @@
                                           ->where('id','=',$contents->account_id)
                                           ->pluck('name');
                     @endphp
-                    <h3 class="timeline-header"><a href="#">{{$employer_name[0]}}</a> sent a content</h3>
-    
-                    <div class="timeline-body">
-                        <div class="container-fluid">
-                          <h4> {{$contents->content_title}} </h4>
-                          <div class="box-body img-thumbnail" id="content-{{$contents->id}}-body" style="display:none;overflow-wrap: break-word;">
-                              {!! $contents->content_description !!} 
-                        
-                          </div>
-                        </div>
-                    </div>
+                   <h3 class="timeline-header"><a href="#">{{$employer_name[0]}}</a></h3>
 
-                    <div class="timeline-footer">
-                   {{-- <a class="btn btn-info btn-sm text-info showfulldescription btn-outline-info" data-toggle="modal" data-action="{{$contents->id}}" data-title="{{$contents->content_title}}" data-description="<div id='imageview'>{{$contents->content_description}} </div>"  id="{{$contents->id}}" class="showfulldescription" data-target="#modal-lg">Read Content</a>
-                    --}}
-                    <a class="btn btn-info btn-sm text-info btn-outline-info readmore" id-value="{{$contents->id}}"  data-action="{{$contents->id}}"><label id="{{$contents->id}}-label-value" label-value="show"> Read Content </label></a>
-                    </div>
+                   <div class="timeline-body">
+                      <div class="container-fluid">
+                        <h4> {{$contents->content_title}} </h4>
+                          @if( strlen($contents->content_description) < 1000)
+                          {!! $contents->content_description !!}
+                          @endif
+                          <div class="box-body img-thumbnail" id="content-{{$contents->id}}-body" style="display:none;overflow-wrap: break-word;">
+                          {!! $contents->content_description !!}
+                          </div>
+                      </div>
+                   
+                   </div>
+                   <div class="timeline-footer">
+                   {{-- <a class="btn btn-info btn-sm text-info showfulldescription btn-outline-info" data-toggle="modal" data-action="{{$contents->id}}" data-title="{{$contents->content_title}}" data-description="<div id='imageview'>{{$contents->content_description}} </div>" id="{{$contents->id}}" class="showfulldescription" data-target="#modal-lg">Read Content</a>
+                   --}}
+                      @if( strlen($contents->content_description) > 1000)
+                      <a class="btn btn-info btn-sm text-info btn-outline-info readmore" id-value="{{$contents->id}}" data-action="{{$contents->id}}"><label id="{{$contents->id}}-label-value" label-value="show"> Read Content </label></a>
+                      @endif
+                  </div>
                   </div>
                 </li> 
                 @endforeach
