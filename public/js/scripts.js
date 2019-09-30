@@ -40,19 +40,12 @@
     // });
         
 
-    var session_notification = true;
-    var session = localStorage.setItem(session_notification, true);
+    // var session_notification = true;
+    // var session = localStorage.setItem(session_notification, true);
     showAllAnnouncementToNotification();
 
     $('#announcement').click(function (){
-        showAllAnnouncementToNotification();
-        if(session_notification){
-            session_notification = false;
-        }
-        if(session_notification == false){
-            $('#notif').attr('hidden', true);
-            session_notification = false;
-        }
+        $('#notif').attr('hidden', true);
     });
 
     $('#announcementdesc').on('click', '.show_announcement_notification',function (){
