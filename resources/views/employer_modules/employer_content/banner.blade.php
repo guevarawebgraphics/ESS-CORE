@@ -3,12 +3,12 @@
 @section('crumb')
 <div class="row mb-2">
     <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Carousel Content</h1>
+        <h1 class="m-0 text-dark">Banner Content</h1>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item">
-                <a href="#">Carousel Content</a>
+                <a href="#">Banner Content</a>
             </li>
             <li class="breadcrumb-item active-employercontent text-secondary">Manage Content</li>
         </ol>
@@ -61,24 +61,26 @@
                 <div class="form-group row">
                         <label for="content_title" class="control-label col-md-4 text-md-center custom-flat-label">Banner Title:</label>     
                         <div class="col-md-6">    
-                            <input id="content_title" type="text" class="form-control custom-flat-input-modal" name="media_title" placeholder="Content Title"   autofocus>
-                            <p class="text-danger" id="error_content_title"></p>
+                            <input id="banner_title" type="text" class="form-control custom-flat-input-modal" name="title_banner" placeholder="Content Title"   autofocus>
+                            <p class="text-danger" id="error_banner_title"></p>
                         </div>        
                 </div>
                 <div class="form-group row"> 
-                        <label for="content_description" class="control-label col-md-4 text-md-center custom-flat-label">Banner Description:</label> 
+                        <label for="banner_description" class="control-label col-md-4 text-md-center custom-flat-label">Banner Description:</label> 
                         <div class="col-md-6">    
-                            <textarea type="text" id="media_description" class="form-control  custom-flat-input-modal" name="media_description" placeholder="Content Description" autofocus></textarea>
-                            <p class="text-danger" id="error_content_description"></p> 
+                            <textarea type="text" id="banner_description" class="form-control  custom-flat-input-modal" name="description_banner" placeholder="Content Description" autofocus></textarea>
+                            <p class="text-danger" id="error_banner_description"></p> 
                         </div>
                 </div>  
                 <div class="form-group row"> 
                         <label for="media_description" class="control-label col-md-4 text-md-center custom-flat-label">Image/Video File:</label>
                         <div class="col-md-6">    
                         <div class="custom-file">    
-                            <input type="file" class="custom-file-input" id="banner_file" name="banner_file">
-                            <label class="custom-file-label" for="validatedCustomFile" id="medial_file">Choose file...</label>  
-                            </div>
+                            <input type="file" class="custom-file-input" id="banner_file" onchange="processSelectedFilesBanner(this)" name="media_banner_file">
+                            <label class="custom-file-label" for="validatedCustomFile" id="choose_file">Choose file...</label>  
+                            </div> 
+                            <input type="hidden" name="hidden_file_name" id="hidden_file_name" val="">
+                            <p class="text-danger" id="error_banner_file"></p> 
                         </div>  
                 </div>
         
@@ -137,17 +139,64 @@
  
         $(document).on("click", "#btn_createbannercontent", function(){ 
             $('#SaveBannerContent').html('Create Banner Content '+' <i id="spinner_content" class=""> ');
-            $("#action").val("add");
+            $("#action").val("add"); 
+            $('#title_modal').html('Create Banner'); 
+
+            $('#banner_title').removeClass('is-invalid');
+            $('#error_banner_title').html(''); 
+
+            $('#banner_description').removeClass('is-invalid');
+            $('#error_banner_description').html(''); 
+
+            $('#banner_file').removeClass('is-invalid');
+            $('#error_banner_file').html(''); 
+
+            $('#banner_title').val(""); 
+            $('#banner_description').val(""); 
+            $('#choose_file').html('Choose file'); 
+            $('#banner_file').val(""); 
         });  
-        $(document).on("click", ".banner-edit", function(){ 
-            $('#SaveBannerContent').html('Edit Banner Content '+' <i id="spinner_content" class=""> ');
-            $("#action").val("edit");
-        });  
+        $(document).on("click", ".banner-edit", function(){  
+            $('#SaveBannerContent').html('Edit Banner Content '+' <i id="spinner_content" class=""> '); 
+            $('#title_modal').html('Edit Banner'); 
+            $("#action").val("edit"); 
+
+            $('#banner_title').removeClass('is-invalid');
+            $('#error_banner_title').html(''); 
+
+            $('#banner_description').removeClass('is-invalid');
+            $('#error_banner_description').html(''); 
+
+            $('#banner_file').removeClass('is-invalid');
+            $('#error_banner_file').html('');
+            
+            $('#banner_title').val(""); 
+            $('#banner_description').val(""); 
+            $('#banner_file').val("");
+            
+            let banner = {
+                title : $(this).attr('data-title'),
+                description:  $(this).attr('data-description'),
+                file: $(this).attr('data-file'),
+                id: $(this).attr('data-add'),
+            }
+            $('#banner_title').val(banner.title);  
+            $('#banner_description').val(banner.description);   
+            $('#banner_file').attr('src',banner.file);
+            $('#choose_file').html(banner.file.substring(0,15)+'...'); 
+            $('#hidden_file_name').val(banner.file);
+            $('#hidden_id').val(banner.id)    
+                
+
+        });   
         $('#contentbannerform').submit(function (e){ 
-            console.log("hi");
-            e.preventDefault();
-            var formData = new FormData($(this)[0]); 
-            $.ajaxSetup({
+            e.preventDefault(); 
+            toastr.remove()
+            var formData = new FormData($(this)[0]);   
+            $("#spinner_content").addClass('fa fa-refresh fa-spin');
+            var action = $('#action').val(); 
+            if(action =="add") {
+                $.ajaxSetup({
                         headers: {
                                   'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                         } 
@@ -163,21 +212,129 @@
                               enctype: 'multipart/form-data',
                               processData: false,
                               success: function(data){
-                          
+                                toastr.success('Banner Uploaded Successfully', 'Success');
                                 console.log("UPLOADED");
-                                refreshTableBanner();
+                                refreshTableBanner(); 
+                                setTimeout(function (){
+                                $('#AddBannerModal').modal('hide');
+                                }, 1000);
                               },
                               error: function(data){
-                                if(data.status ==422) {
+                                if(data.status ==422) { 
+                               
+                                    toastr.error('Error. Please Complete the fields', 'Error!');
+                                    spinnerTimeoutEmployer()
                                     var errors = $.parseJSON(data.responseText); 
                                     $.each(errors, function(i, errors){
-                                    
-                                        console.log(errors);
+                                        if(errors.title_banner){
+                                            $('#banner_title').addClass('is-invalid');
+                                            $('#error_banner_title').html(errors.title_banner);
+                                        }  
+                                        if(!errors.title_banner){
+                                            $('#banner_title').removeClass('is-invalid');
+                                            $('#error_banner_title').html("");
+                                        } 
+
+                                        //  
+
+                                        if(errors.description_banner){
+                                            $('#banner_description').addClass('is-invalid');
+                                            $('#error_banner_description').html(errors.description_banner);
+                                        }
+                                        if(!errors.description_banner){
+                                            $('#banner_description').removeClass('is-invalid');
+                                            $('#error_banner_description').html("");
+                                        }
+                                        // 
+                                        
+                                        if(errors.media_banner_file){
+                                            $('#banner_file').addClass('is-invalid');
+                                            $('#error_banner_file').html(errors.media_banner_file);
+                                        } 
+                                        if(!errors.media_banner_file){
+                                            $('#banner_file').removeClass('is-invalid');
+                                            $('#error_banner_file').html("");
+                                        }
+                                        console.log(errors); 
+                                        console.clear();
+                                    });
+                                }
+                                
+                              }
+                              
+                          });
+            }
+            else { 
+                console.log(action); 
+                $.ajaxSetup({
+                        headers: {
+                                  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        } 
+                        }); 
+                        $.ajax({
+                              url: '/employercontent/update_banner',
+                              method: 'POST',
+                              async: false,
+                              dataType: 'json',
+                              data: formData,
+                              cache: false,
+                              contentType: false,
+                              enctype: 'multipart/form-data',
+                              processData: false,
+                              success: function(data){ 
+                                setTimeout(function (){
+                                $('#AddBannerModal').modal('hide');
+                                }, 1000);
+                                toastr.success('Banner Edited Successfully', 'Success')
+                                console.log("UPLOADED");
+                                refreshTableBanner(); 
+                              
+                              },
+                              error: function(data){
+                                if(data.status ==422) {  
+                                    console.clear();
+                                    toastr.error('Error. Please Complete the fields', 'Error!');
+                                    spinnerTimeoutEmployer()
+                                    var errors = $.parseJSON(data.responseText); 
+                                    $.each(errors, function(i, errors){
+                                        if(errors.title_banner){
+                                            $('#banner_title').addClass('is-invalid');
+                                            $('#error_banner_title').html(errors.title_banner);
+                                        }  
+                                        if(!errors.title_banner){
+                                            $('#banner_title').removeClass('is-invalid');
+                                            $('#error_banner_title').html("");
+                                        } 
+
+                                        //  
+
+                                        if(errors.description_banner){
+                                            $('#banner_description').addClass('is-invalid');
+                                            $('#error_banner_description').html(errors.description_banner);
+                                        }
+                                        if(!errors.description_banner){
+                                            $('#banner_description').removeClass('is-invalid');
+                                            $('#error_banner_description').html("");
+                                        }
+                                        // 
+                                        
+                                        if(errors.media_banner_file){
+                                            $('#banner_file').addClass('is-invalid');
+                                            $('#error_banner_file').html(errors.media_banner_file);
+                                        } 
+                                        if(!errors.media_banner_file){
+                                            $('#banner_file').removeClass('is-invalid');
+                                            $('#error_banner_file').html("");
+                                        }
+                                        console.log(errors); 
+                                        console.clear();
                                     });
                                 }
                               }
                               
                           });
+            }
+
                         
            
         });  

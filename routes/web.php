@@ -45,17 +45,17 @@ Route::get('/', function () { // root if the user is login
            
                 $content_status ="1"; // content_status 
                 $content = DB::table('employer_and_employee') //for showing employer's content
-                ->join('employercontent', 'employercontent.employer_id', '=', 'employer_and_employee.employer_id')
-                ->select('employercontent.id',
-                'employercontent.account_id',
-                'employercontent.content_title', 
-                'employercontent.content_description',
-                'employercontent.content_status',
-                'employercontent.created_at')
-                ->where('content_status','=',$content_status)
-                ->orderBy('employercontent.created_at','DESC')
-                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
-                ->paginate(5, ['*'], 'content_page');
+                            ->join('employercontent', 'employercontent.employer_id', '=', 'employer_and_employee.employer_id')
+                            ->select('employercontent.id',
+                            'employercontent.account_id',
+                            'employercontent.content_title', 
+                            'employercontent.content_description',
+                            'employercontent.content_status',
+                            'employercontent.created_at')
+                            ->where('content_status','=',$content_status)
+                            ->orderBy('employercontent.created_at','DESC')
+                            ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+                            ->paginate(5, ['*'], 'content_page');
                 if(auth()->user()->user_type_id ===4) {
                                    /* $count_read = DB::table('read_status')
                                                     ->where('employee_id','=',auth()->user()->employee_id)
@@ -70,20 +70,38 @@ Route::get('/', function () { // root if the user is login
                                                                       
                 }
                 $financial_tips_status ="1"; // content_status 
-                $financial = DB::table('financial_tips')   //for showing employer's content
-                                ->orderBy('created_at')
-                                ->where('employer_id','=',auth()->user()->employer_id)
-                                ->where('status','=',$financial_tips_status)
+                $financial = DB::table('employer_and_employee') //for showing banner
+                                ->join('financial_tips', 'financial_tips.employer_id','=','employer_and_employee.employer_id')
+                                ->select('financial_tips.id',
+                                'financial_tips.account_id', 
+                                'financial_tips.employer_id',
+                                'financial_tips.financial_tips_title', 
+                                'financial_tips.financial_tips_description',
+                                'financial_tips.status',
+                                'financial_tips.created_at')
+                                ->where('financial_tips.status','=',$financial_tips_status)
+                                ->orderBy('financial_tips.created_at','DESC')
+                                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
-                $banner = DB::table('banner') 
-                                ->where('employer_id','=',auth()->user()->employer_id) 
-                                ->where('banner_status','=',1) 
+                                $banner_status = "1";
+                $banner = DB::table('employer_and_employee') //for showing banner
+                                ->join('banner', 'banner.employer_id','=','employer_and_employee.employer_id')
+                                ->select('banner.id',
+                                'banner.account_id', 
+                                'banner.employer_id',
+                                'banner.title_banner', 
+                                'banner.description_banner',
+                                'banner.media_file_banner',
+                                'banner.banner_status',
+                                'banner.created_at')
+                                ->where('banner_status','=',$banner_status)
+                                ->orderBy('banner.created_at','DESC')
+                                ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
                                 
                 // count number of content posted
                 $count = DB::table('employercontent')
-                                ->where('account_id','=',auth()->user()
-                                ->employer_id)
+                                ->where('account_id','=',auth()->user() ->employer_id)
                                 ->count();  
 
                 // count number of employees
@@ -238,7 +256,8 @@ Route::get('/employercontent/manage_banner','EmployerContentController@manage_ba
 Route::get('/employercontent/manage_banner/refresh','EmployerContentController@refresh_banner')->name('refresh_banner');
 Route::post('/employercontent/create_banner','EmployerContentController@create_banner'); 
 Route::post('/employercontent/delete_banner','EmployerContentController@delete_banner')->name('deletebannercontent');
-Route::post('/employercontent/post_banner','EmployerContentController@post_banner')->name('postbanner');
+Route::post('/employercontent/post_banner','EmployerContentController@post_banner')->name('postbanner'); 
+Route::post('/employercontent/update_banner','EmployerContentController@update_banner')->name('updatebanner');
 
 //Payroll Management
 Route::get('/payrollmanagement/upload', 'PayrollManagementController@upload');

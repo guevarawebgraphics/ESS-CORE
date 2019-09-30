@@ -373,7 +373,7 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.overtime_hours',
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
-                                    'payroll_register_details_preview.account_status_datetime',
+                                    'payroll_register_details_preview.account_status_datetime'
                                     //'employee.payroll_schedule'
                                     )
                                     ->get();
@@ -435,7 +435,7 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.overtime_hours',
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
-                                    'payroll_register_details_preview.account_status_datetime',
+                                    'payroll_register_details_preview.account_status_datetime'
                                     //'employee.payroll_schedule'
                                     )
                                     ->get();
