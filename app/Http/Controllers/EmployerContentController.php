@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
  * */
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Storage; 
+use Image;
 
 use Session;
 use Response;
@@ -110,9 +111,18 @@ class EmployerContentController extends Controller
 
         // Filename to store
         $fileNameToStore_banner_file = $filename_banner_file.'_'.time().'_'.'media_banner_file'.'.'.$extension_banner_file;
-
         // Upload Image
         $path_banner_file = $request->file('media_banner_file')->storeAs('public/Documents/banner_image', $fileNameToStore_banner_file); 
+        /**
+         * Resize Image For Carousel 
+         **/
+        $extensions = ['jpg', 'jpeg', 'png'];
+        if(in_array($extension_banner_file, $extensions)){
+            $thumbnailpath = public_path('storage/Documents/banner_image/'. $fileNameToStore_banner_file);
+            $img = Image::make($thumbnailpath)->fit(1105, 607);
+            $img->save($thumbnailpath);
+        }
+        
         $banner = BannerContent::create([
             'account_id' => auth()->user()->id, //Employer_ID
             'employer_id' => auth()->user()->employer_id, 
