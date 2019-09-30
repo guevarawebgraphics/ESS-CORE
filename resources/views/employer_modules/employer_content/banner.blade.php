@@ -154,7 +154,9 @@
             $('#banner_title').val(""); 
             $('#banner_description').val(""); 
             $('#choose_file').html('Choose file'); 
-            $('#banner_file').val(""); 
+            $('#banner_file').val("");  
+
+            $('#SaveBannerContent').attr('disabled',false);
         });  
         $(document).on("click", ".banner-edit", function(){  
             $('#SaveBannerContent').html('Edit Banner Content '+' <i id="spinner_content" class=""> '); 
@@ -172,7 +174,9 @@
             
             $('#banner_title').val(""); 
             $('#banner_description').val(""); 
-            $('#banner_file').val("");
+            $('#banner_file').val("");  
+
+            $('#SaveBannerContent').attr('disabled',false);
             
             let banner = {
                 title : $(this).attr('data-title'),
@@ -189,7 +193,8 @@
                 
 
         });   
-        $('#contentbannerform').submit(function (e){ 
+        $('#contentbannerform').submit(function (e){  
+            $('#SaveBannerContent').attr('disabled',true);
             e.preventDefault(); 
             toastr.remove()
             var formData = new FormData($(this)[0]);   
@@ -256,7 +261,8 @@
                                             $('#error_banner_file').html("");
                                         }
                                         console.log(errors); 
-                                        console.clear();
+                                        console.clear(); 
+                                        $('#SaveBannerContent').attr('disabled',false);
                                     });
                                 }
                                 
