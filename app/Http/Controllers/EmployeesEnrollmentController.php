@@ -581,7 +581,7 @@ class EmployeesEnrollmentController extends Controller
                 $insert_employee->ess_id = $employee_ess_id;
                 $insert_employee->employee_id = $employee_id;
                 $insert_employee->employer_id = auth()->user()->employer_id;//Session::get("employer_id");
-                $insert_employee->employee_no = $employee_id;
+                $insert_employee->employee_no = $request->employee_no;
                 $insert_employee->save();
 
                 //get employer name
@@ -762,7 +762,7 @@ class EmployeesEnrollmentController extends Controller
             $insert_employee->ess_id = $request->input('hidden_essid');
             $insert_employee->employer_id = auth()->user()->employer_id;//Session::get("employer_id");
             $insert_employee->employee_id = $employee_id;
-            $insert_employee->employee_no = $employee_id;
+            $insert_employee->employee_no = $request->employee_no;
             $insert_employee->save();           
 
             //insert into ess base table
@@ -1879,25 +1879,26 @@ class EmployeesEnrollmentController extends Controller
                  * 
                  * Create into ESSBase Table
                  */
-                ESSBase::create([
+               /* ESSBase::create([
                     'account_id' => $emp_id, // Change column to employee_id
                     'ess_id' => $employee_ess_id,
                     'employee_info' => $emppid,
                     'user_type_id' => 4,
                     'created_by' => auth()->user()->id,
                     'updated_by' => auth()->user()->id
-                ]);
+                ]);*/
                 
                 /**
                  * 
                  * Employer And Employee Relationship
                  */
-                EmployerEmployee::create([
+              /*  EmployerEmployee::create([
                     'ess_id' => $employee_ess_id,
                     'employer_id' => auth()->user()->employer_id,
                     'employee_no' => $emp_id,
                     'employee_id' => $emp_id
                 ]);
+               */
                         ////////////////////////////////
                 /**
                  * 
@@ -2095,7 +2096,7 @@ class EmployeesEnrollmentController extends Controller
                                 ->where('created_by', '=', auth()->user()->id)
                                 ->select(
                                     'activation_code',
-                                    'user_activation_id',
+                                    'user_activation_id'
                                 )
                                 ->first();
         // return json_encode($password);
