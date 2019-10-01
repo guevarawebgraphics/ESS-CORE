@@ -84,14 +84,14 @@ elseif(Session::get('my_profile') == 'delete'){
 
                     <h6 class="card-title"><strong>Notes</strong></h6>
                      <p class="card-text"></p> 
-                    @if(auth()->user()->user_type_id ===4) 
+                   {{-- @if(auth()->user()->user_type_id ===4) 
                     @php 
                       $employee_no = DB::table('employee')->where('id','=',auth()->user()->employee_id)->first();
                       $employee_value_no = $employee_no->employee_no;
                     @endphp
                     <h6 class="card-title"><strong>Employee No</strong></h6>
                     <p class="card-text">{{$employee_value_no}}</p>
-                    @endif  
+                    @endif   --}}
                 </div>
             </div>
             @if(auth()->user()->user_type_id != 1)
@@ -274,7 +274,8 @@ elseif(Session::get('my_profile') == 'delete'){
                 }
                 else
                 {
-                    $("#email").html('<input type="text" id="txtemail" class="form-control custom-flat-input" name="email" value="'+ data.email +'" >');
+                    $("#email").html('<input type="text" id="txtemail" class="form-control custom-flat-input" name="email_add" value="'+ data.email +'" >'
+                    +'<p class="text-danger" id="error_email" hidden></p>');
                 }
 
                 if(data.contact == null)
@@ -283,7 +284,8 @@ elseif(Session::get('my_profile') == 'delete'){
                 }
                 else
                 {
-                    $("#mobile").html('<input type="text" id="txtmobile" class="form-control custom-flat-input" name="mobile" value="'+ data.contact +'" >');
+                    $("#mobile").html('<input type="text" id="txtmobile" class="form-control custom-flat-input" name="mobile_no" value="'+ data.contact +'" >'
+                    +'<p class="text-danger" id="error_mobile_no" hidden></p>');
                 }
 
                 if(data.tin == null)
@@ -390,11 +392,42 @@ elseif(Session::get('my_profile') == 'delete'){
                                     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                     url: "{{ route('settingsupdate_post') }}",
                                     method: "POST",
-                                    data:{id: id, email: email, contact: mobile},               
+                                    data:{id: id, email_add: email, mobile_no: mobile},               
                                     success:function(data)
                                     {
-                                        toastr.success('Account Updated Successfully', 'Success')
-                                    }                  
+                                        toastr.success('Account Updated Successfully', 'Success')  
+                                        $('#error_mobile_no').attr('hidden', true);
+                                        $('#error_email').attr('hidden', true); 
+                                    },
+                                    error:function(data){
+                                        var errors = $.parseJSON(data.responseText);
+                                            $.each(errors, function(i, errors){ 
+                                                console.log("haha");
+                                               if(errors.mobile_no){ 
+                                                $('#error_mobile_no').html(errors.mobile_no);
+                                                $('#error_mobile_no').attr('hidden', false);
+                                                $('#txtmobile').addClass('is-invalid');
+                                                } 
+                                                if(!errors.mobile_no){
+                                                $('#error_mobile_no').html("");
+                                                $('#error_mobile_no').attr('hidden', true);
+                                                $('#txtmobile').removeClass('is-invalid');
+
+                                                }
+                                                if(errors.email_add){
+                                                $('#error_email').html(errors.email_add);
+                                                $('#error_email').attr('hidden', false);
+                                                $('#txtemail').addClass('is-invalid');
+                                                }
+                                                if(!errors.email_add){
+                                                $('#error_email').html("");
+                                                $('#error_email').attr('hidden', true);
+                                                $('#txtemail').removeClass('is-invalid');
+
+                                                }
+                                            
+                                            });
+                                    }
                                 });  
                             }
                         );                

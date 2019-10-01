@@ -179,7 +179,7 @@ class EmployeesImportPreview implements ToModel, WithValidation, WithHeadingRow,
             EmployerEmployee::create([
                 'ess_id' => $employee_ess_id,
                 'employer_id' => auth()->user()->employer_id,
-                'employee_no' => $emp_id,
+                'employee_no' => $row['employee_no'],
                 'employee_id' => $emp_id
             ]);
                     ////////////////////////////////
