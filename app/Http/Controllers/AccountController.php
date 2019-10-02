@@ -153,31 +153,32 @@ class AccountController extends Controller
 
         // Custom Message
         $customMessages = [
-            'required' => 'The :attribute field is required.'
+            'required' => 'The :Attribute field is required.',
+            'regex' => 'The :Attribute can only take Letters'
         ];
 
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
-            'accountname' => 'required|unique:employer|min:3',
-            'business_name' => 'required|unique:employer|min:3',
+            'accountname' => 'required|unique:employer|min:3|regex:/^[\pL\s\-]+$/u',
+            'business_name' => 'required|unique:employer|min:3|regex:/^[\pL\s\-]+$/u',
             'user_type' => 'required',
-            'address_unit' => 'required|min:1',
+            'address_unit' => 'required|min:1|alpha_num',
             'address_country' => 'required|min:3',
             'address_town' => 'required|min:3',
             'address_cityprovince' => 'required|min:3',
             'address_barangay' => 'required|min:3',
             'address_zipcode' => 'required|min:3',
-            'contact_person' => 'required|min:3',
+            'contact_person' => 'required|min:3|alpha',
             'contact_phone' => 'required|numeric|unique:employer',
-            'contact_mobile' => 'required|numeric|regex:/(09)[0-9]{9}/|unique:employer',
+            'contact_mobile' => 'required|numeric|regex:/(09)[0-9]{9}/|unique:employer|digits:11',
             'contact_email' => 'required|unique:employer|email',
-            'sss' => 'required|unique:employer|min:3',
-            'tin' => 'required|unique:employer|min:3',
-            'phic' => 'required|unique:employer|min:3',
-            'hdmf' => 'required|unique:employer|min:3',
-            'nid' => 'required|unique:employer|min:3',
-        ]);
+            'sss' => 'required|unique:employer|numeric|min:3',
+            'tin' => 'required|unique:employer|numeric|min:3',
+            'phic' => 'required|unique:employer|numeric|min:3',
+            'hdmf' => 'required|unique:employer|numeric|min:3',
+            'nid' => 'required|unique:employer|numeric|min:3',
+        ], $customMessages);
 
         // Handle File Upload
         if($request->hasFile('sec') && $request->hasFile('bir')){
@@ -443,27 +444,32 @@ class AccountController extends Controller
 
     public function update(Request $request, $id){
         $this->getaccount();
+         // Custom Message
+         $customMessages = [
+            'required' => 'The :Attribute field is required.',
+            'regex' => 'The :Attribute can only take Letters'
+        ];
         /*Validate Request*/
         $this->validate($request, [
             'user_type' => 'required|min:3',
-            'accountname' => 'required|min:3|unique:employer,accountname,'.$id,
-            'business_name' => 'required|min:3|unique:employer,business_name,'.$id,
+            'accountname' => 'required|min:3|regex:/^[\pL\s\-]+$/u|unique:employer,accountname,'.$id,
+            'business_name' => 'required|min:3|regex:/^[\pL\s\-]+$/u|unique:employer,business_name,'.$id,
             'user_type' => 'required',
-            'address_unit' => 'required|min:1',
+            'address_unit' => 'required|min:1|alpha_num',
             'address_country' => 'required|min:3',
             'address_town' => 'required|min:3',
             'address_cityprovince' => 'required|min:3',
             'address_barangay' => 'required|min:3',
             'address_zipcode' => 'required|min:3',
-            'contact_person' => 'required|min:3',
+            'contact_person' => 'required|min:3|regex:/^[\pL\s\-]+$/u|',
             'contact_phone' => 'required|numeric|unique:employer,contact_phone,'.$id,
-            'contact_mobile' => 'required|numeric|regex:/(09)[0-9]{9}/|unique:employer,contact_mobile,'.$id,
+            'contact_mobile' => 'required|numeric|regex:/(09)[0-9]{9}/|digits:11|unique:employer,contact_mobile,'.$id,
             'contact_email' => 'required|email|unique:employer,contact_email,'.$id,
-            'sss' => 'required|min:3|unique:employer,sss,'.$id,
-            'tin' => 'required|min:3|unique:employer,tin,'.$id,
-            'phic' => 'required|min:3|unique:employer,phic,'.$id,
-            'hdmf' => 'required|min:3|unique:employer,hdmf,'.$id,
-            'nid' => 'required|min:3|unique:employer,nid,'.$id,
+            'sss' => 'required|min:3|numeric|unique:employer,sss,'.$id,
+            'tin' => 'required|min:3|numeric|unique:employer,tin,'.$id,
+            'phic' => 'required|min:3|numeric|unique:employer,phic,'.$id,
+            'hdmf' => 'required|min:3|numeric|unique:employer,hdmf,'.$id,
+            'nid' => 'required|min:3|numeric|unique:employer,nid,'.$id,
         ]);
 
         $enrollment_date = Carbon::parse($request->enrollmentdate)->format('Y-m-d');
@@ -864,8 +870,8 @@ class AccountController extends Controller
          *  Validate Request
          * */
         $this->validate($request, [
-            'username' => 'required|min:6|exists:users',
-            'activation_code' => 'required|min:6|exists:user_activation,activation_code'
+            'username' => 'required|alpha_num|exists:users',
+            'activation_code' => 'required|min:6|numeric|exists:user_activation,activation_code'
         ], $messages);
 
         /** 
