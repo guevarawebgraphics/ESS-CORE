@@ -175,9 +175,9 @@
                                 <select class="form-control custom-flat-select" id="payroll_schedule" name="payroll_schedule">
                                         <option value="{{$employee[0]->payroll_schedule}}">{{$employee[0]->payroll_schedule}}</option>
                                         <option value="">Select Options</option>
-                                        <option value="Week">Weekly</option>
-                                        <option value="Month">Monthly</option>
-                                        <option value="2Month">2x Monthly</option>                                            
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="2Monthly">2x Monthly</option>                                            
                                 </select>
                             </div>
                             <p class="text-danger text-md-center" id="error_civil_status"></p>
