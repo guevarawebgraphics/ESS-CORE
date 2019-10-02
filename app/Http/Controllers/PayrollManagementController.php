@@ -397,7 +397,9 @@ class PayrollManagementController extends Controller
         ]);
         $get_payroll_register_details_preview = DB::table('payroll_register_details_preview')
                             //->join('employee', 'payroll_register_details_preview.employee_no' , '=', 'employee.employee_no')
+                            ->join('employer_and_employee', 'payroll_register_details_preview.employee_no', '=', 'employer_and_employee.employee_no')
                             ->where('payroll_register_details_preview.created_by', '=', auth()->user()->id)
+                            ->where('employer_and_employee.employer_id', '=', auth()->user()->employer_id)
                             ->select('payroll_register_details_preview.id',
                                     'payroll_register_details_preview.employee_no',
                                     'payroll_register_details_preview.basic',
@@ -435,7 +437,8 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.overtime_hours',
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
-                                    'payroll_register_details_preview.account_status_datetime'
+                                    'payroll_register_details_preview.account_status_datetime',
+                                    'employer_and_employee.ess_id'
                                     //'employee.payroll_schedule'
                                     )
                                     ->get();
@@ -474,6 +477,7 @@ class PayrollManagementController extends Controller
                                 $payroll_register_details = payrollregisterdetails::create([
                                     'PayRegisterId' => $payregisterid,
                                     'employee_no' => $row->employee_no,
+                                    'ess_id' => $row->ess_id,
                                     'basic' => $row->basic,
                                     'absent' => $row->absent,
                                     'late' => $row->late,
