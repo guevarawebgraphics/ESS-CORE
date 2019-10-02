@@ -147,42 +147,44 @@ class PayslipsController extends Controller
                                         ->get();    
                         if(count($check))
                             {
-                            $viewpayslips = DB::Table('payroll_register_details as prd') 
-                            ->Join('employee as e','prd.employee_no','=','e.employee_no')
-                            ->Join('employee_personal_information as epi','e.employee_info','=','epi.id')
-                            ->join('payrollregister as pr','pr.id','=','prd.PayRegisterId')
-                            ->Join('employer as emr','emr.id','=','pr.employer_id')
-                            ->where('prd.id','=',$id)
-                            ->select('epi.firstname',
-                                    'epi.middlename',
-                                    'epi.lastname',
-                                    'e.employment_status',
-                                    'e.department',
-                                    'e.position',
-                                    'e.employee_no',
-                                    'emr.accountname',
-                                    'prd.sss',
-                                    'prd.hdmf',
-                                    'prd.phic',
-                                    'prd.wtax',
-                                    'pr.period_from',
-                                    'pr.period_to',
-                                    'prd.payroll_release_date',
-                                    'prd.basic',
-                                    'prd.regular_ot',
-                                    'prd.meal_allowance',
-                                    'prd.grosspay',
-                                    'prd.sss',
-                                    'prd.hdmf',
-                                    'prd.phic',
-                                    'prd.wtax',
-                                    'prd.total_deduction',
-                                    'prd.net_pay',
-                                    'epi.SSSGSIS',
-                                    'epi.TIN',
-                                    'epi.PHIC'
-                                    )
-                            ->get();
+                                $viewpayslips = DB::Table('payroll_register_details as prd') 
+                                ->join('payrollregister as pr','pr.id','=','prd.PayRegisterId')
+                                ->Join('employer as emr','emr.id','=','pr.employer_id')
+                                ->join('employer_and_employee as ee','ee.employer_id','=','emr.id') //
+                                ->join('employee as e','e.id','=','ee.employee_id')
+                                ->join('employee_personal_information as epi','e.employee_info','=','epi.id')
+                                ->where('prd.id','=',$id)
+                                ->where('prd.ess_id','=',auth()->user()->username)
+                                ->select('epi.firstname',
+                                        'epi.middlename',
+                                        'epi.lastname',
+                                        'e.employment_status',
+                                        'e.department',
+                                        'e.position',
+                                        'e.employee_no',
+                                        'emr.accountname',
+                                        'prd.sss',
+                                        'prd.hdmf',
+                                        'prd.phic',
+                                        'prd.wtax',
+                                        'pr.period_from',
+                                        'pr.period_to',
+                                        'prd.payroll_release_date',
+                                        'prd.basic',
+                                        'prd.regular_ot',
+                                        'prd.meal_allowance',
+                                        'prd.grosspay',
+                                        'prd.sss',
+                                        'prd.hdmf',
+                                        'prd.phic',
+                                        'prd.wtax',
+                                        'prd.total_deduction',
+                                        'prd.net_pay',
+                                        'epi.SSSGSIS',
+                                        'epi.TIN',
+                                        'epi.PHIC'
+                                        )
+                                ->get();
              
     
                              return view('employee_modules.payslips.view')
