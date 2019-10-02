@@ -1048,7 +1048,7 @@ class EmployeesEnrollmentController extends Controller
     /*Generate Key*/
     protected function generateESSKey(){
         // prefixes the key with a random integer between 1 - 9 (inclusive)
-        return Keygen::numeric(7)->prefix(mt_rand(1, 9))->generate(true);
+        return Keygen::length(6)->numeric()->generate();
     }
 
     /*Generate ESS ID*/
