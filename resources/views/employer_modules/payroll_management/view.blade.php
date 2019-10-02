@@ -361,6 +361,13 @@ elseif(Session::get('payroll_management') == 'delete'){
                         global: false,
                         beforeSend: function(){
                             $('#post_payroll_register').attr('disabled', true);
+                            /*
+                            *@ NProgress Loading
+                            **/
+                            NProgress.start();
+                            NProgress.set(0.6);     // Sorta same as .start()
+                            NProgress.configure({ easing: 'ease', speed: 600 });
+                            NProgress.configure({ showSpinner: false });//Turn off loading 
                         },
                         success: function(data) {
                             toastr.success('Payroll Successfully Posted')
@@ -368,9 +375,12 @@ elseif(Session::get('payroll_management') == 'delete'){
                             /**ReInitialize Table*/
                             showAllPayRegister();
                             initDataTable();
+                            NProgress.set(0.8);
+                            NProgress.done(true);
                         },
                         error: function(data) {
                             console.log("ERROR");
+                            NProgress.done(true);
                         }
                     });
                 }
