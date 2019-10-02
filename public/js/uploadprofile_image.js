@@ -12,7 +12,17 @@
         $("#Upload").attr('data-image',files[i].name.toLowerCase()); 
         $("#Upload").attr('data-file',files[i].name);
     } 
-}
+} 
+function processSelectedFilesBanner(fileInput) {
+  var files = fileInput.files;
+
+  $('#choose_file').html(files[0].name.substring(0,25)); 
+  $('#hidden_file_name').val(files[0].name); 
+  var name=  $('#hidden_file_name').val();
+  console.log(name);
+
+} 
+
 $(document).ready(function (){
     
     $('#profile_picture').click(function (){

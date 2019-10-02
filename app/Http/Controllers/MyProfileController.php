@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Account;
@@ -282,8 +282,8 @@ class MyProfileController extends Controller
     {
         $this->getaccount();
         $id_to_update = $request->id;
-        $email = $request->email;
-        $contact = $request->contact;
+        $email = $request->email_add;
+        $contact = $request->mobile_no;
 
         if($email == "-" || $contact == "-")
         {
@@ -294,7 +294,12 @@ class MyProfileController extends Controller
             /**
              * Execute if Employer
              * */
-            if(auth()->user()->user_type_id == 3){  
+            if(auth()->user()->user_type_id == 3){   
+                $request->validate([
+                    'email_add' => 'required|unique:employer,contact_email,'.$id_to_update,
+                    'mobile_no' => 'required|unique:employer,contact_mobile,'.$id_to_update,
+                  
+                ]);  
                 $update_query = Account::find($id_to_update);
                 $update_query->contact_mobile = $contact;
                 $update_query->contact_email = $email;     
@@ -304,21 +309,31 @@ class MyProfileController extends Controller
              * Execute if Employee
              * */
             elseif(auth()->user()->user_type_id == 4){
+  
+                    $employee_info_id = DB::table('employee')
+                                        ->where('id','=',$request->id)
+                                        ->pluck('employee_info');
+                              
+                    $request->validate([
+                        'email_add' => 'required|unique:employee_personal_information,email_add,'.$employee_info_id[0],
+                        'mobile_no' => 'required|unique:employee_personal_information,mobile_no,'.$employee_info_id[0],
+                      
+                    ]);   
+                    $get_employee_id = DB::table('employee')->where('id', '=', $id_to_update)->select('employee_info')->first();
+                    // $update_query = EmployeePersonalInfo::find($get_employee_id);
+    
+                    $activate_user = DB::table('employee_personal_information')
+                            ->where('id', '=', $get_employee_id->employee_info)
+                            ->update(array(
+                        'mobile_no' => $contact,
+                        'email_add'=> $email
+                    ));
+                
+           
+                
+               // $mobile_old =
+            
 
-                $request->validate([
-                    'email' => 'required|email',
-                    'contact' => 'required',
-                ]);
-
-                $get_employee_id = DB::table('employee')->where('id', '=', $id_to_update)->select('employee_info')->first();
-                // $update_query = EmployeePersonalInfo::find($get_employee_id);
-
-                $activate_user = DB::table('employee_personal_information')
-                        ->where('id', '=', $get_employee_id->employee_info)
-                        ->update(array(
-                    'mobile_no' => $contact,
-                    'email_add' => $email,
-                ));
 
                 // $update_query->mobile_no = $contact;
                 // $update_query->email_add = $email;     

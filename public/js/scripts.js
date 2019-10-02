@@ -15,6 +15,7 @@
       * @ Pusher Key
       * */
     let pusher_key = $('#pusher_key').val();
+    let ua = $('#ua').val();
     var pusher = new Pusher(pusher_key, {
         cluster: 'ap2',
         forceTLS: true
@@ -23,8 +24,10 @@
       var channel = pusher.subscribe('channel1');
       channel.bind('Announcement', function(data) {
         // Show Notification
-        toastr.success('You have new Announcement')
-        showAllAnnouncementToNotification();
+        if(ua == 4){
+            toastr.success('You have new Announcement')
+            showAllAnnouncementToNotification();
+        }
       });
      /*Listen To The port then the emit message*/
      /**
@@ -37,19 +40,12 @@
     // });
         
 
-    var session_notification = true;
-    var session = localStorage.setItem(session_notification, true);
+    // var session_notification = true;
+    // var session = localStorage.setItem(session_notification, true);
     showAllAnnouncementToNotification();
 
     $('#announcement').click(function (){
-        showAllAnnouncementToNotification();
-        if(session_notification){
-            session_notification = false;
-        }
-        if(session_notification == false){
-            $('#notif').attr('hidden', true);
-            session_notification = false;
-        }
+        $('#notif').attr('hidden', true);
     });
 
     $('#announcementdesc').on('click', '.show_announcement_notification',function (){

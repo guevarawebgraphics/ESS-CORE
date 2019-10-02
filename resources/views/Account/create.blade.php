@@ -226,7 +226,7 @@ elseif(Session::get('create_profile') == 'delete'){
                                 <span class="fa fa-phone input-group-text"></span>
                             </div> --}}
                             <label for="contact_mobile" class="col-md-12 text-md-left custom-flat-label">Mobile: </label>
-                            <input id="contact_mobile" type="text" class="form-control custom-flat-input" name="contact_mobile" placeholder="Contact Mobile"  autofocus>
+                            <input id="contact_mobile" type="text" class="form-control custom-flat-input" name="contact_mobile" placeholder="Contact Mobile" maxlength="11"  autofocus>
                         </div>
                         <p class="text-danger" id="error_contact_mobile"></p>
                         

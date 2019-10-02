@@ -159,7 +159,7 @@
                                     <span class="fa fa-phone input-group-text"></span>
                                 </div> --}}
                                 <label for="contact_mobile" class="col-md-12 text-md-left custom-flat-label">Mobile: </label>
-                                <input id="contact_mobile" type="text" class="form-control custom-flat-input" name="contact_mobile" value="{{ $Account[0]->contact_mobile }}"  autofocus>
+                                <input id="contact_mobile" type="text" class="form-control custom-flat-input" name="contact_mobile" value="{{ $Account[0]->contact_mobile }}" maxlength="11"  autofocus>
                             </div>
                             <p class="text-danger" id="error_contact_mobile"></p>
                         </div>

@@ -111,7 +111,8 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             /**
              * @ Create Employee Enrollment
              **/
-            $emppid = $Employee_personal_info->id;
+            $emppid = $Employee_personal_info->id; 
+       
             $employee = EmployeeEnrollment::create([
                     'employee_info' => $emppid,
                     'employee_no' => $row['employee_no'],
@@ -130,7 +131,8 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             /**
              * Employee Enrollment ID
              * */    
-            $emp_id = $employee->id;
+            $emp_id = $employee->id; 
+            $employee_no = $employee->employee_no;
             
             /**
              * 
@@ -152,9 +154,10 @@ class EmployeesImport implements ToModel, WithValidation, WithHeadingRow, WithBa
             EmployerEmployee::create([
                 'ess_id' => $employee_ess_id,
                 'employer_id' => auth()->user()->employer_id,
-                'employee_no' => $emp_id,
+                'employee_no' => $employee_no,
                 'employee_id' => $emp_id
             ]);
+            
 
             /**
              * 

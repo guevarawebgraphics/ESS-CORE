@@ -21,7 +21,7 @@
                             <td>{!! strip_tags(str_limit($content->media_file_banner,50))!!}</td>
                             <td><a href="#send" class="send btn btn-sm btn-outline-info btn-flat banner-post" data-toggle="modal" data-target="#sendModal" data-add="{{$content->id}}]]{{$content->title_banner}}"><i class="fa fa-paper-plane"></i> POST</a></td>               
                             <td>
-                                <a href="#edit" class="btn btn-sm btn-outline-secondary btn-flat banner-edit " data-add="{{$content->id}}" data-toggle="modal" data-target="#AddBannerModal"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>
+                                <a href="#edit" class="btn btn-sm btn-outline-secondary btn-flat banner-edit " data-add="{{$content->id}}" data-title="{{$content->title_banner}}" data-description="{{$content->description_banner}}" data-file="{{$content->media_file_banner}}" data-toggle="modal" data-target="#AddBannerModal"><span class="icon is-small"><i class="fa fa-edit"></i></span>&nbsp;Edit</a>
                                 <a href="#delete" class="btn btn-sm btn-outline-danger btn-flat banner-delete" data-add="{{$content->id}}]]{{$content->title_banner}}"><span class="icon is-small"><i class="fa fa-trash"></i></span>&nbsp;Delete</a>
                             </td>
                         @else

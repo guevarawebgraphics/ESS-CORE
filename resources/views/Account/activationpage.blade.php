@@ -6,7 +6,7 @@
         <div class="row justify-content-center" style="margin-top: 20%;">
             <div class="col-md-5">
                 <div class="card card-outline shadow p-3 mb-5 bg-white rounded">
-                    <div class="card-header text-center text-black"><label>Account Activation</label></div>
+                    <div class="card-header text-center text-black custom-flat-label"><label>Account Activation</label></div>
 
                     <div class="card-body">
                         <!-- Start Form-->
@@ -19,7 +19,7 @@
                                         {{-- <div class="input-group-append">
                                             <span class="fa fa-user input-group-text" style="background-color: #fff;"></span>
                                         </div> --}}
-                                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" placeholder="Username / ESS ID" >
+                                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }} custom-flat-input" name="username" placeholder="Username / ESS ID" >
                                     </div>
                                     
                                     @if ($errors->has('username'))
@@ -37,7 +37,7 @@
                                         {{-- <div class="input-group-append">
                                             <span class="fa fa-lock input-group-text" style="background-color: #fff;"></span>
                                         </div> --}}
-                                        <input id="activation_code" type="activation_code" class="form-control{{ $errors->has('activation_code') ? ' is-invalid' : '' }}" name="activation_code" placeholder="Enter Activation Code" >
+                                        <input id="activation_code" type="activation_code" class="form-control{{ $errors->has('activation_code') ? ' is-invalid' : '' }} custom-flat-input" name="activation_code" placeholder="Enter Activation Code" maxlength="6">
                                     </div>
                                     @if ($errors->has('activation_code'))
                                         <span class="invalid-feedback" role="alert">
