@@ -795,7 +795,12 @@ class EmployeesEnrollmentController extends Controller
             'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
         ];
         $this->validate($request, [
-            'employee_no' => 'required|numeric|unique:employee,employee_no,'.$request->input('employee_id'),
+            'employee_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                    return $query
+                            ->where('employee_no', '=', $request->employee_no)
+                            ->where('employer_id', '=', auth()->user()->employer_id);
+                }))->ignore($request->input('employee_id'))], 
+             //   'employee_no' => 'unique:employee,employee_no,'.$request->input('employee_id'), 
             'position' => 'required|min:2',
             'department' => 'required|min:2',
             'lastname' => 'required|min:1',
@@ -1048,7 +1053,7 @@ class EmployeesEnrollmentController extends Controller
     /*Generate Key*/
     protected function generateESSKey(){
         // prefixes the key with a random integer between 1 - 9 (inclusive)
-        return Keygen::numeric(7)->prefix(mt_rand(1, 9))->generate(true);
+        return Keygen::length(6)->numeric()->generate();
     }
 
     /*Generate ESS ID*/

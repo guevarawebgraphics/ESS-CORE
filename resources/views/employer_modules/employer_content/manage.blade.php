@@ -73,7 +73,7 @@
                         <div class="col-md-12">
                                 <textarea type="text" id="content_description" class="form-control  custom-flat-input-modal" name="content_description" placeholder="Content Description" autofocus></textarea>
                                 <p class="text-danger" id="error_content_description"></p>
-                        </div>
+                            </div>
                         <div class="linkpreview-scan" hidden> 
                                 <div class="card" style="width: 100%;">
                                         <div class="card-body">
@@ -187,7 +187,8 @@
                            
         //                 }
         //             });              
-        // });
+        // }); 
+    
         $(document).on("click", "#add_link", function(){ 
                toastr.remove()
                var values  = {
@@ -258,7 +259,7 @@
             {
                 if(action_to_do == "add")
                 { 
-                    
+
                     $('#spinner').addClass('fa fa-refresh fa-spin');
                       
                     $.ajax({
@@ -268,7 +269,8 @@
                         data: {
                         _token:     '{{ csrf_token() }}',
                         content_title: $('#content_title').val(),
-                        content_description: CKEDITOR.instances.content_description.getData(),
+                        //this div is for making the image responsive.
+                        content_description: '<div id="ckcontentposted">'+CKEDITOR.instances.content_description.getData()+'</div>',
                         },           
                         success:function(data)
                         {                          
