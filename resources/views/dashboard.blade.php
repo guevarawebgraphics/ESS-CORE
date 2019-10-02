@@ -101,7 +101,11 @@
                   $path_info = pathinfo('/Documents/banner_image/'.$contents->media_file_banner.'');
                   $extension = $path_info['extension']; 
                   @endphp 
-                  @if($extension =="jpg")
+                  @if($extension == "png")
+                  <img class="d-block w-100 h-100" src="/Storage/Documents/banner_image/{{$contents->media_file_banner}}" alt="{{$contents->title_banner}}"> 
+                  @elseif($extension == "jpeg")
+                  <img class="d-block w-100 h-100" src="/Storage/Documents/banner_image/{{$contents->media_file_banner}}" alt="{{$contents->title_banner}}"> 
+                  @elseif($extension == "jpg")
                   <img class="d-block w-100 h-100" src="/Storage/Documents/banner_image/{{$contents->media_file_banner}}" alt="{{$contents->title_banner}}"> 
                   @else 
                   <video class="d-block w-100 h-100" autoplay muted loop>
