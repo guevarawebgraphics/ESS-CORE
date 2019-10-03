@@ -91,7 +91,8 @@ class PayslipsController extends Controller
                                         'employer.business_name',
                                         'payrollregister.period_from',
                                         'payrollregister.period_to',
-                                        'payroll_register_details.net_pay')
+                                        'payroll_register_details.net_pay',
+                                        'payroll_register_details.employee_id')
                                         ->get();
                             
                             // $payslip = DB::table('payroll_register_details')
@@ -113,7 +114,7 @@ class PayslipsController extends Controller
 
     }
 
-    public function viewpayslips($id) 
+    public function viewpayslips($id,$empid) 
     {       
                             
         if(auth()->user()->user_type_id !== 4)
@@ -121,6 +122,9 @@ class PayslipsController extends Controller
             return abort(404);
         }
         if(!payrollregisterdetails::where('id', '=', $id)->count() > 0){
+            abort(404);
+        }     
+        if(!payrollregisterdetails::where('employee_id', '=', $empid)->count() > 0){
             abort(404);
         }    
         //gets status of the payslip
@@ -164,6 +168,7 @@ class PayslipsController extends Controller
                                 ->join('employee as e','e.id','=','ee.employee_id')
                                 ->join('employee_personal_information as epi','e.employee_info','=','epi.id')
                                 ->where('prd.id','=',$id)
+                                ->where('e.id','=',$empid)
                                 ->where('prd.ess_id','=',auth()->user()->username)
                                 ->select('epi.firstname',
                                         'epi.middlename',

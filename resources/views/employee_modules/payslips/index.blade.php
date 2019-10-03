@@ -124,7 +124,7 @@
                                     '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+ 
                                     '<td> '+moment(data[i].period_from).format('MMMM DD')+'-'+moment(data[i].period_to).format('MMMM DD')+'</td>'+ 
                                     '<td> '+data[i].net_pay+'</td>'+
-                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'/"> View </a></td>'+  
+                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'/'+data[i].employee_id+'"> View </a></td>'+  
                                 '</tr>';  
                            
                     }   
