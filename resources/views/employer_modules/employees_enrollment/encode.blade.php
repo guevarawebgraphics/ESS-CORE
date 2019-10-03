@@ -230,7 +230,7 @@
                                 </div>--}}
                                 <input id="enrollment_date" type="text" class="form-control datepicker custom-flat-input" name="enrollment_date" placeholder="MM/DD/YYYY"   autofocus>
                             </div>
-                            <p class="text-danger text-md-center" id="error_enrollment_date "></p>
+                            <p class="text-danger text-md-center" id="error_enrollment_date"></p>
                         </div> 
                         <label for="account_no" class="col-md-2 text-md-center custom-flat-label">Account No. :</label>  
                         <div class="col-md-4">
