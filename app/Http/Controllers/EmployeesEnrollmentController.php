@@ -708,7 +708,11 @@ class EmployeesEnrollmentController extends Controller
                 'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
             ];
             $this->validate($request, [
-                'employee_no' => 'required|unique:employee',
+                'employee_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                    return $query
+                            ->where('employee_no', '=', $request->employee_no)
+                            ->where('employer_id', '=', auth()->user()->employer_id);
+                }))],
                 //'employer_id' => 'required',
                 'position' => 'required|min:2',
                 'department' => 'required|min:2',              
