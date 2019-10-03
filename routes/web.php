@@ -329,7 +329,7 @@ Route::get('/icredit', 'iCreditController@index');
 //Payslips
 Route::get('/payslips', 'PayslipsController@index')->name('payslips'); 
 Route::get('/payslips/get', 'PayslipsController@getPayslipsList')->name('getPayslipsList');
-Route::get('/payslips/view/{id}', 'PayslipsController@viewpayslips')->name('viewpayslips');
+Route::get('/payslips/view/{id}/{empid}', 'PayslipsController@viewpayslips')->name('viewpayslips');
 Route::post('/payslips/filter', 'PayslipsController@filter')->name('filter'); 
 Route::get('/payslips/view', function(){
     abort(404);
