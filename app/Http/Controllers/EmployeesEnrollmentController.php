@@ -884,7 +884,7 @@ class EmployeesEnrollmentController extends Controller
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id 
             ));
-            DB::table('employer_employeee')
+            DB::table('employer_and_employee')
                 ->where('employee_id', '=', $request->input('employee_id'))
                 ->update(array(
                     'employee_no' => $request->input('employee_no'),
