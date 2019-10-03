@@ -281,6 +281,8 @@ class PayslipsController extends Controller
                                         ->Join('employer','payrollregister.employer_id','=','employer.id')
                                         ->where('payroll_register_details.ess_id', '=', auth()->user()->username)
                                         ->where('payrollregister.account_status','=',1)  
+                                        ->whereMonth('payroll_register_details.payroll_release_date', '=', $month)
+                                        ->whereYear('payroll_register_details.payroll_release_date', '=', $Request->year) 
                                         ->whereIn('payrollregister.employer_id', $get_employers)
                                         ->latest('payroll_register_details.created_at')
                                         ->select('payroll_register_details.employee_no',
