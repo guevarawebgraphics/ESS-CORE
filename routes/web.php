@@ -55,6 +55,7 @@ Route::get('/', function () { // root if the user is login
                             ->where('content_status','=',$content_status)
                             ->orderBy('employercontent.created_at','DESC')
                             ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
+                            ->where('employercontent.created_at','>=',auth()->user()->enrollment_date)
                             ->paginate(5, ['*'], 'content_page');
                 if(auth()->user()->user_type_id ===4) {
                                    /* $count_read = DB::table('read_status')
@@ -79,7 +80,8 @@ Route::get('/', function () { // root if the user is login
                                 'financial_tips.financial_tips_description',
                                 'financial_tips.status',
                                 'financial_tips.created_at')
-                                ->where('financial_tips.status','=',$financial_tips_status)
+                                ->where('financial_tips.status','=',$financial_tips_status) 
+                                ->where('financial_tips.created_at','>=',auth()->user()->enrollment_date)
                                 ->orderBy('financial_tips.created_at','DESC')
                                 ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
@@ -94,7 +96,8 @@ Route::get('/', function () { // root if the user is login
                                 'banner.media_file_banner',
                                 'banner.banner_status',
                                 'banner.created_at')
-                                ->where('banner_status','=',$banner_status)
+                                ->where('banner_status','=',$banner_status)  
+                                ->where('banner.created_at','>=',auth()->user()->enrollment_date)
                                 ->orderBy('banner.created_at','DESC')
                                 ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
@@ -326,7 +329,7 @@ Route::get('/icredit', 'iCreditController@index');
 //Payslips
 Route::get('/payslips', 'PayslipsController@index')->name('payslips'); 
 Route::get('/payslips/get', 'PayslipsController@getPayslipsList')->name('getPayslipsList');
-Route::get('/payslips/view/{id}', 'PayslipsController@viewpayslips')->name('viewpayslips');
+Route::get('/payslips/view/{id}/{empid}', 'PayslipsController@viewpayslips')->name('viewpayslips');
 Route::post('/payslips/filter', 'PayslipsController@filter')->name('filter'); 
 Route::get('/payslips/view', function(){
     abort(404);

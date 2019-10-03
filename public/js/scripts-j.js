@@ -1,5 +1,7 @@
 	//for showing description 
-    $(document).ready(function(){
+    $(document).ready(function(){ 
+        // this makes the image responsive for employer content
+        $('#ckcontentposted img').addClass('img-fluid img-thumbnail'); 
        /* $('.showfulldescription').click(function(e){ 
            
             var id = $(this).attr('id');
