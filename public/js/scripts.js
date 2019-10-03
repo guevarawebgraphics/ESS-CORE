@@ -55,7 +55,7 @@
         var employer_name = $(this).attr('data-business_name');
         var announcement_des = description;
         $('#Announcement_to_notification_modal').modal('show');
-        $('#Announcement_to_notification_modal').find('#title_modal').text('Employer' + ' ' + 'Announcement');
+        $('#Announcement_to_notification_modal').find('#title_modal').text(employer_name);
         $('#announcement_title').html(title);
         $('#announcement_description').html("<div class='des-container'>"+announcement_des+"</div>");
         $('.des-container img').addClass('img-fluid img-thumbnail');
@@ -63,7 +63,7 @@
         $.ajax({
             type: 'POST',
             url: '/Announcement/update_notification_show',
-            async: false,
+            async: true,
             data: {
                 notification_id: announcement_id,
                 '_token': $('input[name=_token]').val(),
@@ -78,6 +78,9 @@
         // /get_show_announcement_notification_toggle();
         
     });
+    $('#Announcement_to_notification_modal').on('hidden.bs.modal', function (e) {
+        showAllAnnouncementToNotification();
+      })
 
     function showAllAnnouncementToNotification(){
         // Show Notification
@@ -85,7 +88,7 @@
             type: 'ajax',
             method: 'get',
             url: '/Announcement/get_all_announcement_to_notification',
-            async: false,
+            async: true,
             dataType: 'json',
             success: function (data) {
                 var html = '';
@@ -118,7 +121,7 @@
                     });
                     var announcement_des_strip = data[i].announcement_description.replace(/"/g, "'");
                     var profile_picture = data[i].profile_picture;
-                    html += '<a class="dropdown-item show_announcement_notification" class="show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'"><!-- Message Start -->'+
+                    html += '<a class="dropdown-item show_announcement_notification" class="show_announcement_notification" href="#" id="Announcement_Notification" data-id="'+data[i].id+'"  data-title="'+data[i].announcement_title+'" data-description="'+announcement_des_strip +'" data-business_name="'+data[i].business_name +'"><!-- Message Start -->'+
                             '<div class="media">'+
                             '<img alt="User Avatar" style="heigth: 50px; width: 50px;" class="img-size-50 mr-3 img-circle" src="'+(profile_picture.includes("ESS_male1.png") ? '/storage/profile_picture/ESS_DEFAULT_PICTURE/'+data[i].profile_picture : '/storage/profile_picture/'+data[i].profile_picture)+'">'+
                             '<div class="media-body">'+

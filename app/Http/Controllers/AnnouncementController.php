@@ -193,7 +193,8 @@ class AnnouncementController extends Controller
                             'announcement.announcement_status',
                             'announcement.created_at',
                             'announcement.updated_at',
-                            'user_picture.profile_picture')
+                            'user_picture.profile_picture',
+                            'employer.business_name')
                             //->where('announcement.employer_id', '=', auth()->user()->employer_id)
                             ->where('announcement.announcement_status', '=', '1')
                             ->where('announcement.announcement_type', '=', '3')
