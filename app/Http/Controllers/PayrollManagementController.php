@@ -438,7 +438,8 @@ class PayrollManagementController extends Controller
                                     'payroll_register_details_preview.account_status',
                                     'payroll_register_details_preview.absences_days',
                                     'payroll_register_details_preview.account_status_datetime',
-                                    'employer_and_employee.ess_id'
+                                    'employer_and_employee.ess_id',
+                                    'employer_and_employee.employee_id'
                                     //'employee.payroll_schedule'
                                     )
                                     ->get();
@@ -477,7 +478,8 @@ class PayrollManagementController extends Controller
                                 $payroll_register_details = payrollregisterdetails::create([
                                     'PayRegisterId' => $payregisterid,
                                     'employee_no' => $row->employee_no,
-                                    'ess_id' => $row->ess_id,
+                                    'ess_id' => $row->ess_id, 
+                                    'employee_id' => $row->employee_id,
                                     'basic' => $row->basic,
                                     'absent' => $row->absent,
                                     'late' => $row->late,
