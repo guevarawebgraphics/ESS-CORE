@@ -199,7 +199,7 @@ class AnnouncementController extends Controller
                             ->where('announcement.announcement_status', '=', '1')
                             ->where('announcement.announcement_type', '=', '3')
                             ->where('employer_and_employee.ess_id', '=', auth()->user()->username) 
-                            ->where('announcement.created_at','>=',auth()->user()->enrollment_date)
+                            //->where('announcement.created_at','>=',auth()->user()->enrollment_date)
                             ->latest()
                             ->get();
         }
