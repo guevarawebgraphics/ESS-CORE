@@ -127,13 +127,15 @@ class PayslipsController extends Controller
         }     
         if(!payrollregisterdetails::where('employee_id', '=', $empid)->count() > 0){
             abort(404);
-        }     
+        }      
+        //checks if employee id exist in this prd table
         if(!payrollregisterdetails::where('id', '=', $id)->where('employee_id', '=', $empid)->count() > 0){
             abort(404);
-        } 
+        }  
+          //checks if user owns the employee_id
         if(!EmployerEmployee::where('ess_id',auth()->user()->username)->where('employee_id','=',$empid)->count()> 0){
             abort(404);                              
-        }       //checks if user owns the employee_id
+        }     
 
         
         //gets status of the payslip
