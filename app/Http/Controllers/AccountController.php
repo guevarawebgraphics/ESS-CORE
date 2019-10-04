@@ -1000,7 +1000,7 @@ class AccountController extends Controller
                 abort(404);
             }
             else {
-                if(UserActivation::where('user_activation_id', '!=', $id)->count() > 0){
+                if(!UserActivation::where('user_activation_id', '!=', $id)->count() > 0){
                     abort(404);
                 }
                 else {
