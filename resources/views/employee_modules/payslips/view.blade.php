@@ -16,12 +16,16 @@
 </div>
 @endsection 
 
-@section('content')
+@section('content') 
+
 <div class="container-fluid">
         <div class="card card-custom-blue card-outline">
             <div class="card-header">
-                <center><strong>Payslips</strong></center>
-            </div>
+                <center><strong>Payslips</strong></center>  
+           
+        
+            </div> 
+    
             <div class="card-body"  style="background: #f2f2f2 !important;"> 
                     <div class="container border" style="background: white !important;">
                     
@@ -32,7 +36,8 @@
                                           <th>
                                                 <ul class="list-unstyled float-left" >
                                                         <li> 
-                                                            <p class="float-left"> Employee's Payslip </p
+                                                            <p class="float-left"> Employee's Payslip </p> 
+                                                           
                                                         </li>
                                                         <li> 
                                                              <h3 style="text-transform: capitalize;color:#3C8DBC;" class="float-left">   {{$information[0]->firstname}} {{$information[0]->middlename}} {{$information[0]->lastname}}</h3>
@@ -240,7 +245,7 @@
                          </div>
                          <footer class="table-light text-center">  <small class="form-text text-muted">This is system-generated payslip.</small></footer>
                     </div>                                                                   
-            </div>              
+            </div>                      
         </div>      
     </div> 
 @endsection 

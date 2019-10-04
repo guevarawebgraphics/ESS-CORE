@@ -400,43 +400,86 @@ class AccountController extends Controller
                 abort(404);
            }
            else {
+               if(User::where('employer_id', '=', $id)->count() > 0){
+                $check_user = true;
                 $Account = DB::table('employer')
-                        ->join('user_type', 'employer.user_type', '=', 'user_type.id')
-                        ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
-                        ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
-                        ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')    
-                        //->join('users', 'employer.id', '=', 'users.employer_id')
-                        ->select('employer.id', 'employer.business_name',
-                         'employer.accountname',
-                          'employer.address_unit',
-                          'employer.address_cityprovince',
-                          'employer.address_barangay',
-                          'employer.address_zipcode',
-                          'employer.contact_email', 
-                          'employer.contact_person', 
-                          'employer.contact_phone',
-                          'employer.contact_mobile',
-                          'employer.tin',
-                          'employer.sss',
-                          'employer.phic',
-                          'employer.hdmf',
-                          'employer.nid',
-                          'employer.sec', 'employer.bir', 
-                          'employer.enrollment_date',
-                          'employer.expiry_date',
-                          'user_type.type_name', 
-                          'user_type.id as user_type_id',
-                          'employer.account_id',
-                          'refprovince.provDesc',
-                          'refprovince.provCode',
-                          'refcitymun.citymunDesc',
-                          'refcitymun.citymunCode',
-                          'refbrgy.brgyDesc',
-                          'refbrgy.id as refbrgy_id'
-                          )
-                        ->where('employer.id', $id)
-                        ->get();
-            return view('Account.edit', compact('Account'));
+                            ->join('user_type', 'employer.user_type', '=', 'user_type.id')
+                            ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
+                            ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
+                            ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')    
+                            ->join('users', 'employer.id', '=', 'users.employer_id')
+                            ->select('employer.id', 'employer.business_name',
+                            'employer.accountname',
+                            'employer.address_unit',
+                            'employer.address_cityprovince',
+                            'employer.address_barangay',
+                            'employer.address_zipcode',
+                            'employer.contact_email', 
+                            'employer.contact_person', 
+                            'employer.contact_phone',
+                            'employer.contact_mobile',
+                            'employer.tin',
+                            'employer.sss',
+                            'employer.phic',
+                            'employer.hdmf',
+                            'employer.nid',
+                            'employer.sec', 'employer.bir', 
+                            'employer.enrollment_date',
+                            'employer.expiry_date',
+                            'user_type.type_name', 
+                            'user_type.id as user_type_id',
+                            'employer.account_id',
+                            'refprovince.provDesc',
+                            'refprovince.provCode',
+                            'refcitymun.citymunDesc',
+                            'refcitymun.citymunCode',
+                            'refbrgy.brgyDesc',
+                            'refbrgy.id as refbrgy_id',
+                            'users.username'
+                            )
+                            ->where('employer.id', $id)
+                            ->get();
+               }
+               else {
+                $check_user = false;
+                $Account = DB::table('employer')
+                            ->join('user_type', 'employer.user_type', '=', 'user_type.id')
+                            ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
+                            ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
+                            ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')    
+                            ->select('employer.id', 'employer.business_name',
+                            'employer.accountname',
+                            'employer.address_unit',
+                            'employer.address_cityprovince',
+                            'employer.address_barangay',
+                            'employer.address_zipcode',
+                            'employer.contact_email', 
+                            'employer.contact_person', 
+                            'employer.contact_phone',
+                            'employer.contact_mobile',
+                            'employer.tin',
+                            'employer.sss',
+                            'employer.phic',
+                            'employer.hdmf',
+                            'employer.nid',
+                            'employer.sec', 'employer.bir', 
+                            'employer.enrollment_date',
+                            'employer.expiry_date',
+                            'user_type.type_name', 
+                            'user_type.id as user_type_id',
+                            'employer.account_id',
+                            'refprovince.provDesc',
+                            'refprovince.provCode',
+                            'refcitymun.citymunDesc',
+                            'refcitymun.citymunCode',
+                            'refbrgy.brgyDesc',
+                            'refbrgy.id as refbrgy_id'
+                            )
+                            ->where('employer.id', $id)
+                            ->get();
+               }
+                
+            return view('Account.edit', compact('Account', 'check_user'));
            }
         }
         
@@ -523,7 +566,7 @@ class AccountController extends Controller
 
             
 
-            DB::table('users')->where('id', '=', $id)
+            DB::table('users')->where('username', '=', $request->ess_id)
                                 ->update(array(
                                     'enrollment_date' => $enrollment_date,
                                     'expiry_date' => $expiry_date,
@@ -576,7 +619,7 @@ class AccountController extends Controller
  
              
  
-             DB::table('users')->where('id', '=', $id)
+             DB::table('users')->where('username', '=', $request->ess_id)
                                  ->update(array(
                                      'enrollment_date' => $enrollment_date,
                                      'expiry_date' => $expiry_date,
@@ -637,7 +680,7 @@ class AccountController extends Controller
  
              
  
-             DB::table('users')->where('id', '=', $id)
+             DB::table('users')->where('username', '=', $request->ess_id)
                                  ->update(array(
                                      'enrollment_date' => $enrollment_date,
                                      'expiry_date' => $expiry_date,
@@ -676,7 +719,7 @@ class AccountController extends Controller
                     'updated_by' => auth()->user()->id,
         ]);
                             
-        DB::table('users')->where('id', '=', $id)
+        DB::table('users')->where('username', '=', $request->ess_id)
                             ->update(array(
                                 'enrollment_date' => $enrollment_date,
                                 'expiry_date' => $expiry_date,

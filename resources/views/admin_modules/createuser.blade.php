@@ -81,7 +81,7 @@ $delete = 'disabled';
 <!-- Modal for create user-->
 <div class="modal fade bd-example-modal-lg" id="createUserModal" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="UserTitle">Create User</h5>
@@ -207,7 +207,7 @@ $delete = 'disabled';
 <!-- Modal for reset password-->
 <div class="modal fade bd-example-modal-lg" id="resetPasswordModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content card-custom-blue card-outline">
             <div class="modal-header">
                 <h5 class="modal-title" id="UserTitle">Reset Password</h5>
