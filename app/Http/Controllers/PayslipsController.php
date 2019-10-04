@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 /**
  *  Packages Facades
  * */
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
 
 use Session;
 use DB;
@@ -21,6 +21,7 @@ use Carbon\carbon;
  * */
 use App\User;
 use App\payrollregisterdetails;
+use App\EmployerEmployee;
 
 
 class PayslipsController extends Controller
@@ -126,7 +127,15 @@ class PayslipsController extends Controller
         }     
         if(!payrollregisterdetails::where('employee_id', '=', $empid)->count() > 0){
             abort(404);
-        }    
+        }     
+        if(!payrollregisterdetails::where('id', '=', $id)->where('employee_id', '=', $empid)->count() > 0){
+            abort(404);
+        } 
+        if(!EmployerEmployee::where('ess_id',auth()->user()->username)->where('employee_id','=',$empid)->count()> 0){
+            abort(404);                              
+        }       //checks if user owns the employee_id
+
+        
         //gets status of the payslip
        /* $status = DB::table('payroll_register_details as prd')
                     ->join('payrollregister as pr','prd.PayRegisterId','=','pr.id')
@@ -201,9 +210,9 @@ class PayslipsController extends Controller
                                         )
                                 ->get();
              
-    
+                        
                              return view('employee_modules.payslips.view')
-                                ->with('information',$viewpayslips);
+                                        ->with('information',$viewpayslips);
                             //   return $viewpayslips;
                        }
                         else 
@@ -296,7 +305,8 @@ class PayslipsController extends Controller
                                         'employer.business_name',
                                         'payrollregister.period_from',
                                         'payrollregister.period_to',
-                                        'payroll_register_details.net_pay')
+                                        'payroll_register_details.net_pay',
+                                        'payroll_register_details.employee_id')
                                         ->get();
            
             if($Request->ajax()){ 
