@@ -55,7 +55,7 @@ Route::get('/', function () { // root if the user is login
                             ->where('content_status','=',$content_status)
                             ->orderBy('employercontent.created_at','DESC')
                             ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
-                            ->where('employercontent.created_at','>=',auth()->user()->enrollment_date)
+                         //   ->where('employercontent.created_at','>=',auth()->user()->enrollment_date)
                             ->paginate(5, ['*'], 'content_page');
                 if(auth()->user()->user_type_id ===4) {
                                    /* $count_read = DB::table('read_status')
@@ -81,7 +81,7 @@ Route::get('/', function () { // root if the user is login
                                 'financial_tips.status',
                                 'financial_tips.created_at')
                                 ->where('financial_tips.status','=',$financial_tips_status) 
-                                ->where('financial_tips.created_at','>=',auth()->user()->enrollment_date)
+                            //    ->where('financial_tips.created_at','>=',auth()->user()->enrollment_date)
                                 ->orderBy('financial_tips.created_at','DESC')
                                 ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
@@ -97,7 +97,7 @@ Route::get('/', function () { // root if the user is login
                                 'banner.banner_status',
                                 'banner.created_at')
                                 ->where('banner_status','=',$banner_status)  
-                                ->where('banner.created_at','>=',auth()->user()->enrollment_date)
+                           //     ->where('banner.created_at','>=',auth()->user()->enrollment_date)
                                 ->orderBy('banner.created_at','DESC')
                                 ->where('employer_and_employee.ess_id', '=', auth()->user()->username)
                                 ->get();
