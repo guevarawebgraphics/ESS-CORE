@@ -604,29 +604,29 @@ class EmployeesEnrollmentController extends Controller
 
             
             //Check
-            // $check_notification = DB::table('notification')
-            //         //->where('employee_no', '=', $request->employee_no)
-            //         ->where('employer_id', '=', auth()->user()->employer_id)
-            //         ->count() > 0;
-            // if($check_notification == true){
-            // $mail_template = DB::table('notification')
-            //         //->where('employer_id', auth()->user()->id)
-            //         ->where('employer_id', auth()->user()->employer_id)
-            //         ->where('notification_type', 1)
-            //         ->select('notification_message')
-            //         ->first();
-            // }
-            // if($check_notification == false){
-           
-            // }  
-             /*Email Template*/
-             $mail_template = DB::table('notification')
-                            //->where('employer_id', auth()->user()->id)
-                            //->where('employer_id', auth()->user()->employer_id)
-                            ->where('id', '=', 31)
-                            ->where('notification_type', 1)
-                            ->select('notification_message')
-                            ->first();
+            $check_notification = DB::table('notification')
+                    //->where('employee_no', '=', $request->employee_no)
+                    ->where('employer_id', '=', auth()->user()->employer_id)
+                    ->count() > 0;
+            if($check_notification == true){
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    ->where('employer_id', auth()->user()->employer_id)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }
+            if($check_notification == false){
+            /*Email Template*/
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    //->where('employer_id', auth()->user()->employer_id)
+                    ->where('id', '=', 31)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }  
+            
             // Enviroment Variable
             $enviroment = config('app.url');
 
@@ -708,7 +708,11 @@ class EmployeesEnrollmentController extends Controller
                 'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
             ];
             $this->validate($request, [
-                'employee_no' => 'required|unique:employee',
+                'employee_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                    return $query
+                            ->where('employee_no', '=', $request->employee_no)
+                            ->where('employer_id', '=', auth()->user()->employer_id);
+                }))],
                 //'employer_id' => 'required',
                 'position' => 'required|min:2',
                 'department' => 'required|min:2',              
@@ -795,7 +799,12 @@ class EmployeesEnrollmentController extends Controller
             'unique' => 'The ' . strtoupper(':attribute') . ' is already taken.'
         ];
         $this->validate($request, [
-            'employee_no' => 'required|numeric|unique:employee,employee_no,'.$request->input('employee_id'),
+            'employee_no' => ['required','numeric', Rule::unique('employee')->where((function ($query) use ($request){
+                    return $query
+                            ->where('employee_no', '=', $request->employee_no)
+                            ->where('employer_id', '=', auth()->user()->employer_id);
+                }))->ignore($request->input('employee_id'))], 
+             //   'employee_no' => 'unique:employee,employee_no,'.$request->input('employee_id'), 
             'position' => 'required|min:2',
             'department' => 'required|min:2',
             'lastname' => 'required|min:1',
@@ -874,6 +883,11 @@ class EmployeesEnrollmentController extends Controller
                 'account_no' => $request->input('account_no'), 
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id 
+            ));
+            DB::table('employer_and_employee')
+                ->where('employee_id', '=', $request->input('employee_id'))
+                ->update(array(
+                    'employee_no' => $request->input('employee_no'),
             ));
        
 
@@ -2092,45 +2106,43 @@ class EmployeesEnrollmentController extends Controller
                                 'username'
                             )
                             ->first();
-        $get_user_activation_id = UserActivation::where('account_id', '=', $request->user_id)
+        $get_user_activation = UserActivation::where('account_id', '=', $request->user_id)
                                 ->where('created_by', '=', auth()->user()->id)
-                                ->select('user_activation_id')
+                                ->select(
+                                    'activation_code',
+                                    'user_activation_id'
+                                )
                                 ->first();
-        $get_user_activation_code = UserActivation::where('account_id', '=', $request->user_id)
-                                ->where('created_by', '=', auth()->user()->id)
-                                ->select('activation_code')
-                                ->first(); 
         // return json_encode($password);
         // // //Check
-            // $check_notification = DB::table('notification')
-            //         //->where('employee_no', '=', $request->employee_no)
-            //         ->where('employer_id', '=', auth()->user()->employer_id)
-            //         ->count() > 0;
-            // if($check_notification == true){
-            // $mail_template = DB::table('notification')
-            //         //->where('employer_id', auth()->user()->id)
-            //         ->where('employer_id', auth()->user()->employer_id)
-            //         ->where('notification_type', 1)
-            //         ->select('notification_message')
-            //         ->first();
-            // }
-            // if($check_notification == false){
-           
-            // }  
-             /*Email Template*/
-             $mail_template = DB::table('notification')
-                                //->where('employer_id', auth()->user()->id)
-                                //->where('employer_id', auth()->user()->employer_id)
-                                ->where('id', '=', 31)
-                                ->where('notification_type', 1)
-                                ->select('notification_message')
-                                ->first();
+            $check_notification = DB::table('notification')
+                    //->where('employee_no', '=', $request->employee_no)
+                    ->where('employer_id', '=', auth()->user()->employer_id)
+                    ->count() > 0;
+            if($check_notification == true){
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    ->where('employer_id', auth()->user()->employer_id)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }
+            if($check_notification == false){
+            /*Email Template*/
+            $mail_template = DB::table('notification')
+                    //->where('employer_id', auth()->user()->id)
+                    //->where('employer_id', auth()->user()->employer_id)
+                    ->where('id', '=', 31)
+                    ->where('notification_type', 1)
+                    ->select('notification_message')
+                    ->first();
+            }  
             
             // Enviroment Variable
             $enviroment = config('app.url');
 
 
-            $activation_link = $enviroment."/Account/Activation/".$get_user_activation_id->user_activation_id;
+            $activation_link = $enviroment."/Account/Activation/".$get_user_activation->user_activation_id;
 
 
             // Replace All The String in the Notification Message

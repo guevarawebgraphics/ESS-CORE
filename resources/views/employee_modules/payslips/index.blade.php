@@ -82,8 +82,8 @@
     </div>      
 </div> 
 <script type="text/javascript">
-    $(document).ready(function () {
-         initDataTable();
+    $(document).ready(function () { 
+   
          function initDataTable(){
             /*DataTable*/ 
             var table = $("#payslip_table").DataTable({
@@ -91,18 +91,15 @@
                 "sDom": '<"customcontent">rt<"row"<"col-lg-6" i><"col-lg-6" p>><"clear">',
                 "paging": true,
                 "pageLength": 10,
-                scrollY: 500,
+                scrollY: 600,
                 //  scrollX: true,
                 "autoWidth": true,
                 lengthChange: false,
                 responsive: true,
                 fixedColumns: true,
-                "ordering": false,
+                "ordering": false, 
             }); 
-            /*Custom Search For DataTable*/
-            $("#searchbox").on("keyup search input paste cut", function () {
-                    table.search(this.value).draw();
-            }); 
+       
  
        } 
 
@@ -124,7 +121,7 @@
                                     '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+ 
                                     '<td> '+moment(data[i].period_from).format('MMMM DD')+'-'+moment(data[i].period_to).format('MMMM DD')+'</td>'+ 
                                     '<td> '+data[i].net_pay+'</td>'+
-                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'/'+data[i].employee_id+'"> View </a></td>'+  
                                 '</tr>';  
                            
                     }   
@@ -134,7 +131,8 @@
                             $('#showpayslips').html(" <tr> <td colspan='5'>No Available Payslips </td> </tr>");
                             return false
                         }        
-                        $('#showpayslips').html(html);
+                        $('#showpayslips').html(html); 
+                        initDataTable();
 
             },
             error: function(){
@@ -226,12 +224,13 @@
                                     '<td>'+moment(data[i].payroll_release_date).format('MMMM DD, YYYY')+'</td>'+ 
                                     '<td> '+moment(data[i].period_from).format('MMMM DD')+'-'+moment(data[i].period_to).format('MMMM DD')+'</td>'+ 
                                     '<td> '+data[i].net_pay+'</td>'+
-                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'"> View </a></td>'+  
+                                    '<td><a class="btn btn-sm btn-outline-secondary btn-flat" href="/payslips/view/'+data[i].id+'/'+data[i].employee_id+'"> View </a></td>'+  
                                 '</tr>';  
                                      
 
                             }
-                            $('#showpayslips').html(html); 
+                            $('#showpayslips').html(html);  
+                            
                             if(i===0)
                             {
 
