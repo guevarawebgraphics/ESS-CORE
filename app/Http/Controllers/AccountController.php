@@ -405,7 +405,7 @@ class AccountController extends Controller
                         ->join('refprovince', 'employer.address_cityprovince', '=', 'refprovince.provCode')
                         ->join('refcitymun', 'employer.address_town', '=', 'refcitymun.citymunCode')
                         ->join('refbrgy', 'employer.address_barangay', '=', 'refbrgy.id')    
-                        //->join('users', 'employer.id', '=', 'users.employer_id')
+                        ->join('users', 'employer.id', '=', 'users.employer_id')
                         ->select('employer.id', 'employer.business_name',
                          'employer.accountname',
                           'employer.address_unit',
@@ -432,7 +432,8 @@ class AccountController extends Controller
                           'refcitymun.citymunDesc',
                           'refcitymun.citymunCode',
                           'refbrgy.brgyDesc',
-                          'refbrgy.id as refbrgy_id'
+                          'refbrgy.id as refbrgy_id',
+                          'users.username'
                           )
                         ->where('employer.id', $id)
                         ->get();
@@ -523,7 +524,7 @@ class AccountController extends Controller
 
             
 
-            DB::table('users')->where('id', '=', $id)
+            DB::table('users')->where('username', '=', $request->ess_id)
                                 ->update(array(
                                     'enrollment_date' => $enrollment_date,
                                     'expiry_date' => $expiry_date,
@@ -576,7 +577,7 @@ class AccountController extends Controller
  
              
  
-             DB::table('users')->where('id', '=', $id)
+             DB::table('users')->where('username', '=', $request->ess_id)
                                  ->update(array(
                                      'enrollment_date' => $enrollment_date,
                                      'expiry_date' => $expiry_date,
@@ -637,7 +638,7 @@ class AccountController extends Controller
  
              
  
-             DB::table('users')->where('id', '=', $id)
+             DB::table('users')->where('username', '=', $request->ess_id)
                                  ->update(array(
                                      'enrollment_date' => $enrollment_date,
                                      'expiry_date' => $expiry_date,
@@ -676,7 +677,7 @@ class AccountController extends Controller
                     'updated_by' => auth()->user()->id,
         ]);
                             
-        DB::table('users')->where('id', '=', $id)
+        DB::table('users')->where('username', '=', $request->ess_id)
                             ->update(array(
                                 'enrollment_date' => $enrollment_date,
                                 'expiry_date' => $expiry_date,

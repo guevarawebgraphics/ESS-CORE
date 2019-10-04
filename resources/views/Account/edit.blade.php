@@ -15,6 +15,7 @@
             {{-- Business Information Row --}}
           <label class="custom-flat-label">Business Information</label>
           <input type="hidden" id="EmployerId" value="{{ $Account[0]->id }}">
+          <input type="hidden" id="ess_id" name="ess_id" value="{{ $Account[0]->username }}">
                 <div class="form-group row">
                         
                         <div class="col-md-5">
