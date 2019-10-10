@@ -201,7 +201,8 @@ class AnnouncementController extends Controller
                             ->where('employer_and_employee.ess_id', '=', auth()->user()->username) 
                             //->where('announcement.created_at','>=',auth()->user()->enrollment_date)
                             ->latest()
-                            ->get();
+                            ->get();    
+
         }
         else{
             /**
@@ -432,15 +433,25 @@ class AnnouncementController extends Controller
      /*
       *  Update Notification SEEN(READ) is true
       */
-    public function update_notification_show(Request $request){
-        $seen = DB::table('notification_show')
-                    ->insert(array(
-                        'notification_id' => $request->input('notification_id'),
-                        'user_id' => auth()->user()->id,
-                        'read' => true,
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
-                    ));
+    public function update_notification_show(Request $request){ 
+        $check = DB::table('notification_show')
+                        ->where('notification_id','=',$request->input('notification_id'))
+                        ->where('user_id','=',auth()->user()->id)
+                        ->first(); 
+        if(count($check)){
+
+        }
+        else {
+            $seen = DB::table('notification_show')
+            ->insert(array(
+                'notification_id' => $request->input('notification_id'),
+                'user_id' => auth()->user()->id,
+                'read' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ));
+        }
+    
         return Response::json();
     }
 
@@ -448,13 +459,61 @@ class AnnouncementController extends Controller
       *  Show Notification if UNSEAN(READ) is FALSE
       */
     public function get_notification_show(Request $request){
-        $read_notification = DB::table('notification_show')
-                                ->where('user_id', '=', auth()->user()->id)
-                                ->where('notification_id', '=', $request->announcement_id)
-                                ->count() > 0;
-        
+        $ids = DB::table('employer_and_employee')
+        ->join('announcement', 'announcement.employer_id', '=',  'employer_and_employee.employer_id')
+        ->join('employer', 'employer.id', '=', 'announcement.employer_id')
+        ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
+        ->select('announcement.id',
+        'announcement.announcement_title',
+        'announcement.announcement_description',
+        'announcement.announcement_status',
+        'announcement.created_at',
+        'announcement.updated_at',
+        'user_picture.profile_picture',
+        'employer.business_name')
+        ->where('announcement.announcement_status', '=', '1')
+        ->where('announcement.announcement_type', '=', '3')
+        ->where('employer_and_employee.ess_id', '=', auth()->user()->username) 
+        ->pluck('announcement.id');  
+        $i = count($ids);  
+        $array = array();
+        for($j = 0; $j < $i ; $j++){ 
+            $checks = DB::table('notification_show') 
+                    ->where('user_id','=',auth()->user()->id)
+                    ->where('notification_id','=',$ids[$j])
+                    ->first();
+            if(count($checks)) {  
+                     $trues = $checks->notification_id;
+                     array_push($array,"$trues");
+            }
+        }        
 
-        return Response::json($read_notification);
+         return response()->json($array);
+    } 
+    
+    public function count_notification_show(Request $request){  
+        $read_table = DB::table('notification_show')
+                      ->where('user_id','=',auth()->user()->id)
+                      ->count();
+        $count_announcements = DB::table('employer_and_employee')
+                      ->join('announcement', 'announcement.employer_id', '=',  'employer_and_employee.employer_id')
+                      ->join('employer', 'employer.id', '=', 'announcement.employer_id')
+                      ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
+                      ->select('announcement.id',
+                      'announcement.announcement_title',
+                      'announcement.announcement_description',
+                      'announcement.announcement_status',
+                      'announcement.created_at',
+                      'announcement.updated_at',
+                      'user_picture.profile_picture',
+                      'employer.business_name')
+                      ->where('announcement.announcement_status', '=', '1')
+                      ->where('announcement.announcement_type', '=', '3')
+                      ->where('employer_and_employee.ess_id', '=', auth()->user()->username) 
+                      ->count();
+        $count = $count_announcements  -  $read_table ;
+        
+        return response()->json($count);
     }
 
      public function destroy_announcement(Request $request){
