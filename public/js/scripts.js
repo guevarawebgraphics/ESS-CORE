@@ -94,16 +94,18 @@ $(document).ready(function (){
                data: {
                    '_token': $('input[name=_token]').val(), 
                },
-               success: function (data){
+               success: function (data){ 
+                
                    for(i = 0 ; i < data.length; i++) {
                        $('#indicator-'+data[i]+'').html("Read"); 
                        $('#read-bg-'+data[i]+'').css("background-color", "#F0F0F0");
-                   }
+                   } 
+                   console.log(data);
                    
                }
            }); 
        } 
-       countIndicator()
+        countIndicator()
        //count the unread items
        function countIndicator() {
         $.ajax({
@@ -114,13 +116,15 @@ $(document).ready(function (){
             data: {
                 '_token': $('input[name=_token]').val(), 
             },
-            success: function (data){ 
-                if(data==0){
-                    $('#notif').html("");
-                }
-                else {
+            success: function (data){  
+                console.log(data);
+                    
+                    $('#notif').removeAttr('hidden');
                     $('#notif').html(data);
-                }
+                    if(data===null){
+                        $('#notif').Attr('hidden',true);
+                    }
+                
               
             }
         });
@@ -139,9 +143,10 @@ $(document).ready(function (){
                var html = '';
                var footer = '';
                var i;
-               var count = 1;
+               countIndicator()
          
-               for(i=0; i<data.length; i++){
+               for(i=0; i<data.length; i++){ 
+           
                    //var check_my_notification = get_show_announcement_notification_toggle(data[i].id);
                    var status = (data[i].announcement_status == 1 ? 'Posted' : data[i].announcement_status == 0 ? 'Pending' : null);
                    const date = new Date(data[i].updated_at);
@@ -172,7 +177,8 @@ $(document).ready(function (){
                    $('#announcementdesc').html(html);
                    // Check if the Data is Greater than 5 
                    showIndicator()  
-                   countIndicator()
+               
+                 
                    if(data.length > 5){
                        $("#announcementdesc").css('height', '400px');
                    }
