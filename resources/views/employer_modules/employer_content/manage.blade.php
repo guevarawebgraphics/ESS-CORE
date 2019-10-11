@@ -143,9 +143,11 @@
         
 
         //Save content 
-          //var editortwo = CKEDITOR.replace('content_description');
+          //var editortwo = CKEDITOR.replace('content_description'); 
+          
         var editortwo = CKEDITOR.replace('content_description', {
-            extraPlugins: 'embed,autoembed',
+            extraPlugins: 'embed,autoembed', 
+            
             height: 500,
 
             // Setup content provider. See https://ckeditor.com/docs/ckeditor4/latest/features/media_embed
@@ -155,9 +157,11 @@
             // resizer (because image size is controlled by widget styles or the image takes maximum
             // 100% of the editor width).
             image2_alignClasses: ['image-align-left', 'image-align-center', 'image-align-right'],
-            image2_disableResizer: true
-        });
-        CKFinder.setupCKEditor( editortwo );    
+            image2_disableResizer: true 
+
+        });  
+        CKFinder.setupCKEditor( editortwo );     
+    
         // editortwo.on('change',function(){ 
         //     $.ajax({
         //                 headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

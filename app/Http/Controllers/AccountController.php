@@ -343,7 +343,7 @@ class AccountController extends Controller
 
                 }
             }
-
+            /*
             DB::table('user_picture')->insert([
                 'user_id' => $employer->id,
                 'employer_id' => $employer->id,
@@ -351,7 +351,7 @@ class AccountController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
              ]);
-            
+            */
             /*Email Template*/
             // $mail_template = DB::table('notification')
             //                 ->where('id', 31)
