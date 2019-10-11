@@ -437,7 +437,7 @@ class AnnouncementController extends Controller
         $check = DB::table('notification_show')
                         ->where('notification_id','=',$request->input('notification_id'))
                         ->where('user_id','=',auth()->user()->id)
-                        ->first(); 
+                        ->get(); 
         if(count($check)){
 
         }
@@ -482,10 +482,12 @@ class AnnouncementController extends Controller
                     ->where('user_id','=',auth()->user()->id)
                     ->where('notification_id','=',$ids[$j])
                     ->first();
-            if(count($checks)) {  
-                     $trues = $checks->notification_id;
-                     array_push($array,"$trues");
-            }
+                if($checks) {
+                    $trues = $checks->notification_id;
+                    array_push($array,"$trues");        
+                }
+              
+            
         }        
 
          return response()->json($array);
