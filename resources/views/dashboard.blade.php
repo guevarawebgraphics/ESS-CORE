@@ -274,7 +274,7 @@
                       <i class="fa fa-comments bg-yellow" style="color:#F39C12;background-color:white;"></i>
                       <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i>{{ \Carbon\Carbon::parse($financial_tips->created_at)->isoFormat('LL')}}</span>
-                        <h3 class="timeline-header"><a href="#">{{$employer_name_ft[0]}}</a> sent a Financial Tips</h3>
+                        <h3 class="timeline-header"><a href="#">{{$employer_name_ft[0]}}</a></h3>
                         <div class="timeline-body">
                           {{$financial_tips->financial_tips_title}}
                         </div>
