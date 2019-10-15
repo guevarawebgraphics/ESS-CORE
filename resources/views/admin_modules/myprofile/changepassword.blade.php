@@ -187,7 +187,11 @@ elseif(Session::get('my_profile') == 'delete'){
                             data:{newPass: newPass},               
                             success:function(data)
                             {                               
-                                toastr.success('Password Changed Successfully', 'Success')
+                                toastr.success('Password Changed Successfully', 'Success') 
+                                @if(auth()->user()->ischange == 1) 
+                                window.location.href='{{URL::to('')}}';
+                                @else 
+                                @endif
                                 //alert("Changed");      
                                 curPass_valid = '';
                                 $('#txtnewpass').val("");
