@@ -95,12 +95,12 @@ $(document).ready(function (){
                    '_token': $('input[name=_token]').val(), 
                },
                success: function (data){ 
-                
+                   
                    for(i = 0 ; i < data.length; i++) {
-                       $('#indicator-'+data[i]+'').html("Read"); 
+                       $('#indicator-'+data[i]+'').html("Unread"); 
                        $('#read-bg-'+data[i]+'').css("background-color", "#F0F0F0");
                    } 
-                 //  console.log(data);
+                   console.log(data);
                    
                }
            }); 
