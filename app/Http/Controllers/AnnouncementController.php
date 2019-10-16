@@ -459,7 +459,7 @@ class AnnouncementController extends Controller
       *  Show Notification if UNSEAN(READ) is FALSE
       */
     public function get_notification_show(Request $request){
-        $ids = DB::table('employer_and_employee')
+       /*$ids = DB::table('employer_and_employee')
         ->join('announcement', 'announcement.employer_id', '=',  'employer_and_employee.employer_id')
         ->join('employer', 'employer.id', '=', 'announcement.employer_id')
         ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
@@ -488,8 +488,41 @@ class AnnouncementController extends Controller
                 }
               
             
-        }        
+        }*/
 
+        $ids = DB::table('employer_and_employee')
+        ->join('announcement', 'announcement.employer_id', '=',  'employer_and_employee.employer_id')
+        ->join('employer', 'employer.id', '=', 'announcement.employer_id')
+        ->join('user_picture', 'announcement.account_id', '=', 'user_picture.user_id')
+        ->select('announcement.id',
+        'announcement.announcement_title',
+        'announcement.announcement_description',
+        'announcement.announcement_status',
+        'announcement.created_at',
+        'announcement.updated_at',
+        'user_picture.profile_picture',
+        'employer.business_name')
+        ->where('announcement.announcement_status', '=', '1')
+        ->where('announcement.announcement_type', '=', '3')
+        ->where('employer_and_employee.ess_id', '=', auth()->user()->username) 
+        ->pluck('announcement.id');   
+        $i = count($ids);  
+        $array = array(); // gets the values with unread 
+        $arrayTrues= array();   //gets the values of read
+        for($j = 0; $j < $i ; $j++){ 
+            $checks = DB::table('notification_show') 
+                    ->where('user_id','=',auth()->user()->id)
+                    ->where('notification_id','=',$ids[$j])
+                    ->first();
+                if($checks) { 
+                    $trues = $ids[$j];
+                    array_push($arrayTrues,"$trues");   
+                }
+                else {
+                    $false = $ids[$j];
+                    array_push($array,"$false");   
+                }
+        }
          return response()->json($array);
     } 
     
