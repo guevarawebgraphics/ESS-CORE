@@ -330,8 +330,9 @@ $delete = 'disabled';
         /*Custom Search For DataTable*/
         $("#searchbox").on("keyup search input paste cut", function () {
             table.search(this.value).draw();
-        });
-
+        }); 
+        loadEmployerDropdown();
+        function loadEmployerDropdown() { 
         //ajax on loading the EMPLOYER
         $.ajax({
             headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -343,6 +344,8 @@ $delete = 'disabled';
                 $("#cmbEmployer").html(data);
             }
         });
+        }
+
 
         
         //AJAX ON LOADING THE ESS USER ID
@@ -429,7 +432,7 @@ $delete = 'disabled';
             $('#password').val("");
             $('#password-confirm').val("");
             $("#cmbEmployer").val('');
-
+            $("#cmbEmployer").select2("val", "")
             $('#name').removeClass("is-invalid");
             $('#txtusername').removeClass("is-invalid");
             $('#password').removeClass("is-invalid");
@@ -593,7 +596,8 @@ $delete = 'disabled';
                                 setTimeout(function (){
                                   $("#createUserModal").modal('hide');
                                 }, 1000);
-                                $('#btnRegister').attr('disabled',true);
+                                $('#btnRegister').attr('disabled',true); 
+                                
                             }
                             if (data == "suc") {
                                 toastr.success('User Register Successfully', 'Success')
@@ -604,7 +608,9 @@ $delete = 'disabled';
                                   $("#createUserModal").modal('hide');
                                 }, 1000);
                                 $('#btnRegister').attr('disabled',true);
-                            }
+                            } 
+                            loadEmployerDropdown(); 
+                            
                         }
                     });
                 }
