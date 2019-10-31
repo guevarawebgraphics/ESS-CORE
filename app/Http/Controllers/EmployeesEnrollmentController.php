@@ -530,7 +530,7 @@ class EmployeesEnrollmentController extends Controller
                 //get the employee personal info id
                 $personal_info_id = $employee_personal_info->id;
 
-                //insert into employee table
+                //insert into employee tableg
                 $employee = EmployeeEnrollment::create([              
                     'employee_info' => $personal_info_id,
                     'employee_no' => $request->input('employee_no'),

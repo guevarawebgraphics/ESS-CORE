@@ -96,7 +96,7 @@ class ManageUserController extends Controller
         }
         else if (auth()->user()->user_type_for == 2)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 AND a.employer_id = '".auth()->user()->employer_id."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 AND a.employer_id = '".auth()->user()->employer_id."' AND a.created_by = '".auth()->user()->id."'  ");
             // $users = DB::table('users')
             //             ->join('user_type', 'users.user_type_id', '=', 'user_type.id')
             //             ->where('users.created_by', '!=', 'default')
@@ -184,7 +184,7 @@ class ManageUserController extends Controller
         }
         else if (auth()->user()->user_type_for == 2)
         {
-            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 AND a.employer_id = '".auth()->user()->employer_id."' ");
+            $users = DB::connection('mysql')->select("SELECT a.*, b.type_name FROM users AS a LEFT JOIN user_type AS b ON a.user_type_id = b.id WHERE  a.created_by != 'default' AND a.employer_id != 'none' AND a.user_type_id != 1 AND a.employer_id = '".auth()->user()->employer_id."' AND a.created_by = '".auth()->user()->id."' ");
             return view('admin_modules.table.tableuser')->with('users', $users);
         }
         else if(auth()->user()->user_type_for == 3 || auth()->user()->user_type_for == 4)
@@ -224,10 +224,27 @@ class ManageUserController extends Controller
         $data = "";
         $query = "";
         
-        if(auth()->user()->user_type_for == 1 || auth()->user()->user_type_for == 2)
+        if(auth()->user()->user_type_for == 1)
         {
             // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND user_type_for = '2' ");
             $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND id != '4' ");
+            if(count($user_type) > 0)
+            {
+                foreach($user_type as $user)
+                {   
+                    $data .= '<option value="'. $user->id .'">'. $user->type_name .'</option>';               
+                }
+            }
+            else 
+            {
+                $data .= '<option value="">No User Type</option>';
+            }
+    
+            echo $data;  
+        }
+        else if( auth()->user()->user_type_for == 2)
+        {
+            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND id != '3' ");
             if(count($user_type) > 0)
             {
                 foreach($user_type as $user)
@@ -428,7 +445,7 @@ class ManageUserController extends Controller
     {
         $data = "";
     
-        $employer = DB::connection('mysql')->select("SELECT * FROM employer");
+        $employer = DB::connection('mysql')->select("SELECT * FROM employer where iscreated='0'");
 
         $data .= "<option value=''>Select Employer</option>";
         if(count($employer) > 0)

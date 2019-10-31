@@ -204,9 +204,10 @@ class RegisterController extends Controller
             
             $employer_get = DB::table('employer')
                             ->where('id', '=', (auth()->user()->user_type_id == 3) ? auth()->user()->employer_id : $data['cmbEmployer'])
-                            ->select('enrollment_date', 'expiry_date')
+                            ->select('enrollment_date', 'expiry_date','id')
                             ->first();
 
+   
             $user = User::create([
                 'name' => $data['name'],
                 'user_type_id' => $data['cmbUser_type'],
@@ -218,7 +219,12 @@ class RegisterController extends Controller
                 'expiry_date' => (auth()->user()->user_type_id === 3) ? auth()->user()->expiry_date : $employer_get->expiry_date,//14,
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id
-            ]);
+            ]); 
+            // this will update the employer's status iscreated  to 1 = TRUE 
+            DB::table('employer')->where('id','=',$employer_get->id)
+                     ->update(array(
+                             'iscreated' => 1,
+                     ));
 
             //Inserting into ESS BASE TABLE
             $insert_ess = new ESSBase;
