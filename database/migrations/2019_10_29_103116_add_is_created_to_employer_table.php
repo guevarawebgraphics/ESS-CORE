@@ -14,7 +14,7 @@ class AddIsCreatedToEmployerTable extends Migration
     public function up()
     {
         Schema::table('employer', function (Blueprint $table) {
-            $table->integer('iscreated')->after('email_verified_at')->default("0"); 
+            $table->integer('iscreated')->after('email_verified_at')->default(0); 
         });
     }
 
