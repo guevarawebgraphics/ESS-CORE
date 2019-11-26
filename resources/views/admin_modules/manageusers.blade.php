@@ -246,6 +246,7 @@ elseif(Session::get('manage_users') == 'delete'){
                 data:{id: manage_data[0]},                 
                 success:function(data)
                 {
+                    console.log(manage_data[0]);
                     $('#modal_module').html(data);
                     $('#hidden_id').val(manage_data[0]); 
                     $('#hidden_typename').val(manage_data[1]);                  
