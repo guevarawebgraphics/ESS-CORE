@@ -145,11 +145,11 @@ class ManageUserController extends Controller
 
         }*/
      //   $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC"); 
-
+/*
         $created_by_dummy = Auth()->user()->created_by;
         if($created_by_dummy == 1)
         {
-            $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");   
+          $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");   
         }
         else {
             $user_type =  DB::table('user_type')
@@ -157,6 +157,26 @@ class ManageUserController extends Controller
             ->where('deleted','=',0)
             ->get();
         }
+    */  
+        if(auth()->user()->user_type_id== 1){
+            $user_type= DB::table('user_type')
+            ->join('user_module_access','user_type.id','=','user_module_access.user_type_id')
+            ->where('user_type.deleted','=',0)
+
+            ->orderBy('user_type.created_at','DESC')
+            ->select('user_type.created_by','user_type.type_name','user_type.type_description','user_type.id as id','user_module_access.id as user_type_id')
+            ->get();
+        }
+        else {
+            $user_type= DB::table('user_type')
+            ->join('user_module_access','user_type.id','=','user_module_access.user_type_id')
+            ->where('user_type.deleted','=',0)
+            ->where('user_type.created_by','=',auth()->user()->id)
+            ->orderBy('user_type.created_at','DESC')
+            ->select('user_type.created_by','user_type.type_name','user_type.type_description','user_type.id as id','user_module_access.id as user_type_id')
+            ->get();
+        }
+
 
         if(Session::get("employer_id") != "admin")
         {                    
@@ -201,19 +221,52 @@ class ManageUserController extends Controller
         
         // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' AND account_id = 'default' OR account_id = '".auth()->user()->id."' ");
          // $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '12' ORDER BY created_at DESC ");
-        $created_by_dummy = Auth()->user()->created_by; 
+      /*  $created_by_dummy = Auth()->user()->created_by; 
         if($created_by_dummy == 1)
         {
-      
-              $user_type = DB::connection('mysql')->select("SELECT * FROM user_type WHERE deleted = '0' ORDER BY created_at DESC");  
+            $user_type= DB::table('user_type')
+            ->join('user_module_access','user_type.id','=','user_module_access.user_type_id')
+            ->where('user_type.deleted','=',0)
+            ->orderBy('user_type.created_at','DESC')
+            ->select('user_type.created_by',
+                     'user_type.type_name',
+                     'user_type.type_description',
+                     'user_type.id as id',
+                     'user_module_access.id as user_type_id')
+            ->get();
         }
         else 
         {
-              $user_type =  DB::table('user_type')
+           /* $user_type =  DB::table('user_type')
                 ->where('created_by','=', auth()->user()->id)
                 ->where('deleted','=',0)
                 ->get();
+                */
+       /*      $user_type= DB::table('user_type')
+                ->join('user_module_access','user_type.id','=','user_module_access.user_type_id')
+                ->where('user_type.deleted','=',0)
+                ->orderBy('user_type.created_at','DESC')
+                ->select('user_type.created_by','user_type.type_name','user_type.type_description','user_type.id as id','user_module_access.id as user_type_id')
+                ->get();
 
+        }*/
+        if(auth()->user()->user_type_id== 1){
+            $user_type= DB::table('user_type')
+            ->join('user_module_access','user_type.id','=','user_module_access.user_type_id')
+            ->where('user_type.deleted','=',0)
+
+            ->orderBy('user_type.created_at','DESC')
+            ->select('user_type.created_by','user_type.type_name','user_type.type_description','user_type.id as id','user_module_access.id as user_type_id')
+            ->get();
+        }
+        else {
+            $user_type= DB::table('user_type')
+            ->join('user_module_access','user_type.id','=','user_module_access.user_type_id')
+            ->where('user_type.deleted','=',0)
+            ->where('user_type.created_by','=',auth()->user()->id)
+            ->orderBy('user_type.created_at','DESC')
+            ->select('user_type.created_by','user_type.type_name','user_type.type_description','user_type.id as id','user_module_access.id as user_type_id')
+            ->get();
         }
         return view ('admin_modules.table.tableusertype')->with('user_type', $user_type);        
     }
@@ -299,13 +352,59 @@ class ManageUserController extends Controller
     //show module access on table
     public function show_module(Request $request)
     {
-        $userId = $request->id;
-        $module_name = DB::connection('mysql')->select("SELECT module_code,module_name FROM user_modules WHERE deleted = '0'");
+        $userId = $request->id; 
+        /**
+         * These are the column names of user module access table
+         */
+        $columns =  [
+                        'my_profile',
+                        'create_profile',
+                        'manage_users',
+                        'ess_content',
+                        'send_announcement',
+                        'manage_docs',
+                        'employee_enrollment', 
+                        'payroll_management',
+                        'employer_content',
+                        'payslips',
+                        't_a',
+                        'icredit',
+                        'cash_advance',
+                        'e_wallet',
+                        'financial_calendar',
+                        'financial_tips',
+                        'system_notifications'
+                    ];
+        $all = [];
+        for($i = 0 ; $i < count($columns) ; $i++){
+
+            $get_access = DB::table('user_module_access') 
+            ->where('user_type_id','=', auth()->user()->user_type_id)
+            ->where('deleted','=',0)
+            ->pluck(''.$columns[$i].''); 
+            /**
+             * Determine which module has 'all' or 'view' value
+             */
+                if($get_access[0] === "all" || $get_access[0] == "view"){
+                    array_push($all,"".$columns[$i]."");
+                } 
+              
+        }
         
+        //$module_name = DB::connection('mysql')->select("SELECT module_code,module_name FROM user_modules WHERE deleted = '0'");
+        if(auth()->user()->user_type_id == 1) {
+            $module_name = DB::connection('mysql')->select("SELECT module_code,module_name FROM user_modules WHERE deleted = '0'");
+        }
+        else {
+            $module_name = DB::table('user_modules')
+            ->whereIn('module_code',$all) 
+            ->get();
+        }
+
         $moduleRow[] = '';
         foreach($module_name as $um)
         {
-            $userAccess = DB::connection("mysql")->select("SELECT ". $um->module_code ." AS module_access FROM user_module_access WHERE user_type_id = '$userId' ");
+            $userAccess = DB::connection("mysql")->select("SELECT ". $um->module_code ." AS module_access FROM user_module_access WHERE id = '$userId' ");
             $moduleRow[$um->module_code] = $userAccess[0]->module_access;
         }
         
@@ -322,8 +421,8 @@ class ManageUserController extends Controller
         $moduleRow[] = '';
         foreach($module_name as $um)
         {
-            $valType = $request->get($um->module_code);  
-            $userAccess = DB::connection("mysql")->select("UPDATE user_module_access SET ". $um->module_code ." = '$valType' WHERE user_type_id = '$userId'");           
+            $valType = $request->get($um->module_code) ?? 'none';
+            $userAccess = DB::connection("mysql")->select("UPDATE user_module_access SET ". $um->module_code ." = '$valType' WHERE id = '$userId'");           
         }
         $type_name = $request->input('hidden_typename');
         $this->insert_log("Updated Manage Access of User Type '" . $type_name . "'");

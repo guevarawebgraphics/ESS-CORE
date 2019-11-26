@@ -646,7 +646,7 @@ class EmployeesEnrollmentController extends Controller
             Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
                 $message->to($employee_personal_info->email_add)
                         ->subject("ESS Successfully Registered ");
-                $message->from('esssample@gmail.com', "ESS");
+                $message->from('ess@circuit-solutions.net', "ESS");
             });
 
                 // $this->sendSms($request->input('mobile_no'), $OTP, $get_employer_name[0]->business_name, $request->input('firstname'));
