@@ -15,8 +15,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        \App\Events\NewPayrollRegisterEvent::class => [
+            \App\Listeners\SendPayrollRegisterListener::class,
+        ],
+        \App\Events\ResendEmployeeEmailEvent::class => [
+            \App\Listeners\ResendEmployeeEmailListener::class,
+        ],
+        \App\Events\NewEmployeeEvent::class => [
+            \App\Listeners\SendNewEmployeeEmailListener::class,
         ],
     ];
 

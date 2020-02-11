@@ -48,11 +48,25 @@ use App\Exports\PayrollExport;
  * @ Use App Imports
  * */
 
+ /**
+  * @ use Repostories 
+ **/
+use App\Repositories\PayrollManagementRepository;
+
+
+use App\Events\NewPayrollRegisterEvent;
+
+
 
 class PayrollManagementController extends Controller
 {
-    public function __construct()
+    /**
+     * @ Repository Implementation 
+     **/
+    protected $payrollManagement;
+    public function __construct(PayrollManagementRepository $PayrollManagementRepository)
     {
+        $this->payrollManagement = $PayrollManagementRepository;
         $this->middleware('auth');      
         $this->middleware('revalidate'); // Revalidate back history Security For Back Button
         $this->middleware(function($request, $next){
@@ -646,104 +660,107 @@ class PayrollManagementController extends Controller
             'id' => 'required'
         ]);
 
-        $check_payroll_status = DB::table('payrollregister')
-                        ->where('id', '=', $request->input('id'))
-                        ->select('account_status')
-                        ->first();
-        /**
-         * @ Check if the Payrollregister is already Posted
-         * */
-        if($check_payroll_status->account_status == 0)
-        {
-        /**
-         * @ Send Email Payslip Notification Configuration
-         * */
-        $get_employees_email = DB::table('payroll_register_details')
-                                    ->join('employee', 'payroll_register_details.employee_no', '=', 'employee.employee_no')
-                                    ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
-                                    ->join('payrollregister', 'payroll_register_details.PayRegisterId', '=', 'payrollregister.id')
-                                    ->where('payroll_register_details.PayRegisterId', '=', $request->id)
-                                    ->where('employee.created_by', '=', auth()->user()->id)
-                                    ->select('employee_personal_information.email_add',
-                                            'employee_personal_information.lastname',
-                                            'employee_personal_information.firstname',
-                                            'payrollregister.period_from',
-                                            'payrollregister.period_to')
-                                    ->get();
+        $postPayrollRegister = $this->payrollManagement->postPayrollRegister($request);
+        return response()->json($postPayrollRegister);
 
-         //Check
-         $check_notification = DB::table('notification')
-                //->where('employee_no', '=', $request->employee_no)
-                ->where('employer_id', '=', auth()->user()->employer_id)
-                ->count() > 0;
-        if($check_notification == true){
-            $mail_template = DB::table('notification')
-                //->where('employer_id', auth()->user()->id)
-                ->where('employer_id', auth()->user()->employer_id)
-                ->where('notification_type', 1)
-                ->select('notification_message')
-                ->first();
-        }
-        if($check_notification == false) {
-            /*Email Template*/
-            $mail_template = DB::table('notification')
-                ->where('id', '39')
-                ->where('notification_type', 1)
-                ->select('notification_message')
-                ->first();
-        }
+        // $check_payroll_status = DB::table('payrollregister')
+        //                 ->where('id', '=', $request->input('id'))
+        //                 ->select('account_status')
+        //                 ->first();
+        // /**
+        //  * @ Check if the Payrollregister is already Posted
+        //  * */
+        // if($check_payroll_status->account_status == 0)
+        // {
+        // /**
+        //  * @ Send Email Payslip Notification Configuration
+        //  * */
+        // $get_employees_email = DB::table('payroll_register_details')
+        //                             ->join('employee', 'payroll_register_details.employee_no', '=', 'employee.employee_no')
+        //                             ->join('employee_personal_information', 'employee.employee_info', '=', 'employee_personal_information.id')
+        //                             ->join('payrollregister', 'payroll_register_details.PayRegisterId', '=', 'payrollregister.id')
+        //                             ->where('payroll_register_details.PayRegisterId', '=', $request->id)
+        //                             ->where('employee.created_by', '=', auth()->user()->id)
+        //                             ->select('employee_personal_information.email_add',
+        //                                     'employee_personal_information.lastname',
+        //                                     'employee_personal_information.firstname',
+        //                                     'payrollregister.period_from',
+        //                                     'payrollregister.period_to')
+        //                             ->get();
+
+        //  //Check
+        //  $check_notification = DB::table('notification')
+        //         //->where('employee_no', '=', $request->employee_no)
+        //         ->where('employer_id', '=', auth()->user()->employer_id)
+        //         ->count() > 0;
+        // if($check_notification == true){
+        //     $mail_template = DB::table('notification')
+        //         //->where('employer_id', auth()->user()->id)
+        //         ->where('employer_id', auth()->user()->employer_id)
+        //         ->where('notification_type', 1)
+        //         ->select('notification_message')
+        //         ->first();
+        // }
+        // if($check_notification == false) {
+        //     /*Email Template*/
+        //     $mail_template = DB::table('notification')
+        //         ->where('id', '39')
+        //         ->where('notification_type', 1)
+        //         ->select('notification_message')
+        //         ->first();
+        // }
         
         
-        // Enviroment Variable
-        $enviroment = config('app.url');
-        // Ess Link
-        $ess_link = $enviroment."/payslips";
+        // // Enviroment Variable
+        // $enviroment = config('app.url');
+        // // Ess Link
+        // $ess_link = $enviroment."/payslips";
 
 
 
-        /**
-         * Loop through $get_employees_email
-         * */
-        foreach($get_employees_email as $key)
-        {
-            // // Replace All The String in the Notification Message
-            $search = ["name",
-                       "Datefrom",
-                       "Dateto",
-                       "url"];
-            $replace = [$key->lastname . $key->firstname,
-                         Carbon::parse($key->period_from)->format('m-d-Y'),
-                         Carbon::parse($key->period_to)->format('m-d-Y'),
-                         "<a href=".$ess_link.">Click Here</a>"];                
-            $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+        // /**
+        //  * Loop through $get_employees_email
+        //  * */
+        // foreach($get_employees_email as $key)
+        // {
+        //     // // Replace All The String in the Notification Message
+        //     $search = ["name",
+        //                "Datefrom",
+        //                "Dateto",
+        //                "url"];
+        //     $replace = [$key->lastname . $key->firstname,
+        //                  Carbon::parse($key->period_from)->format('m-d-Y'),
+        //                  Carbon::parse($key->period_to)->format('m-d-Y'),
+        //                  "<a href=".$ess_link.">Click Here</a>"];                
+        //     $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                             
 
-            // /*Send Mail */
-            $data = array('username' => 'test', "template" => $template_result);
+        //     // /*Send Mail */
+        //     $data = array('username' => 'test', "template" => $template_result);
 
-            Mail::send('Email.mail', $data, function($message) use($get_employees_email, $mail_template, $key){
-                $message->to($key->email_add)
-                        ->subject("ESS Payslip ");
-                $message->from('esssample@gmail.com', "ESS");
-            });
-        }
+        //     Mail::send('Email.mail', $data, function($message) use($get_employees_email, $mail_template, $key){
+        //         $message->to($key->email_add)
+        //                 ->subject("ESS Payslip ");
+        //         $message->from('esssample@gmail.com', "ESS");
+        //     });
+        // }
 
         
 
-        /**
-         *  Update Query
-         * */
-        DB::table('payrollregister')->where('id', '=', $request->input('id'))
-                                ->update(array(
-                                    'account_status' => '1',
-                                ));
-        }
-        else{
-            return response()->json([
-                'error' => 500,
-                'message' => 'Already Posted'
-            ]);
-        }
+        // /**
+        //  *  Update Query
+        //  * */
+        // DB::table('payrollregister')->where('id', '=', $request->input('id'))
+        //                         ->update(array(
+        //                             'account_status' => '1',
+        //                         ));
+        // }
+        // else{
+        //     return response()->json([
+        //         'error' => 500,
+        //         'message' => 'Already Posted'
+        //     ]);
+        // }
      }
 
 

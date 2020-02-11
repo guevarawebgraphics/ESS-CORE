@@ -69,3 +69,27 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+############################################################################################################
+#                             ___________            ________         ________                             #
+#                             |                     |       |        |       |                             #
+#                             |                     |                |                                     #
+#                             |__________     __    |_______         |_______                              #
+#                             |                             |                |                             #
+#                             |                             |                |                             #
+#                             |                             |                |                             #
+#                             |_________            |_______|        |_______|                             #
+#                                                                                                          #
+############################################################################################################
+
+ESS Project
+Gettings Started
+---------------------------------------------------
+git clone http://mmsilvano@192.168.0.250:9090/scm/ess2/ess-core.git
+git checkout develop
+cp .env.example .env
+don't use composer instal it will overwrite the existing vendor lol, i did not do that shit lol
+npm install
+php artisan key:generate
+php artisan serve
