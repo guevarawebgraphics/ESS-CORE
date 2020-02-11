@@ -10,7 +10,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"><!--Custome Style-->
 	<link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet"><!-- IonIcons -->
 	<link href="{{ asset('http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}" rel="stylesheet"><!-- Theme style -->
-	<link href="{{ asset('dist/css/adminlte.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
+	<link href="{{ asset('dist/css/AdminLTE.min.css') }}" rel="stylesheet"><!-- Google Font: Source Sans Pro -->
 	{{-- <link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}" rel="stylesheet"> --}}
 	<link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet"> <!--Font Poppins-->
 	<link href="{{ asset('Toastr/toastr.min.css') }}" rel="stylesheet"> <!--Toastr-->

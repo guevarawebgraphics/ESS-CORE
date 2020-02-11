@@ -522,7 +522,8 @@ $(document).ready(function(){
                     },
                     success: function(response) {
                         console.log(response);
-                        swal("Email Sent!");
+                        // swal("Email Sent!");
+                        toastr.success('Email Sent')
                         NProgress.set(0.8);
                         NProgress.done(true);
                     },
