@@ -52,10 +52,21 @@ use Uppercase;
 use App\Imports\EmployeesImport;
 use App\Imports\EmployeesImportPreview;
 
+/**
+ * @ Repositories 
+ **/
+use App\Repositories\EmployeesEnrollmentRepository;
+use App\Events\NewEmployeeEvent;
+
 class EmployeesEnrollmentController extends Controller
 {
-    public function __construct()
+    /**
+     * @ Repository Implementation 
+     **/
+    protected $employeesEnrollment;
+    public function __construct(EmployeesEnrollmentRepository $EmployeesEnrollmentRepository)
     {
+        $this->employeesEnrollment = $EmployeesEnrollmentRepository;
         $this->middleware('auth');   
         $this->middleware('revalidate'); // Revalidate back history Security For Back Button  
         $this->middleware(function($request, $next){
@@ -641,13 +652,16 @@ class EmployeesEnrollmentController extends Controller
                              
 
             /*Send Mail */
-            $data = array('username' => $user->name, "password" => $password, "template" => $template_result);
+            $data_email = array('username' => $user->name, 'email' => $employee_personal_info->email_add,  "password" => $password, "template" => $template_result);
 
-            Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
-                $message->to($employee_personal_info->email_add)
-                        ->subject("ESS Successfully Registered ");
-                $message->from('esssample@gmail.com', "ESS");
-            });
+            // Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
+            //     $message->to($employee_personal_info->email_add)
+            //             ->subject("ESS Successfully Registered ");
+            //     $message->from('esssample@gmail.com', "ESS");
+            // });
+            
+            // Send Email
+            event(new NewEmployeeEvent($data_email));
 
                 // $this->sendSms($request->input('mobile_no'), $OTP, $get_employer_name[0]->business_name, $request->input('firstname'));
 
@@ -1988,13 +2002,16 @@ class EmployeesEnrollmentController extends Controller
                                 
 
                 /*Send Mail */
-                $data = array('username' => $emp_details->name, "password" => $password, "template" => $template_result);
+                $data_email = array('username' => $emp_details->name, 'email' => $employee_personal_info->email_add, "password" => $password, "template" => $template_result);
+                
+                // Send Email
+                event(new NewEmployeeEvent($data_email));
 
-                Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
-                    $message->to($employee_personal_info->email_add)
-                            ->subject("ESS Successfully Registered ");
-                    $message->from('esssample@gmail.com', "ESS");
-                });
+                // Mail::send('Email.mail', $data, function($message) use($employee_personal_info, $mail_template){
+                //     $message->to($employee_personal_info->email_add)
+                //             ->subject("ESS Successfully Registered ");
+                //     $message->from('esssample@gmail.com', "ESS");
+                // });
                 // /**
                 //  * @ Create A Activation
                 //  * */
@@ -2086,78 +2103,81 @@ class EmployeesEnrollmentController extends Controller
      * Resend Employee Email
      **/
     public function resend_email(Request $request) {
-        /**
-         * Generate A New Password
-         **/
-        $password = Keygen::alphanum(10)->generate();
-        $update_password = User::where('id', '=', $request->user_id)
-                        ->update(array(
-                            'password' => Hash::make($password),
-                        ));
-        $get_employee_info = EmployeePersonalInfo::where('id', '=', $request->employee_info_id)
-                            ->select(
-                                'email_add',
-                                'mobile_no'
-                            )
-                            ->first();
-        $get_user = User::where('id', '=', $request->user_id)
-                            ->select(
-                                'name',
-                                'username'
-                            )
-                            ->first();
-        $get_user_activation = UserActivation::where('account_id', '=', $request->user_id)
-                                ->where('created_by', '=', auth()->user()->id)
-                                ->select(
-                                    'activation_code',
-                                    'user_activation_id'
-                                )
-                                ->first();
-        // return json_encode($password);
-        // // //Check
-            $check_notification = DB::table('notification')
-                    //->where('employee_no', '=', $request->employee_no)
-                    ->where('employer_id', '=', auth()->user()->employer_id)
-                    ->count() > 0;
-            if($check_notification == true){
-            $mail_template = DB::table('notification')
-                    //->where('employer_id', auth()->user()->id)
-                    ->where('employer_id', auth()->user()->employer_id)
-                    ->where('notification_type', 1)
-                    ->select('notification_message')
-                    ->first();
-            }
-            if($check_notification == false){
-            /*Email Template*/
-            $mail_template = DB::table('notification')
-                    //->where('employer_id', auth()->user()->id)
-                    //->where('employer_id', auth()->user()->employer_id)
-                    ->where('id', '=', 31)
-                    ->where('notification_type', 1)
-                    ->select('notification_message')
-                    ->first();
-            }  
+
+        $resendEmail = $this->employeesEnrollment->resendEmail($request);
+        // /return response()->json($resendEmail);
+        // /**
+        //  * Generate A New Password
+        //  **/
+        // $password = Keygen::alphanum(10)->generate();
+        // $update_password = User::where('id', '=', $request->user_id)
+        //                 ->update(array(
+        //                     'password' => Hash::make($password),
+        //                 ));
+        // $get_employee_info = EmployeePersonalInfo::where('id', '=', $request->employee_info_id)
+        //                     ->select(
+        //                         'email_add',
+        //                         'mobile_no'
+        //                     )
+        //                     ->first();
+        // $get_user = User::where('id', '=', $request->user_id)
+        //                     ->select(
+        //                         'name',
+        //                         'username'
+        //                     )
+        //                     ->first();
+        // $get_user_activation = UserActivation::where('account_id', '=', $request->user_id)
+        //                         ->where('created_by', '=', auth()->user()->id)
+        //                         ->select(
+        //                             'activation_code',
+        //                             'user_activation_id'
+        //                         )
+        //                         ->first();
+        // // return json_encode($password);
+        // // // //Check
+        //     $check_notification = DB::table('notification')
+        //             //->where('employee_no', '=', $request->employee_no)
+        //             ->where('employer_id', '=', auth()->user()->employer_id)
+        //             ->count() > 0;
+        //     if($check_notification == true){
+        //     $mail_template = DB::table('notification')
+        //             //->where('employer_id', auth()->user()->id)
+        //             ->where('employer_id', auth()->user()->employer_id)
+        //             ->where('notification_type', 1)
+        //             ->select('notification_message')
+        //             ->first();
+        //     }
+        //     if($check_notification == false){
+        //     /*Email Template*/
+        //     $mail_template = DB::table('notification')
+        //             //->where('employer_id', auth()->user()->id)
+        //             //->where('employer_id', auth()->user()->employer_id)
+        //             ->where('id', '=', 31)
+        //             ->where('notification_type', 1)
+        //             ->select('notification_message')
+        //             ->first();
+        //     }  
             
-            // Enviroment Variable
-            $enviroment = config('app.url');
+        //     // Enviroment Variable
+        //     $enviroment = config('app.url');
 
 
-            $activation_link = $enviroment."/Account/Activation/".$get_user_activation->user_activation_id;
+        //     $activation_link = $enviroment."/Account/Activation/".$get_user_activation->user_activation_id;
 
 
-            // Replace All The String in the Notification Message
-            $search = ["name", "userid", "mobile", "url", "password"];
-            $replace = [$get_user->name, $get_user->username, $get_employee_info->mobile_no, "<a href=".$activation_link.">Click Here</a>", $password];                
-            $template_result = str_replace($search, $replace, $mail_template->notification_message); 
+        //     // Replace All The String in the Notification Message
+        //     $search = ["name", "userid", "mobile", "url", "password"];
+        //     $replace = [$get_user->name, $get_user->username, $get_employee_info->mobile_no, "<a href=".$activation_link.">Click Here</a>", $password];                
+        //     $template_result = str_replace($search, $replace, $mail_template->notification_message); 
                              
 
-            /*Send Mail */
-            $data = array('username' => $get_user->name, "password" => $password, "template" => $template_result);
+        //     /*Send Mail */
+        //     $data = array('username' => $get_user->name, "password" => $password, "template" => $template_result);
 
-            Mail::send('Email.mail', $data, function($message) use($get_employee_info, $mail_template){
-                $message->to($get_employee_info->email_add)
-                        ->subject("ESS Successfully Registered ");
-                $message->from('esssample@gmail.com', "ESS");
-            });
+        //     Mail::send('Email.mail', $data, function($message) use($get_employee_info, $mail_template){
+        //         $message->to($get_employee_info->email_add)
+        //                 ->subject("ESS Successfully Registered ");
+        //         $message->from('esssample@gmail.com', "ESS");
+        //     });
     }
 }
